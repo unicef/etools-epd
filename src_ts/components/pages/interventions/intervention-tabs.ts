@@ -20,8 +20,8 @@ import {RouteDetails} from '../../../routing/router';
  * @LitElement
  * @customElement
  */
-@customElement('page-one-tabs')
-export class PageOneTabs extends connect(store)(LitElement) {
+@customElement('intervention-tabs')
+export class InterventionTabs extends connect(store)(LitElement) {
   static get styles() {
     return [elevationStyles, pageLayoutStyles, pageContentHeaderSlottedStyles];
   }
@@ -55,10 +55,10 @@ export class PageOneTabs extends connect(store)(LitElement) {
       </page-content-header>
 
       <section class="elevation page-content" elevation="1">
-        ${this.isActiveTab(this.activeTab, 'details') ? html`<page-one-details></page-one-details>` : ''}
+        ${this.isActiveTab(this.activeTab, 'details') ? html`<intervention-details></intervention-details>` : ''}
         ${this.isActiveTab(this.activeTab, 'questionnaires')
-          ? html`<page-one-questionnaires> </page-one-questionnaires>`
-          : ''}
+        ? html`<intervention-questionnaires> </intervention-questionnaires>`
+        : ''}
       </section>
     `;
   }
@@ -95,7 +95,7 @@ export class PageOneTabs extends connect(store)(LitElement) {
 
   public stateChanged(state: RootState) {
     // update page route data
-    if (state.app!.routeDetails.routeName === 'page-one' && state.app!.routeDetails.subRouteName !== 'list') {
+    if (state.app!.routeDetails.routeName === 'interventions' && state.app!.routeDetails.subRouteName !== 'list') {
       this.routeDetails = state.app!.routeDetails;
       const stateActiveTab = state.app!.routeDetails.subRouteName as string;
       if (stateActiveTab !== this.activeTab) {
@@ -124,7 +124,7 @@ export class PageOneTabs extends connect(store)(LitElement) {
       return;
     }
     if (newTabName !== oldTabName) {
-      const newPath = `page-one/${this.record.id}/${newTabName}`;
+      const newPath = `interventions/${this.record.id}/${newTabName}`;
       if (this.routeDetails.path === newPath) {
         return;
       }

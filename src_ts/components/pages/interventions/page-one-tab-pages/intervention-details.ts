@@ -4,7 +4,7 @@ import {PolymerElement, html} from '@polymer/polymer/polymer-element';
  * @customElement
  * @polymer
  */
-class PageOneDetails extends PolymerElement {
+class InterventionDetails extends PolymerElement {
   static get template() {
     // language=HTML
     return html`
@@ -17,4 +17,4 @@ class PageOneDetails extends PolymerElement {
   }
 }
 
-window.customElements.define('page-one-details', PageOneDetails);
+window.customElements.define('intervention-details', InterventionDetails);

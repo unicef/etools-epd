@@ -45,7 +45,7 @@ import {updateAppLocation, replaceAppLocation} from '../../../routing/routes';
 import {SharedStylesLit} from '../../styles/shared-styles-lit';
 
 import '@unicef-polymer/etools-loading';
-import {getListDummydata} from '../page-one/list/list-dummy-data';
+import {getListDummydata} from './list/list-dummy-data';
 import get from 'lodash-es/get';
 import {fireEvent} from '../../utils/fire-custom-event';
 import '../../common/layout/export-data';
@@ -55,8 +55,8 @@ let lastSelectedFilters: FilterKeysAndTheirSelectedValues = {...defaultSelectedF
  * @LitElement
  * @customElement
  */
-@customElement('page-one-list')
-export class PageOneList extends connect(store)(LitElement) {
+@customElement('intervention-list')
+export class InterventionList extends connect(store)(LitElement) {
   static get styles() {
     return [elevationStyles, buttonsStyles, pageLayoutStyles, pageContentHeaderSlottedStyles];
   }
@@ -164,7 +164,7 @@ export class PageOneList extends connect(store)(LitElement) {
     {
       label: 'Reference No.',
       name: 'ref_number',
-      link_tmpl: `${ROOT_PATH}page-one/:id/details`,
+      link_tmpl: `${ROOT_PATH}intervention/:id/details`,
       type: EtoolsTableColumnType.Link
     },
     {
@@ -201,7 +201,7 @@ export class PageOneList extends connect(store)(LitElement) {
 
   stateChanged(state: RootState) {
     const routeDetails = get(state, 'app.routeDetails');
-    if (!(routeDetails.routeName === 'page-one' && routeDetails.subRouteName === 'list')) {
+    if (!(routeDetails.routeName === 'interventions' && routeDetails.subRouteName === 'list')) {
       return; // Avoid code execution while on a different page
     }
 
@@ -332,6 +332,6 @@ export class PageOneList extends connect(store)(LitElement) {
   }
 
   goToAddnewPage() {
-    updateAppLocation('/page-one/new/details', true);
+    updateAppLocation('/interventions/new/details', true);
   }
 }

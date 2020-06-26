@@ -4,7 +4,7 @@ import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
  * @customElement
  * @polymer
  */
-class PageOneQuestionnaires extends PolymerElement {
+class InterventionQuestionnaires extends PolymerElement {
   static get template() {
     // language=HTML
     return html`
@@ -33,4 +33,4 @@ class PageOneQuestionnaires extends PolymerElement {
   }
 }
 
-window.customElements.define('page-one-questionnaires', PageOneQuestionnaires);
+window.customElements.define('intervention-questionnaires', InterventionQuestionnaires);

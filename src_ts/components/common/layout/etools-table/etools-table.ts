@@ -33,7 +33,7 @@ export interface EtoolsTableColumn {
   sort?: EtoolsTableColumnSort;
   /**
    * used only for EtoolsTableColumnType.Link to specify url template (route with a single param)
-   * ex: `${ROOT_PATH}page-one/:id/details`
+   * ex: `${ROOT_PATH}intervention/:id/details`
    *    - id will be replaced with item object id property
    */
   link_tmpl?: string;
@@ -122,8 +122,8 @@ export class EtoolsTable extends LitElement {
       <th class="${this.getColumnClassList(column)}" @tap="${() => this.toggleAndSortBy(column)}">
         ${column.label}
         ${this.columnHasSort(column.sort)
-          ? html`<iron-icon .icon="${this.getSortIcon(column.sort as EtoolsTableColumnSort)}"> </iron-icon>`
-          : ''}
+        ? html`<iron-icon .icon="${this.getSortIcon(column.sort as EtoolsTableColumnSort)}"> </iron-icon>`
+        : ''}
       </th>
     `;
   }
@@ -150,16 +150,16 @@ export class EtoolsTable extends LitElement {
     return html`
       <tr>
         ${columnsKeys.map(
-          (k: string) => html`<td
+      (k: string) => html`<td
             data-label="${this.getColumnDetails(k).label}"
             class="${this.getRowDataColumnClassList(k)}"
           >
             ${this.getItemValue(item, k, showEdit)}
           </td>`
-        )}
+    )}
         ${this.showRowActions()
-          ? html`<td data-label="${this.actionsLabel}" class="row-actions">&nbsp;${this.getRowActionsTmpl(item)}</td>`
-          : ''}
+        ? html`<td data-label="${this.actionsLabel}" class="row-actions">&nbsp;${this.getRowActionsTmpl(item)}</td>`
+        : ''}
       </tr>
     `;
   }
@@ -253,8 +253,8 @@ export class EtoolsTable extends LitElement {
         return item[key]
           ? prettyDate(item[key], this.dateFormat)
           : column.placeholder
-          ? column.placeholder
-          : this.defaultPlaceholder;
+            ? column.placeholder
+            : this.defaultPlaceholder;
       case EtoolsTableColumnType.Link:
         return this.getLinkTmpl(column.link_tmpl, item, key, column.isExternalLink);
       case EtoolsTableColumnType.Number:

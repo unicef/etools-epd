@@ -7,10 +7,10 @@ export const EtoolsRouter = new Router(ROOT_PATH);
 const routeParamRegex = '([^\\/?#=+]+)';
 
 EtoolsRouter.addRoute(
-  new RegExp('^page-one/list$'),
+  new RegExp('^interventions/list$'),
   (params: RouteCallbackParams): RouteDetails => {
     return {
-      routeName: 'page-one',
+      routeName: 'interventions',
       subRouteName: 'list',
       path: params.matchDetails[0],
       queryParams: params.queryParams,
@@ -19,10 +19,10 @@ EtoolsRouter.addRoute(
   }
 )
   .addRoute(
-    new RegExp(`^page-one\\/${routeParamRegex}\\/${routeParamRegex}$`),
+    new RegExp(`^interventions\\/${routeParamRegex}\\/${routeParamRegex}$`),
     (params: RouteCallbackParams): RouteDetails => {
       return {
-        routeName: 'page-one',
+        routeName: 'interventions',
         subRouteName: params.matchDetails[2], // tab name
         path: params.matchDetails[0],
         queryParams: params.queryParams,
@@ -81,4 +81,4 @@ export const replaceAppLocation = (newLocation: string, dispatchNavigation = tru
 };
 
 export const ROUTE_404 = '/page-not-found';
-export const DEFAULT_ROUTE = '/page-one/list';
+export const DEFAULT_ROUTE = '/interventions/list';

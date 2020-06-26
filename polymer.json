@@ -3,10 +3,10 @@
   "shell": "src/components/app-shell/app-shell.js",
   "fragments": [
     "src/components/pages/page-not-found.js",
-    "src/components/pages/page-one/page-one-list.js",
-    "src/components/pages/page-one/page-one-tabs.js",
-    "src/components/pages/page-one/page-one-tab-pages/page-one-details.js",
-    "src/components/pages/page-one/page-one-tab-pages/page-one-questionnaires.js",
+    "src/components/pages/interventions/intervention-list.js",
+    "src/components/pages/interventions/intervention-tabs.js",
+    "src/components/pages/interventions/intervention-tab-pages/intervention-details.js",
+    "src/components/pages/interventions/intervention-tab-pages/intervention-questionnaires.js",
     "src/components/pages/page-two.js"
   ],
   "sources": [

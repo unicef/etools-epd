@@ -1,4 +1,4 @@
-import {getPartnersDummyData, geUnicefUsersDummyData} from '../../components/pages/page-one/list/list-dummy-data';
+import {getPartnersDummyData, geUnicefUsersDummyData} from '../../components/pages/interventions/list/list-dummy-data';
 import {Action, ActionCreator} from 'redux';
 import {AnyObject} from '../../types/globals';
 

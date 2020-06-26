@@ -98,15 +98,15 @@ export class AppShell extends connect(store)(LitElement) {
 
           <!-- Main content -->
           <main role="main" class="main-content">
-            <page-one-list
+            <intervention-list
               class="page"
-              ?active="${this.isActivePage(this.mainPage, 'page-one', this.subPage, 'list')}"
-            ></page-one-list>
-            <page-one-tabs
+              ?active="${this.isActivePage(this.mainPage, 'interventions', this.subPage, 'list')}"
+            ></intervention-list>
+            <intervention-tabs
               class="page"
-              ?active="${this.isActivePage(this.mainPage, 'page-one', this.subPage, 'details|questionnaires')}"
+              ?active="${this.isActivePage(this.mainPage, 'interventions', this.subPage, 'details|questionnaires')}"
             >
-            </page-one-tabs>
+            </intervention-tabs>
             <page-two class="page" ?active="${this.isActivePage(this.mainPage, 'page-two')}"></page-two>
             <page-not-found
               class="page"
