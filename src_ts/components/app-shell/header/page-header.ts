@@ -1,6 +1,5 @@
 import '@polymer/app-layout/app-toolbar/app-toolbar';
 import '@polymer/paper-icon-button/paper-icon-button';
-import '@unicef-polymer/etools-app-selector/etools-app-selector';
 import '@unicef-polymer/etools-profile-dropdown/etools-profile-dropdown';
 import {customElement, LitElement, html, property} from 'lit-element';
 
@@ -42,9 +41,6 @@ export class PageHeader extends connect(store)(LitElement) {
         }
 
         @media (max-width: 576px) {
-          etools-app-selector {
-            --app-selector-button-padding: 18px 8px;
-          }
           #app-logo {
             display: none;
           }
@@ -65,12 +61,11 @@ export class PageHeader extends connect(store)(LitElement) {
       <app-toolbar sticky class="content-align">
         <paper-icon-button id="menuButton" icon="menu" @tap="${() => this.menuBtnClicked()}"></paper-icon-button>
         <div class="titlebar content-align">
-          <etools-app-selector id="selector"></etools-app-selector>
           <img id="app-logo" src="images/etools-logo-color-white.svg" alt="eTools" />
           ${this.isStaging
-            ? html`<div class="envWarning">
+        ? html`<div class="envWarning">
            <span class='envLong'> - </span>${this.environment} <span class='envLong'>  TESTING ENVIRONMENT</div>`
-            : ''}
+        : ''}
         </div>
         <div class="content-align">
           <support-btn></support-btn>
@@ -177,7 +172,7 @@ export class PageHeader extends connect(store)(LitElement) {
 
   protected _getModifiedFields(originalData: any, newData: any) {
     const modifiedFields: AnyObject = {};
-    this.editableFields.forEach(function (field: any) {
+    this.editableFields.forEach(function(field: any) {
       if (originalData[field] !== newData[field]) {
         modifiedFields[field] = newData[field];
       }

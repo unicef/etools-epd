@@ -26,8 +26,7 @@ export class AppMenu extends LitElement {
     return html`
       <div class="menu-header">
         <span id="app-name">
-          Frontend <br />
-          Template
+          ePD
         </span>
 
         <span class="ripple-wrapper main">
@@ -40,7 +39,7 @@ export class AppMenu extends LitElement {
         </span>
 
         <paper-tooltip for="menu-header-top-icon" position="right">
-          Frontend Template
+          ePD
         </paper-tooltip>
 
         <span class="ripple-wrapper">

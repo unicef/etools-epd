@@ -11,6 +11,12 @@ export const redirectToListSubpageList = ['interventions'];
 export const getRedirectToListPath = (path: string): undefined | string => {
   path = path.replace(ROOT_PATH, '');
   const route = Router.clearSlashes(path);
-  const redirectTo: string | undefined = redirectToListSubpageList.find((r: string) => r === route);
+  let redirectTo: string | undefined;
+  if (!path) {
+    redirectTo = 'interventions';
+  } else {
+    redirectTo = redirectToListSubpageList.find((r: string) => r === route);
+  }
+
   return redirectTo ? `${ROOT_PATH}${redirectTo}/list` : undefined;
 };

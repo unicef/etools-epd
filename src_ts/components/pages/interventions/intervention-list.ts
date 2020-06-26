@@ -41,7 +41,7 @@ import {
   getUrlQueryStringSort
 } from '../../common/layout/etools-table/etools-table-utility';
 import {RouteDetails, RouteQueryParams} from '../../../routing/router';
-import {updateAppLocation, replaceAppLocation} from '../../../routing/routes';
+import {replaceAppLocation} from '../../../routing/routes';
 import {SharedStylesLit} from '../../styles/shared-styles-lit';
 
 import '@unicef-polymer/etools-loading';
@@ -98,12 +98,6 @@ export class InterventionList extends connect(store)(LitElement) {
         <div slot="title-row-actions" class="content-header-actions">
           <div class="action">
             <export-data .params="${this.queryParams}" raised></export-data>
-          </div>
-          <div class="action">
-            <paper-button id="addBtn" class="primary left-icon" raised @tap="${this.goToAddnewPage}">
-              <iron-icon icon="add"></iron-icon><span class="longAddText">Add new record</span>
-              <span class="shortAddText">Add</span>
-            </paper-button>
           </div>
         </div>
       </page-content-header>
@@ -164,7 +158,7 @@ export class InterventionList extends connect(store)(LitElement) {
     {
       label: 'Reference No.',
       name: 'ref_number',
-      link_tmpl: `${ROOT_PATH}intervention/:id/details`,
+      link_tmpl: `${ROOT_PATH}interventions/:id/details`,
       type: EtoolsTableColumnType.Link
     },
     {
@@ -329,9 +323,5 @@ export class InterventionList extends connect(store)(LitElement) {
 
   exportRecord() {
     fireEvent(this, 'toast', {text: 'Export not implemented...'});
-  }
-
-  goToAddnewPage() {
-    updateAppLocation('/interventions/new/details', true);
   }
 }
