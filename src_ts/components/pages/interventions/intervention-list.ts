@@ -93,7 +93,7 @@ export class InterventionList extends connect(store)(LitElement) {
         }
       </style>
       <page-content-header>
-        <h1 slot="page-title">Page One list</h1>
+        <h1 slot="page-title">PDs/SPDs list</h1>
 
         <div slot="title-row-actions" class="content-header-actions">
           <div class="action">
@@ -109,7 +109,7 @@ export class InterventionList extends connect(store)(LitElement) {
       <section class="elevation page-content no-padding" elevation="1">
         <etools-loading loading-text="Loading..." .active="${this.showLoading}"></etools-loading>
         <etools-table
-          caption="Page One"
+          caption="PDs/SPDs"
           .columns="${this.listColumns}"
           .items="${this.listData}"
           .paginator="${this.paginator}"

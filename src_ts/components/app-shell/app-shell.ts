@@ -104,7 +104,12 @@ export class AppShell extends connect(store)(LitElement) {
             ></intervention-list>
             <intervention-tabs
               class="page"
-              ?active="${this.isActivePage(this.mainPage, 'interventions', this.subPage, 'details|questionnaires')}"
+              ?active="${this.isActivePage(
+                this.mainPage,
+                'interventions',
+                this.subPage,
+                'overview|details|results|timing|management|attachments'
+              )}"
             >
             </intervention-tabs>
             <page-two class="page" ?active="${this.isActivePage(this.mainPage, 'page-two')}"></page-two>

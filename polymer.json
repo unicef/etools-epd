@@ -5,8 +5,8 @@
     "src/components/pages/page-not-found.js",
     "src/components/pages/interventions/intervention-list.js",
     "src/components/pages/interventions/intervention-tabs.js",
-    "src/components/pages/interventions/intervention-tab-pages/intervention-details.js",
-    "src/components/pages/interventions/intervention-tab-pages/intervention-questionnaires.js",
+    "src/components/pages/interventions/intervention-tab-pages/intervention-details/intervention-details.js",
+    "src/components/pages/interventions/intervention-tab-pages/intervention-overview/intervention-overview.js",
     "src/components/pages/page-two.js"
   ],
   "sources": [

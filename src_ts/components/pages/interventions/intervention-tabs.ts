@@ -26,7 +26,7 @@ export class InterventionTabs extends connect(store)(LitElement) {
     return [elevationStyles, pageLayoutStyles, pageContentHeaderSlottedStyles];
   }
 
-  public render() {
+  render() {
     // main template
     // language=HTML
     return html`
@@ -55,10 +55,13 @@ export class InterventionTabs extends connect(store)(LitElement) {
       </page-content-header>
 
       <section class="elevation page-content" elevation="1">
-        ${this.isActiveTab(this.activeTab, 'details') ? html`<intervention-details></intervention-details>` : ''}
-        ${this.isActiveTab(this.activeTab, 'questionnaires')
-        ? html`<intervention-questionnaires> </intervention-questionnaires>`
-        : ''}
+        <intervention-details ?hidden="${!this.isActiveTab(this.activeTab, 'details')}"></intervention-details>
+        <intervention-overview ?hidden="${!this.isActiveTab(this.activeTab, 'overview')}"> </intervention-overview>
+        <intervention-results ?hidden="${!this.isActiveTab(this.activeTab, 'results')}"> </intervention-results>
+        <intervention-timing ?hidden="${!this.isActiveTab(this.activeTab, 'timing')}"> </intervention-timing>
+        <intervention-management ?hidden="${!this.isActiveTab(this.activeTab, 'management')}"> </intervention-management>
+        <intervention-attachments ?hidden="${!this.isActiveTab(this.activeTab, 'attachments')}">
+        </intervention-attachments>
       </section>
     `;
   }
@@ -69,13 +72,33 @@ export class InterventionTabs extends connect(store)(LitElement) {
   @property({type: Array})
   pageTabs = [
     {
+      tab: 'overview',
+      tabLabel: 'Overview',
+      hidden: false
+    },
+    {
       tab: 'details',
       tabLabel: 'Details',
       hidden: false
     },
     {
-      tab: 'questionnaires',
-      tabLabel: 'Questionnaires‎',
+      tab: 'results',
+      tabLabel: 'Results',
+      hidden: false
+    },
+    {
+      tab: 'timing',
+      tabLabel: 'Timing',
+      hidden: false
+    },
+    {
+      tab: 'management',
+      tabLabel: 'Management',
+      hidden: false
+    },
+    {
+      tab: 'attachments',
+      tabLabel: 'Attachments',
       hidden: false
     }
   ];
