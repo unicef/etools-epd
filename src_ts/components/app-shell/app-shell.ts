@@ -104,6 +104,7 @@ export class AppShell extends connect(store)(LitElement) {
             ></intervention-list>
             <intervention-tabs
               class="page"
+              .store="${store}"
               ?active="${this.isActivePage(
                 this.mainPage,
                 'interventions',

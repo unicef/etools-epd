@@ -1,27 +1,26 @@
 import '@polymer/paper-button/paper-button';
 
-import {SharedStylesLit} from '../../styles/shared-styles-lit';
-import '../../common/layout/page-content-header/page-content-header';
-import '../../common/layout/etools-tabs';
+import {SharedStylesLit} from '../../../styles/shared-styles-lit';
+import '../../../common/layout/page-content-header/page-content-header';
+import '../../../common/layout/etools-tabs';
 // eslint-disable-next-line max-len
-import {pageContentHeaderSlottedStyles} from '../../common/layout/page-content-header/page-content-header-slotted-styles';
-import '../../common/layout/status/etools-status';
+import {pageContentHeaderSlottedStyles} from '../../../common/layout/page-content-header/page-content-header-slotted-styles';
+import '../../../common/layout/status/etools-status';
 
-import {AnyObject} from '../../../types/globals';
-import {connect} from 'pwa-helpers/connect-mixin';
-import {RootState, store} from '../../../redux/store';
-import {updateAppLocation} from '../../../routing/routes';
+import {AnyObject} from '../../../../types/globals';
+import {updateAppLocation} from '../../../../routing/routes';
 import {customElement, LitElement, html, property} from 'lit-element';
-import {pageLayoutStyles} from '../../styles/page-layout-styles';
-import {elevationStyles} from '../../styles/lit-styles/elevation-styles';
-import {RouteDetails} from '../../../routing/router';
+import {pageLayoutStyles} from '../../../styles/page-layout-styles';
+import {elevationStyles} from '../../../styles/lit-styles/elevation-styles';
+import {RouteDetails} from '../../../../routing/router';
 
 /**
  * @LitElement
  * @customElement
  */
 @customElement('intervention-tabs')
-export class InterventionTabs extends connect(store)(LitElement) {
+export class InterventionTabs extends LitElement {
+  private _storeUnsubscribe: any;
   static get styles() {
     return [elevationStyles, pageLayoutStyles, pageContentHeaderSlottedStyles];
   }
@@ -59,7 +58,8 @@ export class InterventionTabs extends connect(store)(LitElement) {
         <intervention-overview ?hidden="${!this.isActiveTab(this.activeTab, 'overview')}"> </intervention-overview>
         <intervention-results ?hidden="${!this.isActiveTab(this.activeTab, 'results')}"> </intervention-results>
         <intervention-timing ?hidden="${!this.isActiveTab(this.activeTab, 'timing')}"> </intervention-timing>
-        <intervention-management ?hidden="${!this.isActiveTab(this.activeTab, 'management')}"> </intervention-management>
+        <intervention-management ?hidden="${!this.isActiveTab(this.activeTab, 'management')}">
+        </intervention-management>
         <intervention-attachments ?hidden="${!this.isActiveTab(this.activeTab, 'attachments')}">
         </intervention-attachments>
       </section>
@@ -107,16 +107,30 @@ export class InterventionTabs extends connect(store)(LitElement) {
   activeTab = 'details';
 
   @property({type: Object})
-  record: AnyObject = {
+  intervention: AnyObject = {
     id: 23,
     title: 'Page One title'
   };
+
+  @property({type: Object})
+  store!: AnyObject;
+
+  connectedCallback() {
+    super.connectedCallback();
+    this._storeUnsubscribe = this.store.subscribe(() => this.stateChanged(this.store.getState()));
+    this.stateChanged(this.store.getState());
+  }
+
+  disconnectedCallback() {
+    this._storeUnsubscribe();
+    super.disconnectedCallback();
+  }
 
   isActiveTab(tab: string, expectedTab: string): boolean {
     return tab === expectedTab;
   }
 
-  public stateChanged(state: RootState) {
+  public stateChanged(state: any) {
     // update page route data
     if (state.app!.routeDetails.routeName === 'interventions' && state.app!.routeDetails.subRouteName !== 'list') {
       this.routeDetails = state.app!.routeDetails;
@@ -126,9 +140,9 @@ export class InterventionTabs extends connect(store)(LitElement) {
         this.activeTab = state.app!.routeDetails.subRouteName as string;
         this.tabChanged(this.activeTab, oldActiveTabValue);
       }
-      const recordId = state.app!.routeDetails.params!.recordId;
-      if (recordId) {
-        this.record.id = recordId;
+      const interventionId = state.app!.routeDetails.params!.recordId;
+      if (interventionId) {
+        this.intervention.id = interventionId;
       }
     }
   }
@@ -147,7 +161,7 @@ export class InterventionTabs extends connect(store)(LitElement) {
       return;
     }
     if (newTabName !== oldTabName) {
-      const newPath = `interventions/${this.record.id}/${newTabName}`;
+      const newPath = `interventions/${this.intervention.id}/${newTabName}`;
       if (this.routeDetails.path === newPath) {
         return;
       }
