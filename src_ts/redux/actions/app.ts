@@ -78,9 +78,6 @@ export const navigate: ActionCreator<ThunkResult> = (path: string) => (dispatch)
   }
 
   const routeDetails: RouteDetails | null = EtoolsRouter.getRouteDetails(path);
-  /**
-   * TODO:
-   *  - create template page with detail about routing (including tabs subpages navigation), creating a new page
-   */
+
   dispatch(loadPageComponents(routeDetails));
 };

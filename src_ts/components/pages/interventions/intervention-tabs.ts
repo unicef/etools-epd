@@ -20,13 +20,13 @@ import {RouteDetails} from '../../../routing/router';
  * @LitElement
  * @customElement
  */
-@customElement('page-one-tabs')
-export class PageOneTabs extends connect(store)(LitElement) {
+@customElement('intervention-tabs')
+export class InterventionTabs extends connect(store)(LitElement) {
   static get styles() {
     return [elevationStyles, pageLayoutStyles, pageContentHeaderSlottedStyles];
   }
 
-  public render() {
+  render() {
     // main template
     // language=HTML
     return html`
@@ -55,10 +55,13 @@ export class PageOneTabs extends connect(store)(LitElement) {
       </page-content-header>
 
       <section class="elevation page-content" elevation="1">
-        ${this.isActiveTab(this.activeTab, 'details') ? html`<page-one-details></page-one-details>` : ''}
-        ${this.isActiveTab(this.activeTab, 'questionnaires')
-          ? html`<page-one-questionnaires> </page-one-questionnaires>`
-          : ''}
+        <intervention-details ?hidden="${!this.isActiveTab(this.activeTab, 'details')}"></intervention-details>
+        <intervention-overview ?hidden="${!this.isActiveTab(this.activeTab, 'overview')}"> </intervention-overview>
+        <intervention-results ?hidden="${!this.isActiveTab(this.activeTab, 'results')}"> </intervention-results>
+        <intervention-timing ?hidden="${!this.isActiveTab(this.activeTab, 'timing')}"> </intervention-timing>
+        <intervention-management ?hidden="${!this.isActiveTab(this.activeTab, 'management')}"> </intervention-management>
+        <intervention-attachments ?hidden="${!this.isActiveTab(this.activeTab, 'attachments')}">
+        </intervention-attachments>
       </section>
     `;
   }
@@ -69,13 +72,33 @@ export class PageOneTabs extends connect(store)(LitElement) {
   @property({type: Array})
   pageTabs = [
     {
+      tab: 'overview',
+      tabLabel: 'Overview',
+      hidden: false
+    },
+    {
       tab: 'details',
       tabLabel: 'Details',
       hidden: false
     },
     {
-      tab: 'questionnaires',
-      tabLabel: 'Questionnaires‎',
+      tab: 'results',
+      tabLabel: 'Results',
+      hidden: false
+    },
+    {
+      tab: 'timing',
+      tabLabel: 'Timing',
+      hidden: false
+    },
+    {
+      tab: 'management',
+      tabLabel: 'Management',
+      hidden: false
+    },
+    {
+      tab: 'attachments',
+      tabLabel: 'Attachments',
       hidden: false
     }
   ];
@@ -95,7 +118,7 @@ export class PageOneTabs extends connect(store)(LitElement) {
 
   public stateChanged(state: RootState) {
     // update page route data
-    if (state.app!.routeDetails.routeName === 'page-one' && state.app!.routeDetails.subRouteName !== 'list') {
+    if (state.app!.routeDetails.routeName === 'interventions' && state.app!.routeDetails.subRouteName !== 'list') {
       this.routeDetails = state.app!.routeDetails;
       const stateActiveTab = state.app!.routeDetails.subRouteName as string;
       if (stateActiveTab !== this.activeTab) {
@@ -124,7 +147,7 @@ export class PageOneTabs extends connect(store)(LitElement) {
       return;
     }
     if (newTabName !== oldTabName) {
-      const newPath = `page-one/${this.record.id}/${newTabName}`;
+      const newPath = `interventions/${this.record.id}/${newTabName}`;
       if (this.routeDetails.path === newPath) {
         return;
       }

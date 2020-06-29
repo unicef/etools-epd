@@ -26,8 +26,7 @@ export class AppMenu extends LitElement {
     return html`
       <div class="menu-header">
         <span id="app-name">
-          Frontend <br />
-          Template
+          ePD
         </span>
 
         <span class="ripple-wrapper main">
@@ -40,7 +39,7 @@ export class AppMenu extends LitElement {
         </span>
 
         <paper-tooltip for="menu-header-top-icon" position="right">
-          Frontend Template
+          ePD
         </paper-tooltip>
 
         <span class="ripple-wrapper">
@@ -56,12 +55,12 @@ export class AppMenu extends LitElement {
           selectable="a"
           role="navigation"
         >
-          <a class="nav-menu-item" menu-name="page-one" href="${this.rootPath + 'page-one'}">
+          <a class="nav-menu-item" menu-name="interventions" href="${this.rootPath + 'interventions'}">
             <iron-icon id="page1-icon" icon="accessibility"></iron-icon>
             <paper-tooltip for="page1-icon" position="right">
-              Page One
+              PDs/SPDs
             </paper-tooltip>
-            <div class="name">Page One</div>
+            <div class="name">PDs/SPDs</div>
           </a>
 
           <a class="nav-menu-item" menu-name="page-two" href="${this.rootPath + 'page-two'}">

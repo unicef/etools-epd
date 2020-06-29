@@ -4,7 +4,10 @@
 
 import {EtoolsTableColumn, EtoolsTableColumnSort} from './etools-table';
 import {AnyObject} from '../../../../types/globals';
-import {selectedValueTypeByFilterKey, FilterKeysAndTheirSelectedValues} from '../../../pages/page-one/list/filters';
+import {
+  selectedValueTypeByFilterKey,
+  FilterKeysAndTheirSelectedValues
+} from '../../../pages/interventions/list/filters';
 
 export interface EtoolsTableSortItem {
   name: string;

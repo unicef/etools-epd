@@ -33,7 +33,7 @@ export interface EtoolsTableColumn {
   sort?: EtoolsTableColumnSort;
   /**
    * used only for EtoolsTableColumnType.Link to specify url template (route with a single param)
-   * ex: `${ROOT_PATH}page-one/:id/details`
+   * ex: `${ROOT_PATH}intervention/:id/details`
    *    - id will be replaced with item object id property
    */
   link_tmpl?: string;
