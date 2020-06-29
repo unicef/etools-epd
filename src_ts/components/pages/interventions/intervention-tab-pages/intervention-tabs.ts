@@ -13,14 +13,18 @@ import {customElement, LitElement, html, property} from 'lit-element';
 import {pageLayoutStyles} from '../../../styles/page-layout-styles';
 import {elevationStyles} from '../../../styles/lit-styles/elevation-styles';
 import {RouteDetails} from '../../../../routing/router';
+import cloneDeep from 'lodash-es/cloneDeep';
+import get from 'lodash-es/get';
+import {isJsonStrMatch} from '../../../utils/utils';
+import {getIntervention} from '../../../../redux/actions/interventions';
+import {connect} from './common/store-subscribe-mixin';
 
 /**
  * @LitElement
  * @customElement
  */
 @customElement('intervention-tabs')
-export class InterventionTabs extends LitElement {
-  private _storeUnsubscribe: any;
+export class InterventionTabs extends connect(LitElement) {
   static get styles() {
     return [elevationStyles, pageLayoutStyles, pageContentHeaderSlottedStyles];
   }
@@ -54,13 +58,17 @@ export class InterventionTabs extends LitElement {
       </page-content-header>
 
       <section class="elevation page-content" elevation="1">
-        <intervention-details ?hidden="${!this.isActiveTab(this.activeTab, 'details')}"></intervention-details>
-        <intervention-overview ?hidden="${!this.isActiveTab(this.activeTab, 'overview')}"> </intervention-overview>
-        <intervention-results ?hidden="${!this.isActiveTab(this.activeTab, 'results')}"> </intervention-results>
-        <intervention-timing ?hidden="${!this.isActiveTab(this.activeTab, 'timing')}"> </intervention-timing>
-        <intervention-management ?hidden="${!this.isActiveTab(this.activeTab, 'management')}">
+        <intervention-details ?hidden="${!this.isActiveTab(this.activeTab, 'details')}" .store="${this.store}">
+        </intervention-details>
+        <intervention-overview ?hidden="${!this.isActiveTab(this.activeTab, 'overview')}" .store="${this.store}">
+        </intervention-overview>
+        <intervention-results ?hidden="${!this.isActiveTab(this.activeTab, 'results')}" .store="${this.store}">
+        </intervention-results>
+        <intervention-timing ?hidden="${!this.isActiveTab(this.activeTab, 'timing')}" .store="${this.store}">
+        </intervention-timing>
+        <intervention-management ?hidden="${!this.isActiveTab(this.activeTab, 'management')}" .store="${this.store}">
         </intervention-management>
-        <intervention-attachments ?hidden="${!this.isActiveTab(this.activeTab, 'attachments')}">
+        <intervention-attachments ?hidden="${!this.isActiveTab(this.activeTab, 'attachments')}" .store="${this.store}">
         </intervention-attachments>
       </section>
     `;
@@ -107,22 +115,16 @@ export class InterventionTabs extends LitElement {
   activeTab = 'details';
 
   @property({type: Object})
-  intervention: AnyObject = {
-    id: 23,
-    title: 'Page One title'
-  };
+  intervention!: AnyObject;
 
   @property({type: Object})
   store!: AnyObject;
 
   connectedCallback() {
     super.connectedCallback();
-    this._storeUnsubscribe = this.store.subscribe(() => this.stateChanged(this.store.getState()));
-    this.stateChanged(this.store.getState());
   }
 
   disconnectedCallback() {
-    this._storeUnsubscribe();
     super.disconnectedCallback();
   }
 
@@ -131,18 +133,18 @@ export class InterventionTabs extends LitElement {
   }
 
   public stateChanged(state: any) {
-    // update page route data
     if (state.app!.routeDetails.routeName === 'interventions' && state.app!.routeDetails.subRouteName !== 'list') {
-      this.routeDetails = state.app!.routeDetails;
-      const stateActiveTab = state.app!.routeDetails.subRouteName as string;
-      if (stateActiveTab !== this.activeTab) {
-        const oldActiveTabValue = this.activeTab;
-        this.activeTab = state.app!.routeDetails.subRouteName as string;
-        this.tabChanged(this.activeTab, oldActiveTabValue);
+      this.activeTab = state.app!.routeDetails.subRouteName as string;
+
+      if (get(state, 'interventions.current')) {
+        const currentIntervention = state.interventions.current;
+        if (!isJsonStrMatch(this.intervention, currentIntervention)) {
+          this.intervention = cloneDeep(currentIntervention);
+        }
       }
-      const interventionId = state.app!.routeDetails.params!.recordId;
-      if (interventionId) {
-        this.intervention.id = interventionId;
+      const currentInterventionId = get(state, 'app.routeDetails.params.interventionId');
+      if (currentInterventionId !== get(this.intervention, 'id')) {
+        this.store.dispatch(getIntervention(currentInterventionId));
       }
     }
   }
