@@ -32,6 +32,7 @@ export class InterventionTabs extends connect(LitElement) {
   render() {
     // main template
     // language=HTML
+    console.log('intervention-tabs');
     return html`
       ${SharedStylesLit}
       <style>
@@ -57,7 +58,7 @@ export class InterventionTabs extends connect(LitElement) {
         ></etools-tabs>
       </page-content-header>
 
-      <section class="elevation page-content" elevation="1">
+      <div class="page-content">
         <intervention-details ?hidden="${!this.isActiveTab(this.activeTab, 'details')}" .store="${this.store}">
         </intervention-details>
         <intervention-overview ?hidden="${!this.isActiveTab(this.activeTab, 'overview')}" .store="${this.store}">
@@ -70,7 +71,7 @@ export class InterventionTabs extends connect(LitElement) {
         </intervention-management>
         <intervention-attachments ?hidden="${!this.isActiveTab(this.activeTab, 'attachments')}" .store="${this.store}">
         </intervention-attachments>
-      </section>
+      </div>
     `;
   }
 
@@ -117,9 +118,6 @@ export class InterventionTabs extends connect(LitElement) {
   @property({type: Object})
   intervention!: AnyObject;
 
-  @property({type: Object})
-  store!: AnyObject;
-
   connectedCallback() {
     super.connectedCallback();
   }
@@ -143,7 +141,7 @@ export class InterventionTabs extends connect(LitElement) {
         }
       }
       const currentInterventionId = get(state, 'app.routeDetails.params.interventionId');
-      if (currentInterventionId !== get(this.intervention, 'id')) {
+      if (currentInterventionId !== String(get(this.intervention, 'id'))) {
         this.store.dispatch(getIntervention(currentInterventionId));
       }
     }

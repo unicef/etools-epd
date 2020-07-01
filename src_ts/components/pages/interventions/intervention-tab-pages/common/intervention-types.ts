@@ -222,3 +222,15 @@ export class InterventionAmendment {
   signed_amendment_attachment: number | string | null = null;
   internal_prc_review: number | string | null = null;
 }
+
+export interface PartnerDetails {
+  details: {
+    partner: number;
+    partner_name: string;
+  };
+  permissions: Permission<PartnerDetailsPermissions>;
+}
+
+export interface PartnerDetailsPermissions {
+  partner: boolean;
+}

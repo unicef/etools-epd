@@ -18,5 +18,8 @@ export const etoolsEndpoints: EtoolsEndpoints = {
   },
   interventions: {
     url: '/api/v2/interventions/'
+  },
+  intervention: {
+    template: '/api/v2/interventions/<%=interventionId%>/'
   }
 };

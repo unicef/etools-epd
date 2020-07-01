@@ -1,9 +1,22 @@
-import {LitElement, html} from 'lit-element';
+import {LitElement, html, property, customElement} from 'lit-element';
+import {PartnerDetails} from '../../common/intervention-types';
+import {selectPartnerDetails} from './selectors';
+import '@polymer/paper-button/paper-button';
+import '@polymer/paper-icon-button/paper-icon-button';
+import '@unicef-polymer/etools-loading/etools-loading';
+import '@unicef-polymer/etools-content-panel/etools-content-panel';
+import {buttonsStyles} from '../../common/styles/button-styles';
+import {AnyObject} from '../../common/types';
+import {connect} from '../../common/store-subscribe-mixin';
 
 /**
  * @customElement
  */
-export class PartnerDetails extends LitElement {
+@customElement('partner-details')
+export class PartnerDetailsElement extends connect(LitElement) {
+  static get styles() {
+    return [buttonsStyles];
+  }
   render() {
     // language=HTML
     return html`
@@ -11,9 +24,45 @@ export class PartnerDetails extends LitElement {
         /* CSS rules for your element */
       </style>
 
-      Partner details
+      <etools-content-panel panel-title="Partner Details">
+        <etools-loading loading-text="Loading..." .active="${this.showLoading}"></etools-loading>
+
+        <div slot="panel-btns">
+          <paper-icon-button icon="create"> </paper-icon-button>
+        </div>
+
+        <div class="row-padding-v"></div>
+
+        <div class="layout-horizontal right-align row-padding-v">
+          <paper-button class="default" @tap="${this.cancelPartnerDetails}">
+            Cancel
+          </paper-button>
+          <paper-button class="primary" @tap="${this.savePartnerDetails}">
+            Save
+          </paper-button>
+        </div>
+      </etools-content-panel>
     `;
   }
-}
 
-window.customElements.define('partner-details', PartnerDetails);
+  @property({type: Object})
+  partnerDetails!: PartnerDetails;
+
+  @property({type: Boolean})
+  showLoading = false;
+
+  connectedCallback() {
+    super.connectedCallback();
+    // this._storeUnsubscribe = this.store.subscribe(() => this.stateChanged(this.store.getState()));
+    // this.stateChanged(this.store.getState());
+    console.log(this.store);
+  }
+
+  stateChanged(state: any) {
+    // this.partnerDetails = selectPartnerDetails(state);
+  }
+
+  cancelPartnerDetails() {}
+
+  savePartnerDetails() {}
+}

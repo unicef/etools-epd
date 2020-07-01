@@ -1,8 +1,8 @@
 import {AnyObject} from '../../types/globals';
 import {_sendRequest} from '../../components/pages/interventions/intervention-tab-pages/utils/request-helper';
 import {Intervention} from '../../components/pages/interventions/intervention-tab-pages/common/intervention-types';
-import {getEndpoint} from '../../endpoints/endpoints';
 import {etoolsEndpoints} from '../../endpoints/endpoints-list';
+import {getEndpoint} from '../../endpoints/endpoints';
 
 export const setIntervention = (intervention: AnyObject) => {
   return {
@@ -13,7 +13,7 @@ export const setIntervention = (intervention: AnyObject) => {
 
 export const getIntervention = (interventionId: string) => (dispatch: any) => {
   return _sendRequest({
-    endpoint: getEndpoint(etoolsEndpoints.interventions, {interventionId: interventionId})
+    endpoint: getEndpoint(etoolsEndpoints.intervention, {interventionId: interventionId})
   }).then((intervention: Intervention) => {
     dispatch(setIntervention(intervention));
   });

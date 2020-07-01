@@ -10,6 +10,7 @@ import thunk, {ThunkMiddleware} from 'redux-thunk';
 import {lazyReducerEnhancer} from 'pwa-helpers/lazy-reducer-enhancer.js';
 
 import app, {AppState} from './reducers/app.js';
+import {interventions, InterventionsState} from './reducers/interventions.js';
 import {AppAction} from './actions/app.js';
 
 import {UserAction} from './actions/user.js';
@@ -22,6 +23,7 @@ export interface RootState {
   app?: AppState;
   user?: UserState;
   commonData?: CommonDataState;
+  interventions?: InterventionsState;
 }
 
 // could be more than one action AppAction | OtherAppAction ...
@@ -47,7 +49,8 @@ export const store = createStore(
 
 // Initially loaded reducers.
 store.addReducers({
-  app
+  app,
+  interventions
 });
 
 /**
