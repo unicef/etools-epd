@@ -14,11 +14,9 @@ export class InterventionDetails extends connect(LitElement) {
         /* CSS rules for your element */
       </style>
 
-
       <partner-details .store="${this.store}"></partner-details>
     `;
   }
-
 }
 
 window.customElements.define('intervention-details', InterventionDetails);

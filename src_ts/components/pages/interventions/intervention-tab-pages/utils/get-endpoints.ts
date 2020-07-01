@@ -35,4 +35,3 @@ export const getEndpoint = (endpoint: EtoolsEndpoint, data?: AnyObject) => {
 
   return completedEndpoint as EtoolsRequestEndpoint;
 };
-

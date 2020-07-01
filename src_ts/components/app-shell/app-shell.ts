@@ -107,11 +107,11 @@ export class AppShell extends connect(store)(LitElement) {
               class="page"
               .store="${store}"
               ?active="${this.isActivePage(
-      this.mainPage,
-      'interventions',
-      this.subPage,
-      'overview|details|results|timing|management|attachments'
-    )}"
+                this.mainPage,
+                'interventions',
+                this.subPage,
+                'overview|details|results|timing|management|attachments'
+              )}"
             >
             </intervention-tabs>
             <page-two class="page" ?active="${this.isActivePage(this.mainPage, 'page-two')}"></page-two>
@@ -135,9 +135,6 @@ export class AppShell extends connect(store)(LitElement) {
 
   @property({type: Object})
   public routeDetails!: RouteDetails;
-
-  @property({type: Object})
-  store!: AnyObject;
 
   @property({type: String})
   public mainPage = ''; // routeName
@@ -175,7 +172,6 @@ export class AppShell extends connect(store)(LitElement) {
   }
 
   public connectedCallback() {
-    this.store = store;
     super.connectedCallback();
 
     installRouter((location) => store.dispatch(navigate(decodeURIComponent(location.pathname + location.search))));
