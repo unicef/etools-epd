@@ -19,6 +19,7 @@ import {isJsonStrMatch} from '../../../utils/utils';
 import {getIntervention} from '../../../../redux/actions/interventions';
 import {connect} from './utils/store-subscribe-mixin';
 import {setStore, getStore} from './utils/redux-store-access';
+import {currentPage, currentSubpage} from './selectors';
 
 /**
  * @LitElement
@@ -71,9 +72,6 @@ export class InterventionTabs extends connect(LitElement) {
       </div>
     `;
   }
-
-  @property({type: Object})
-  routeDetails!: RouteDetails;
 
   @property({type: Array})
   pageTabs = [
@@ -134,6 +132,10 @@ export class InterventionTabs extends connect(LitElement) {
   }
 
   _store!: any;
+  /*
+   * Used to avoid unnecessary get intervention request
+   */
+  _routeDetails!: RouteDetails;
 
   connectedCallback() {
     super.connectedCallback();
@@ -148,8 +150,8 @@ export class InterventionTabs extends connect(LitElement) {
   }
 
   public stateChanged(state: any) {
-    if (state.app!.routeDetails.routeName === 'interventions' && state.app!.routeDetails.subRouteName !== 'list') {
-      this.activeTab = state.app!.routeDetails.subRouteName as string;
+    if (currentPage(state) === 'interventions' && currentSubpage(state) !== 'list') {
+      this.activeTab = currentSubpage(state) as string;
 
       const currentInterventionId = get(state, 'app.routeDetails.params.interventionId');
       const currentIntervention = get(state, 'interventions.current');
@@ -160,9 +162,10 @@ export class InterventionTabs extends connect(LitElement) {
             this.intervention = cloneDeep(currentIntervention);
           }
         }
-
-        i
-        getStore().dispatch(getIntervention(currentInterventionId));
+        if (!isJsonStrMatch(state.app!.routeDetails!, this._routeDetails)) {
+          this._routeDetails = cloneDeep(state.app!.routeDetails);
+          getStore().dispatch(getIntervention(currentInterventionId));
+        }
       }
     }
   }
