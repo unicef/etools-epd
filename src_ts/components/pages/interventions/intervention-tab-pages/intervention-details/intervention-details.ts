@@ -1,7 +1,6 @@
 import {LitElement, html, property} from 'lit-element';
-import {connect} from '../common/store-subscribe-mixin';
+import {connect} from '../utils/store-subscribe-mixin';
 import './partner-details/partner-details';
-import {AnyObject} from '../common/types';
 
 /**
  * @customElement
@@ -14,7 +13,7 @@ export class InterventionDetails extends connect(LitElement) {
         /* CSS rules for your element */
       </style>
 
-      <partner-details .store="${this.store}"></partner-details>
+      <partner-details></partner-details>
     `;
   }
 }

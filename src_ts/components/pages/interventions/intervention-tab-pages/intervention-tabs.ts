@@ -17,7 +17,8 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
 import {isJsonStrMatch} from '../../../utils/utils';
 import {getIntervention} from '../../../../redux/actions/interventions';
-import {connect} from './common/store-subscribe-mixin';
+import {connect} from './utils/store-subscribe-mixin';
+import {setStore, getStore} from './utils/redux-store-access';
 
 /**
  * @LitElement
@@ -59,17 +60,13 @@ export class InterventionTabs extends connect(LitElement) {
       </page-content-header>
 
       <div class="page-content">
-        <intervention-details ?hidden="${!this.isActiveTab(this.activeTab, 'details')}" .store="${this.store}">
-        </intervention-details>
-        <intervention-overview ?hidden="${!this.isActiveTab(this.activeTab, 'overview')}" .store="${this.store}">
-        </intervention-overview>
-        <intervention-results ?hidden="${!this.isActiveTab(this.activeTab, 'results')}" .store="${this.store}">
-        </intervention-results>
-        <intervention-timing ?hidden="${!this.isActiveTab(this.activeTab, 'timing')}" .store="${this.store}">
-        </intervention-timing>
-        <intervention-management ?hidden="${!this.isActiveTab(this.activeTab, 'management')}" .store="${this.store}">
+        <intervention-details ?hidden="${!this.isActiveTab(this.activeTab, 'details')}"> </intervention-details>
+        <intervention-overview ?hidden="${!this.isActiveTab(this.activeTab, 'overview')}"> </intervention-overview>
+        <intervention-results ?hidden="${!this.isActiveTab(this.activeTab, 'results')}"> </intervention-results>
+        <intervention-timing ?hidden="${!this.isActiveTab(this.activeTab, 'timing')}"> </intervention-timing>
+        <intervention-management ?hidden="${!this.isActiveTab(this.activeTab, 'management')}">
         </intervention-management>
-        <intervention-attachments ?hidden="${!this.isActiveTab(this.activeTab, 'attachments')}" .store="${this.store}">
+        <intervention-attachments ?hidden="${!this.isActiveTab(this.activeTab, 'attachments')}">
         </intervention-attachments>
       </div>
     `;
@@ -118,6 +115,26 @@ export class InterventionTabs extends connect(LitElement) {
   @property({type: Object})
   intervention!: AnyObject;
 
+  @property({type: Object})
+  // @ts-ignore
+  protected store: any;
+
+  // @ts-ignore
+  get store() {
+    return this._store;
+  }
+
+  // @ts-ignore
+  set store(parentAppReduxStore: any) {
+    setStore(parentAppReduxStore);
+    this.storeSubscribe();
+    const oldVal = this._store;
+    this._store = parentAppReduxStore;
+    this.requestUpdate('store', oldVal);
+  }
+
+  _store!: any;
+
   connectedCallback() {
     super.connectedCallback();
   }
@@ -134,15 +151,18 @@ export class InterventionTabs extends connect(LitElement) {
     if (state.app!.routeDetails.routeName === 'interventions' && state.app!.routeDetails.subRouteName !== 'list') {
       this.activeTab = state.app!.routeDetails.subRouteName as string;
 
-      if (get(state, 'interventions.current')) {
-        const currentIntervention = state.interventions.current;
-        if (!isJsonStrMatch(this.intervention, currentIntervention)) {
-          this.intervention = cloneDeep(currentIntervention);
-        }
-      }
       const currentInterventionId = get(state, 'app.routeDetails.params.interventionId');
+      const currentIntervention = get(state, 'interventions.current');
       if (currentInterventionId !== String(get(this.intervention, 'id'))) {
-        this.store.dispatch(getIntervention(currentInterventionId));
+        console.log('stateChanged intervention-tabs');
+        if (currentIntervention) {
+          if (!isJsonStrMatch(this.intervention, currentIntervention)) {
+            this.intervention = cloneDeep(currentIntervention);
+          }
+        }
+
+        i
+        getStore().dispatch(getIntervention(currentInterventionId));
       }
     }
   }
@@ -162,9 +182,9 @@ export class InterventionTabs extends connect(LitElement) {
     }
     if (newTabName !== oldTabName) {
       const newPath = `interventions/${this.intervention.id}/${newTabName}`;
-      if (this.routeDetails.path === newPath) {
-        return;
-      }
+      // if (this.routeDetails.path === newPath) {
+      //   return; // Is this needed???
+      // }
       // go to new tab
       updateAppLocation(newPath, true);
     }

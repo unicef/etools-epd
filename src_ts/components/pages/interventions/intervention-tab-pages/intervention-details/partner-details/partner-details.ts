@@ -7,7 +7,7 @@ import '@unicef-polymer/etools-loading/etools-loading';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {AnyObject} from '../../common/types';
-import {connect} from '../../common/store-subscribe-mixin';
+import {connect} from '../../utils/store-subscribe-mixin';
 
 /**
  * @customElement
@@ -53,13 +53,13 @@ export class PartnerDetailsElement extends connect(LitElement) {
 
   connectedCallback() {
     super.connectedCallback();
-    // this._storeUnsubscribe = this.store.subscribe(() => this.stateChanged(this.store.getState()));
-    // this.stateChanged(this.store.getState());
-    console.log(this.store);
   }
 
   stateChanged(state: any) {
-    // this.partnerDetails = selectPartnerDetails(state);
+    if (!state.interventions.current) {
+      return;
+    }
+    this.partnerDetails = selectPartnerDetails(state);
   }
 
   cancelPartnerDetails() {}
