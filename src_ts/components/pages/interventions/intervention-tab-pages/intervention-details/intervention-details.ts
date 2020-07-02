@@ -1,9 +1,11 @@
-import {LitElement, html} from 'lit-element';
+import {LitElement, html, property} from 'lit-element';
+import {connect} from '../utils/store-subscribe-mixin';
+import './partner-details/partner-details';
 
 /**
  * @customElement
  */
-export class InterventionDetails extends LitElement {
+export class InterventionDetails extends connect(LitElement) {
   render() {
     // language=HTML
     return html`
@@ -11,7 +13,7 @@ export class InterventionDetails extends LitElement {
         /* CSS rules for your element */
       </style>
 
-      Details tab
+      <partner-details></partner-details>
     `;
   }
 }

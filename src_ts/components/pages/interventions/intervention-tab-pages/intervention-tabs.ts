@@ -13,14 +13,20 @@ import {customElement, LitElement, html, property} from 'lit-element';
 import {pageLayoutStyles} from '../../../styles/page-layout-styles';
 import {elevationStyles} from '../../../styles/lit-styles/elevation-styles';
 import {RouteDetails} from '../../../../routing/router';
+import cloneDeep from 'lodash-es/cloneDeep';
+import get from 'lodash-es/get';
+import {isJsonStrMatch} from '../../../utils/utils';
+import {getIntervention} from '../../../../redux/actions/interventions';
+import {connect} from './utils/store-subscribe-mixin';
+import {setStore, getStore} from './utils/redux-store-access';
+import {currentPage, currentSubpage} from './selectors';
 
 /**
  * @LitElement
  * @customElement
  */
 @customElement('intervention-tabs')
-export class InterventionTabs extends LitElement {
-  private _storeUnsubscribe: any;
+export class InterventionTabs extends connect(LitElement) {
   static get styles() {
     return [elevationStyles, pageLayoutStyles, pageContentHeaderSlottedStyles];
   }
@@ -28,6 +34,7 @@ export class InterventionTabs extends LitElement {
   render() {
     // main template
     // language=HTML
+    console.log('intervention-tabs');
     return html`
       ${SharedStylesLit}
       <style>
@@ -53,8 +60,8 @@ export class InterventionTabs extends LitElement {
         ></etools-tabs>
       </page-content-header>
 
-      <section class="elevation page-content" elevation="1">
-        <intervention-details ?hidden="${!this.isActiveTab(this.activeTab, 'details')}"></intervention-details>
+      <div class="page-content">
+        <intervention-details ?hidden="${!this.isActiveTab(this.activeTab, 'details')}"> </intervention-details>
         <intervention-overview ?hidden="${!this.isActiveTab(this.activeTab, 'overview')}"> </intervention-overview>
         <intervention-results ?hidden="${!this.isActiveTab(this.activeTab, 'results')}"> </intervention-results>
         <intervention-timing ?hidden="${!this.isActiveTab(this.activeTab, 'timing')}"> </intervention-timing>
@@ -62,12 +69,9 @@ export class InterventionTabs extends LitElement {
         </intervention-management>
         <intervention-attachments ?hidden="${!this.isActiveTab(this.activeTab, 'attachments')}">
         </intervention-attachments>
-      </section>
+      </div>
     `;
   }
-
-  @property({type: Object})
-  routeDetails!: RouteDetails;
 
   @property({type: Array})
   pageTabs = [
@@ -107,22 +111,39 @@ export class InterventionTabs extends LitElement {
   activeTab = 'details';
 
   @property({type: Object})
-  intervention: AnyObject = {
-    id: 23,
-    title: 'Page One title'
-  };
+  intervention!: AnyObject;
 
   @property({type: Object})
-  store!: AnyObject;
+  // @ts-ignore
+  protected store: any;
+
+  // // @ts-ignore
+  // get store() {
+  //   return this._store;
+  // }
+
+  // @ts-ignore
+  set store(parentAppReduxStore: any) {
+    setStore(parentAppReduxStore);
+    this.storeSubscribe();
+    // const oldVal = this._store;
+    //  this._store = parentAppReduxStore;
+    //  this.requestUpdate('store', oldVal);
+  }
+
+  // _store!: any;
+
+
+  /*
+   * Used to avoid unnecessary get intervention request
+   */
+  _routeDetails!: RouteDetails;
 
   connectedCallback() {
     super.connectedCallback();
-    this._storeUnsubscribe = this.store.subscribe(() => this.stateChanged(this.store.getState()));
-    this.stateChanged(this.store.getState());
   }
 
   disconnectedCallback() {
-    this._storeUnsubscribe();
     super.disconnectedCallback();
   }
 
@@ -131,18 +152,22 @@ export class InterventionTabs extends LitElement {
   }
 
   public stateChanged(state: any) {
-    // update page route data
-    if (state.app!.routeDetails.routeName === 'interventions' && state.app!.routeDetails.subRouteName !== 'list') {
-      this.routeDetails = state.app!.routeDetails;
-      const stateActiveTab = state.app!.routeDetails.subRouteName as string;
-      if (stateActiveTab !== this.activeTab) {
-        const oldActiveTabValue = this.activeTab;
-        this.activeTab = state.app!.routeDetails.subRouteName as string;
-        this.tabChanged(this.activeTab, oldActiveTabValue);
-      }
-      const interventionId = state.app!.routeDetails.params!.recordId;
-      if (interventionId) {
-        this.intervention.id = interventionId;
+    if (currentPage(state) === 'interventions' && currentSubpage(state) !== 'list') {
+      this.activeTab = currentSubpage(state) as string;
+
+      const currentInterventionId = get(state, 'app.routeDetails.params.interventionId');
+      const currentIntervention = get(state, 'interventions.current');
+      if (currentInterventionId !== String(get(this.intervention, 'id'))) {
+        console.log('stateChanged intervention-tabs');
+        if (currentIntervention) {
+          if (!isJsonStrMatch(this.intervention, currentIntervention)) {
+            this.intervention = cloneDeep(currentIntervention);
+          }
+        }
+        if (!isJsonStrMatch(state.app!.routeDetails!, this._routeDetails)) {
+          this._routeDetails = cloneDeep(state.app!.routeDetails);
+          getStore().dispatch(getIntervention(currentInterventionId));
+        }
       }
     }
   }
@@ -162,9 +187,9 @@ export class InterventionTabs extends LitElement {
     }
     if (newTabName !== oldTabName) {
       const newPath = `interventions/${this.intervention.id}/${newTabName}`;
-      if (this.routeDetails.path === newPath) {
-        return;
-      }
+      // if (this.routeDetails.path === newPath) {
+      //   return; // Is this needed???
+      // }
       // go to new tab
       updateAppLocation(newPath, true);
     }

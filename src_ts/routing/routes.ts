@@ -27,7 +27,7 @@ EtoolsRouter.addRoute(
         path: params.matchDetails[0],
         queryParams: params.queryParams,
         params: {
-          recordId: params.matchDetails[1]
+          interventionId: params.matchDetails[1]
         }
       };
     }
