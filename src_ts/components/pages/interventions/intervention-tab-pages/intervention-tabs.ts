@@ -117,21 +117,23 @@ export class InterventionTabs extends connect(LitElement) {
   // @ts-ignore
   protected store: any;
 
-  // @ts-ignore
-  get store() {
-    return this._store;
-  }
+  // // @ts-ignore
+  // get store() {
+  //   return this._store;
+  // }
 
   // @ts-ignore
   set store(parentAppReduxStore: any) {
     setStore(parentAppReduxStore);
     this.storeSubscribe();
-    const oldVal = this._store;
-    this._store = parentAppReduxStore;
-    this.requestUpdate('store', oldVal);
+    // const oldVal = this._store;
+    //  this._store = parentAppReduxStore;
+    //  this.requestUpdate('store', oldVal);
   }
 
-  _store!: any;
+  // _store!: any;
+
+
   /*
    * Used to avoid unnecessary get intervention request
    */
