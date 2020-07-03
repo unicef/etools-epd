@@ -10,7 +10,6 @@ import {buttonsStyles} from '../../common/styles/button-styles';
 import {SharedStylesLit} from '../../../../../styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../../../../styles/grid-layout-styles-lit';
 
-
 /**
  * @customElement
  */
@@ -33,23 +32,23 @@ export class PartnerDetailsElement extends connect(LitElement) {
         }
       </style>
 
-      <etools-content-panel panel-title="Document Details">
+      <etools-content-panel show-expand-btn panel-title="Document Details">
         <etools-loading loading-text="Loading..." .active="${this.showLoading}"></etools-loading>
-        
+
         <div slot="panel-btns">
           <paper-icon-button icon="create" @tap="${() => this._editMode()}"></paper-icon-button>
         </div>
-        
+
         <div class="row-padding-v">
           <paper-input
             id="title"
             label="Title"
             value="Bacon ipsum dolor amet brisket shoulder ball tip bresaola chislic, prosciutto ham turducken"
             ?readonly="${!this.editMode}"
-            >
-            </paper-input>
+          >
+          </paper-input>
         </div>
-        
+
         <div class="row-padding-v">
           <paper-textarea
             id="context"
@@ -60,27 +59,27 @@ export class PartnerDetailsElement extends connect(LitElement) {
           >
           </paper-textarea>
         </div>
-        
+
         <div class="row-padding-v">
           <paper-textarea
             id="implementation-strategy"
             label="Implementation Strategy"
             value="${this.longMockText}"
             ?readonly="${!this.editMode}"
-            >
-            </paper-textarea>
+          >
+          </paper-textarea>
         </div>
-        
+
         <div class="row-padding-v">
           <paper-textarea
             id="partner-non-financial-contribution"
             label="Partner non-financial contribution"
             value="${this.longMockText}"
             ?readonly="${!this.editMode}"
-            >
-            </paper-textarea>
+          >
+          </paper-textarea>
         </div>
-        
+
         <div class="layout-horizontal right-align row-padding-v">
           <paper-button class="default" @tap="${this.cancelDocumentDetails}">
             Cancel
@@ -90,7 +89,7 @@ export class PartnerDetailsElement extends connect(LitElement) {
           </paper-button>
         </div>
       </etools-content-panel>
-    `
+    `;
   }
 
   @property({type: Boolean})
@@ -119,7 +118,6 @@ export class PartnerDetailsElement extends connect(LitElement) {
   }
 
   saveDocumentDetails() {
-
     this.editMode = false;
   }
 }
