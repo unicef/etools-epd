@@ -7,8 +7,8 @@ import '@polymer/paper-input/paper-textarea';
 import '@unicef-polymer/etools-loading/etools-loading';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import {buttonsStyles} from '../../common/styles/button-styles';
-import {SharedStylesLit} from '../../../../../styles/shared-styles-lit';
-import {gridLayoutStylesLit} from '../../../../../styles/grid-layout-styles-lit';
+import {sharedStylesLit} from '../../common/styles/shared-styles-lit';
+import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {selectDocumentDetails} from './selectors';
 import {DocumentDetails} from '../../common/intervention-types';
 // import PermissionsMixin from '../../mixins/permissions-mixins';
@@ -25,7 +25,7 @@ export class PartnerDetailsElement extends connect(LitElement) {
   render() {
     // language=HTML
     return html`
-      ${gridLayoutStylesLit} ${SharedStylesLit}
+      ${gridLayoutStylesLit} ${sharedStylesLit}
       <style>
         /* CSS rules for your element */
         paper-textarea[readonly] {

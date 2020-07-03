@@ -265,5 +265,8 @@ export interface DocumentDetails {
 }
 
 export interface DocumentDetailsPermissions {
-
+  title: true;
+  context: true;
+  implementation_strategy: true;
+  ip_progr_contrib: true;
 }
