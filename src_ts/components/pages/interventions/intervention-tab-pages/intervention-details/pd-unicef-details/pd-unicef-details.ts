@@ -1,4 +1,5 @@
 import {LitElement, html, property, customElement} from 'lit-element';
+import {PolymerElement} from '@polymer/polymer/polymer-element';
 import {PdUnicefDetails, PdUnicefDetailsPermissions} from '../../common/intervention-types';
 import {selectPdUnicefDetails} from './selectors';
 import '@polymer/paper-button/paper-button';
@@ -9,6 +10,7 @@ import '@unicef-polymer/etools-loading/etools-loading';
 import '@polymer/paper-input/paper-input';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import {buttonsStyles} from '../../common/styles/button-styles';
+import {sharedStylesLit} from '../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import PermissionsMixin from '../../mixins/permissions-mixins';
 import {connect} from '../../utils/store-subscribe-mixin';
@@ -24,6 +26,7 @@ export class PdUnicefDetailsElement extends PermissionsMixin(connect(LitElement)
   render() {
     // language=HTML
     return html`
+    ${sharedStylesLit}
       <style>
         :host {
           display: block;
@@ -55,6 +58,7 @@ export class PdUnicefDetailsElement extends PermissionsMixin(connect(LitElement)
         <div class="layout-horizontal row-padding-v">
           <div class="col col-4">
             <etools-dropdown-multi
+              id="officeInput"
               label="Unicef Office"
               class="row-padding-v"
               option-label="name"
@@ -67,6 +71,7 @@ export class PdUnicefDetailsElement extends PermissionsMixin(connect(LitElement)
           </div>
           <div class="col col-4">
             <etools-dropdown-multi
+              id="sectionInput"
               label="Unicef Sections"
               class="row-padding-v"
               option-label="name"
@@ -91,6 +96,7 @@ export class PdUnicefDetailsElement extends PermissionsMixin(connect(LitElement)
         <div class="layout-horizontal row-padding-v">
           <div class="col col-4">
             <etools-dropdown-multi
+              id="focalPointInput"
               label="Unicef Focal Points"
               class="row-padding-v"
               option-label="name"
@@ -103,6 +109,7 @@ export class PdUnicefDetailsElement extends PermissionsMixin(connect(LitElement)
           </div>
           <div class="col col-4">
             <etools-dropdown
+              id="budgetOwnerInput"
               label="Unicef Budget Owner"
               class="row-padding-v"
               option-label="name"
@@ -115,7 +122,8 @@ export class PdUnicefDetailsElement extends PermissionsMixin(connect(LitElement)
           </div>
         </div>
 
-        <div class="layout-horizontal right-align row-padding-v">
+        <div class="layout-horizontal right-align row-padding-v"
+          ?hidden="${this.hideActionButtons(this.isNew, this.editMode, this.canEditPdUnicefDetails)}">
           <paper-button class="default" @tap="${this.cancelPdDetails}">
             Cancel
           </paper-button>
@@ -126,6 +134,8 @@ export class PdUnicefDetailsElement extends PermissionsMixin(connect(LitElement)
       </etools-content-panel>
     `;
   }
+
+  private validationSelectors: string[] = ['#officeInput', '#sectionInput', '#focalPointInput', '#budgetOwnerInput'];
 
   @property({type: Boolean})
   isNew = false;
@@ -173,5 +183,23 @@ export class PdUnicefDetailsElement extends PermissionsMixin(connect(LitElement)
     this.editMode = false;
   }
 
-  savePdDetails() {}
+  validate() {
+    let isValid = true;
+    this.validationSelectors.forEach((selector: string) => {
+      const el = this.shadowRoot!.querySelector(selector) as PolymerElement & {validate(): boolean};
+      if (el && !el.validate()) {
+        isValid = false;
+      }
+    });
+    return isValid;
+  }
+
+  savePdDetails() {
+    if (!this.validate()) {
+      return;
+    }
+    // this.showLoading = true;
+
+    this.editMode = false;
+  }
 }

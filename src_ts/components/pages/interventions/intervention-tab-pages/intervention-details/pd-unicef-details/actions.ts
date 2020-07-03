@@ -3,10 +3,10 @@ import {_sendRequest} from '../../utils/request-helper';
 import {getEndpoint} from '../../../../../../endpoints/endpoints';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 
-export const updatePartnerDetails = (partnerDetails: string, interventionId: string) => (dispatch: any) => {
+export const updatePdUnicefDetails = (pdUnicefDetails: string, interventionId: string) => (dispatch: any) => {
   return _sendRequest({
     endpoint: getEndpoint(interventionEndpoints.intervention, {interventionId: interventionId}),
-    body: partnerDetails,
+    body: pdUnicefDetails,
     method: 'PATCH'
   }).then((intervention: Intervention) => {
     dispatch({

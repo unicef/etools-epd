@@ -251,5 +251,5 @@ export class PdUnicefDetailsPermissions {
   unicef_office = true;
   sections = true;
   focal_points = true;
-  budget_owner = false;
+  budget_owner = true;
 }

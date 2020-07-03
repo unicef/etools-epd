@@ -18,13 +18,13 @@ export const selectPdUnicefDetails = createSelector(currentIntervention, (interv
         unicef_office: true,
         sections: true,
         focal_points: true,
-        budget_owner: false
+        budget_owner: true
       },
       required: {
         unicef_office: true,
         sections: true,
         focal_points: true,
-        budget_owner: false
+        budget_owner: true
       }
     }
   };
