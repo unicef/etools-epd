@@ -17,7 +17,7 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
 import {connect} from '../../utils/store-subscribe-mixin';
 import {AnyObject} from '../../../../../../types/globals';
-import handleItemsNoLongerAssignedToCurrentCountry from '../../utils/common-methods';
+import {handleItemsNoLongerAssignedToCurrentCountry} from '../../utils/common-methods';
 
 /**
  * @customElement
