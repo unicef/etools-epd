@@ -21,7 +21,10 @@ export class PartnerDetailsElement extends connect(LitElement) {
     // language=HTML
     return html`
       <style>
-        /* CSS rules for your element */
+        :host {
+          display: block;
+          margin-bottom: 24px;
+        }
       </style>
 
       <etools-content-panel panel-title="Partner Details">
