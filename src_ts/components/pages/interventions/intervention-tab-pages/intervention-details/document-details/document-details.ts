@@ -46,7 +46,6 @@ export class PartnerDetailsElement extends connect(LitElement) {
             label="Title"
             value="Bacon ipsum dolor amet brisket shoulder ball tip bresaola chislic, prosciutto ham turducken"
             ?readonly="${!this.editMode}"
-            ?disabled="${!this.editMode}"
             >
             </paper-input>
         </div>
@@ -58,7 +57,6 @@ export class PartnerDetailsElement extends connect(LitElement) {
             type="text"
             value="${this.longMockText}"
             ?readonly="${!this.editMode}"
-            ?disabled="${!this.editMode}"
           >
           </paper-textarea>
         </div>
@@ -69,7 +67,6 @@ export class PartnerDetailsElement extends connect(LitElement) {
             label="Implementation Strategy"
             value="${this.longMockText}"
             ?readonly="${!this.editMode}"
-            ?disabled="${!this.editMode}"
             >
             </paper-textarea>
         </div>
@@ -80,7 +77,6 @@ export class PartnerDetailsElement extends connect(LitElement) {
             label="Partner non-financial contribution"
             value="${this.longMockText}"
             ?readonly="${!this.editMode}"
-            ?disabled="${!this.editMode}"
             >
             </paper-textarea>
         </div>
