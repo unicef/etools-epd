@@ -17,6 +17,7 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
 import {connect} from '../../utils/store-subscribe-mixin';
 import {AnyObject} from '../../../../../../types/globals';
+import handleItemsNoLongerAssignedToCurrentCountry from '../../utils/common-methods';
 
 /**
  * @customElement
@@ -226,10 +227,13 @@ export class UnicefDetailsElement extends PermissionsMixin(connect(LitElement)) 
       if (get(state, 'commonData.budget_owner_list.length')) {
         this.budget_owner_list = [...state.commonData!.budget_owner_list];
         // TO DO
-        // check if already saved users exists on loaded data, if not they will be added
+        // check if already saved records exists on loaded data, if not they will be added
         // (they might be missing if changed country)
-        // handleUsersNoLongerAssignedToCurrentCountry(this.unicefFocalPointUsers, this.assessment!.focal_points_details);
-        // this.unicefFocalPointUsers = [...this.unicefFocalPointUsers];
+        // handleItemsNoLongerAssignedToCurrentCountry(
+        //   this.focal_point_list,
+        //   this.pdUnicefDetails.details.unicef_focal_points
+        // );
+        // this.focal_point_list = [...this.focal_point_list];
       }
     }
   }
