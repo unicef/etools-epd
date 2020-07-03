@@ -234,3 +234,22 @@ export interface PartnerDetails {
 export interface PartnerDetailsPermissions {
   partner: boolean;
 }
+
+export interface PdUnicefDetails {
+  details: {
+    document_type: string | undefined;
+    offices: [];
+    sections: [];
+    clusters: [];
+    unicef_focal_points: [];
+    unicef_budget_owner: string | undefined;
+  };
+  permissions: Permission<PdUnicefDetailsPermissions>;
+}
+
+export class PdUnicefDetailsPermissions {
+  unicef_office = true;
+  sections = true;
+  focal_points = true;
+  budget_owner = true;
+}
