@@ -1,5 +1,5 @@
 import {css} from 'lit-element';
-import {layoutHorizontal, layoutVertical, layoutFlex, layoutWrap} from '../styles/lit-styles/flex-layout-styles';
+import {layoutHorizontal, layoutVertical, layoutFlex, layoutWrap} from './lit-styles/flex-layout-styles';
 
 // language=HTML
 export const gridLayoutStylesLit = css`

@@ -19,13 +19,13 @@ import {DocumentDetails} from '../../common/intervention-types';
 @customElement('document-details')
 export class PartnerDetailsElement extends connect(LitElement) {
   static get styles() {
-    return [buttonsStyles];
+    return [gridLayoutStylesLit, buttonsStyles];
   }
 
   render() {
     // language=HTML
     return html`
-      ${gridLayoutStylesLit} ${sharedStylesLit}
+      ${sharedStylesLit}
       <style>
         /* CSS rules for your element */
         paper-textarea[readonly] {
@@ -39,7 +39,11 @@ export class PartnerDetailsElement extends connect(LitElement) {
         <etools-loading loading-text="Loading..." .active="${this.showLoading}"></etools-loading>
 
         <div slot="panel-btns">
-          <paper-icon-button icon="create" @tap="${() => this._editMode()}"></paper-icon-button>
+          <paper-icon-button
+            icon="create"
+            @tap="${() => this._editMode()}"
+            ?hidden="${this.hideEditIcon(this.isNew, this.editMode, this.canEditDocumentDetails)}"
+          ></paper-icon-button>
         </div>
 
         <div class="row-padding-v">
@@ -104,7 +108,13 @@ export class PartnerDetailsElement extends connect(LitElement) {
   showLoading = false;
 
   @property({type: Boolean})
+  isNew = false;
+
+  @property({type: Boolean})
   editMode = false;
+
+  @property({type: Boolean})
+  canEditDocumentDetails!: boolean;
 
   connectedCallback() {
     super.connectedCallback();
