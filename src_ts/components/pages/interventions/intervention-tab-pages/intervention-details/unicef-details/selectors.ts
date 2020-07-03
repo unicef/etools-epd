@@ -11,7 +11,12 @@ export const selectPdUnicefDetails = createSelector(currentIntervention, (interv
       sections: intervention.sections,
       clusters: intervention.clusters,
       unicef_focal_points: intervention.unicef_focal_points,
-      unicef_budget_owner: intervention.unicef_budget_owner
+      unicef_budget_owner: intervention.unicef_budget_owner,
+      focal_point_list: intervention.focal_point_list || [],
+      office_list: intervention.office_list || [],
+      section_list: intervention.section_list || [],
+      cluster_list: intervention.cluster_list || [],
+      budget_owner_list: intervention.budget_owner_list || []
     },
     permissions: {
       edit: {
