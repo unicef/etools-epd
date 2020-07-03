@@ -9,9 +9,15 @@ export const selectDocumentDetails = createSelector(currentIntervention, (interv
       title: intervention.title,
       context: intervention.context,
       implementation_strategy: intervention.implementation_strategy,
-      partner_contribution: intervention.partner_contribution
-      // etc
+      ip_progr_contrib: intervention.ip_progr_contrib
     },
-    permissions: {}
+    permissions: {
+      edit: {
+        title: true,
+        context: true,
+        implementation_strategy: true,
+        ip_progr_contrib: true
+      }
+    }
   };
 });

@@ -234,3 +234,17 @@ export interface PartnerDetails {
 export interface PartnerDetailsPermissions {
   partner: boolean;
 }
+
+export interface DocumentDetails {
+  details: {
+    title: string;
+    context: string;
+    implementation_strategy: string;
+    ip_progr_contrib: string;
+  };
+  permissions: Permission<DocumentDetailsPermissions>;
+}
+
+export interface DocumentDetailsPermissions {
+
+}

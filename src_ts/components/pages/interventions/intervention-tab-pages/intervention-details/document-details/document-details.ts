@@ -9,6 +9,9 @@ import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {SharedStylesLit} from '../../../../../styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../../../../styles/grid-layout-styles-lit';
+import {selectDocumentDetails} from './selectors';
+import {DocumentDetails} from '../../common/intervention-types';
+// import PermissionsMixin from '../../mixins/permissions-mixins';
 
 /**
  * @customElement
@@ -43,8 +46,8 @@ export class PartnerDetailsElement extends connect(LitElement) {
           <paper-input
             id="title"
             label="Title"
-            value="Bacon ipsum dolor amet brisket shoulder ball tip bresaola chislic, prosciutto ham turducken"
-            ?readonly="${!this.editMode}"
+            .value="${this.documentDetails.details.title}"
+            ?readonly="${this.isReadonly(this.editMode, this.documentDetails.permissions.edit.title)}"
           >
           </paper-input>
         </div>
@@ -54,8 +57,8 @@ export class PartnerDetailsElement extends connect(LitElement) {
             id="context"
             label="Context"
             type="text"
-            value="${this.longMockText}"
-            ?readonly="${!this.editMode}"
+            .value="${this.documentDetails.details.context}"
+            ?readonly="${this.isReadonly(this.editMode, this.documentDetails.permissions.edit.context)}"
           >
           </paper-textarea>
         </div>
@@ -64,18 +67,18 @@ export class PartnerDetailsElement extends connect(LitElement) {
           <paper-textarea
             id="implementation-strategy"
             label="Implementation Strategy"
-            value="${this.longMockText}"
-            ?readonly="${!this.editMode}"
+            .value="${this.documentDetails.details.implementation_strategy}"
+            ?readonly="${this.isReadonly(this.editMode, this.documentDetails.permissions.edit.implementation_strategy)}"
           >
           </paper-textarea>
         </div>
 
         <div class="row-padding-v">
           <paper-textarea
-            id="partner-non-financial-contribution"
+            id="ip_progr_contrib"
             label="Partner non-financial contribution"
-            value="${this.longMockText}"
-            ?readonly="${!this.editMode}"
+            .value="${this.documentDetails.details.ip_progr_contrib}"
+            ?readonly="${this.isReadonly(this.editMode, this.documentDetails.permissions.edit.ip_progr_contrib)}"
           >
           </paper-textarea>
         </div>
@@ -91,6 +94,11 @@ export class PartnerDetailsElement extends connect(LitElement) {
       </etools-content-panel>
     `;
   }
+  @property({type: Object})
+  documentDetails!: DocumentDetails;
+
+  @property({type: Object})
+  originalDocumentDetails = {};
 
   @property({type: Boolean})
   showLoading = false;
@@ -98,15 +106,17 @@ export class PartnerDetailsElement extends connect(LitElement) {
   @property({type: Boolean})
   editMode = false;
 
-  @property({type: String})
-  longMockText =
-    'Bacon ipsum dolor amet brisket shoulder ball tip bresaola chislic, prosciutto ham turducken' +
-    ' leberkas ham hock short loin tail. Sausage shoulder cupim burgdoggen doner. Chislic shoulder shankle andouille,' +
-    ' hamburger frankfurter doner pork ribeye ball tip porchetta. Flank jerky shank, pork meatloaf filet mignon' +
-    ' andouille pancetta bresaola frankfurter t-bone hamburger.';
-
   connectedCallback() {
     super.connectedCallback();
+  }
+
+  stateChanged(state: any) {
+    if (!state.interventions.current) {
+      return;
+    }
+    this.documentDetails = selectDocumentDetails(state);
+    this.setDocumentDetailsPermissions(this.documentDetails.permissions.edit);
+    Object.assign(this.originalDocumentDetails, this.documentDetails.details);
   }
 
   _editMode() {
@@ -114,6 +124,7 @@ export class PartnerDetailsElement extends connect(LitElement) {
   }
 
   cancelDocumentDetails() {
+    Object.assign(this.documentDetails.details, this.originalDocumentDetails);
     this.editMode = false;
   }
 
