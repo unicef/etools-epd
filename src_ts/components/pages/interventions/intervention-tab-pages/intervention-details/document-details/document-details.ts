@@ -7,12 +7,12 @@ import '@polymer/paper-input/paper-textarea';
 import '@unicef-polymer/etools-loading/etools-loading';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import {buttonsStyles} from '../../common/styles/button-styles';
-import {sharedStylesLit} from '../../common/styles/shared-styles-lit';
+import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {selectDocumentDetails} from './selectors';
-import {DocumentDetails} from '../../common/intervention-types';
+import {DocumentDetails} from '../../common/types/intervention-types';
 import {cloneDeep} from '../../../../../utils/utils';
-import PermissionsMixin from '../../mixins/permissions-mixins';
+import PermissionsMixin from '../../common/mixins/permissions-mixins';
 
 /**
  * @customElement
@@ -26,7 +26,7 @@ export class PartnerDetailsElement extends connect(LitElement) {
   render() {
     // language=HTML
     return html`
-      ${sharedStylesLit}
+      ${sharedStyles}
       <style>
         /* CSS rules for your element */
         paper-textarea[readonly] {
@@ -43,7 +43,7 @@ export class PartnerDetailsElement extends connect(LitElement) {
           <paper-icon-button
             icon="create"
             @tap="${() => this._editMode()}"
-            ?hidden="${this.hideEditIcon(this.isNew, this.editMode, this.canEditDocumentDetails)}"
+            ?hidden="${this.hideEditIcon(this.editMode, this.canEditDocumentDetails)}"
           ></paper-icon-button>
         </div>
 
@@ -107,9 +107,6 @@ export class PartnerDetailsElement extends connect(LitElement) {
 
   @property({type: Boolean})
   showLoading = false;
-
-  @property({type: Boolean})
-  isNew = false;
 
   @property({type: Boolean})
   editMode = false;

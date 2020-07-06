@@ -11,7 +11,6 @@ import {AnyObject} from '../../../../types/globals';
 import {updateAppLocation} from '../../../../routing/routes';
 import {customElement, LitElement, html, property} from 'lit-element';
 import {pageLayoutStyles} from '../../../styles/page-layout-styles';
-import {elevationStyles} from '../../../styles/lit-styles/elevation-styles';
 import {RouteDetails} from '../../../../routing/router';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
@@ -20,6 +19,7 @@ import {getIntervention} from '../../../../redux/actions/interventions';
 import {connect} from './utils/store-subscribe-mixin';
 import {setStore, getStore} from './utils/redux-store-access';
 import {currentPage, currentSubpage} from './selectors';
+import {elevationStyles} from './common/styles/elevation-styles';
 
 /**
  * @LitElement
@@ -117,22 +117,11 @@ export class InterventionTabs extends connect(LitElement) {
   // @ts-ignore
   protected store: any;
 
-  // // @ts-ignore
-  // get store() {
-  //   return this._store;
-  // }
-
   // @ts-ignore
   set store(parentAppReduxStore: any) {
     setStore(parentAppReduxStore);
     this.storeSubscribe();
-    // const oldVal = this._store;
-    //  this._store = parentAppReduxStore;
-    //  this.requestUpdate('store', oldVal);
   }
-
-  // _store!: any;
-
 
   /*
    * Used to avoid unnecessary get intervention request

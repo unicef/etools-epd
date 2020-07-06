@@ -223,15 +223,19 @@ export class InterventionAmendment {
   internal_prc_review: number | string | null = null;
 }
 
-export interface PartnerDetails {
-  details: {
-    partner: number;
-    partner_name: string;
-  };
-  permissions: Permission<PartnerDetailsPermissions>;
+export class PartnerDetails {
+  constructor(intervention: Intervention) {
+    this.partner = intervention.partner;
+    this.partner_name = intervention.partner;
+  }
+  partner!: number;
+  partner_name!: string;
 }
 
-export interface PartnerDetailsPermissions {
+export class PartnerDetailsPermissions {
+  constructor(permissions: InterventionPermissionsFields) {
+    this.partner = permissions.partner;
+  }
   partner: boolean;
 }
 

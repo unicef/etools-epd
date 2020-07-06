@@ -1,6 +1,6 @@
 import {LitElement, html, property, customElement} from 'lit-element';
 import {PolymerElement} from '@polymer/polymer/polymer-element';
-import {PdUnicefDetails, PdUnicefDetailsPermissions} from '../../common/intervention-types';
+import {PdUnicefDetails, PdUnicefDetailsPermissions} from '../../common/types/intervention-types';
 import {selectPdUnicefDetails} from './selectors';
 import '@polymer/paper-button/paper-button';
 import '@polymer/paper-icon-button/paper-icon-button';
@@ -10,9 +10,9 @@ import '@unicef-polymer/etools-loading/etools-loading';
 import '@polymer/paper-input/paper-input';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import {buttonsStyles} from '../../common/styles/button-styles';
-import {sharedStylesLit} from '../../common/styles/shared-styles-lit';
+import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import PermissionsMixin from '../../mixins/permissions-mixins';
+import PermissionsMixin from '../../common/mixins/permissions-mixins';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
 import {connect} from '../../utils/store-subscribe-mixin';
@@ -30,7 +30,7 @@ export class UnicefDetailsElement extends PermissionsMixin(connect(LitElement)) 
   render() {
     // language=HTML
     return html`
-    ${sharedStylesLit}
+    ${sharedStyles}
       <style>
         :host {
           display: block;
@@ -43,7 +43,7 @@ export class UnicefDetailsElement extends PermissionsMixin(connect(LitElement)) 
 
         <div slot="panel-btns">
           <paper-icon-button
-            ?hidden="${this.hideEditIcon(this.isNew, this.editMode, this.canEditPdUnicefDetails)}"
+            ?hidden="${this.hideEditIcon(this.editMode, this.canEditPdUnicefDetails)}"
             @tap="${this._allowEdit}"
             icon="create">
           </paper-icon-button>
@@ -132,7 +132,7 @@ export class UnicefDetailsElement extends PermissionsMixin(connect(LitElement)) 
         </div>
 
         <div class="layout-horizontal right-align row-padding-v"
-          ?hidden="${this.hideActionButtons(this.isNew, this.editMode, this.canEditPdUnicefDetails)}">
+          ?hidden="${this.hideActionButtons(this.editMode, this.canEditPdUnicefDetails)}">
           <paper-button class="default" @tap="${this.cancelPdDetails}">
             Cancel
           </paper-button>
@@ -145,9 +145,6 @@ export class UnicefDetailsElement extends PermissionsMixin(connect(LitElement)) 
   }
 
   private validationSelectors: string[] = ['#officeInput', '#sectionInput', '#focalPointInput', '#budgetOwnerInput'];
-
-  @property({type: Boolean})
-  isNew = false;
 
   @property({type: Boolean})
   editMode = false;

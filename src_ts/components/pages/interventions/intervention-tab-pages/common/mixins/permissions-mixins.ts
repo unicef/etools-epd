@@ -1,21 +1,15 @@
 import {LitElement} from 'lit-element';
-import {Constructor} from '../common/types';
+import {Constructor} from '../types/types';
 
 function PermissionsMixin<T extends Constructor<LitElement>>(baseClass: T) {
   class PermissionsClass extends baseClass {
-    hideEditIcon(isNew: boolean, editMode: boolean, canEdit: boolean) {
-      if (isNew) {
-        return true;
-      }
+    hideEditIcon(editMode: boolean, canEdit: boolean) {
       return !canEdit || editMode;
     }
 
-    hideActionButtons(isNew: boolean, editMode: boolean, canEdit: boolean) {
+    hideActionButtons(editMode: boolean, canEdit: boolean) {
       if (!canEdit) {
         return true;
-      }
-      if (isNew) {
-        return false;
       }
 
       return !editMode;

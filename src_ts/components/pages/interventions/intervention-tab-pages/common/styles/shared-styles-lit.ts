@@ -1,6 +1,6 @@
 import {html} from 'lit-element';
 
-export const sharedStylesLit = html`
+export const sharedStyles = html`
   <style>
     :host {
       display: block;
