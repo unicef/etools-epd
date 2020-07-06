@@ -42,7 +42,7 @@ export class PartnerDetailsElement extends PermissionsMixin(connect(LitElement))
         <div slot="panel-btns">
           <paper-icon-button
             icon="create"
-            @tap="${() => this._editMode()}"
+            @tap="${this.allowEdit}"
             ?hidden="${this.hideEditIcon(this.editMode, this.canEditDocumentDetails)}"
           ></paper-icon-button>
         </div>
@@ -112,9 +112,6 @@ export class PartnerDetailsElement extends PermissionsMixin(connect(LitElement))
   showLoading = false;
 
   @property({type: Boolean})
-  editMode = false;
-
-  @property({type: Boolean})
   canEditDocumentDetails!: boolean;
 
   connectedCallback() {
@@ -128,10 +125,6 @@ export class PartnerDetailsElement extends PermissionsMixin(connect(LitElement))
     this.documentDetails = selectDocumentDetails(state);
     this.permissions = selectDocumentDetailsPermissions(state);
     this.originalDocumentDetails = cloneDeep(this.documentDetails);
-  }
-
-  _editMode() {
-    this.editMode = true;
   }
 
   cancelDocumentDetails() {

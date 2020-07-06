@@ -45,7 +45,7 @@ export class UnicefDetailsElement extends PermissionsMixin(connect(LitElement)) 
         <div slot="panel-btns">
           <paper-icon-button
             ?hidden="${this.hideEditIcon(this.editMode, this.canEditPdUnicefDetails)}"
-            @tap="${this._allowEdit}"
+            @tap="${this.allowEdit}"
             icon="create">
           </paper-icon-button>
         </div>
@@ -148,9 +148,6 @@ export class UnicefDetailsElement extends PermissionsMixin(connect(LitElement)) 
   private validationSelectors: string[] = ['#officeInput', '#sectionInput', '#focalPointInput', '#budgetOwnerInput'];
 
   @property({type: Boolean})
-  editMode = false;
-
-  @property({type: Boolean})
   canEditPdUnicefDetails!: boolean;
 
   @property({type: Object})
@@ -185,10 +182,6 @@ export class UnicefDetailsElement extends PermissionsMixin(connect(LitElement)) 
 
   connectedCallback() {
     super.connectedCallback();
-  }
-
-  _allowEdit() {
-    this.editMode = true;
   }
 
   stateChanged(state: any) {
