@@ -1,5 +1,4 @@
 import {LitElement, html, property, customElement} from 'lit-element';
-import {PolymerElement} from '@polymer/polymer/polymer-element';
 import '@polymer/paper-button/paper-button';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
@@ -18,6 +17,7 @@ import PermissionsMixin from '../../common/mixins/permissions-mixins';
 import {selectPdUnicefDetails, selectPdUnicefDetailsPermissions} from './pdUnicefDetails.selectors';
 import {PdUnicefDetails, PdUnicefDetailsPermissions} from './pdUnicefDetails.models';
 import {Permission} from '../../common/models/intervention-types';
+import {validateRequiredFields} from '../../utils/validation-helper';
 // import {handleItemsNoLongerAssignedToCurrentCountry} from '../../utils/common-methods';
 
 /**
@@ -145,8 +145,6 @@ export class UnicefDetailsElement extends PermissionsMixin(connect(LitElement)) 
     `;
   }
 
-  private validationSelectors: string[] = ['#officeInput', '#sectionInput', '#focalPointInput', '#budgetOwnerInput'];
-
   @property({type: Boolean})
   canEditPdUnicefDetails!: boolean;
 
@@ -191,7 +189,7 @@ export class UnicefDetailsElement extends PermissionsMixin(connect(LitElement)) 
     if (state.interventions.current) {
       this.pdUnicefDetails = selectPdUnicefDetails(state);
       this.permissions = selectPdUnicefDetailsPermissions(state);
-      this.setPdUnicefDetailsPermissions(this.permissions.edit);
+      this.setCanEditPdUnicefDetails(this.permissions.edit);
       this.originalPdUnicefDetails = cloneDeep(this.pdUnicefDetails);
     }
     this.populateDropdownOptions(state);
@@ -233,9 +231,12 @@ export class UnicefDetailsElement extends PermissionsMixin(connect(LitElement)) 
     }
   }
 
-  setPdUnicefDetailsPermissions(permissions: PdUnicefDetailsPermissions) {
+  setCanEditPdUnicefDetails(editPermissions: PdUnicefDetailsPermissions) {
     this.canEditPdUnicefDetails =
-      permissions.budget_owner || permissions.focal_points || permissions.sections || permissions.unicef_office;
+      editPermissions.budget_owner ||
+      editPermissions.focal_points ||
+      editPermissions.sections ||
+      editPermissions.unicef_office;
   }
 
   cancelPdDetails() {
@@ -244,14 +245,7 @@ export class UnicefDetailsElement extends PermissionsMixin(connect(LitElement)) 
   }
 
   validate() {
-    let isValid = true;
-    this.validationSelectors.forEach((selector: string) => {
-      const el = this.shadowRoot!.querySelector(selector) as PolymerElement & {validate(): boolean};
-      if (el && !el.validate()) {
-        isValid = false;
-      }
-    });
-    return isValid;
+    return validateRequiredFields(this);
   }
 
   savePdDetails() {

@@ -124,7 +124,12 @@ export class PartnerDetailsElement extends PermissionsMixin(connect(LitElement))
     }
     this.documentDetails = selectDocumentDetails(state);
     this.permissions = selectDocumentDetailsPermissions(state);
+    this.setCanEditDocumentDetails(this.permissions.edit);
     this.originalDocumentDetails = cloneDeep(this.documentDetails);
+  }
+
+  setCanEditDocumentDetails(editPermissions: DocumentDetailsPermissions) {
+    this.canEditDocumentDetails = true; // TODO
   }
 
   cancelDocumentDetails() {
