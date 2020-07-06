@@ -1,7 +1,7 @@
 import {LitElement, html, property, customElement} from 'lit-element';
 import {PolymerElement} from '@polymer/polymer/polymer-element';
 import {PdUnicefDetails, PdUnicefDetailsPermissions} from '../../common/models/intervention-types';
-import {selectPdUnicefDetails} from './selectors';
+import {selectPdUnicefDetails} from './partnerDetails.selectors';
 import '@polymer/paper-button/paper-button';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';

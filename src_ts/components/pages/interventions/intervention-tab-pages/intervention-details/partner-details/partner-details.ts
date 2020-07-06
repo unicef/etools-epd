@@ -1,13 +1,13 @@
 import {LitElement, html, property, customElement} from 'lit-element';
 import {Permission} from '../../common/models/intervention-types';
-import {selectPartnerDetails, selectPartnerDetailsPermissions} from './selectors';
+import {selectPartnerDetails, selectPartnerDetailsPermissions} from './partnerDetails.selectors';
 import '@polymer/paper-button/paper-button';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@unicef-polymer/etools-loading/etools-loading';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {connect} from '../../utils/store-subscribe-mixin';
-import {PartnerDetails, PartnerDetailsPermissions} from './partnerDetailsModels';
+import {PartnerDetails, PartnerDetailsPermissions} from './partnerDetails.models';
 
 /**
  * @customElement
