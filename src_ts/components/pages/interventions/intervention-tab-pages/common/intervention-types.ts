@@ -258,3 +258,20 @@ export class PdUnicefDetailsPermissions {
   focal_points = true;
   budget_owner = true;
 }
+
+export interface DocumentDetails {
+  details: {
+    title: string;
+    context: string;
+    implementation_strategy: string;
+    ip_progr_contrib: string;
+  };
+  permissions: Permission<DocumentDetailsPermissions>;
+}
+
+export interface DocumentDetailsPermissions {
+  title: true;
+  context: true;
+  implementation_strategy: true;
+  ip_progr_contrib: true;
+}
