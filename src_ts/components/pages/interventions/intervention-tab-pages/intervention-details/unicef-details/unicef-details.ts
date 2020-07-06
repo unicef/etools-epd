@@ -1,7 +1,5 @@
 import {LitElement, html, property, customElement} from 'lit-element';
 import {PolymerElement} from '@polymer/polymer/polymer-element';
-import {PdUnicefDetails, PdUnicefDetailsPermissions} from '../../common/models/intervention-types';
-import {selectPdUnicefDetails} from './partnerDetails.selectors';
 import '@polymer/paper-button/paper-button';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
@@ -12,11 +10,14 @@ import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import PermissionsMixin from '../../common/mixins/permissions-mixins';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
 import {connect} from '../../utils/store-subscribe-mixin';
 import {AnyObject} from '../../../../../../types/globals';
+import PermissionsMixin from '../../common/mixins/permissions-mixins';
+import {selectPdUnicefDetails, selectPdUnicefDetailsPermissions} from './pdUnicefDetails.selectors';
+import {PdUnicefDetails, PdUnicefDetailsPermissions} from './pdUnicefDetails.models';
+import {Permission} from '../../common/models/intervention-types';
 // import {handleItemsNoLongerAssignedToCurrentCountry} from '../../utils/common-methods';
 
 /**
@@ -53,7 +54,7 @@ export class UnicefDetailsElement extends PermissionsMixin(connect(LitElement)) 
           <div class="col col-4">
             <paper-input
               label="Document Type"
-              .value="${this.pdUnicefDetails.details.document_type}"
+              .value="${this.pdUnicefDetails.document_type}"
               class="row-padding-v"
               readonly>
             </paper-input>
@@ -68,9 +69,9 @@ export class UnicefDetailsElement extends PermissionsMixin(connect(LitElement)) 
               .options="${this.office_list}"
               option-label="name"
               option-value="id"
-              .selectedValues="${this.pdUnicefDetails.details.offices}"
-              ?readonly="${this.isReadonly(this.editMode, this.pdUnicefDetails.permissions.edit.unicef_office)}"
-              ?required="${this.pdUnicefDetails.permissions.required.unicef_office}"
+              .selectedValues="${this.pdUnicefDetails.offices}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.unicef_office)}"
+              ?required="${this.permissions.required.unicef_office}"
               trigger-value-change-event>
             </etools-dropdown-multi>
           </div>
@@ -82,9 +83,9 @@ export class UnicefDetailsElement extends PermissionsMixin(connect(LitElement)) 
               .options="${this.section_list}"
               option-label="name"
               option-value="id"
-              .selectedValues="${this.pdUnicefDetails.details.sections}"
-              ?readonly="${this.isReadonly(this.editMode, this.pdUnicefDetails.permissions.edit.sections)}"
-              ?required="${this.pdUnicefDetails.permissions.required.sections}"
+              .selectedValues="${this.pdUnicefDetails.sections}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.sections)}"
+              ?required="${this.permissions.required.sections}"
               trigger-value-change-event>
             </etools-dropdown-multi>
           </div>
@@ -95,7 +96,7 @@ export class UnicefDetailsElement extends PermissionsMixin(connect(LitElement)) 
               .options="${this.cluster_list}"
               option-label="name"
               option-value="id"
-              .selectedValues="${this.pdUnicefDetails.details.clusters}"
+              .selectedValues="${this.pdUnicefDetails.clusters}"
               readonly
               trigger-value-change-event>
           </div>
@@ -109,9 +110,9 @@ export class UnicefDetailsElement extends PermissionsMixin(connect(LitElement)) 
               .options="${this.focal_point_list}"
               option-label="name"
               option-value="id"
-              .selectedValues="${this.pdUnicefDetails.details.unicef_focal_points}"
-              ?readonly="${this.isReadonly(this.editMode, this.pdUnicefDetails.permissions.edit.focal_points)}"
-              ?required="${this.pdUnicefDetails.permissions.required.focal_points}"
+              .selectedValues="${this.pdUnicefDetails.unicef_focal_points}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.focal_points)}"
+              ?required="${this.permissions.required.focal_points}"
               trigger-value-change-event>
             </etools-dropdown-multi>
           </div>
@@ -123,9 +124,9 @@ export class UnicefDetailsElement extends PermissionsMixin(connect(LitElement)) 
               class="row-padding-v"
               option-label="name"
               option-value="id"
-              .selected="${this.pdUnicefDetails.details.unicef_budget_owner}"
-              ?readonly="${this.isReadonly(this.editMode, this.pdUnicefDetails.permissions.edit.budget_owner)}"
-              ?required="${this.pdUnicefDetails.permissions.required.budget_owner}"
+              .selected="${this.pdUnicefDetails.unicef_budget_owner}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.budget_owner)}"
+              ?required="${this.permissions.required.budget_owner}"
               trigger-value-change-event>
             </etools-dropdown>
           </div>
@@ -153,10 +154,13 @@ export class UnicefDetailsElement extends PermissionsMixin(connect(LitElement)) 
   canEditPdUnicefDetails!: boolean;
 
   @property({type: Object})
-  originalPdUnicefDetails!: PdUnicefDetails['details'];
+  originalPdUnicefDetails!: PdUnicefDetails;
 
   @property({type: Object})
   pdUnicefDetails!: PdUnicefDetails;
+
+  @property({type: Object})
+  permissions!: Permission<PdUnicefDetailsPermissions>;
 
   @property({type: Boolean})
   isUnicefUser = false;
@@ -193,8 +197,9 @@ export class UnicefDetailsElement extends PermissionsMixin(connect(LitElement)) 
     }
     if (state.interventions.current) {
       this.pdUnicefDetails = selectPdUnicefDetails(state);
-      this.setPdUnicefDetailsPermissions(this.pdUnicefDetails.permissions.edit);
-      this.originalPdUnicefDetails = cloneDeep(this.pdUnicefDetails.details);
+      this.permissions = selectPdUnicefDetailsPermissions(state);
+      this.setPdUnicefDetailsPermissions(this.permissions.edit);
+      this.originalPdUnicefDetails = cloneDeep(this.pdUnicefDetails);
     }
     this.populateDropdownOptions(state);
   }
@@ -203,11 +208,11 @@ export class UnicefDetailsElement extends PermissionsMixin(connect(LitElement)) 
     // @@dci need to refactor this when things got clear
     if (!this.isUnicefUser) {
       // if user is not Unicef user, this is opened in read-only mode and we just display already saved
-      this.focal_point_list = [...this.pdUnicefDetails.details.focal_point_list];
-      this.section_list = [...this.pdUnicefDetails.details.section_list];
-      this.cluster_list = [...this.pdUnicefDetails.details.cluster_list];
-      this.office_list = [...this.pdUnicefDetails.details.office_list];
-      this.budget_owner_list = [...this.pdUnicefDetails.details.budget_owner_list];
+      this.focal_point_list = [...this.pdUnicefDetails.focal_point_list];
+      this.section_list = [...this.pdUnicefDetails.section_list];
+      this.cluster_list = [...this.pdUnicefDetails.cluster_list];
+      this.office_list = [...this.pdUnicefDetails.office_list];
+      this.budget_owner_list = [...this.pdUnicefDetails.budget_owner_list];
     } else {
       if (get(state, 'commonData.unicefUsers.length')) {
         this.focal_point_list = [...state.commonData!.unicefUsers];
@@ -241,7 +246,7 @@ export class UnicefDetailsElement extends PermissionsMixin(connect(LitElement)) 
   }
 
   cancelPdDetails() {
-    this.pdUnicefDetails.details = cloneDeep(this.originalPdUnicefDetails);
+    this.pdUnicefDetails = cloneDeep(this.originalPdUnicefDetails);
     this.editMode = false;
   }
 

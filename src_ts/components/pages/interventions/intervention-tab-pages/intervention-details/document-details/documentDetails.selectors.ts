@@ -1,6 +1,6 @@
 import {createSelector} from 'reselect';
 import {Intervention} from '../../common/models/intervention-types';
-import {DocumentDetails, DocumentDetailsPermissions} from './documentDetailsModels';
+import {DocumentDetails, DocumentDetailsPermissions} from './documentDetails.models';
 import {currentIntervention, currentInterventionPermissions} from '../../selectors';
 
 export const selectDocumentDetails = createSelector(currentIntervention, (intervention: Intervention) => {
