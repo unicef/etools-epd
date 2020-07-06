@@ -243,6 +243,11 @@ export interface PdUnicefDetails {
     clusters: [];
     unicef_focal_points: [];
     unicef_budget_owner: string | undefined;
+    focal_point_list: [];
+    office_list: [];
+    section_list: [];
+    cluster_list: [];
+    budget_owner_list: [];
   };
   permissions: Permission<PdUnicefDetailsPermissions>;
 }

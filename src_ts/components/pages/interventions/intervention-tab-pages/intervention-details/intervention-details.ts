@@ -3,6 +3,7 @@ import {connect} from '../utils/store-subscribe-mixin';
 import './partner-details/partner-details';
 import './document-details/document-details';
 import {gridLayoutStylesLit} from '../../../../styles/grid-layout-styles-lit';
+import './unicef-details/unicef-details';
 
 /**
  * @customElement
@@ -13,15 +14,12 @@ export class InterventionDetails extends connect(LitElement) {
     return html`
       ${gridLayoutStylesLit}
       <style>
-        /* CSS rules for your element */
+       
       </style>
 
-      <div class="row-v">
-        <partner-details></partner-details>
-      </div>
-      <div class="row-v">
-        <document-details></document-details>
-      </div>
+      <partner-details></partner-details>
+      <unicef-details></unicef-details>
+      <document-details></document-details>
     `;
   }
 }
