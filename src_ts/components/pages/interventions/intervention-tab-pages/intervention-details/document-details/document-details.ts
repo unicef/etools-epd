@@ -11,7 +11,8 @@ import {sharedStylesLit} from '../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {selectDocumentDetails} from './selectors';
 import {DocumentDetails} from '../../common/intervention-types';
-// import PermissionsMixin from '../../mixins/permissions-mixins';
+import {cloneDeep} from '../../../../../utils/utils';
+import PermissionsMixin from '../../mixins/permissions-mixins';
 
 /**
  * @customElement
@@ -126,7 +127,7 @@ export class PartnerDetailsElement extends connect(LitElement) {
     }
     this.documentDetails = selectDocumentDetails(state);
     this.setDocumentDetailsPermissions(this.documentDetails.permissions.edit);
-    Object.assign(this.originalDocumentDetails, this.documentDetails.details);
+    this.originalDocumentDetails = cloneDeep(this.documentDetails.details);
   }
 
   _editMode() {
@@ -135,6 +136,7 @@ export class PartnerDetailsElement extends connect(LitElement) {
 
   cancelDocumentDetails() {
     Object.assign(this.documentDetails.details, this.originalDocumentDetails);
+    this.documentDetails.details = cloneDeep(this.originalDocumentDetails);
     this.editMode = false;
   }
 
