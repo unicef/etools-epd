@@ -1,5 +1,5 @@
 import {createSelector} from 'reselect';
-import {Intervention} from '../../common/types/intervention-types';
+import {Intervention} from '../../common/models/intervention-types';
 
 export const currentIntervention = (state: any) => state.interventions.current;
 

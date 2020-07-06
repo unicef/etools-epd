@@ -10,7 +10,7 @@ import {buttonsStyles} from '../../common/styles/button-styles';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {selectDocumentDetails} from './selectors';
-import {DocumentDetails} from '../../common/types/intervention-types';
+import {DocumentDetails} from '../../common/models/intervention-types';
 import {cloneDeep} from '../../../../../utils/utils';
 import PermissionsMixin from '../../common/mixins/permissions-mixins';
 

@@ -1,4 +1,4 @@
-import {Intervention} from '../../common/types/intervention-types';
+import {Intervention} from '../../common/models/intervention-types';
 import {_sendRequest} from '../../utils/request-helper';
 import {getEndpoint} from '../../../../../../endpoints/endpoints';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';

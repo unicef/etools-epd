@@ -1,3 +1,5 @@
+import {ModelsBase} from './models.base';
+
 export interface ExpectedResult {
   id: number;
   cp_output: number;
@@ -221,46 +223,6 @@ export class InterventionAmendment {
   signed_date: string | null = null;
   signed_amendment_attachment: number | string | null = null;
   internal_prc_review: number | string | null = null;
-}
-
-export class PartnerDetails {
-  constructor(intervention: Intervention) {
-    this.partner = intervention.partner;
-    this.partner_name = intervention.partner;
-  }
-  partner!: number;
-  partner_name!: string;
-}
-
-export class PartnerDetailsPermissions {
-  constructor(permissions: InterventionPermissionsFields) {
-    this.partner = permissions.partner;
-  }
-  partner: boolean;
-}
-
-export interface PdUnicefDetails {
-  details: {
-    document_type: string | undefined;
-    offices: [];
-    sections: [];
-    clusters: [];
-    unicef_focal_points: [];
-    unicef_budget_owner: string | undefined;
-    focal_point_list: [];
-    office_list: [];
-    section_list: [];
-    cluster_list: [];
-    budget_owner_list: [];
-  };
-  permissions: Permission<PdUnicefDetailsPermissions>;
-}
-
-export class PdUnicefDetailsPermissions {
-  unicef_office = true;
-  sections = true;
-  focal_points = true;
-  budget_owner = true;
 }
 
 export interface DocumentDetails {

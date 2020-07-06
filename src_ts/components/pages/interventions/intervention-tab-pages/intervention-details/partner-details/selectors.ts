@@ -1,5 +1,6 @@
 import {createSelector} from 'reselect';
-import {Intervention, PartnerDetails, PartnerDetailsPermissions} from '../../common/types/intervention-types';
+import {PartnerDetails, PartnerDetailsPermissions} from './partnerDetailsModels';
+import {Intervention} from '../../common/models/intervention-types';
 
 export const currentIntervention = (state: any) => state.interventions.current;
 const currentInterventionPermissions = (state: any) => state.interventions.current.permissions;

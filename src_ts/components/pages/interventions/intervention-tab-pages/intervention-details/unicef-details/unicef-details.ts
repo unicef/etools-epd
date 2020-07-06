@@ -1,6 +1,6 @@
 import {LitElement, html, property, customElement} from 'lit-element';
 import {PolymerElement} from '@polymer/polymer/polymer-element';
-import {PdUnicefDetails, PdUnicefDetailsPermissions} from '../../common/types/intervention-types';
+import {PdUnicefDetails, PdUnicefDetailsPermissions} from '../../common/models/intervention-types';
 import {selectPdUnicefDetails} from './selectors';
 import '@polymer/paper-button/paper-button';
 import '@polymer/paper-icon-button/paper-icon-button';

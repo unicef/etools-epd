@@ -1,7 +1,7 @@
 import {_sendRequest} from '../utils/request-helper';
 import {getEndpoint} from '../utils/get-endpoints';
 import {interventionEndpoints} from '../utils/intervention-endpoints';
-import {Intervention} from './types/intervention-types';
+import {Intervention} from './models/intervention-types';
 
 export const patchIntervention = (interventionChunck: string, interventionId: string) => (dispatch: any) => {
   return _sendRequest({
