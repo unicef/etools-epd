@@ -1,5 +1,3 @@
-import {ModelsBase} from './models.base';
-
 export interface ExpectedResult {
   id: number;
   cp_output: number;

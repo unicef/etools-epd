@@ -1,7 +1,7 @@
 import {createSelector} from 'reselect';
-import {Intervention} from '../../common/models/intervention-types';
+import {Intervention, Permission, InterventionPermissionsFields} from '../../common/models/intervention-types';
 import {PdUnicefDetails, PdUnicefDetailsPermissions} from './pdUnicefDetails.models';
-import {currentInterventionPermissions, currentIntervention} from '../../selectors';
+import {currentInterventionPermissions, currentIntervention} from '../../common/selectors';
 
 export const selectPdUnicefDetails = createSelector(currentIntervention, (intervention: Intervention) => {
   return new PdUnicefDetails(intervention);
@@ -9,7 +9,7 @@ export const selectPdUnicefDetails = createSelector(currentIntervention, (interv
 
 export const selectPdUnicefDetailsPermissions = createSelector(
   currentInterventionPermissions,
-  (permissions: Intervention) => {
+  (permissions: Permission<InterventionPermissionsFields>) => {
     return {
       edit: new PdUnicefDetailsPermissions(permissions!.edit),
       required: new PdUnicefDetailsPermissions(permissions!.required)

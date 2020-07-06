@@ -34,9 +34,7 @@ export class PartnerDetailsElement extends connect(LitElement) {
           <paper-icon-button icon="create"> </paper-icon-button>
         </div>
 
-        <div class="row-padding-v">
-
-        </div>
+        <div class="row-padding-v"></div>
 
         <div class="layout-horizontal right-align row-padding-v">
           <paper-button class="default" @tap="${this.cancelPartnerDetails}">

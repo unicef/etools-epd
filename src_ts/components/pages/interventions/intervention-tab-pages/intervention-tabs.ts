@@ -18,7 +18,7 @@ import {isJsonStrMatch} from '../../../utils/utils';
 import {getIntervention} from '../../../../redux/actions/interventions';
 import {connect} from './utils/store-subscribe-mixin';
 import {setStore, getStore} from './utils/redux-store-access';
-import {currentPage, currentSubpage} from './selectors';
+import {currentPage, currentSubpage} from './common/selectors';
 import {elevationStyles} from './common/styles/elevation-styles';
 
 /**
