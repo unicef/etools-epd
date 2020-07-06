@@ -243,6 +243,11 @@ export interface PdUnicefDetails {
     clusters: [];
     unicef_focal_points: [];
     unicef_budget_owner: string | undefined;
+    focal_point_list: [];
+    office_list: [];
+    section_list: [];
+    cluster_list: [];
+    budget_owner_list: [];
   };
   permissions: Permission<PdUnicefDetailsPermissions>;
 }
@@ -252,6 +257,23 @@ export class PdUnicefDetailsPermissions {
   sections = true;
   focal_points = true;
   budget_owner = true;
+}
+
+export interface DocumentDetails {
+  details: {
+    title: string;
+    context: string;
+    implementation_strategy: string;
+    ip_progr_contrib: string;
+  };
+  permissions: Permission<DocumentDetailsPermissions>;
+}
+
+export interface DocumentDetailsPermissions {
+  title: true;
+  context: true;
+  implementation_strategy: true;
+  ip_progr_contrib: true;
 }
 
 export interface Location {
