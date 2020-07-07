@@ -7,18 +7,19 @@ import '@polymer/paper-input/paper-textarea';
 import '@unicef-polymer/etools-loading/etools-loading';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import {buttonsStyles} from '../../common/styles/button-styles';
-import {sharedStylesLit} from '../../common/styles/shared-styles-lit';
+import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import {selectDocumentDetails} from './selectors';
-import {DocumentDetails} from '../../common/intervention-types';
+import {selectDocumentDetails, selectDocumentDetailsPermissions} from './documentDetails.selectors';
+import {Permission} from '../../common/models/intervention-types';
 import {cloneDeep} from '../../../../../utils/utils';
-import PermissionsMixin from '../../mixins/permissions-mixins';
+import {DocumentDetailsPermissions, DocumentDetails} from './documentDetails.models';
+import PermissionsMixin from '../../common/mixins/permissions-mixins';
 
 /**
  * @customElement
  */
 @customElement('document-details')
-export class PartnerDetailsElement extends connect(LitElement) {
+export class PartnerDetailsElement extends PermissionsMixin(connect(LitElement)) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }
@@ -26,9 +27,8 @@ export class PartnerDetailsElement extends connect(LitElement) {
   render() {
     // language=HTML
     return html`
-      ${sharedStylesLit}
+      ${sharedStyles}
       <style>
-        /* CSS rules for your element */
         paper-textarea[readonly] {
           --paper-input-container-underline: {
             display: none;
@@ -42,8 +42,8 @@ export class PartnerDetailsElement extends connect(LitElement) {
         <div slot="panel-btns">
           <paper-icon-button
             icon="create"
-            @tap="${() => this._editMode()}"
-            ?hidden="${this.hideEditIcon(this.isNew, this.editMode, this.canEditDocumentDetails)}"
+            @tap="${this.allowEdit}"
+            ?hidden="${this.hideEditIcon(this.editMode, this.canEditDocumentDetails)}"
           ></paper-icon-button>
         </div>
 
@@ -51,8 +51,8 @@ export class PartnerDetailsElement extends connect(LitElement) {
           <paper-input
             id="title"
             label="Title"
-            .value="${this.documentDetails.details.title}"
-            ?readonly="${this.isReadonly(this.editMode, this.documentDetails.permissions.edit.title)}"
+            .value="${this.documentDetails.title}"
+            ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.title)}"
           >
           </paper-input>
         </div>
@@ -62,8 +62,8 @@ export class PartnerDetailsElement extends connect(LitElement) {
             id="context"
             label="Context"
             type="text"
-            .value="${this.documentDetails.details.context}"
-            ?readonly="${this.isReadonly(this.editMode, this.documentDetails.permissions.edit.context)}"
+            .value="${this.documentDetails.context}"
+            ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.context)}"
           >
           </paper-textarea>
         </div>
@@ -72,8 +72,8 @@ export class PartnerDetailsElement extends connect(LitElement) {
           <paper-textarea
             id="implementation-strategy"
             label="Implementation Strategy"
-            .value="${this.documentDetails.details.implementation_strategy}"
-            ?readonly="${this.isReadonly(this.editMode, this.documentDetails.permissions.edit.implementation_strategy)}"
+            .value="${this.documentDetails.implementation_strategy}"
+            ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.implementation_strategy)}"
           >
           </paper-textarea>
         </div>
@@ -82,8 +82,8 @@ export class PartnerDetailsElement extends connect(LitElement) {
           <paper-textarea
             id="ip_progr_contrib"
             label="Partner non-financial contribution"
-            .value="${this.documentDetails.details.ip_progr_contrib}"
-            ?readonly="${this.isReadonly(this.editMode, this.documentDetails.permissions.edit.ip_progr_contrib)}"
+            .value="${this.documentDetails.ip_progr_contrib}"
+            ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.ip_progr_contrib)}"
           >
           </paper-textarea>
         </div>
@@ -103,16 +103,13 @@ export class PartnerDetailsElement extends connect(LitElement) {
   documentDetails!: DocumentDetails;
 
   @property({type: Object})
+  permissions!: Permission<DocumentDetailsPermissions>;
+
+  @property({type: Object})
   originalDocumentDetails = {};
 
   @property({type: Boolean})
   showLoading = false;
-
-  @property({type: Boolean})
-  isNew = false;
-
-  @property({type: Boolean})
-  editMode = false;
 
   @property({type: Boolean})
   canEditDocumentDetails!: boolean;
@@ -126,17 +123,18 @@ export class PartnerDetailsElement extends connect(LitElement) {
       return;
     }
     this.documentDetails = selectDocumentDetails(state);
-    this.setDocumentDetailsPermissions(this.documentDetails.permissions.edit);
-    this.originalDocumentDetails = cloneDeep(this.documentDetails.details);
+    this.permissions = selectDocumentDetailsPermissions(state);
+    this.setCanEditDocumentDetails(this.permissions.edit);
+    this.originalDocumentDetails = cloneDeep(this.documentDetails);
   }
 
-  _editMode() {
-    this.editMode = true;
+  setCanEditDocumentDetails(editPermissions: DocumentDetailsPermissions) {
+    this.canEditDocumentDetails = true; // TODO
   }
 
   cancelDocumentDetails() {
-    Object.assign(this.documentDetails.details, this.originalDocumentDetails);
-    this.documentDetails.details = cloneDeep(this.originalDocumentDetails);
+    Object.assign(this.documentDetails, this.originalDocumentDetails);
+    this.documentDetails = cloneDeep(this.originalDocumentDetails);
     this.editMode = false;
   }
 
