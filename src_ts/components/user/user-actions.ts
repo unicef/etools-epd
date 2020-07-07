@@ -1,11 +1,12 @@
 import './etools-user';
 import {EtoolsUser} from './etools-user';
+import {AnyObject} from '../../types/globals';
 
 const userEl = document.createElement('etools-user') as EtoolsUser;
 
-export const getCurrentUserData = () => {
+export const getCurrentUserData = (): AnyObject => {
   // TODO: find a better way of getting user data or continue with this
-  userEl.getUserData(); // should req data and polpuate redux state...
+  return userEl.getUserData(); // should req data and polpuate redux state...
 };
 
 export const updateCurrentUserData = (profile: any) => {

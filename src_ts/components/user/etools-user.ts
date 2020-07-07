@@ -30,6 +30,7 @@ export class EtoolsUser extends connect(store)(LitElement) {
       .then((response: AnyObject) => {
         // console.log('response', response);
         store.dispatch(updateUserData(response));
+        return response;
       })
       .catch((error: AnyObject) => {
         console.error('[EtoolsUser]: getUserData req error...', error);

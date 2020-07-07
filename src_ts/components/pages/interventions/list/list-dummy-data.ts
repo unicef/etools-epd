@@ -49,18 +49,10 @@ export const getListDummydata = (paginator: EtoolsPaginator) => {
   });
 };
 
-export const getPartnersDummyData = () => {
-  const partners: {id: number; name: string}[] = [];
+export const getDummyData = (prefix: string) => {
+  const dummyData: {id: number; name: string}[] = [];
   for (i = 0; i < 20; i++) {
-    partners.push({id: i, name: 'Partner ' + i});
+    dummyData.push({id: i, name: `${prefix} ${i}`});
   }
-  return partners;
-};
-
-export const geUnicefUsersDummyData = () => {
-  const users: {id: number; name: string}[] = [];
-  for (i = 0; i < 20; i++) {
-    users.push({id: i, name: 'Unicef user ' + i});
-  }
-  return users;
+  return dummyData;
 };

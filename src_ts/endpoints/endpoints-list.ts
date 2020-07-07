@@ -21,5 +21,11 @@ export const etoolsEndpoints: EtoolsEndpoints = {
   },
   intervention: {
     template: '/api/v2/interventions/<%=interventionId%>/'
+  },
+  locations: {
+    url: '/api/locations-light/'
+  },
+  static: {
+    url: '/api/v2/dropdowns/static/'
   }
 };
