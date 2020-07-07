@@ -2,6 +2,7 @@ import {LitElement, html} from 'lit-element';
 import {connect} from '../utils/store-subscribe-mixin';
 import './partner-details/partner-details';
 import './document-details/document-details';
+import './intervention-overview/intervention-overview';
 import {gridLayoutStylesLit} from '../../../../styles/grid-layout-styles-lit';
 import './unicef-details/unicef-details';
 
@@ -15,6 +16,7 @@ export class InterventionDetails extends connect(LitElement) {
       ${gridLayoutStylesLit}
       <style></style>
 
+      <intervention-overview></intervention-overview>
       <partner-details></partner-details>
       <unicef-details></unicef-details>
       <document-details></document-details>
