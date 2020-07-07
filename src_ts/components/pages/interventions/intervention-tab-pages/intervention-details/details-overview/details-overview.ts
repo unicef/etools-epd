@@ -6,12 +6,12 @@ import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 /**
  * @customElement
  */
-@customElement('intervention-overview')
-export class InterventionOverview extends LitElement {
+@customElement('details-overview')
+export class DetailsOverview extends LitElement {
   render() {
     // language=HTML
     return html`
-      <style include="data-table-styles">
+      <style>
         ${sharedStyles} ${gridLayoutStylesLit}
         :host {
           display: block;
@@ -59,12 +59,12 @@ export class InterventionOverview extends LitElement {
           </div>
           <div class="col col-2">
             <span>
-              <label class="input-label">${this.intervention.contingency_pd}</label>
+              <label class="input-label">${this._getText(this.intervention.contingency_pd)}</label>
             </span>
           </div>
           <div class="col col-2">
             <span>
-              <label class="input-label">${this.intervention.humanitarian}</label>
+              <label class="input-label">${this._getText(this.intervention.humanitarian)}</label>
             </span>
           </div>
         </div>
@@ -73,7 +73,7 @@ export class InterventionOverview extends LitElement {
   }
 
   @property({type: Object})
-  intervention = {document_type: String, cfei_number: String, contingency_pd: String, humanitarian: String};
+  intervention = {document_type: String, cfei_number: String, contingency_pd: Boolean, humanitarian: Boolean};
 
   connectedCallback() {
     // TODO: remove dummy data
@@ -81,8 +81,16 @@ export class InterventionOverview extends LitElement {
     this.intervention = {
       document_type: 'Simpified Programme Documment',
       cfei_number: '123456789',
-      contingency_pd: 'Yes',
-      humanitarian: 'No'
+      contingency_pd: true,
+      humanitarian: false
     };
+  }
+
+  private _getText(value: boolean): string {
+    if (value) {
+      return 'Yes';
+    } else {
+      return 'No';
+    }
   }
 }
