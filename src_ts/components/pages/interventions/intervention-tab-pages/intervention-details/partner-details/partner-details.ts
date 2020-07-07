@@ -1,13 +1,13 @@
 import {LitElement, html, property, customElement} from 'lit-element';
-import {PartnerDetails} from '../../common/intervention-types';
-import {selectPartnerDetails} from './selectors';
+import {Permission} from '../../common/models/intervention-types';
+import {selectPartnerDetails, selectPartnerDetailsPermissions} from './partnerDetails.selectors';
 import '@polymer/paper-button/paper-button';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@unicef-polymer/etools-loading/etools-loading';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import {buttonsStyles} from '../../common/styles/button-styles';
-import {AnyObject} from '../../common/types';
 import {connect} from '../../utils/store-subscribe-mixin';
+import {PartnerDetails, PartnerDetailsPermissions} from './partnerDetails.models';
 
 /**
  * @customElement
@@ -51,6 +51,9 @@ export class PartnerDetailsElement extends connect(LitElement) {
   @property({type: Object})
   partnerDetails!: PartnerDetails;
 
+  @property({type: Object})
+  permissions!: Permission<PartnerDetailsPermissions>;
+
   @property({type: Boolean})
   showLoading = false;
 
@@ -63,6 +66,7 @@ export class PartnerDetailsElement extends connect(LitElement) {
       return;
     }
     this.partnerDetails = selectPartnerDetails(state);
+    this.permissions = selectPartnerDetailsPermissions(state);
   }
 
   cancelPartnerDetails() {}

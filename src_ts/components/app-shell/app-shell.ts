@@ -45,7 +45,6 @@ import {getCurrentUserData} from '../user/user-actions';
 import {EtoolsRouter} from '../../routing/routes';
 import {RouteDetails} from '../../routing/router';
 import {loadPartners, loadUnicefUsers} from '../../redux/actions/common-data';
-import {AnyObject} from '../../types/globals';
 
 store.addReducers({
   user,
