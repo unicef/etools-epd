@@ -42,7 +42,6 @@ export class GeographicalCoverage extends connect(LitElement) {
             class="secondary-btn see-locations"
             @tap="${this.openLocationsDialog}"
             title="See all locations"
-            ?disabled="${this._isEmpty(intervention.flat_locations.length)}"
           >
             <iron-icon icon="add"></iron-icon>
             See all
@@ -79,9 +78,13 @@ export class GeographicalCoverage extends connect(LitElement) {
   }
 
   createDialog() {
-    this.locationsDialog = document.createElement('external-individual-dialog') as GroupedLocationsDialog;
+    this.locationsDialog = document.createElement('grouped-locations-dialog') as GroupedLocationsDialog;
     this.locationsDialog.setAttribute('id', 'groupedLocDialog');
     this.locationsDialog.toastEventSource = this;
     document.querySelector('body')!.appendChild(this.locationsDialog);
+  }
+
+  _isEmpty(length: number) {
+    return !length;
   }
 }

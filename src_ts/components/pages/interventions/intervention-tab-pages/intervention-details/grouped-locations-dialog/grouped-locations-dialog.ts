@@ -72,7 +72,13 @@ export class GroupedLocationsDialog extends connect(LitElement) {
         }
       </style>
 
-      <etools-dialog id="groupedLocDialog" size="md" dialog-title="Locations PD/SSFA Covers" hide-confirm-btn>
+      <etools-dialog
+        id="groupedLocDialog"
+        size="md"
+        dialog-title="Locations PD/SSFA Covers"
+        hide-confirm-btn
+        ?opened="${this.dialogOpened}"
+      >
         <etools-dropdown
           id="adminLevelsDropdw"
           label="Group Locations By"
@@ -90,23 +96,21 @@ export class GroupedLocationsDialog extends connect(LitElement) {
         </div>
 
         <div class="row-padding-v" ?hidden="${this.adminLevel}">
-          <template is="dom-repeat" .items="${this.interventionLocations}">
-            <div class="top-padding">- ${this.item.name}</div>
-          </template>
+          ${this.interventionLocations.map((item: Location) => html`<div class="top-padding">- ${item.name}</div>`)}
         </div>
         <div class="row-padding-v" ?hidden="${!this.adminLevel}">
-          <template is="dom-repeat" .items="[[groupedLocations]]">
+          ${this.groupedLocations.map(item => html`
             <div class="parent-padding">
-              <div class="adminLevelLoc">${this.item.adminLevelLocation.name}</div>
+              <div class="adminLevelLoc">${item.adminLevelLocation.name}</div>
               <div class="left-padding">
-                <template is="dom-repeat" .items="${this.item.subordinateLocations}" as="subordinateLoc">
+                ${item.subordinateLocations.map(sub => html`
                   <div class="child-bottom-padding">
-                    - ${this.subordinateLoc.name}
+                    - ${sub.name}
                   </div>
-                </template>
+                `)}
               </div>
             </div>
-          </template>
+          `)}
         </div>
       </etools-dialog>
     `;
@@ -143,19 +147,27 @@ export class GroupedLocationsDialog extends connect(LitElement) {
   @property({type: String})
   message = '';
 
-  @property({type: Boolean})
+  @property({type: Boolean, reflect: true})
   dialogOpened = false;
 
   @property({type: Object})
   toastEventSource!: LitElement;
 
-  stateChanged(state) {
-    if (!isJsonStrMatch(this.locations, state.commonData!.locations)) {
-      this.locations = [...state.commonData!.locations];
-    }
-    if (!isJsonStrMatch(this.adminLevels, state.commonData!.locationTypes)) {
-      this.adminLevels = [...state.commonData!.locationTypes];
-    }
+  // stateChanged(state) {
+  //   if (!isJsonStrMatch(this.locations, state.commonData!.locations)) {
+  //     this.locations = [...state.commonData!.locations];
+  //   }
+  //   if (!isJsonStrMatch(this.adminLevels, state.commonData!.locationTypes)) {
+  //     this.adminLevels = [...state.commonData!.locationTypes];
+  //   }
+  // }
+
+  connectedCallback() {
+    // TODO: remove dummy data
+    super.connectedCallback();
+    this.locations = [{id: '1107', name: 'Aaba [Village - LBN54001]', p_code: 'LBN54001'}];
+    this.interventionLocations = [{id: '1107', name: 'Aaba [Village - LBN54001]', p_code: 'LBN54001'}];
+    this.groupedLocations = [{adminLevelLocation: {gateway: {admin_level: null, created: "2019-02-07T15:50:29.685383Z", id: 1, modified: "2019-02-07T15:50:29.807718Z", name: "School"},id: "4415", name: "Aaba Intermediate Public School [School - 1156]", p_code: "1156"}, subordinateLocations: []}]
   }
 
   public openDialog() {
