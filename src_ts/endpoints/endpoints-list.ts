@@ -27,5 +27,8 @@ export const etoolsEndpoints: EtoolsEndpoints = {
   },
   static: {
     url: '/api/v2/dropdowns/static/'
+  },
+  partners: {
+    url: '/api/v2/partners/'
   }
 };

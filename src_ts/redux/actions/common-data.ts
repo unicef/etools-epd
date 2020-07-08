@@ -1,4 +1,3 @@
-import {getDummyData} from '../../components/pages/interventions/list/list-dummy-data';
 import {Action, ActionCreator} from 'redux';
 import {AnyObject} from '../../types/globals';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
@@ -12,6 +11,7 @@ export const SET_PARTNERS = 'SET_PARTNERS';
 export const SET_LOCATIONS = 'SET_LOCATIONS';
 export const SET_LOCATION_TYPES = 'SET_LOCATION_TYPES';
 export const SET_DOCUMENT_TYPES = 'SET_DOCUMENT_TYPES';
+export const SET_GENDER_EQUITY_RATINGS = 'SET_GENDER_EQUITY_RATINGS';
 
 export interface CommonDataActionSetUnicefUsersData extends Action<'SET_UNICEF_USERS_DATA'> {
   unicefUsersData: AnyObject[];
@@ -29,11 +29,16 @@ export interface CommonDataActionSetDocumentTypes extends Action<'SET_DOCUMENT_T
   documentTypes: AnyObject[];
 }
 
+export interface CommonDataActionSetGenderEquityRatings extends Action<'SET_GENDER_EQUITY_RATINGS'> {
+  genderEquityRatings: AnyObject[];
+}
+
 export type CommonDataAction =
   | CommonDataActionSetUnicefUsersData
   | CommonDataActionSetLocations
   | CommonDataActionSetLocationTypes
-  | CommonDataActionSetDocumentTypes;
+  | CommonDataActionSetDocumentTypes
+  | CommonDataActionSetGenderEquityRatings;
 
 export const setUnicefUsers: ActionCreator<CommonDataActionSetUnicefUsersData> = (unicefUsersData: AnyObject[]) => {
   return {
@@ -70,9 +75,21 @@ export const setDocumentTypes = (documentTypes: AnyObject[]) => {
   };
 };
 
+export const setGenderEquityRatings = (genderEquityRatings: AnyObject[]) => {
+  return {
+    type: SET_GENDER_EQUITY_RATINGS,
+    genderEquityRatings
+  };
+};
+
 export const loadPartners = () => (dispatch: any) => {
-  // here will make request to endpoint to load data
-  dispatch(setPartners(getDummyData('Partner')));
+  sendRequest({
+    endpoint: {url: etoolsEndpoints.partners.url!}
+  })
+    .then((resp: any) => dispatch(setPartners(resp)))
+    .catch((error: AnyObject) => {
+      logError('loadPartners req error...', LOGS_PREFIX, error);
+    });
 };
 
 export const loadLocations = () => (dispatch: any) => {
@@ -92,6 +109,9 @@ const handleStaticData = (staticData: AnyObject) => (dispatch: any) => {
     }
     if (staticData.intervention_doc_type) {
       dispatch(setDocumentTypes(staticData.intervention_doc_type));
+    }
+    if (staticData.genderEquityRatings) {
+      dispatch(setGenderEquityRatings(staticData.genderEquityRatings));
     }
   }
 };

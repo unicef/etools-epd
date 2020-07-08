@@ -48,11 +48,3 @@ export const getListDummydata = (paginator: EtoolsPaginator) => {
     }
   });
 };
-
-export const getDummyData = (prefix: string) => {
-  const dummyData: {id: number; name: string}[] = [];
-  for (i = 0; i < 20; i++) {
-    dummyData.push({id: i, name: `${prefix} ${i}`});
-  }
-  return dummyData;
-};

@@ -4,7 +4,8 @@ import {
   SET_PARTNERS,
   SET_LOCATIONS,
   SET_LOCATION_TYPES,
-  SET_DOCUMENT_TYPES
+  SET_DOCUMENT_TYPES,
+  SET_GENDER_EQUITY_RATINGS
 } from '../actions/common-data';
 import {RootAction} from '../store';
 
@@ -14,6 +15,7 @@ export interface CommonDataState {
   locations: [];
   locationTypes: [];
   documentTypes: [];
+  genderEquityRatings: [];
 }
 
 const INITIAL_COMMON_DATA: CommonDataState = {
@@ -21,7 +23,8 @@ const INITIAL_COMMON_DATA: CommonDataState = {
   partners: [],
   locations: [],
   locationTypes: [],
-  documentTypes: []
+  documentTypes: [],
+  genderEquityRatings: []
 };
 
 const commonData: Reducer<CommonDataState, RootAction> = (state = INITIAL_COMMON_DATA, action) => {
@@ -50,6 +53,11 @@ const commonData: Reducer<CommonDataState, RootAction> = (state = INITIAL_COMMON
       return {
         ...state,
         documentTypes: action.documentTypes
+      };
+    case SET_GENDER_EQUITY_RATINGS:
+      return {
+        ...state,
+        genderEquityRatings: action.genderEquityRatings
       };
     default:
       return state;
