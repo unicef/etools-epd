@@ -1,11 +1,8 @@
 import {LitElement, html, property, customElement} from 'lit-element';
 import {connect} from '../../utils/store-subscribe-mixin';
-
-import {Location} from '../../common/intervention-types';
-import '@unicef-polymer/etools-dialog/etools-dialog';
+import {Location} from '../geographical-coverage/geographicalCoverage.models';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
 import {isJsonStrMatch} from '../../../../../utils/utils';
-
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '../../common/styles/button-styles';
 
@@ -78,6 +75,7 @@ export class GroupedLocationsDialog extends connect(LitElement) {
         dialog-title="Locations PD/SSFA Covers"
         hide-confirm-btn
         ?opened="${this.dialogOpened}"
+        @close="${() => this.closeDialog()}"
       >
         <etools-dropdown
           id="adminLevelsDropdw"
@@ -153,18 +151,19 @@ export class GroupedLocationsDialog extends connect(LitElement) {
   @property({type: Object})
   toastEventSource!: LitElement;
 
-  // stateChanged(state) {
-  //   if (!isJsonStrMatch(this.locations, state.commonData!.locations)) {
-  //     this.locations = [...state.commonData!.locations];
-  //   }
-  //   if (!isJsonStrMatch(this.adminLevels, state.commonData!.locationTypes)) {
-  //     this.adminLevels = [...state.commonData!.locationTypes];
-  //   }
-  // }
+  stateChanged(state) {
+    if (!isJsonStrMatch(this.locations, state.commonData!.locations)) {
+      this.locations = [...state.commonData!.locations];
+    }
+    if (!isJsonStrMatch(this.adminLevels, state.commonData!.locationTypes)) {
+      this.adminLevels = [...state.commonData!.locationTypes];
+    }
+  }
 
   connectedCallback() {
     // TODO: remove dummy data
     super.connectedCallback();
+    this.adminLevels = [{admin_level: null, id: 1, name: "School"}, {admin_level: null, id: 2, name: "Community Center"}]
     this.locations = [{id: '1107', name: 'Aaba [Village - LBN54001]', p_code: 'LBN54001'}];
     this.interventionLocations = [{id: '1107', name: 'Aaba [Village - LBN54001]', p_code: 'LBN54001'}];
     this.groupedLocations = [{adminLevelLocation: {gateway: {admin_level: null, created: "2019-02-07T15:50:29.685383Z", id: 1, modified: "2019-02-07T15:50:29.807718Z", name: "School"},id: "4415", name: "Aaba Intermediate Public School [School - 1156]", p_code: "1156"}, subordinateLocations: []}]
@@ -289,5 +288,9 @@ export class GroupedLocationsDialog extends connect(LitElement) {
       return parentLoc;
     }
     return this._findAdminLevelParent(parentLoc, adminLevel);
+  }
+
+  public closeDialog() {
+    this.dialogOpened = false;
   }
 }

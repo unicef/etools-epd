@@ -14,7 +14,9 @@ export class InterventionDetails extends connect(LitElement) {
     // language=HTML
     return html`
       ${gridLayoutStylesLit}
-      <style></style>
+      <style>
+       
+      </style>
 
       <partner-details></partner-details>
       <unicef-details></unicef-details>

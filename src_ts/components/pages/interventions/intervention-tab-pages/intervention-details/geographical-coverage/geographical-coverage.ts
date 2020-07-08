@@ -7,7 +7,10 @@ import {GroupedLocationsDialog} from '../grouped-locations-dialog/grouped-locati
 
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '../../common/styles/button-styles';
-import {Intervention} from '../../common/intervention-types';
+import {Intervention} from '../../common/models/intervention-types';
+import {sharedStyles} from '../../common/styles/shared-styles-lit';
+import {RootState} from '../../../../../../redux/store';
+import {isJsonStrMatch} from '../../../../../utils/utils';
 
 /**
  * @customElement
@@ -21,8 +24,35 @@ export class GeographicalCoverage extends connect(LitElement) {
   render() {
     // language=HTML
     return html`
+      ${sharedStyles}
       <style>
-        /* CSS rules for your element */
+        :host {
+          display: block;
+          margin-bottom: 24px;
+        }
+
+        .see-locations {
+          padding-right: 0;
+          color: var(--primary-color);
+          min-width: 100px;
+          @apply --layout-end;
+          padding-bottom: 12px;
+        }
+
+        .see-locations iron-icon {
+          margin-right: 0;
+          margin-bottom: 2px;
+          --iron-icon-height: 18px;
+          --iron-icon-width: 18px;
+        }
+
+        .see-locations[disabled] {
+          background-color: transparent;
+        }
+
+        #locations {
+          max-width: 100%;
+        }
       </style>
 
       <etools-content-panel show-expand-btn panel-title="Geographical Coverage">
@@ -63,10 +93,19 @@ export class GeographicalCoverage extends connect(LitElement) {
   originalIntervention!: Intervention;
 
   @property({type: Array})
-  locations: Location[] = [{id: '1107', name: 'Aaba [Village - LBN54001]', p_code: 'LBN54001'}];
+  locations!: Location[];
 
   connectedCallback() {
     super.connectedCallback();
+    // TODO: remove dummy data
+    this.locations = [{id: '1107', name: 'Aaba [Village - LBN54001]', p_code: 'LBN54001'}];
+  }
+
+  stateChanged(state: RootState) {
+    if (!isJsonStrMatch(this.locations, state.commonData!.locations)) {
+      this.locations = [...state.commonData!.locations];
+    }
+    this.uploadsStateChanged(state);
   }
 
   private openLocationsDialog() {

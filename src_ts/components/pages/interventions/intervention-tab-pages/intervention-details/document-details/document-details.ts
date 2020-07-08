@@ -29,10 +29,9 @@ export class PartnerDetailsElement extends PermissionsMixin(connect(LitElement))
     return html`
       ${sharedStyles}
       <style>
-        paper-textarea[readonly] {
-          --paper-input-container-underline: {
-            display: none;
-          }
+        :host {
+          display: block;
+          margin-bottom: 24px;
         }
       </style>
 

@@ -71,4 +71,16 @@ export const buttonsStyles = css`
     color: var(--error-btn-color, #ffffff);
     background-color: var(--error-btn-bg-color, var(--error-color));
   }
+
+  paper-button .btn-label {
+    @apply --layout-horizontal;
+    @apply --layout-flex;
+    @apply --layout-center-justified;
+  }
+
+  .secondary-btn {
+    --paper-button: {
+      @apply --basic-btn-style;
+    }
+  }
 `;
