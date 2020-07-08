@@ -1,5 +1,4 @@
 import {LitElement, customElement, html, property} from 'lit-element';
-import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import '../../../../../../redux/actions/interventions';
 import {connect} from '../../utils/store-subscribe-mixin';
@@ -30,7 +29,7 @@ export class ResultsOverview extends connect(LitElement) {
           padding-bottom: 5px;
         }
       </style>
-      <etools-content-panel class="content-section" no-header>
+      <section class="elevation page-content filters" elevation="1">
         <div class="row-h flex-c">
           <div class="col col-1">
             <span>
@@ -131,7 +130,7 @@ export class ResultsOverview extends connect(LitElement) {
             </span>
           </div>
         </div>
-      </etools-content-panel>
+      </section>
     `;
   }
 
