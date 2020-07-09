@@ -8,8 +8,8 @@ export class PdInterventionOverview extends ModelsBase {
     super();
     this.setObjProperties(intervention);
   }
-  document_type!: string;
-  cfei_number!: string;
-  contingency_pd!: boolean;
-  humanitarian!: boolean;
+  document_type = '';
+  cfei_number = '';
+  contingency_pd = false;
+  humanitarian = false;
 }
