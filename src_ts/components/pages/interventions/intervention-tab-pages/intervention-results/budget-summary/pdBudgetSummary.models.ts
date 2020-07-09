@@ -2,18 +2,19 @@ import {ModelsBase} from '../../common/models/models.base';
 import {PlannedBudget} from '../../common/models/intervention-types';
 
 // @lajos TO DO: check exactly where the values come from
+// @lajos TO DO more: check with backend where the values are stored!!!!
 export class PdBudgetSummary extends ModelsBase {
   constructor(plannedBudget: PlannedBudget) {
     super();
     this.setObjProperties(plannedBudget);
   }
-  currency!: string;
-  hq_rate!: string;
-  prgm_effectiveness!: boolean;
-  total_cso!: boolean;
-  total_unicef!: string;
-  total_supply!: string;
-  partner_contrib!: boolean;
-  total_cash!: boolean;
-  total_amt!: boolean;
+  currency = '';
+  hq_rate = '';
+  prgm_effectiveness = '';
+  total_cso = '';
+  total_unicef = '';
+  total_supply = '';
+  partner_contrib = '';
+  total_cash = '';
+  total_amt = '';
 }
