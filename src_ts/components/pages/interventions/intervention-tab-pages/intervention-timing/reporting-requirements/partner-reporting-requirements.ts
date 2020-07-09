@@ -1,0 +1,217 @@
+import {LitElement, customElement, html, property} from 'lit-element';
+import {connect} from '../../utils/store-subscribe-mixin';
+import '@polymer/iron-icons/iron-icons';
+import '@polymer/iron-selector/iron-selector';
+import '@polymer/iron-pages/iron-pages';
+import '@polymer/iron-flex-layout/iron-flex-layout';
+import '@polymer/paper-item/paper-item';
+import '@polymer/paper-icon-button/paper-icon-button';
+import '@unicef-polymer/etools-content-panel/etools-content-panel';
+import './hr/humanitarian-reporting-req-unicef';
+import './hr/humanitarian-reporting-req-cluster';
+import './qpr/quarterly-reporting-requirements';
+import './srr/special-reporting-requirements';
+import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
+import {HumanitarianReportingReqUnicefEl} from './hr/humanitarian-reporting-req-unicef';
+import {QuarterlyReportingRequirementsEL} from './qpr/quarterly-reporting-requirements';
+
+/**
+ * @customElement
+ */
+@customElement('partner-reporting-requirements')
+export class PartnerReportingRequirements extends connect(LitElement) {
+  static get styles() {
+    return [gridLayoutStylesLit];
+  }
+  render() {
+    return html`
+      <style>
+        :host {
+          display: block;
+          width: 100%;
+          -webkit-box-sizing: border-box;
+          -moz-box-sizing: border-box;
+          box-sizing: border-box;
+        }
+
+        /* ------------------------------- */
+
+        .nav-menu {
+          @apply --layout-vertical;
+          background: var(--primary-background-color);
+          padding: 8px 0 8px 0;
+          min-width: 290px;
+        }
+
+        .nav-menu-item {
+          padding-left: 24px;
+          padding-right: 24px;
+          font-size: 14px;
+          font-weight: bold;
+          text-transform: capitalize;
+
+          --paper-item-focused-before: {
+            opacity: 0;
+          }
+        }
+
+        .nav-menu-item.iron-selected {
+          color: var(--primary-color);
+        }
+
+        .nav-menu-item {
+          color: var(--secondary-text-color);
+        }
+
+        .nav-menu-item.iron-selected {
+          background-color: var(--medium-theme-background-color);
+        }
+
+        /* ------------------------------- */
+
+        .reporting-req-data {
+          border-left: 1px solid var(--darker-divider-color);
+        }
+
+        .edit-rep-req {
+          color: var(--medium-icon-color);
+          margin-left: 16px;
+        }
+
+        .nav-menu-item.qpr {
+          @apply --layout-horizontal;
+          @apply --layout-justified;
+        }
+      </style>
+
+      <etools-content-panel class="content-section" panel-title="Partner Reporting Requirements">
+        <div class="flex-c layout-horizontal">
+          <div class="reports-menu nav-menu">
+            <iron-selector selected="{{selectedReportType}}" attr-for-selected="name" selectable="paper-item">
+              <paper-item name="qtyProgress" class="nav-menu-item qpr">
+                <span>Quarterly Progress Reports ([[qprRequirementsCount]])</span>
+                <paper-icon-button
+                  class="edit-rep-req"
+                  icon="create"
+                  @click="_openQprEditDialog"
+                  ?hidden="[[_hideRepReqEditBtn(editMode, qprRequirementsCount)]]"
+                ></paper-icon-button>
+              </paper-item>
+              <paper-item name="humanitarianUnicef" class="nav-menu-item">
+                <span>Humanitarian Reports - UNICEF ([[hrUnicefRequirementsCount]])</span>
+                <paper-icon-button
+                  class="edit-rep-req"
+                  icon="create"
+                  @click="_openHruEditDialog"
+                  ?hidden="[[_hideRepReqEditBtn(editMode, hrUnicefRequirementsCount)]]"
+                ></paper-icon-button>
+              </paper-item>
+              <paper-item name="humanitarianCluster" class="nav-menu-item">
+                Humanitarian Reports - Cluster ([[hrClusterRequirementsCount]])
+              </paper-item>
+              <paper-item name="special" class="nav-menu-item">
+                Special Report ([[specialRequirementsCount]])
+              </paper-item>
+            </iron-selector>
+          </div>
+          <div class="flex-c reporting-req-data">
+            <iron-pages
+              id="reportingPages"
+              selected="[[selectedReportType]]"
+              attr-for-selected="name"
+              fallback-selection="qtyProgress"
+            >
+              <quarterly-reporting-requirements
+                id="qpr"
+                name="qtyProgress"
+                intervention-id="[[interventionId]]"
+                intervention-start="[[interventionStart]]"
+                intervention-end="[[interventionEnd]]"
+                requirements-count="{{qprRequirementsCount}}"
+                edit-mode="[[editMode]]"
+              >
+              </quarterly-reporting-requirements>
+
+              <humanitarian-reporting-req-unicef
+                id="hru"
+                name="humanitarianUnicef"
+                intervention-id="[[interventionId]]"
+                intervention-start="[[interventionStart]]"
+                requirements-count="{{hrUnicefRequirementsCount}}"
+                expected-results="[[expectedResults]]"
+                edit-mode="[[editMode]]"
+              >
+              </humanitarian-reporting-req-unicef>
+
+              <humanitarian-reporting-req-cluster
+                name="humanitarianCluster"
+                intervention-id="[[interventionId]]"
+                requirements-count="{{hrClusterRequirementsCount}}"
+                expected-results="[[expectedResults]]"
+              >
+              </humanitarian-reporting-req-cluster>
+
+              <special-reporting-requirements
+                name="special"
+                intervention-id="[[interventionId]]"
+                requirements-count="{{specialRequirementsCount}}"
+              >
+              </special-reporting-requirements>
+            </iron-pages>
+          </div>
+        </div>
+      </etools-content-panel>
+    `;
+  }
+
+  @property({type: String})
+  selectedReportType = 'qtyProgress';
+
+  @property({type: Number})
+  interventionId!: number;
+
+  @property({type: Date})
+  interventionStart!: Date;
+
+  @property({type: String})
+  interventionEnd!: string;
+
+  @property({type: Array})
+  expectedResults!: [];
+
+  // count properties
+  @property({type: Number})
+  qprRequirementsCount = 0;
+
+  @property({type: Number})
+  hrUnicefRequirementsCount = 0;
+
+  @property({type: Number})
+  hrClusterRequirementsCount = 0;
+
+  @property({type: Number})
+  specialRequirementsCount = 0;
+
+  @property({type: Boolean})
+  editMode!: boolean;
+
+  connectedCallback() {
+    super.connectedCallback();
+  }
+
+  stateChanged(state: any) {
+    this.editMode = state.pageData!.permissions!.edit.reporting_requirements;
+  }
+
+  _openQprEditDialog() {
+    (this.$.qpr as QuarterlyReportingRequirementsEL).openQuarterlyRepRequirementsDialog();
+  }
+
+  _openHruEditDialog() {
+    (this.$.hru as HumanitarianReportingReqUnicefEl).openUnicefHumanitarianRepReqDialog();
+  }
+
+  _hideRepReqEditBtn(editMode: boolean, qprCount: number) {
+    return qprCount === 0 || !editMode;
+  }
+}
