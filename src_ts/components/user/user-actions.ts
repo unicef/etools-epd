@@ -7,10 +7,6 @@ import {etoolsEndpoints} from '../../endpoints/endpoints-list';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {EtoolsUserModel} from './user-model';
 
-export const changeCurrentUserCountry = (countryId: number) => {
-  return changeCountry(countryId);
-};
-
 export function getCurrentUser() {
   return sendRequest({
     endpoint: {url: getEndpoint(etoolsEndpoints.userProfile).url}
@@ -40,7 +36,7 @@ export function updateCurrentUser(profile: AnyObject) {
     });
 }
 
-export function changeCountry(countryId: number) {
+export function changeCurrentUserCountry(countryId: number) {
   return sendRequest({
     method: 'POST',
     endpoint: {url: getEndpoint(etoolsEndpoints.changeCountry).url},
