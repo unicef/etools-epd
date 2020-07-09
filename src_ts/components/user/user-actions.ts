@@ -6,19 +6,7 @@ import {store} from '../../redux/store';
 import {etoolsEndpoints} from '../../endpoints/endpoints-list';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 
-export const getCurrentUserData = (): AnyObject => {
-  return getUserData();
-};
-
-export const updateCurrentUserData = (profile: any) => {
-  return setUserData(profile);
-};
-
-export const changeCurrentUserCountry = (countryId: number) => {
-  return changeCountry(countryId);
-};
-
-export function getUserData() {
+export function getCurrentUser() {
   return sendRequest({
     endpoint: {url: getEndpoint(etoolsEndpoints.userProfile).url}
   })
@@ -32,7 +20,7 @@ export function getUserData() {
     });
 }
 
-export function setUserData(profile: AnyObject) {
+export function updateCurrentUser(profile: AnyObject) {
   return sendRequest({
     method: 'PATCH',
     endpoint: {url: getEndpoint(etoolsEndpoints.userProfile).url},
@@ -47,7 +35,7 @@ export function setUserData(profile: AnyObject) {
     });
 }
 
-export function changeCountry(countryId: number) {
+export function changeCurrentUserCountry(countryId: number) {
   return sendRequest({
     method: 'POST',
     endpoint: {url: getEndpoint(etoolsEndpoints.changeCountry).url},
