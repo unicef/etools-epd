@@ -56,22 +56,30 @@ export class DetailsOverview extends connect(LitElement) {
         <div class="row-h flex-c">
           <div class="col col-3">
             <span>
-              <label class="input-label">${this.interventionOverview.document_type}</label>
+              <label class="input-label" ?empty="${!this.interventionOverview.document_type}">
+                ${this.interventionOverview.document_type}
+              </label>
             </span>
           </div>
           <div class="col col-3">
             <span>
-              <label class="input-label">${this.interventionOverview.cfei_number}</label>
+              <label class="input-label" ?empty="${!this.interventionOverview.cfei_number}">
+                ${this.interventionOverview.cfei_number}
+              </label>
             </span>
           </div>
           <div class="col col-2">
             <span>
-              <label class="input-label">${this._getText(this.interventionOverview.contingency_pd)}</label>
+              <label class="input-label" ?empty="${!this.interventionOverview.contingency_pd}">
+                ${this._getText(this.interventionOverview.contingency_pd)}
+              </label>
             </span>
           </div>
           <div class="col col-2">
             <span>
-              <label class="input-label">${this._getText(this.interventionOverview.humanitarian)}</label>
+              <label class="input-label" ?empty="${!this.interventionOverview.humanitarian}">
+                ${this._getText(this.interventionOverview.humanitarian)}
+              </label>
             </span>
           </div>
         </div>
@@ -93,6 +101,9 @@ export class DetailsOverview extends connect(LitElement) {
   }
 
   private _getText(value: boolean): string {
+    if (value === undefined) {
+      return '';
+    }
     if (value) {
       return 'Yes';
     } else {
