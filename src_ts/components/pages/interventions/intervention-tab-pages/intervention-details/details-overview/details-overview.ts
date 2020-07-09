@@ -30,7 +30,7 @@ export class DetailsOverview extends connect(LitElement) {
           padding-bottom: 5px;
         }
       </style>
-      <section class="elevation page-content filters" elevation="1">
+      <section class="elevation" elevation="1">
         <div class="row-h flex-c">
           <div class="col col-3">
             <span>
