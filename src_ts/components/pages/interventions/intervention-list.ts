@@ -1,20 +1,19 @@
 import '@polymer/paper-button/paper-button';
-import {customElement, html, LitElement, property} from 'lit-element';
+import {customElement, html, LitElement, property, TemplateResult} from 'lit-element';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {RootState, store} from '../../../redux/store';
 
 import '../../common/layout/page-content-header/page-content-header';
-// eslint-disable-next-line max-len
-import {pageContentHeaderSlottedStyles} from '../../common/layout/page-content-header/page-content-header-slotted-styles';
+import {
+  pageContentHeaderSlottedStyles
+} from '../../common/layout/page-content-header/page-content-header-slotted-styles';
 
-import {AnyObject} from '../../../types/globals';
 import '../../common/layout/filters/etools-filters';
 import {
-  defaultFilters,
-  defaultSelectedFilters,
+  ACTIVE_STATUS,
+  defaultFilters, DRAFT_STATUS, ENDED_STATUS, SIGNED_STATUS, SUSPENDED_STATUS,
   updateFilterSelectionOptions,
   updateFiltersSelectedValues,
-  FilterKeysAndTheirSelectedValues
 } from './list/filters';
 import {ROOT_PATH} from '../../../config/config';
 import {EtoolsFilter} from '../../common/layout/filters/etools-filters';
@@ -23,21 +22,16 @@ import {buttonsStyles} from '../../styles/button-styles';
 import {elevationStyles} from '../../styles/lit-styles/elevation-styles';
 import '@unicef-polymer/etools-table/etools-table';
 import {
-  EtoolsTableColumn,
-  EtoolsTableColumnSort,
-  EtoolsTableColumnType
+  EtoolsTableColumn, EtoolsTableColumnSort,
+  EtoolsTableColumnType,
 } from '@unicef-polymer/etools-table/etools-table';
 import {
   EtoolsPaginator,
-  defaultPaginator,
-  getPaginatorWithBackend
+  defaultPaginator
 } from '@unicef-polymer/etools-table/pagination/etools-pagination';
 import {
   buildUrlQueryString,
-  EtoolsTableSortItem,
-  getSelectedFiltersFromUrlParams,
   getSortFields,
-  getSortFieldsFromUrlSortParams,
   getUrlQueryStringSort
 } from '../../common/layout/etools-table/etools-table-utility';
 import {RouteDetails, RouteQueryParams} from '../../../routing/router';
@@ -45,11 +39,11 @@ import {replaceAppLocation} from '../../../routing/routes';
 import {SharedStylesLit} from '../../styles/shared-styles-lit';
 
 import '@unicef-polymer/etools-loading';
-import {getListDummydata} from './list/list-dummy-data';
 import get from 'lodash-es/get';
-import {fireEvent} from '../../utils/fire-custom-event';
 import '../../common/layout/export-data';
-let lastSelectedFilters: FilterKeysAndTheirSelectedValues = {...defaultSelectedFilters};
+import {GenericObject} from '../../../types/globals';
+import {InterventionsListHelper, ListHelperResponse} from './list/list-helper';
+import {InterventionsListStyles, InterventionsTableStyles} from './list/list-styles';
 
 /**
  * @LitElement
@@ -58,7 +52,7 @@ let lastSelectedFilters: FilterKeysAndTheirSelectedValues = {...defaultSelectedF
 @customElement('intervention-list')
 export class InterventionList extends connect(store)(LitElement) {
   static get styles() {
-    return [elevationStyles, buttonsStyles, pageLayoutStyles, pageContentHeaderSlottedStyles];
+    return [elevationStyles, buttonsStyles, pageLayoutStyles, pageContentHeaderSlottedStyles, InterventionsListStyles];
   }
 
   public render() {
@@ -66,38 +60,12 @@ export class InterventionList extends connect(store)(LitElement) {
     // language=HTML
     return html`
       ${SharedStylesLit}
-      <style>
-        etools-table {
-          padding-top: 12px;
-        }
-        .shortAddText {
-          display: none;
-        }
-        .action {
-          text-align: right;
-        }
-        @media (max-width: 576px) {
-          .action {
-            text-align: right;
-          }
-          #addBtn {
-            padding-right: 16px;
-            margin-right: 32px;
-          }
-          .shortAddText {
-            display: block;
-          }
-          .longAddText {
-            display: none;
-          }
-        }
-      </style>
       <page-content-header>
         <h1 slot="page-title">PDs/SPDs list</h1>
 
         <div slot="title-row-actions" class="content-header-actions">
           <div class="action">
-            <export-data .params="${this.queryParams}" raised></export-data>
+            <export-data .params="${this.exportParams}" raised></export-data>
           </div>
         </div>
       </page-content-header>
@@ -111,8 +79,11 @@ export class InterventionList extends connect(store)(LitElement) {
         <etools-table
           caption="PDs/SPDs"
           .columns="${this.listColumns}"
-          .items="${this.listData}"
+          .items="${this.listData.length ? this.listData : [{}]}"
           .paginator="${this.paginator}"
+          .getChildRowTemplateMethod="${this.listData.length ? this.getRowDetails : null}"
+          .extraCSS="${InterventionsTableStyles}"
+          singleSort
           @paginator-change="${this.paginatorChange}"
           @sort-change="${this.sortChange}"
         ></etools-table>
@@ -120,208 +91,213 @@ export class InterventionList extends connect(store)(LitElement) {
     `;
   }
 
-  @property({type: Object})
-  routeDetails!: RouteDetails;
-
-  @property({type: String})
-  rootPath: string = ROOT_PATH;
+  @property({type: Array})
+  listData: InterventionListData[] = [];
 
   @property({type: Object})
   paginator: EtoolsPaginator = {...defaultPaginator};
 
   @property({type: Array})
-  sort: EtoolsTableSortItem[] = [
-    {name: 'assessment_date', sort: EtoolsTableColumnSort.Desc},
-    {name: 'partner_name', sort: EtoolsTableColumnSort.Asc}
-  ];
-
-  @property({type: Array})
-  filters!: EtoolsFilter[];
-
-  @property({type: Object})
-  selectedFilters!: FilterKeysAndTheirSelectedValues;
-
-  @property({type: Boolean})
-  canAdd = false;
+  filters!: EtoolsFilter[] | null;
 
   @property({type: Boolean})
   canExport = false;
 
   @property({type: String})
-  queryParams = '';
+  exportParams = '';
 
   @property({type: Boolean})
   showLoading = false;
 
-  @property({type: Array})
   listColumns: EtoolsTableColumn[] = [
     {
       label: 'Reference No.',
-      name: 'ref_number',
+      name: 'number',
       link_tmpl: `${ROOT_PATH}interventions/:id/details`,
-      type: EtoolsTableColumnType.Link
+      type: EtoolsTableColumnType.Link,
+      sort: null
     },
     {
-      label: 'Assessment Date',
-      name: 'assessment_date',
-      type: EtoolsTableColumnType.Date,
-      sort: EtoolsTableColumnSort.Desc
-    },
-    {
-      label: 'Partner Org',
+      label: 'Partner Org Name',
       name: 'partner_name',
       type: EtoolsTableColumnType.Text,
-      sort: EtoolsTableColumnSort.Asc
+      sort: null
+    },
+    {
+      label: 'Doc Type',
+      name: 'document_type',
+      type: EtoolsTableColumnType.Text,
+      sort: null
     },
     {
       label: 'Status',
       name: 'status',
-      type: EtoolsTableColumnType.Text
+      type: EtoolsTableColumnType.Text,
+      capitalize: true,
+      sort: null
     },
     {
-      label: 'Assessor',
-      name: 'assessor',
-      type: EtoolsTableColumnType.Text
+      label: 'Title',
+      name: 'title',
+      type: EtoolsTableColumnType.Text,
+      sort: null
     },
     {
-      label: 'Rating',
-      name: 'rating',
-      type: EtoolsTableColumnType.Text
+      label: 'Start Date',
+      name: 'start',
+      type: EtoolsTableColumnType.Date,
+      sort: null
+    },
+    {
+      label: 'End Date',
+      name: 'end',
+      type: EtoolsTableColumnType.Date,
+      sort: null
     }
   ];
 
-  @property({type: Array})
-  listData: AnyObject[] = [];
+  private listHelper: InterventionsListHelper = new InterventionsListHelper();
+  private routeDetails!: RouteDetails | null;
+  private paramsInitialized = false;
 
   stateChanged(state: RootState) {
     const routeDetails = get(state, 'app.routeDetails');
     if (!(routeDetails.routeName === 'interventions' && routeDetails.subRouteName === 'list')) {
+      this.paramsInitialized = false;
+      this.filters = null;
+      this.routeDetails = null;
       return; // Avoid code execution while on a different page
     }
 
     const stateRouteDetails = {...state.app!.routeDetails};
-
     if (JSON.stringify(stateRouteDetails) !== JSON.stringify(this.routeDetails)) {
-      this.routeDetails = stateRouteDetails;
-
-      if (!this.routeDetails.queryParams || Object.keys(this.routeDetails.queryParams).length === 0) {
-        this.selectedFilters = {...lastSelectedFilters};
-        // update url with params
-        this.updateUrlListQueryParams();
-
-        return;
-      } else {
-        // init selectedFilters, sort, page, page_size from url params
-        this.updateListParamsFromRouteDetails(this.routeDetails.queryParams);
-        // get list data based on filters, sort and pagination
-        this.getListData();
-      }
+      this.onParamsChange(stateRouteDetails);
     }
 
     if (state.user && state.user.permissions) {
-      this.canAdd = state.user.permissions.canAdd;
       this.canExport = state.user.permissions.canExport;
     }
 
     this.initFiltersForDisplay(state);
   }
 
-  initFiltersForDisplay(state: RootState) {
-    if (this.dataRequiredByFiltersHasBeenLoaded(state)) {
+  onParamsChange(routeDetails: RouteDetails): void {
+    this.routeDetails = routeDetails;
+
+    const currentParams: GenericObject<any> = this.routeDetails.queryParams || {};
+    const paramsValid: boolean = this.paramsInitialized || this.initializeAndValidateParams(currentParams);
+
+    if (paramsValid) {
+      // get data as params are valid
+      this.getListData();
+    }
+  }
+
+  getRowDetails(item: InterventionListData): {rowHTML: TemplateResult} {
+    return {
+      rowHTML: html`
+        <td colspan="8">
+          <div class="details">
+            <div>
+              <div class="title">Total Budget</div>
+              <div class="detail">${item.budget_currency || ''} ${item.total_budget}</div>
+            </div>
+            <div>
+              <div class="title">UNICEF Cache Contribution</div>
+              <div class="detail">${item.budget_currency || ''} ${item.cso_contribution}</div>
+            </div>
+          </div>
+        </td>
+      `
+    };
+  }
+
+  filtersChange(e: CustomEvent) {
+    this.updateCurrentParams({...e.detail, page: 1});
+  }
+
+  paginatorChange(e: CustomEvent) {
+    const {page, page_size}: EtoolsPaginator = e.detail;
+    this.updateCurrentParams({page, page_size});
+  }
+
+  sortChange(e: CustomEvent) {
+    const sort = getSortFields(e.detail);
+    this.updateCurrentParams({sort: getUrlQueryStringSort(sort)});
+  }
+
+  private updateCurrentParams(paramsToUpdate: GenericObject<any>): void {
+    const currentParams: RouteQueryParams = this.routeDetails!.queryParams || {};
+    const newParams: RouteQueryParams = {...currentParams, ...paramsToUpdate};
+    const stringParams: string = buildUrlQueryString(newParams);
+    this.exportParams = stringParams;
+    replaceAppLocation(`${this.routeDetails!.path}?${stringParams}`, true);
+  }
+
+  private async getListData() {
+    const currentParams: GenericObject<any> = this.routeDetails!.queryParams || {};
+    try {
+      this.showLoading = true;
+      const {list, paginator}: ListHelperResponse<InterventionListData> = await this.listHelper.getList(currentParams);
+      this.listData = list;
+      // update paginator (total_pages, visible_range, count...)
+      this.paginator = paginator;
+      this.showLoading = false;
+    } catch (error) {
+      console.error('[EtoolsInterventionsList]: get Interventions req error...', error);
+    }
+  }
+
+  private initFiltersForDisplay(state: RootState) {
+    if (!this.filters && this.dataRequiredByFiltersHasBeenLoaded(state)) {
       const availableFilters = [...defaultFilters];
       this.populateDropdownFilterOptionsFromCommonData(state.commonData, availableFilters);
 
       // update filter selection and assign the result to etools-filters(trigger render)
-      this.filters = updateFiltersSelectedValues(this.selectedFilters, availableFilters);
-      lastSelectedFilters = {...this.selectedFilters};
+      const currentParams: RouteQueryParams = state.app!.routeDetails.queryParams || {};
+      this.filters = updateFiltersSelectedValues(currentParams, availableFilters);
     }
   }
 
-  private dataRequiredByFiltersHasBeenLoaded(state: RootState) {
-    if (
-      state.commonData &&
-      get(state, 'commonData.unicefUsers.length') &&
+  private dataRequiredByFiltersHasBeenLoaded(state: RootState): boolean {
+    return !!(state.commonData &&
       get(state, 'commonData.partners.length') &&
-      this.routeDetails.queryParams &&
-      Object.keys(this.routeDetails.queryParams).length > 0
-    ) {
+      this.routeDetails!.queryParams &&
+      Object.keys(this.routeDetails!.queryParams).length > 0);
+  }
+
+  private populateDropdownFilterOptionsFromCommonData(commonData: any, currentFilters: EtoolsFilter[]) {
+    updateFilterSelectionOptions(currentFilters, 'partners', commonData.partners);
+  }
+
+  private initializeAndValidateParams(currentParams: GenericObject<any>): boolean {
+    this.paramsInitialized = true;
+
+    // update sort in listColumns
+    const [field, direction] = (currentParams.sort || '').split('.');
+    if (field && direction) {
+      this.listColumns = this.listColumns.map((column: EtoolsTableColumn) => {
+        if (column.name !== field) {
+          return column;
+        } else {
+          return {
+            ...column,
+            sort: direction as EtoolsTableColumnSort
+          }
+        }
+      });
+    }
+
+    // set required params in url
+    if (!currentParams.page_size || !currentParams.status) {
+      this.updateCurrentParams({
+        page_size: '20',
+        status: [DRAFT_STATUS, SIGNED_STATUS, ACTIVE_STATUS, ENDED_STATUS, SUSPENDED_STATUS]
+      });
+      return false
+    } else {
       return true;
     }
-    return false;
   }
 
-  populateDropdownFilterOptionsFromCommonData(commonData: any, currentFilters: EtoolsFilter[]) {
-    updateFilterSelectionOptions(currentFilters, 'unicef_focal_point', commonData.unicefUsers);
-    updateFilterSelectionOptions(currentFilters, 'partner', commonData.partners);
-  }
-
-  updateUrlListQueryParams() {
-    const qs = this.getParamsForQuery();
-    this.queryParams = qs;
-    replaceAppLocation(`${this.routeDetails.path}?${qs}`, true);
-  }
-
-  getParamsForQuery() {
-    const params = {
-      ...this.selectedFilters,
-      page: this.paginator.page,
-      page_size: this.paginator.page_size,
-      sort: getUrlQueryStringSort(this.sort)
-    };
-    return buildUrlQueryString(params);
-  }
-
-  updateListParamsFromRouteDetails(queryParams: RouteQueryParams) {
-    // update sort fields
-    if (queryParams.sort) {
-      this.sort = getSortFieldsFromUrlSortParams(queryParams.sort);
-    }
-
-    // update paginator fields
-    const paginatorParams: AnyObject = {};
-    if (queryParams.page) {
-      paginatorParams.page = Number(queryParams.page);
-    }
-    if (queryParams.page_size) {
-      paginatorParams.page_size = Number(queryParams.page_size);
-    }
-    this.paginator = {...this.paginator, ...paginatorParams};
-
-    // update selectedFilters
-    this.selectedFilters = getSelectedFiltersFromUrlParams(queryParams);
-  }
-
-  filtersChange(e: CustomEvent) {
-    this.selectedFilters = {...e.detail};
-    this.paginator.page = 1;
-    this.updateUrlListQueryParams();
-  }
-
-  paginatorChange(e: CustomEvent) {
-    const newPaginator = {...e.detail};
-    this.paginator = newPaginator;
-    this.updateUrlListQueryParams();
-  }
-
-  sortChange(e: CustomEvent) {
-    this.sort = getSortFields(e.detail);
-    this.updateUrlListQueryParams();
-  }
-
-  getListData() {
-    getListDummydata(this.paginator)
-      .then((response: any) => {
-        // update paginator (total_pages, visible_range, count...)
-        this.paginator = getPaginatorWithBackend(this.paginator, response);
-        this.listData = [...response.results];
-      })
-      .catch((err: any) => {
-        // TODO: handle req errors
-        console.error(err);
-      });
-  }
-
-  exportRecord() {
-    fireEvent(this, 'toast', {text: 'Export not implemented...'});
-  }
 }
