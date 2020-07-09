@@ -1,6 +1,6 @@
 declare const moment: any;
-import {convertDate} from '../../../../../../../utils/date-utils';
-import {Constructor} from '../../../../../../../../typings/globals.types';
+import {convertDate} from '../../../utils/date-utils';
+import {Constructor} from '../../../common/models/globals.types';
 import {PolymerElement} from '@polymer/polymer';
 import {property} from '@polymer/decorators';
 

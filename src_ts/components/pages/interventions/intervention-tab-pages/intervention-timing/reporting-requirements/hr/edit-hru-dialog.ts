@@ -1,27 +1,28 @@
 import {PolymerElement, html} from '@polymer/polymer';
 import '@polymer/paper-button/paper-button.js';
 declare const moment: any;
-import '@unicef-polymer/etools-dialog/etools-dialog.js';
-import '@unicef-polymer/etools-data-table/etools-data-table.js';
+import '@unicef-polymer/etools-dialog/etools-dialog';
+import '@unicef-polymer/etools-data-table/etools-data-table';
 import '@unicef-polymer/etools-date-time/calendar-lite';
-import '@unicef-polymer/etools-date-time/datepicker-lite.js';
+import '@unicef-polymer/etools-date-time/datepicker-lite';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import './hru-list.js';
-import CONSTANTS from '../../../../../../../../config/app-constants.js';
-import {fireEvent} from '../../../../../../../utils/fire-custom-event.js';
-import {gridLayoutStyles} from '../../../../../../../styles/grid-layout-styles.js';
-import {buttonsStyles} from '../../../../../../../styles/buttons-styles.js';
-import {requiredFieldStarredStyles} from '../../../../../../../styles/required-field-styles.js';
-import {prepareDatepickerDate, convertDate} from '../../../../../../../utils/date-utils.js';
-import EndpointsMixin from '../../../../../../../endpoints/endpoints-mixin.js';
-import {isEmptyObject} from '../../../../../../../utils/utils.js';
+import CONSTANTS from '../../../utils/constants';
+import {fireEvent} from '../../../../../../utils/fire-custom-event';
+import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
+import {buttonsStyles} from '../../../common/styles/button-styles';
+import {requiredFieldStarredStyles} from '../../../common/styles/required-field-styles';
+import {prepareDatepickerDate, convertDate} from '../../../utils/date-utils';
+import EndpointsMixin from '../mixins/endpoints-mixin.js';
+import {isEmptyObject} from '../../../common/types/types';
 import {connect} from 'pwa-helpers/connect-mixin';
-import {store, RootState} from '../../../../../../../../store.js';
-import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser.js';
+// @lajos TO BE CHECKED, and fixed when migrating to Lit Element
+import {store} from '../../../../../../../redux/store';
+import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {property} from '@polymer/decorators';
-import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
-import {GenericObject} from '../../../../../../../../typings/globals.types.js';
+import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
+import {GenericObject} from '../../../common/models/globals.types';
 
 /**
  * @polymer
@@ -29,9 +30,12 @@ import {GenericObject} from '../../../../../../../../typings/globals.types.js';
  * @appliesMixin EndpointsMixin
  */
 class EditHruDialog extends connect(store)(EndpointsMixin(PolymerElement)) {
+  static get styles() {
+    return [gridLayoutStylesLit, buttonsStyles];
+  }
   static get template() {
     return html`
-      ${gridLayoutStyles} ${buttonsStyles} ${requiredFieldStarredStyles}
+      ${requiredFieldStarredStyles}
       <style include="data-table-styles">
         *[hidden] {
           display: none !important;
@@ -151,8 +155,11 @@ class EditHruDialog extends connect(store)(EndpointsMixin(PolymerElement)) {
     return ['intervDataChanged(interventionStart, interventionId)'];
   }
 
-  stateChanged(state: RootState) {
-    this.inAmendment = state.pageData!.in_amendment;
+  stateChanged(state: any) {
+    // @lajos TO DO check if in_amendment is neccesary
+    this.inAmendment = false;
+    // original:
+    // this.inAmendment = state.pageData!.in_amendment;
   }
 
   intervDataChanged() {

@@ -31,6 +31,7 @@ export class InterventionTiming extends connect(LitElement) {
   intervention!: AnyObject;
 
   stateChanged(state: any) {
+    console.log('--------------------------------------------------------------');
     const currentIntervention = get(state, 'interventions.current');
     this.intervention = cloneDeep(currentIntervention);
   }

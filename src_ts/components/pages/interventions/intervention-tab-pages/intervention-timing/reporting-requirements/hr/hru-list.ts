@@ -1,16 +1,16 @@
 import {PolymerElement, html} from '@polymer/polymer';
-import '@unicef-polymer/etools-data-table/etools-data-table.js';
+import '@unicef-polymer/etools-data-table/etools-data-table';
 
-import '../../../../../../../layout/icons-actions.js';
-import CommonMixin from '../../../../../../../mixins/common-mixin.js';
-import {GenericObject} from '../../../../../../../../typings/globals.types.js';
-import {fireEvent} from '../../../../../../../utils/fire-custom-event.js';
-import ReportingReqPastDatesCheckMixin from '../mixins/reporting-req-past-dates-check.js';
-import {gridLayoutStyles} from '../../../../../../../styles/grid-layout-styles.js';
-import {reportingRequirementsListStyles} from '../styles/reporting-requirements-lists-styles.js';
-import {isEmptyObject} from '../../../../../../../utils/utils.js';
+import '../../../common/layout/icons-actions';
+import CommonMixin from '../mixins/common-mixin';
+import {GenericObject} from '../../../common/models/globals.types';
+import {fireEvent} from '../../../../../../utils/fire-custom-event';
+import ReportingReqPastDatesCheckMixin from '../mixins/reporting-req-past-dates-check';
+import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
+import {reportingRequirementsListStyles} from '../styles/reporting-requirements-lists-styles';
+import {isEmptyObject} from '../../../common/types/types';
 import {property} from '@polymer/decorators';
-import {IconsActionsEl} from '../../../../../../../layout/icons-actions.js';
+import {IconsActionsEl} from '../../../common/layout/icons-actions';
 
 /**
  * @polymer
@@ -19,10 +19,13 @@ import {IconsActionsEl} from '../../../../../../../layout/icons-actions.js';
  * @appliesMixin ReportingReqPastDatesCheckMixin
  */
 class HruList extends CommonMixin(ReportingReqPastDatesCheckMixin(PolymerElement)) {
+  static get styles() {
+    return [gridLayoutStylesLit];
+  }
   static get template() {
     // language=HTML
     return html`
-      ${gridLayoutStyles} ${reportingRequirementsListStyles}
+      ${reportingRequirementsListStyles}
       <style include="data-table-styles">
         :host([with-scroll]) {
           max-height: 400px;

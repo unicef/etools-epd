@@ -1,13 +1,14 @@
 import {PolymerElement, html} from '@polymer/polymer';
 import uniq from 'lodash-es/uniq';
-import '@unicef-polymer/etools-data-table/etools-data-table.js';
-import EndpointsMixin from '../../../../../../../endpoints/endpoints-mixin';
-import CommonMixin from '../../../../../../../mixins/common-mixin';
-import {ResultLinkLowerResult, ExpectedResult} from '../../../../../../../../typings/intervention.types';
-import {isEmptyObject} from '../../../../../../../utils/utils';
-import {gridLayoutStyles} from '../../../../../../../styles/grid-layout-styles';
+import '@unicef-polymer/etools-data-table/etools-data-table';
+// @lajos this was imported from PMP
+import EndpointsMixin from '../mixins/endpoints-mixin';
+import CommonMixin from '../mixins/common-mixin';
+import {ResultLinkLowerResult, ExpectedResult} from '../../../common/models/intervention-types';
+import {isEmptyObject} from '../../../common/types/types';
+import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
-import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser.js';
+import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {property} from '@polymer/decorators';
 
 /**
@@ -18,9 +19,11 @@ import {property} from '@polymer/decorators';
  * @appliesMixin CommonMixin
  */
 class HumanitarianReportingReqCluster extends CommonMixin(EndpointsMixin(PolymerElement)) {
+  static get styles() {
+    return [gridLayoutStylesLit];
+  }
   static get template() {
     return html`
-      ${gridLayoutStyles}
       <style include="data-table-styles">
         :host {
           display: block;

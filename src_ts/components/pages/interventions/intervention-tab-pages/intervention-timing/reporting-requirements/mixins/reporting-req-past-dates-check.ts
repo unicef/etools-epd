@@ -1,4 +1,4 @@
-import {Constructor} from '../../../../../../../../typings/globals.types';
+import {Constructor} from '../../../common/types/types';
 import {PolymerElement} from '@polymer/polymer';
 import {property} from '@polymer/decorators';
 

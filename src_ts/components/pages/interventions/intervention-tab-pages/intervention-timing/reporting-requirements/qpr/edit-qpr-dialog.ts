@@ -1,25 +1,24 @@
 import {PolymerElement, html} from '@polymer/polymer';
-import '@polymer/iron-label/iron-label.js';
-import '@polymer/paper-button/paper-button.js';
+import '@polymer/iron-label/iron-label';
+import '@polymer/paper-button/paper-button';
 
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
 
-import {prepareDatepickerDate} from '../../../../../../../utils/date-utils.js';
-import EndpointsMixin from '../../../../../../../endpoints/endpoints-mixin.js';
+import {prepareDatepickerDate} from '../../../utils/date-utils';
+import EndpointsMixin from '../mixins/endpoints-mixin';
 import './qpr-list.js';
-import {fireEvent} from '../../../../../../../utils/fire-custom-event.js';
-import CONSTANTS from '../../../../../../../../config/app-constants.js';
-
+import CONSTANTS from '../../../utils/constants';
 import '@unicef-polymer/etools-date-time/calendar-lite.js';
-import {gridLayoutStyles} from '../../../../../../../styles/grid-layout-styles.js';
-import {buttonsStyles} from '../../../../../../../styles/buttons-styles.js';
+import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
+import {buttonsStyles} from '../../../common/styles/button-styles';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser.js';
 import {property} from '@polymer/decorators';
-import {GenericObject} from '../../../../../../../../typings/globals.types.js';
+import {GenericObject} from '../../../common/models/globals.types';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
 import {QprListEl} from './qpr-list.js';
+import {fireEvent} from '../../../../../../utils/fire-custom-event';
 
 /**
  * @polymer
@@ -27,9 +26,11 @@ import {QprListEl} from './qpr-list.js';
  * @appliesMixin EndpointsMixin
  */
 class EditQprDialog extends EndpointsMixin(PolymerElement) {
+  static get styles() {
+    return [gridLayoutStylesLit, buttonsStyles];
+  }
   static get template() {
     return html`
-      ${gridLayoutStyles} ${buttonsStyles}
       <style>
         *[hidden] {
           display: none !important;

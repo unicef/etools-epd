@@ -1,5 +1,5 @@
-import {fireEvent} from '../../../../../../../utils/fire-custom-event';
-import CONSTANTS from '../../../../../../../../config/app-constants';
+import {fireEvent} from '../../../../../../utils/fire-custom-event';
+import CONSTANTS from '../../../utils/constants';
 
 import '@polymer/paper-button/paper-button.js';
 
@@ -7,10 +7,10 @@ import './edit-hru-dialog.js';
 import './hru-list.js';
 import {PolymerElement, html} from '@polymer/polymer';
 import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
-import FrontendPaginationMixin from '../../../../../../../mixins/frontend-pagination-mixin';
-import {ExpectedResult} from '../../../../../../../../typings/intervention.types';
-import {buttonsStyles} from '../../../../../../../styles/buttons-styles';
-import {gridLayoutStyles} from '../../../../../../../styles/grid-layout-styles';
+import FrontendPaginationMixin from '../mixins/frontend-pagination-mixin';
+import {ExpectedResult} from '../../../common/models/intervention-types';
+import {buttonsStyles} from '../../../common/styles/button-styles';
+import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
 import {property} from '@polymer/decorators';
 import {EditHruDialog} from './edit-hru-dialog.js';
 import {HruListEl} from './hru-list.js';
@@ -23,9 +23,11 @@ import {HruListEl} from './hru-list.js';
  * @appliesMixin FrontendPaginationMixin
  */
 class HumanitarianReportingReqUnicef extends FrontendPaginationMixin(ReportingRequirementsCommonMixin(PolymerElement)) {
+  static get styles() {
+    return [gridLayoutStylesLit, buttonsStyles];
+  }
   static get template() {
     return html`
-      ${buttonsStyles} ${gridLayoutStyles}
       <style>
         :host {
           display: block;

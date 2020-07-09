@@ -1,21 +1,21 @@
 import {PolymerElement, html} from '@polymer/polymer';
-import '@polymer/paper-button/paper-button.js';
-import '@unicef-polymer/etools-data-table/etools-data-table.js';
+import '@polymer/paper-button/paper-button';
+import '@unicef-polymer/etools-data-table/etools-data-table';
 
 import {createDynamicDialog} from '@unicef-polymer/etools-dialog/dynamic-dialog';
-import '../../../../../../../layout/icons-actions.js';
-import './add-edit-special-rep-req.js';
-import CommonMixin from '../../../../../../../mixins/common-mixin.js';
-import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin.js';
-import {buttonsStyles} from '../../../../../../../styles/buttons-styles.js';
-import {gridLayoutStyles} from '../../../../../../../styles/grid-layout-styles.js';
-import {reportingRequirementsListStyles} from '../styles/reporting-requirements-lists-styles.js';
-import CONSTANTS from '../../../../../../../../config/app-constants.js';
+import '../../../common/layout/icons-actions';
+import './add-edit-special-rep-req';
+import CommonMixin from '../mixins/common-mixin';
+import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
+import {buttonsStyles} from '../../../common/styles/button-styles';
+import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
+import {reportingRequirementsListStyles} from '../styles/reporting-requirements-lists-styles';
+import CONSTANTS from '../../../utils/constants';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser.js';
+import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {property} from '@polymer/decorators';
-import {AddEditSpecialRepReqEl} from './add-edit-special-rep-req.js';
+import {AddEditSpecialRepReqEl} from './add-edit-special-rep-req';
 import EtoolsDialog from '@unicef-polymer/etools-dialog';
 
 /**
@@ -27,9 +27,12 @@ import EtoolsDialog from '@unicef-polymer/etools-dialog';
  * @appliesMixin ReportingRequirementsCommonMixin
  */
 class SpecialReportingRequirements extends CommonMixin(ReportingRequirementsCommonMixin(PolymerElement)) {
+  static get styles() {
+    return [gridLayoutStylesLit, buttonsStyles];
+  }
   static get template() {
     return html`
-      ${buttonsStyles} ${gridLayoutStyles} ${reportingRequirementsListStyles}
+      ${reportingRequirementsListStyles}
       <style include="data-table-styles"></style>
 
       <div class="row-h" hidden$="[[!_empty(reportingRequirements, reportingRequirements.length)]]">

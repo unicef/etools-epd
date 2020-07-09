@@ -1,10 +1,9 @@
-import EndpointsMixin from '../../../../../../../endpoints/endpoints-mixin';
+import EndpointsMixin from '../mixins/endpoints-mixin';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import CONSTANTS from '../../../../../../../../config/app-constants';
-import {isEmptyObject} from '../../../../../../../utils/utils';
-import {logError} from '@unicef-polymer/etools-behaviors/etools-logging.js';
+import CONSTANTS from '../../../utils/constants';
+import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {Constructor} from '../../../../../../../../typings/globals.types';
+import {Constructor, isEmptyObject} from '../../../common/types/types';
 import {PolymerElement} from '@polymer/polymer';
 import {property} from '@polymer/decorators';
 

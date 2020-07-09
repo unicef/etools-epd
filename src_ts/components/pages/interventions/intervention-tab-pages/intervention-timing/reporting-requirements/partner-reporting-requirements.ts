@@ -1,5 +1,5 @@
-import {LitElement, customElement, html, property} from 'lit-element';
-import {connect} from '../../utils/store-subscribe-mixin';
+import {PolymerElement, html} from '@polymer/polymer/polymer-element';
+import '@polymer/polymer/polymer-element';
 import '@polymer/iron-icons/iron-icons';
 import '@polymer/iron-selector/iron-selector';
 import '@polymer/iron-pages/iron-pages';
@@ -7,23 +7,28 @@ import '@polymer/iron-flex-layout/iron-flex-layout';
 import '@polymer/paper-item/paper-item';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
+
+import './qpr/quarterly-reporting-requirements';
 import './hr/humanitarian-reporting-req-unicef';
 import './hr/humanitarian-reporting-req-cluster';
-import './qpr/quarterly-reporting-requirements';
 import './srr/special-reporting-requirements';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
+import {connect} from 'pwa-helpers/connect-mixin';
+// @lajos Bellow will have to be checked
+import {store} from '../../../../../../redux/store';
+import {property} from '@polymer/decorators';
 import {HumanitarianReportingReqUnicefEl} from './hr/humanitarian-reporting-req-unicef';
 import {QuarterlyReportingRequirementsEL} from './qpr/quarterly-reporting-requirements';
 
 /**
+ * @polymer
  * @customElement
  */
-@customElement('partner-reporting-requirements')
-export class PartnerReportingRequirements extends connect(LitElement) {
+class PartnerReportingRequirements extends connect(store)(PolymerElement) {
   static get styles() {
     return [gridLayoutStylesLit];
   }
-  render() {
+  static get template() {
     return html`
       <style>
         :host {
@@ -93,8 +98,8 @@ export class PartnerReportingRequirements extends connect(LitElement) {
                 <paper-icon-button
                   class="edit-rep-req"
                   icon="create"
-                  @click="_openQprEditDialog"
-                  ?hidden="[[_hideRepReqEditBtn(editMode, qprRequirementsCount)]]"
+                  on-click="_openQprEditDialog"
+                  hidden$="[[_hideRepReqEditBtn(editMode, qprRequirementsCount)]]"
                 ></paper-icon-button>
               </paper-item>
               <paper-item name="humanitarianUnicef" class="nav-menu-item">
@@ -102,8 +107,8 @@ export class PartnerReportingRequirements extends connect(LitElement) {
                 <paper-icon-button
                   class="edit-rep-req"
                   icon="create"
-                  @click="_openHruEditDialog"
-                  ?hidden="[[_hideRepReqEditBtn(editMode, hrUnicefRequirementsCount)]]"
+                  on-click="_openHruEditDialog"
+                  hidden$="[[_hideRepReqEditBtn(editMode, hrUnicefRequirementsCount)]]"
                 ></paper-icon-button>
               </paper-item>
               <paper-item name="humanitarianCluster" class="nav-menu-item">
@@ -195,12 +200,10 @@ export class PartnerReportingRequirements extends connect(LitElement) {
   @property({type: Boolean})
   editMode!: boolean;
 
-  connectedCallback() {
-    super.connectedCallback();
-  }
-
   stateChanged(state: any) {
-    this.editMode = state.pageData!.permissions!.edit.reporting_requirements;
+    // @lajos TO DO: get correct values for bellow
+    // this.editMode = state.intervention!.permissions!.edit.reporting_requirements;
+    this.editMode = false;
   }
 
   _openQprEditDialog() {
@@ -215,3 +218,5 @@ export class PartnerReportingRequirements extends connect(LitElement) {
     return qprCount === 0 || !editMode;
   }
 }
+
+window.customElements.define('partner-reporting-requirements', PartnerReportingRequirements);
