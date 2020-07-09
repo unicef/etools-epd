@@ -1,10 +1,10 @@
 import {createSelector} from 'reselect';
 import {Intervention, Permission, InterventionPermissionsFields} from '../../common/models/intervention-types';
-import {ProgrammeDocumentDates, ProgrammeDocumentDatesPermissions} from './programmeDocumentDates.models';
+import {ProgrammeDocDates, ProgrammeDocumentDatesPermissions} from './programmeDocumentDates.models';
 import {currentInterventionPermissions, currentIntervention} from '../../common/selectors';
 
 export const selectProgrammeDocumentDates = createSelector(currentIntervention, (intervention: Intervention) => {
-  return new ProgrammeDocumentDates(intervention);
+  return new ProgrammeDocDates(intervention);
 });
 
 export const selectProgrammeDocumentDatesPermissions = createSelector(
