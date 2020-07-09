@@ -4,8 +4,8 @@ import '../../../../../../redux/actions/interventions';
 import {connect} from '../../utils/store-subscribe-mixin';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {elevationStyles} from '../../common/styles/elevation-styles';
-import {PdResultsOverview} from './pdResultsOverview.models';
-import {selectPdResultsOverview} from './pdResultsOverview.selectors';
+import {PdBudgetSummary} from './pdBudgetSummary.models';
+import {selectPdBudgetSummary} from './pdBudgetSummary.selectors';
 
 /**
  * @customElement
@@ -29,7 +29,7 @@ export class ResultsOverview extends connect(LitElement) {
           padding-bottom: 5px;
         }
       </style>
-      <section class="elevation page-content filters" elevation="1">
+      <section class="elevation page-content" elevation="1">
         <div class="row-h flex-c">
           <div class="col col-1">
             <span>
@@ -80,52 +80,64 @@ export class ResultsOverview extends connect(LitElement) {
         <div class="row-h flex-c">
           <div class="col col-1">
             <span>
-              <label class="input-label" ?empty="${!this.resultsOverview.currency}">${this.resultsOverview.currency}</label>
-            </span>
-          </div>
-          <div class="col col-1">
-            <span>
-              <label class="input-label" ?empty="${!this.resultsOverview.hq_rate}">${this.resultsOverview.hq_rate} %</label>
-            </span>
-          </div>
-          <div class="col col-1">
-            <span>
-              <label class="input-label" ?empty="${!this.resultsOverview.prgm_effectiveness}">
-                ${this.resultsOverview.prgm_effectiveness} %
+              <label class="input-label" ?empty="${!this.budgetSummary.currency}">
+                ${this.budgetSummary.currency}
               </label>
             </span>
           </div>
           <div class="col col-1">
             <span>
-              <label class="input-label" ?empty="${!this.resultsOverview.total_cso}">${this.resultsOverview.total_cso}</label>
-            </span>
-          </div>
-          <div class="col col-1">
-            <span>
-              <label class="input-label" ?empty="${!this.resultsOverview.total_unicef}">${this.resultsOverview.total_unicef}</label>
-            </span>
-          </div>
-          <div class="col col-1">
-            <span>
-              <label class="input-label" ?empty="${!this.resultsOverview.total_supply}">${this.resultsOverview.total_supply}</label>
-            </span>
-          </div>
-          <div class="col col-1">
-            <span>
-              <label class="input-label" ?empty="${!this.resultsOverview.partner_contrib}">
-                ${this.resultsOverview.partner_contrib}
+              <label class="input-label" ?empty="${!this.budgetSummary.hq_rate}">
+                ${this.budgetSummary.hq_rate} %
               </label>
             </span>
           </div>
           <div class="col col-1">
             <span>
-              <label class="input-label" ?empty="${!this.resultsOverview.total_cash}">${this.resultsOverview.total_cash}</label>
+              <label class="input-label" ?empty="${!this.budgetSummary.prgm_effectiveness}">
+                ${this.budgetSummary.prgm_effectiveness} %
+              </label>
+            </span>
+          </div>
+          <div class="col col-1">
+            <span>
+              <label class="input-label" ?empty="${!this.budgetSummary.total_cso}">
+                ${this.budgetSummary.total_cso}
+              </label>
+            </span>
+          </div>
+          <div class="col col-1">
+            <span>
+              <label class="input-label" ?empty="${!this.budgetSummary.total_unicef}">
+                ${this.budgetSummary.total_unicef}
+              </label>
+            </span>
+          </div>
+          <div class="col col-1">
+            <span>
+              <label class="input-label" ?empty="${!this.budgetSummary.total_supply}">
+                ${this.budgetSummary.total_supply}
+              </label>
+            </span>
+          </div>
+          <div class="col col-1">
+            <span>
+              <label class="input-label" ?empty="${!this.budgetSummary.partner_contrib}">
+                ${this.budgetSummary.partner_contrib}
+              </label>
+            </span>
+          </div>
+          <div class="col col-1">
+            <span>
+              <label class="input-label" ?empty="${!this.budgetSummary.total_cash}">
+                ${this.budgetSummary.total_cash}
+              </label>
             </span>
           </div>
           <div class="col col-2">
             <span>
-              <label class="input-label" ?empty="${!this.resultsOverview.total_amt}">
-                ${this.resultsOverview.total_amt}
+              <label class="input-label" ?empty="${!this.budgetSummary.total_amt}">
+                ${this.budgetSummary.total_amt}
               </label>
             </span>
           </div>
@@ -135,7 +147,7 @@ export class ResultsOverview extends connect(LitElement) {
   }
 
   @property({type: Object})
-  resultsOverview!: PdResultsOverview;
+  budgetSummary!: PdBudgetSummary;
 
   connectedCallback() {
     super.connectedCallback();
@@ -143,7 +155,7 @@ export class ResultsOverview extends connect(LitElement) {
 
   public stateChanged(state: any) {
     if (state.interventions.current) {
-      this.resultsOverview = selectPdResultsOverview(state);
+      this.budgetSummary = selectPdBudgetSummary(state);
     }
   }
 }

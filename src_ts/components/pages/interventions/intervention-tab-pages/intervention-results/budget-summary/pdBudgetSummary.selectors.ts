@@ -1,11 +1,13 @@
 import {createSelector} from 'reselect';
 import {PlannedBudget} from '../../common/models/intervention-types';
-import {PdResultsOverview} from './PdResultsOverview.models';
+import {PdBudgetSummary} from './pdBudgetSummary.models';
 import {currentInterventionPlannedBudget} from '../../common/selectors';
 
-export const selectPdResultsOverview = createSelector(
+// @lajos TO DO: check exactly where the values come from
+
+export const selectPdBudgetSummary = createSelector(
   currentInterventionPlannedBudget,
   (plannedBudget: PlannedBudget) => {
-    return new PdResultsOverview(plannedBudget);
+    return new PdBudgetSummary(plannedBudget);
   }
 );

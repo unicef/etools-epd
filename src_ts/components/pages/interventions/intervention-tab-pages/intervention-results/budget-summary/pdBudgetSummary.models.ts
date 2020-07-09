@@ -1,7 +1,8 @@
 import {ModelsBase} from '../../common/models/models.base';
 import {PlannedBudget} from '../../common/models/intervention-types';
 
-export class PdResultsOverview extends ModelsBase {
+// @lajos TO DO: check exactly where the values come from
+export class PdBudgetSummary extends ModelsBase {
   constructor(plannedBudget: PlannedBudget) {
     super();
     this.setObjProperties(plannedBudget);
