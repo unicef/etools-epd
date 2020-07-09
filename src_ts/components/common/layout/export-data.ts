@@ -89,8 +89,8 @@ export class ExportData extends LitElement {
   @property({type: String})
   endpoint = '';
 
-  export(type: string) {
-    const url = this.endpoint + `export/${type}/` + (this.params ? `?${this.params}` : '');
+  export(_type: string) {
+    // const url = this.endpoint + `export/${_type}/` + (this.params ? `?${this.params}` : '');
     // Export not implemented yet
     // window.open(url, '_blank');
     fireEvent(this, 'toast', {text: 'Export not implemented...'});
