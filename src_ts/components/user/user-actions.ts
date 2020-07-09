@@ -5,12 +5,13 @@ import {getEndpoint} from '../../endpoints/endpoints';
 import {store} from '../../redux/store';
 import {etoolsEndpoints} from '../../endpoints/endpoints-list';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
+import {EtoolsUserModel} from './user-model';
 
 export function getCurrentUser() {
   return sendRequest({
     endpoint: {url: getEndpoint(etoolsEndpoints.userProfile).url}
   })
-    .then((response: AnyObject) => {
+    .then((response: EtoolsUserModel) => {
       store.dispatch(updateUserData(response));
       return response;
     })

@@ -106,11 +106,11 @@ export class AppShell extends connect(store)(LitElement) {
               class="page"
               .store="${store}"
               ?active="${this.isActivePage(
-      this.mainPage,
-      'interventions',
-      this.subPage,
-      'overview|details|results|timing|management|attachments'
-    )}"
+                this.mainPage,
+                'interventions',
+                this.subPage,
+                'overview|details|results|timing|management|attachments'
+              )}"
             >
             </intervention-tabs>
             <page-two class="page" ?active="${this.isActivePage(this.mainPage, 'page-two')}"></page-two>
@@ -173,7 +173,7 @@ export class AppShell extends connect(store)(LitElement) {
     installRouter((location) => store.dispatch(navigate(decodeURIComponent(location.pathname + location.search))));
     installMediaQueryWatcher(`(min-width: 460px)`, () => store.dispatch(updateDrawerState(false)));
 
-    getCurrentUser().then((user) => {
+    getCurrentUser().then((user: EtoolsUserModel) => {
       if (user) {
         store.dispatch(loadPartners());
         store.dispatch(loadLocations());

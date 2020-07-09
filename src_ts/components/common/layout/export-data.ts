@@ -64,8 +64,8 @@ export class ExportData extends LitElement {
         </paper-button>
         <paper-listbox slot="dropdown-content">
           ${this.exportLinks.map(
-      (item) => html` <paper-item @tap="${() => this.export(item.type)}">${item.name}</paper-item>`
-    )}
+            (item) => html` <paper-item @tap="${() => this.export(item.type)}">${item.name}</paper-item>`
+          )}
         </paper-listbox>
       </paper-menu-button>
     `;
