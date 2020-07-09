@@ -1,7 +1,8 @@
 import {ModelsBase} from '../../common/models/models.base';
 import {Intervention} from '../../common/models/intervention-types';
 
-// @lajos TO DO: refactor bellow so that data is populated(wait PR to be merged from Dan and him to test his code)
+// @lajos TO DO: values are populated
+// @lajos TO DO: check with backend about cfei_number and humanitarian values, where they shuld come from
 
 export class PdInterventionOverview extends ModelsBase {
   constructor(intervention: Intervention) {
