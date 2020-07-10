@@ -197,6 +197,8 @@ export class GenderEquityRatingElement extends PermissionsMixin(connect(LitEleme
   }
 
   cancelGenderEquity() {
+    // @@dci section data it's not updated unless I set the genderEquityRating to undefined first
+    // TODO: investigate this
     this.genderEquityRating = undefined;
     setTimeout(() => {
       this.genderEquityRating = cloneDeep(this.originalGenderEquityRating);
