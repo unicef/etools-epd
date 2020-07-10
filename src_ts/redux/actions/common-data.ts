@@ -3,6 +3,7 @@ import {AnyObject} from '../../types/globals';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {etoolsEndpoints} from '../../endpoints/endpoints-list';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
+import {getGenderEquityRatingsDummy} from '../../components/pages/interventions/list/list-dummy-data'
 
 const LOGS_PREFIX = 'Redux common-data actions';
 
@@ -112,6 +113,8 @@ const handleStaticData = (staticData: AnyObject) => (dispatch: any) => {
     }
     if (staticData.genderEquityRatings) {
       dispatch(setGenderEquityRatings(staticData.genderEquityRatings));
+    } else {
+      dispatch(setGenderEquityRatings(getGenderEquityRatingsDummy()));
     }
   }
 };

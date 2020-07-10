@@ -6,4 +6,7 @@ export class ModelsBase {
   setObjProperties(dataSource: Intervention | InterventionPermissionsFields) {
     Object.assign(this, pick(dataSource, Object.keys(this as AnyObject)));
   }
+  setObjProperty(propKey: string, propValue: AnyObject) {
+    (<any>this)[propKey] = propValue;
+  }
 }

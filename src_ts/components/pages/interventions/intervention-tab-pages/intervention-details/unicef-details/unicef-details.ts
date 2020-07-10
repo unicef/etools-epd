@@ -30,6 +30,10 @@ export class UnicefDetailsElement extends PermissionsMixin(connect(LitElement)) 
   }
   render() {
     // language=HTML
+    if (!this.pdUnicefDetails) {
+      return html` ${sharedStyles}
+        <etools-loading loading-text="Loading..." active></etools-loading>`;
+    }
     return html`
     ${sharedStyles}
       <style>
@@ -96,7 +100,7 @@ export class UnicefDetailsElement extends PermissionsMixin(connect(LitElement)) 
               .options="${this.cluster_list}"
               option-label="name"
               option-value="id"
-              .selectedValues="${this.pdUnicefDetails.clusters}"
+              .selectedValues="${this.pdUnicefDetails.cluster_names}"
               readonly
               trigger-value-change-event>
           </div>
@@ -199,11 +203,11 @@ export class UnicefDetailsElement extends PermissionsMixin(connect(LitElement)) 
     // @@dci need to refactor this when things got clear
     if (!this.isUnicefUser) {
       // if user is not Unicef user, this is opened in read-only mode and we just display already saved
-      this.focal_point_list = [...this.pdUnicefDetails.focal_point_list];
-      this.section_list = [...this.pdUnicefDetails.section_list];
-      this.cluster_list = [...this.pdUnicefDetails.cluster_list];
-      this.office_list = [...this.pdUnicefDetails.office_list];
-      this.budget_owner_list = [...this.pdUnicefDetails.budget_owner_list];
+      this.focal_point_list = [...this.pdUnicefDetails.unicef_focal_points];
+      this.section_list = [...this.pdUnicefDetails.sections];
+      this.cluster_list = [...this.pdUnicefDetails.cluster_names];
+      this.office_list = [...this.pdUnicefDetails.offices];
+      this.budget_owner_list = [...this.pdUnicefDetails.unicef_budget_owner];
     } else {
       if (get(state, 'commonData.unicefUsers.length')) {
         this.focal_point_list = [...state.commonData!.unicefUsers];
