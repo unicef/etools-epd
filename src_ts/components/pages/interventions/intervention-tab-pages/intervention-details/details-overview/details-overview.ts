@@ -5,8 +5,8 @@ import '../../../../../../redux/actions/interventions';
 import {connect} from '../../utils/store-subscribe-mixin';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {elevationStyles} from '../../common/styles/elevation-styles';
-import {PdInterventionOverview} from './pdInterventionOverview.models';
-import {selectPdInterventionOverview} from './pdInterventionOverview.selectors';
+import {InterventionOverview} from './interventionOverview.models';
+import {selectInterventionOverview} from './interventionOverview.selectors';
 
 /**
  * @customElement
@@ -88,7 +88,7 @@ export class DetailsOverview extends connect(LitElement) {
   }
 
   @property({type: Object})
-  interventionOverview!: PdInterventionOverview;
+  interventionOverview!: InterventionOverview;
 
   connectedCallback() {
     super.connectedCallback();
@@ -96,7 +96,7 @@ export class DetailsOverview extends connect(LitElement) {
 
   public stateChanged(state: any) {
     if (state.interventions.current) {
-      this.interventionOverview = selectPdInterventionOverview(state);
+      this.interventionOverview = selectInterventionOverview(state);
     }
   }
 
