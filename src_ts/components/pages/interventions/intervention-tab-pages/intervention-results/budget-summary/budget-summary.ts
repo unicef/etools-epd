@@ -4,8 +4,8 @@ import '../../../../../../redux/actions/interventions';
 import {connect} from '../../utils/store-subscribe-mixin';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {elevationStyles} from '../../common/styles/elevation-styles';
-import {PdBudgetSummary} from './pdBudgetSummary.models';
-import {selectPdBudgetSummary} from './pdBudgetSummary.selectors';
+import {BudgetSummary} from './budgetSummary.models';
+import {selectBudgetSummary} from './budgetSummary.selectors';
 
 /**
  * @customElement
@@ -147,7 +147,7 @@ export class ResultsOverview extends connect(LitElement) {
   }
 
   @property({type: Object})
-  budgetSummary!: PdBudgetSummary;
+  budgetSummary!: BudgetSummary;
 
   connectedCallback() {
     super.connectedCallback();
@@ -155,7 +155,7 @@ export class ResultsOverview extends connect(LitElement) {
 
   public stateChanged(state: any) {
     if (state.interventions.current) {
-      this.budgetSummary = selectPdBudgetSummary(state);
+      this.budgetSummary = selectBudgetSummary(state);
     }
   }
 }

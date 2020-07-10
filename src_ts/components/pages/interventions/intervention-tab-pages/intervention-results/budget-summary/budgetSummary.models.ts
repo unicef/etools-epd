@@ -3,7 +3,7 @@ import {PlannedBudget} from '../../common/models/intervention-types';
 
 // @lajos TO DO: check exactly where the values come from
 // @lajos TO DO more: check with backend where the values are stored!!!!
-export class PdBudgetSummary extends ModelsBase {
+export class BudgetSummary extends ModelsBase {
   constructor(plannedBudget: PlannedBudget) {
     super();
     this.setObjProperties(plannedBudget);
