@@ -1,9 +1,10 @@
 import {LitElement, html, customElement, property} from 'lit-element';
 import {connect} from '../../utils/store-subscribe-mixin';
 import PermissionsMixin from '../../common/mixins/permissions-mixins';
-// import FrNumbersConsistencyMixin from '../../common/mixins/fr-numbers-consistency-mixin';
+import FrNumbersConsistencyMixin from '../../common/mixins/fr-numbers-consistency-mixin';
 import '@unicef-polymer/etools-date-time/datepicker-lite';
 import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
+import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {Intervention, Permission} from '../../common/models/intervention-types';
@@ -20,7 +21,7 @@ import {validateRequiredFields} from '../../utils/validation-helper';
  * @customElement
  */
 @customElement('programme-document-dates')
-export class ProgrammeDocumentDates extends PermissionsMixin(connect(LitElement)) {
+export class ProgrammeDocumentDates extends PermissionsMixin(FrNumbersConsistencyMixin(connect(LitElement))) {
   static get styles() {
     return [gridLayoutStylesLit];
   }
@@ -56,7 +57,7 @@ export class ProgrammeDocumentDates extends PermissionsMixin(connect(LitElement)
                 slot="field"
                 id="intStart"
                 label="Start date"
-                .value="${this.intervention.start}"
+                .value="${this.programmeDocumentDates.start}"
                 ?readonly="${!this.permissions.edit.start}"
                 ?required="${!this.permissions.required.start}"
                 error-message="Please select start date"
@@ -81,7 +82,7 @@ export class ProgrammeDocumentDates extends PermissionsMixin(connect(LitElement)
                 slot="field"
                 id="intEnd"
                 label="End date"
-                .value="${this.intervention.end}"
+                .value="${this.programmeDocumentDates.end}"
                 ?readonly="${!this.permissions.edit.end}"
                 ?required="${this.permissions.required.end}"
                 error-message="Please select end date"
@@ -112,6 +113,9 @@ export class ProgrammeDocumentDates extends PermissionsMixin(connect(LitElement)
   @property({type: Boolean})
   showLoading = false;
 
+  @property({type: Boolean})
+  editMode = true;
+
   @property({type: Object})
   intervention!: Intervention;
 
@@ -137,13 +141,9 @@ export class ProgrammeDocumentDates extends PermissionsMixin(connect(LitElement)
     super.connectedCallback();
   }
 
-  frsConsistencyWarningIsActive(active: boolean) {
-    return !!active;
-  }
-
   stateChanged(state: any) {
     if (state.interventions.current) {
-      this.intervention = selectProgrammeDocumentDates(state);
+      this.programmeDocumentDates = selectProgrammeDocumentDates(state);
       this.permissions = selectProgrammeDocumentDatesPermissions(state);
       this.setCanEditProgrammeDocumentDates(this.permissions.edit);
       this.originalProgrammeDocumentDates = cloneDeep(this.programmeDocumentDates);
@@ -153,10 +153,10 @@ export class ProgrammeDocumentDates extends PermissionsMixin(connect(LitElement)
 
   populate(state: any) {
     if (get(state, 'interventions.current.start')) {
-      this.intervention.start = state.interventions.current.start;
+      this.programmeDocumentDates.start = state.interventions.current.start;
     }
     if (get(state, 'interventions.current.start')) {
-      this.intervention.end = state.interventions.current.end;
+      this.programmeDocumentDates.end = state.interventions.current.end;
     }
   }
 

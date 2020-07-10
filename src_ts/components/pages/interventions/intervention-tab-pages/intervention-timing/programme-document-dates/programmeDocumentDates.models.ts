@@ -6,8 +6,8 @@ export class ProgrammeDocDates extends ModelsBase {
     super();
     this.setObjProperties(intervention);
   }
-  start!: string;
-  end!: string;
+  start = '';
+  end = '';
 }
 
 export class ProgrammeDocumentDatesPermissions extends ModelsBase {
