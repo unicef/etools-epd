@@ -1,4 +1,4 @@
-import {LitElement, html, property, customElement} from 'lit-element';
+import {LitElement, html, property, customElement, query} from 'lit-element';
 import {connect} from '../../utils/store-subscribe-mixin';
 import {Location} from '../geographical-coverage/geographicalCoverage.models';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
@@ -86,6 +86,8 @@ export class GroupedLocationsDialog extends connect(LitElement) {
           option-label="name"
           option-value="name"
           disable-on-focus-handling
+          trigger-value-change-event
+          @etools-selected-item-changed="${this.adminLevelChanged}"
         >
         </etools-dropdown>
 
@@ -96,51 +98,58 @@ export class GroupedLocationsDialog extends connect(LitElement) {
         <div class="row-padding-v" ?hidden="${this.adminLevel}">
           ${this.interventionLocations.map((item: Location) => html`<div class="top-padding">- ${item.name}</div>`)}
         </div>
-        <div class="row-padding-v" ?hidden="${!this.adminLevel}">
-          ${this.groupedLocations.map(item => html`
-            <div class="parent-padding">
-              <div class="adminLevelLoc">${item.adminLevelLocation.name}</div>
-              <div class="left-padding">
-                ${item.subordinateLocations.map(sub => html`
-                  <div class="child-bottom-padding">
-                    - ${sub.name}
-                  </div>
-                `)}
-              </div>
-            </div>
-          `)}
-        </div>
+
       </etools-dialog>
     `;
   }
 
-  @property({
-    type: Array,
-    observer: GroupedLocationsDialog.prototype.adminLevelsChanged
-  })
-  adminLevels!: {id: number; name: string; admin_level: any}[];
+//   <div class="row-padding-v" ?hidden="${!this.adminLevel}">
+//   ${this.groupedLocations.map(item => html`
+//     <div class="parent-padding">
+//       <div class="adminLevelLoc">${item.adminLevelLocation.name}</div>
+//       <div class="left-padding">
+//         ${item.subordinateLocations.map(sub => html`
+//           <div class="child-bottom-padding">
+//             - ${sub.name}
+//           </div>
+//         `)}
+//       </div>
+//     </div>
+//   `)}
+// </div>
 
-  @property({
-    type: String,
-    observer: GroupedLocationsDialog.prototype.adminLevelChanged
-  })
+  @property({type: Array}) // ??
+  _adminLevels!: {id: number; name: string; admin_level: any}[];
+
+  set adminLevels(locationTypes) {
+    this._adminLevels = this._removeCountry(locationTypes);
+  }
+
+  get adminLevels() {
+    return this._adminLevels;
+  }
+
+  @property({type: String})
   adminLevel!: string | null;
 
   @property({type: Array})
   locations!: Location[];
 
   @property({type: Array})
-  interventionLocations!: Location[];
-
-  @property({
-    type: Array,
-    // @ts-ignore
-    observer: GroupedLocationsDialog.prototype.interventionLocationIdsChanged
-  })
-  interventionLocationIds!: [];
+  interventionLocations: Location[] = [];
 
   @property({type: Array})
-  groupedLocations!: GroupedLocations[] | null;
+  // @ts-ignore
+  interventionLocationIds!: string[];
+
+  // @ts-ignore
+  set interventionLocationIds(locationIds: string[]) {
+    // this.interventionLocationIds = locationIds; // ???
+    this.interventionLocationIdsChanged(locationIds);
+  }
+
+  @property({type: Array})
+  groupedLocations: GroupedLocations[] = [];
 
   @property({type: String})
   message = '';
@@ -150,6 +159,9 @@ export class GroupedLocationsDialog extends connect(LitElement) {
 
   @property({type: Object})
   toastEventSource!: LitElement;
+
+  @query('#groupedLocDialog')
+  groupedLocDialog!: EtoolsDialog;
 
   stateChanged(state) {
     if (!isJsonStrMatch(this.locations, state.commonData!.locations)) {
@@ -173,22 +185,22 @@ export class GroupedLocationsDialog extends connect(LitElement) {
     this.dialogOpened = true;
   }
 
-  adminLevelsChanged(adminLevels: any) {
-    if (!adminLevels || !adminLevels.length) {
-      return;
-    }
-    this._removeCountry(adminLevels);
-  }
+  // adminLevelsChanged(adminLevels: any) {
 
-  _removeCountry(adminLevels: any) {
-    const index = adminLevels.findIndex(function (al: any) {
+  //   this._removeCountry(adminLevels);
+  // }
+
+  _removeCountry(locationTypes: any) {
+    if (!locationTypes || !locationTypes.length) {
+      return [];
+    }
+    const index = locationTypes.findIndex(function (al: any) {
       return al.name === 'Country';
     });
     if (index > -1) {
-      adminLevels.splice(index, 1);
-      const aux = JSON.parse(JSON.stringify(adminLevels));
-      this.adminLevels = [];
-      this.adminLevels = aux;
+      locationTypes.splice(index, 1);
+      // this.adminLevels = [];
+      return JSON.parse(JSON.stringify(locationTypes));
     }
   }
 
@@ -212,15 +224,16 @@ export class GroupedLocationsDialog extends connect(LitElement) {
     this.interventionLocations = interventionLocations;
   }
 
-  adminLevelChanged(selectedAdminLevel: any) {
+  adminLevelChanged(event: CustomEvent) {
+    const selectedAdminLevel = event.detail && event.detail.selectedItem;
+    if (!selectedAdminLevel) {
+      this.groupedLocations = [];
+      return;
+    }
+
     this.message = '';
     const groupedLocations: GroupedLocations[] = [];
     const locationsUnableToGroup = [];
-
-    if (!selectedAdminLevel) {
-      this.groupedLocations = null;
-      return;
-    }
     let i;
     // Build grouped locations structure
     for (i = 0; i < this.interventionLocations.length; i++) {
@@ -257,7 +270,7 @@ export class GroupedLocationsDialog extends connect(LitElement) {
 
     this.groupedLocations = groupedLocations;
 
-    (this.$.groupedLocDialog as EtoolsDialog).notifyResize();
+    (this.groupedLocDialog as EtoolsDialog).notifyResize();
   }
 
   _findInGroupedLocations(groupedLocations: GroupedLocations[], adminLevelLocation: any) {

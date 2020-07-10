@@ -11,6 +11,8 @@ import {Intervention} from '../../common/models/intervention-types';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {RootState} from '../../../../../../redux/store';
 import {isJsonStrMatch} from '../../../../../utils/utils';
+import {interventions} from '../../../../../../redux/reducers/interventions';
+import get from 'lodash-es/get';
 
 /**
  * @customElement
@@ -99,20 +101,24 @@ export class GeographicalCoverage extends connect(LitElement) {
     super.connectedCallback();
     // TODO: remove dummy data
     this.locations = [{id: '1107', name: 'Aaba [Village - LBN54001]', p_code: 'LBN54001'}];
+    this.createDialog();
   }
 
   stateChanged(state: RootState) {
     if (!isJsonStrMatch(this.locations, state.commonData!.locations)) {
       this.locations = [...state.commonData!.locations];
     }
-    this.uploadsStateChanged(state);
+    this.intervention = get(state, 'interventions.current');
+    // this.uploadsStateChanged(state);
   }
 
   private openLocationsDialog() {
-    if (!this.locationsDialog) {
-      this.createDialog();
-      (this.locationsDialog as GroupedLocationsDialog).openDialog();
-    }
+    // if (!this.locationsDialog) {
+    //   this.createDialog();
+    //   (this.locationsDialog as GroupedLocationsDialog).openDialog();
+    // }
+    this.locationsDialog.adminLevel = null;
+    this.locationsDialog.interventionLocationIds = this.intervention.flat_locations;
     (this.locationsDialog as GroupedLocationsDialog).openDialog();
   }
 
