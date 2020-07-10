@@ -1,5 +1,5 @@
 import {PolymerElement, html} from '@polymer/polymer';
-import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
+import {gridLayoutStyles} from '../styles/grid-layout-styles';
 // @lajos bellow 2 where imported from PMP
 import EndpointsMixin from '../mixins/endpoints-mixin';
 import {prepareDatepickerDate} from '../../../utils/date-utils';
@@ -13,9 +13,9 @@ import '@unicef-polymer/etools-date-time/calendar-lite';
 import {fireEvent} from '../../../../../../utils/fire-custom-event';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser.js';
+import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {property} from '@polymer/decorators';
-import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
+import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
 import {GenericObject} from '../../../common/models/globals.types';
 
 /**
@@ -25,12 +25,10 @@ import {GenericObject} from '../../../common/models/globals.types';
  * @appliesMixin EndpointsMixin
  */
 class AddEditSpecialRepReq extends EndpointsMixin(PolymerElement) {
-  static get styles() {
-    return [gridLayoutStylesLit];
-  }
   static get template() {
     // language=HTML
     return html`
+      ${gridLayoutStyles}
       <style>
         :host {
           display: block;

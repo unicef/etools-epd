@@ -12,8 +12,11 @@ import './qpr/quarterly-reporting-requirements';
 import './hr/humanitarian-reporting-req-unicef';
 import './hr/humanitarian-reporting-req-cluster';
 import './srr/special-reporting-requirements';
-import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
+import {gridLayoutStyles} from './styles/grid-layout-styles';
+import {pageCommonStyles} from './styles/page-common-styles';
+// @lajos needs to be checked if OK
 import {connect} from 'pwa-helpers/connect-mixin';
+// import {connect} from '../utils/store-subscribe-mixin';
 // @lajos Bellow will have to be checked
 import {store} from '../../../../../../redux/store';
 import {property} from '@polymer/decorators';
@@ -25,11 +28,9 @@ import {QuarterlyReportingRequirementsEL} from './qpr/quarterly-reporting-requir
  * @customElement
  */
 class PartnerReportingRequirements extends connect(store)(PolymerElement) {
-  static get styles() {
-    return [gridLayoutStylesLit];
-  }
   static get template() {
     return html`
+      ${gridLayoutStyles}${pageCommonStyles}
       <style>
         :host {
           display: block;

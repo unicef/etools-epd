@@ -7,8 +7,8 @@ import '../../../common/layout/icons-actions';
 import './add-edit-special-rep-req';
 import CommonMixin from '../mixins/common-mixin';
 import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
-import {buttonsStyles} from '../../../common/styles/button-styles';
-import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
+import {gridLayoutStyles} from '../styles/grid-layout-styles';
+import {buttonsStyles} from '../styles/buttons-styles';
 import {reportingRequirementsListStyles} from '../styles/reporting-requirements-lists-styles';
 import CONSTANTS from '../../../utils/constants';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
@@ -27,12 +27,9 @@ import EtoolsDialog from '@unicef-polymer/etools-dialog';
  * @appliesMixin ReportingRequirementsCommonMixin
  */
 class SpecialReportingRequirements extends CommonMixin(ReportingRequirementsCommonMixin(PolymerElement)) {
-  static get styles() {
-    return [gridLayoutStylesLit, buttonsStyles];
-  }
   static get template() {
     return html`
-      ${reportingRequirementsListStyles}
+      ${reportingRequirementsListStyles}${gridLayoutStyles}${buttonsStyles}
       <style include="data-table-styles"></style>
 
       <div class="row-h" hidden$="[[!_empty(reportingRequirements, reportingRequirements.length)]]">

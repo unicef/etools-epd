@@ -9,8 +9,8 @@ import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import './hru-list.js';
 import CONSTANTS from '../../../utils/constants';
 import {fireEvent} from '../../../../../../utils/fire-custom-event';
-import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
-import {buttonsStyles} from '../../../common/styles/button-styles';
+import {gridLayoutStyles} from '../styles/grid-layout-styles';
+import {buttonsStyles} from '../styles/buttons-styles';
 import {requiredFieldStarredStyles} from '../../../common/styles/required-field-styles';
 import {prepareDatepickerDate, convertDate} from '../../../utils/date-utils';
 import EndpointsMixin from '../mixins/endpoints-mixin.js';
@@ -30,12 +30,9 @@ import {GenericObject} from '../../../common/models/globals.types';
  * @appliesMixin EndpointsMixin
  */
 class EditHruDialog extends connect(store)(EndpointsMixin(PolymerElement)) {
-  static get styles() {
-    return [gridLayoutStylesLit, buttonsStyles];
-  }
   static get template() {
     return html`
-      ${requiredFieldStarredStyles}
+      ${requiredFieldStarredStyles}${gridLayoutStyles}${buttonsStyles}
       <style include="data-table-styles">
         *[hidden] {
           display: none !important;

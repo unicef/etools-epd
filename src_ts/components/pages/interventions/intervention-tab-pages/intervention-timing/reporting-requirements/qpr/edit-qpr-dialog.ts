@@ -9,8 +9,8 @@ import EndpointsMixin from '../mixins/endpoints-mixin';
 import './qpr-list.js';
 import CONSTANTS from '../../../utils/constants';
 import '@unicef-polymer/etools-date-time/calendar-lite.js';
-import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
-import {buttonsStyles} from '../../../common/styles/button-styles';
+import {gridLayoutStyles} from '../styles/grid-layout-styles';
+import {buttonsStyles} from '../styles/buttons-styles';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser.js';
@@ -26,11 +26,9 @@ import {fireEvent} from '../../../../../../utils/fire-custom-event';
  * @appliesMixin EndpointsMixin
  */
 class EditQprDialog extends EndpointsMixin(PolymerElement) {
-  static get styles() {
-    return [gridLayoutStylesLit, buttonsStyles];
-  }
   static get template() {
     return html`
+      ${gridLayoutStyles}${buttonsStyles}
       <style>
         *[hidden] {
           display: none !important;

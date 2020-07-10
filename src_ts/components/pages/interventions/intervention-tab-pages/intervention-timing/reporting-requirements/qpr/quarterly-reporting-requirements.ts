@@ -1,8 +1,8 @@
 import {PolymerElement, html} from '@polymer/polymer';
 import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
 import CONSTANTS from '../../../utils/constants';
-import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
-import {buttonsStyles} from '../../../common/styles/button-styles';
+import {gridLayoutStyles} from '../styles/grid-layout-styles';
+import {buttonsStyles} from '../styles/buttons-styles';
 import GenerateQuarterlyReportingRequirementsMixin from '../mixins/generate-quarterly-reporting-requirements-mixin';
 
 import '@polymer/paper-button/paper-button.js';
@@ -23,11 +23,9 @@ import {EditQprDialogEl} from './edit-qpr-dialog.js';
 class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRequirementsMixin(
   ReportingRequirementsCommonMixin(PolymerElement)
 ) {
-  static get styles() {
-    return [gridLayoutStylesLit, buttonsStyles];
-  }
   static get template() {
     return html`
+      ${gridLayoutStyles}${buttonsStyles}
       <style>
         *[hidden] {
           display: none !important;

@@ -6,7 +6,7 @@ import CommonMixin from '../mixins/common-mixin';
 import {GenericObject} from '../../../common/models/globals.types';
 import {fireEvent} from '../../../../../../utils/fire-custom-event';
 import ReportingReqPastDatesCheckMixin from '../mixins/reporting-req-past-dates-check';
-import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
+import {gridLayoutStyles} from '../styles/grid-layout-styles';
 import {reportingRequirementsListStyles} from '../styles/reporting-requirements-lists-styles';
 import {isEmptyObject} from '../../../common/types/types';
 import {property} from '@polymer/decorators';
@@ -19,13 +19,10 @@ import {IconsActionsEl} from '../../../common/layout/icons-actions';
  * @appliesMixin ReportingReqPastDatesCheckMixin
  */
 class HruList extends CommonMixin(ReportingReqPastDatesCheckMixin(PolymerElement)) {
-  static get styles() {
-    return [gridLayoutStylesLit];
-  }
   static get template() {
     // language=HTML
     return html`
-      ${reportingRequirementsListStyles}
+      ${reportingRequirementsListStyles}${gridLayoutStyles}
       <style include="data-table-styles">
         :host([with-scroll]) {
           max-height: 400px;

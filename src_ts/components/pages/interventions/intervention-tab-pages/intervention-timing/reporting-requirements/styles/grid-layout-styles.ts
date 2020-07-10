@@ -1,65 +1,49 @@
-import {css} from 'lit-element';
-import {layoutHorizontal, layoutVertical, layoutFlex, layoutWrap} from './flex-layout-styles';
+import {html} from '@polymer/polymer/polymer-element.js';
+import '@polymer/iron-flex-layout/iron-flex-layout.js';
 
-// language=CSS
-export const gridLayoutStylesLit = css`
-  .w100 {
-    width: 100%;
-  }
-
+// language=HTML
+export const gridLayoutStyles = html` <style>
   .layout-horizontal,
   .layout-vertical {
     box-sizing: border-box;
   }
-
   .layout-horizontal {
-    ${layoutHorizontal}
+    @apply --layout-horizontal;
   }
-
   .layout-vertical,
   .col.layout-vertical {
-    ${layoutVertical}
+    @apply --layout-vertical;
   }
-
+  .space-between {
+    @apply --layout-justified;
+  }
+  .space-around {
+    @apply --layout-around-justified;
+  }
   .layout-wrap {
-    ${layoutWrap};
+    @apply --layout-wrap;
   }
-
   .row-padding {
     padding: 16px 24px;
   }
-
   .row-padding-h {
     padding-left: 24px;
     padding-right: 24px;
   }
-
   .row-padding-v {
-    padding-top: 8px;
-    padding-bottom: 8px;
+    padding-top: 16px;
+    padding-bottom: 16px;
   }
-
-  .space-between {
-    justify-content: space-between;
-  }
-
-  .align-items-center {
-    align-items: center;
-  }
-
   .row-h {
-    ${layoutHorizontal}
+    @apply --layout-horizontal;
   }
-
   .row-v {
-    ${layoutVertical};
+    @apply --layout-vertical;
   }
-
   .flex-c {
     /* flex container */
-    ${layoutFlex}
+    @apply --layout-flex;
   }
-
   .row-h,
   .row-v {
     padding: 16px 24px;
@@ -67,30 +51,26 @@ export const gridLayoutStylesLit = css`
 
   .row-v.t-border,
   .row-h.t-border {
-    border-top: 1px solid var(--light-divider-color);
+    border-top: 1px solid var(--dark-divider-color);
   }
-
   .row-v.b-border,
   .row-h.b-border {
-    border-bottom: 1px solid var(--light-divider-color);
+    border-bottom: 1px solid var(--dark-divider-color);
   }
 
   .row-v.header-row,
   .row-h.header-row {
     color: var(--secondary-text-color);
-    border-bottom: 1px solid var(--light-divider-color);
+    border-bottom: 1px solid var(--dark-divider-color);
     font-weight: 600;
   }
-
   .row-v.header-row > .col,
   .row-h.header-row > .col {
     line-height: 24px;
   }
-
   .table .row-h:not(.header-row) {
-    border-top: 1px solid var(--light-divider-color);
+    border-top: 1px solid var(--dark-divider-color);
   }
-
   .table.form-fields .row-h:not(.header-row) {
     padding: 8px 24px;
   }
@@ -98,31 +78,26 @@ export const gridLayoutStylesLit = css`
   .row-second-bg {
     background-color: var(--light-theme-background-color);
   }
-
   .center-align {
     justify-content: center;
     align-items: center;
     text-align: center;
   }
-
   .right-align {
-    ${layoutHorizontal}
+    @apply --layout-horizontal;
     justify-content: flex-end;
     align-items: center;
     text-align: right;
   }
-
   .bottom-aligned {
     align-items: flex-end;
   }
-
   .no-overflow {
     /* used to prevent flexbox to change it's size if content grows */
     overflow: hidden;
   }
-
   .col {
-    ${layoutHorizontal}
+    @apply --layout-horizontal;
     box-sizing: border-box;
   }
 
@@ -186,4 +161,4 @@ export const gridLayoutStylesLit = css`
   }
 
   /* TODO: more classes will e added if needed */
-`;
+</style>`;
