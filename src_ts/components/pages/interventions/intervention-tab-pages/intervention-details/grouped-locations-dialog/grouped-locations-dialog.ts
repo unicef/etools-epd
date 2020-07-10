@@ -5,6 +5,7 @@ import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
 import {isJsonStrMatch} from '../../../../../utils/utils';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '../../common/styles/button-styles';
+import {RootState} from '../../../../../../redux/store';
 
 class GroupedLocations {
   adminLevelLocation: Location | null = null;
@@ -61,11 +62,11 @@ export class GroupedLocationsDialog extends connect(LitElement) {
           border: solid 1px var(--error-box-border-color);
           background-color: var(--error-box-bg-color);
           padding: 10px;
-          margin: 16px 0px;
+          margin: 16px 0;
         }
 
         div.child-bottom-padding:last-of-type {
-          padding-bottom: 0px;
+          padding-bottom: 0;
         }
       </style>
 
@@ -91,32 +92,11 @@ export class GroupedLocationsDialog extends connect(LitElement) {
         >
         </etools-dropdown>
 
-        <div class="bordered-div" ?hidden="${!this.message}">
-          [[message]]
-        </div>
-
-        <div class="row-padding-v" ?hidden="${this.adminLevel}">
-          ${this.interventionLocations.map((item: Location) => html`<div class="top-padding">- ${item.name}</div>`)}
-        </div>
-
+        ${this._renderMessage(this.message)}
+        ${this._renderGrouping(this.adminLevel)}
       </etools-dialog>
     `;
   }
-
-//   <div class="row-padding-v" ?hidden="${!this.adminLevel}">
-//   ${this.groupedLocations.map(item => html`
-//     <div class="parent-padding">
-//       <div class="adminLevelLoc">${item.adminLevelLocation.name}</div>
-//       <div class="left-padding">
-//         ${item.subordinateLocations.map(sub => html`
-//           <div class="child-bottom-padding">
-//             - ${sub.name}
-//           </div>
-//         `)}
-//       </div>
-//     </div>
-//   `)}
-// </div>
 
   @property({type: Array}) // ??
   _adminLevels!: {id: number; name: string; admin_level: any}[];
@@ -163,7 +143,7 @@ export class GroupedLocationsDialog extends connect(LitElement) {
   @query('#groupedLocDialog')
   groupedLocDialog!: EtoolsDialog;
 
-  stateChanged(state) {
+  stateChanged(state: RootState) {
     if (!isJsonStrMatch(this.locations, state.commonData!.locations)) {
       this.locations = [...state.commonData!.locations];
     }
@@ -173,22 +153,50 @@ export class GroupedLocationsDialog extends connect(LitElement) {
   }
 
   connectedCallback() {
-    // TODO: remove dummy data
     super.connectedCallback();
-    this.adminLevels = [{admin_level: null, id: 1, name: "School"}, {admin_level: null, id: 2, name: "Community Center"}]
-    this.locations = [{id: '1107', name: 'Aaba [Village - LBN54001]', p_code: 'LBN54001'}];
-    this.interventionLocations = [{id: '1107', name: 'Aaba [Village - LBN54001]', p_code: 'LBN54001'}];
-    this.groupedLocations = [{adminLevelLocation: {gateway: {admin_level: null, created: "2019-02-07T15:50:29.685383Z", id: 1, modified: "2019-02-07T15:50:29.807718Z", name: "School"},id: "4415", name: "Aaba Intermediate Public School [School - 1156]", p_code: "1156"}, subordinateLocations: []}]
+  }
+
+  _renderGrouping(adminLevel) {
+    if (adminLevel) {
+      return html`
+        <div class="row-padding-v">
+          ${this.interventionLocations.map((item: Location) => html`<div class="top-padding">- ${item.name}</div>`)}
+        </div>
+        <div class="row-padding-v">
+          ${this.groupedLocations.map(item => html`
+            <div class="parent-padding">
+              <div class="adminLevelLoc">${item.adminLevelLocation.name}</div>
+              <div class="left-padding">
+                ${item.subordinateLocations.map(sub => html`
+                  <div class="child-bottom-padding">
+                    - ${sub.name}
+                  </div>
+                `)}
+              </div>
+            </div>
+          `)}
+        </div>
+      `;
+    } else {
+      return html``;
+    }
+  }
+
+  _renderMessage(message: string) {
+    if (message !== '') {
+      return html`
+      <div class="bordered-div"">
+        ${message}
+      </div>
+    `;
+    } else {
+      return html``;
+    }
   }
 
   public openDialog() {
     this.dialogOpened = true;
   }
-
-  // adminLevelsChanged(adminLevels: any) {
-
-  //   this._removeCountry(adminLevels);
-  // }
 
   _removeCountry(locationTypes: any) {
     if (!locationTypes || !locationTypes.length) {

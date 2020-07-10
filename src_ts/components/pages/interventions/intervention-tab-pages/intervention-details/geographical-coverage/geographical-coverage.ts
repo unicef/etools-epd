@@ -1,4 +1,4 @@
-import {LitElement, html, property, customElement} from 'lit-element';
+import {customElement, html, LitElement, property} from 'lit-element';
 import {connect} from '../../utils/store-subscribe-mixin';
 import '@polymer/paper-button/paper-button';
 import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
@@ -11,7 +11,6 @@ import {Intervention} from '../../common/models/intervention-types';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {RootState} from '../../../../../../redux/store';
 import {isJsonStrMatch} from '../../../../../utils/utils';
-import {interventions} from '../../../../../../redux/reducers/interventions';
 import get from 'lodash-es/get';
 
 /**
@@ -37,7 +36,7 @@ export class GeographicalCoverage extends connect(LitElement) {
           padding-right: 0;
           color: var(--primary-color);
           min-width: 100px;
-          @apply --layout-end;
+          flex-direction: row;
           padding-bottom: 12px;
         }
 
@@ -64,10 +63,13 @@ export class GeographicalCoverage extends connect(LitElement) {
             label="Location(s)"
             placeholder="&#8212;"
             .options="${this.locations}"
+            .selected-values="${this.intervention.flat_locations}"
             option-label="name"
             option-value="id"
             error-message="Please select locations"
             disable-on-focus-handling
+            trigger-value-change-event
+            @etools-selected-items-changed="${this.locationsChanged}"
           >
           </etools-dropdown-multi>
           <paper-button
@@ -99,8 +101,6 @@ export class GeographicalCoverage extends connect(LitElement) {
 
   connectedCallback() {
     super.connectedCallback();
-    // TODO: remove dummy data
-    this.locations = [{id: '1107', name: 'Aaba [Village - LBN54001]', p_code: 'LBN54001'}];
     this.createDialog();
   }
 
@@ -109,7 +109,10 @@ export class GeographicalCoverage extends connect(LitElement) {
       this.locations = [...state.commonData!.locations];
     }
     this.intervention = get(state, 'interventions.current');
-    // this.uploadsStateChanged(state);
+  }
+
+  locationsChanged(event: CustomEvent) {
+    this.intervention.flat_locations = event.detail.selectedItems.map((i: any) => i.id);
   }
 
   private openLocationsDialog() {
