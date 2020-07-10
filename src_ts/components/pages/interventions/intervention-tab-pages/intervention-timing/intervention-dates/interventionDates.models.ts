@@ -10,7 +10,7 @@ export class ProgrammeDocDates extends ModelsBase {
   end = '';
 }
 
-export class ProgrammeDocumentDatesPermissions extends ModelsBase {
+export class InterventionDatesPermissions extends ModelsBase {
   constructor(permissions: InterventionPermissionsFields) {
     super();
     this.setObjProperties(permissions);

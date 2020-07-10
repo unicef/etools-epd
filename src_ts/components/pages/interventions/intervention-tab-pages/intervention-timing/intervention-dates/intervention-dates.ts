@@ -8,22 +8,20 @@ import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {Intervention, Permission} from '../../common/models/intervention-types';
-import {ProgrammeDocDates, ProgrammeDocumentDatesPermissions} from './programmeDocumentDates.models';
+import {ProgrammeDocDates, InterventionDatesPermissions} from './interventionDates.models';
 import cloneDeep from 'lodash-es/cloneDeep';
-import {
-  selectProgrammeDocumentDates,
-  selectProgrammeDocumentDatesPermissions
-} from './programmeDocumentDates.selectors';
+import {selectInterventionDates, selectInterventionDatesPermissions} from './interventionDates.selectors';
 import get from 'lodash-es/get';
 import {validateRequiredFields} from '../../utils/validation-helper';
+import {buttonsStyles} from '../../common/styles/button-styles';
 
 /**
  * @customElement
  */
-@customElement('programme-document-dates')
-export class ProgrammeDocumentDates extends PermissionsMixin(FrNumbersConsistencyMixin(connect(LitElement))) {
+@customElement('intervention-dates')
+export class InterventionDates extends PermissionsMixin(FrNumbersConsistencyMixin(connect(LitElement))) {
   static get styles() {
-    return [gridLayoutStylesLit];
+    return [gridLayoutStylesLit, buttonsStyles];
   }
 
   render() {
@@ -36,12 +34,7 @@ export class ProgrammeDocumentDates extends PermissionsMixin(FrNumbersConsistenc
         <etools-loading loading-text="Loading..." .active="${this.showLoading}"></etools-loading>
 
         <div slot="panel-btns">
-          <paper-icon-button
-            ?hidden="${this.hideEditIcon(this.editMode, this.canEditProgrammeDocumentDates)}"
-            @tap="${this.allowEdit}"
-            icon="create"
-          >
-          </paper-icon-button>
+          ${this.renderEditBtn(this.editMode, this.canEditInterventionDates)}
         </div>
         <div class="layout-horizontal row-padding-v">
           <div class="col col-3">
@@ -96,16 +89,7 @@ export class ProgrammeDocumentDates extends PermissionsMixin(FrNumbersConsistenc
           </div>
         </div>
 
-        <div class="layout-horizontal right-align row-padding-v"
-          ?hidden="${this.hideActionButtons(this.editMode, this.canEditProgrammeDocumentDates)}"
-        >
-          <paper-button class="default" @tap="${this.cancelProgrammeDateEdit}">
-            Cancel
-          </paper-button>
-          <paper-button class="primary" @tap="${this.saveProgrammeDateEdit}">
-            Save
-          </paper-button>
-        </div>
+        ${this.renderActions(this.editMode, this.canEditInterventionDates)}
       </etools-content-panel>
     `;
   }
@@ -114,7 +98,7 @@ export class ProgrammeDocumentDates extends PermissionsMixin(FrNumbersConsistenc
   showLoading = false;
 
   @property({type: Boolean})
-  editMode = true;
+  editMode = false;
 
   @property({type: Object})
   intervention!: Intervention;
@@ -132,10 +116,10 @@ export class ProgrammeDocumentDates extends PermissionsMixin(FrNumbersConsistenc
   _frsEndConsistencyWarning = '';
 
   @property({type: Object})
-  permissions!: Permission<ProgrammeDocumentDatesPermissions>;
+  permissions!: Permission<InterventionDatesPermissions>;
 
   @property({type: Boolean})
-  canEditProgrammeDocumentDates!: boolean;
+  canEditInterventionDates!: boolean;
 
   connectedCallback() {
     super.connectedCallback();
@@ -143,9 +127,9 @@ export class ProgrammeDocumentDates extends PermissionsMixin(FrNumbersConsistenc
 
   stateChanged(state: any) {
     if (state.interventions.current) {
-      this.programmeDocumentDates = selectProgrammeDocumentDates(state);
-      this.permissions = selectProgrammeDocumentDatesPermissions(state);
-      this.setCanEditProgrammeDocumentDates(this.permissions.edit);
+      this.programmeDocumentDates = selectInterventionDates(state);
+      this.permissions = selectInterventionDatesPermissions(state);
+      this.setCanEditInterventionDates(this.permissions.edit);
       this.originalProgrammeDocumentDates = cloneDeep(this.programmeDocumentDates);
     }
     this.populate(state);
@@ -160,8 +144,35 @@ export class ProgrammeDocumentDates extends PermissionsMixin(FrNumbersConsistenc
     }
   }
 
-  setCanEditProgrammeDocumentDates(editPermissions: ProgrammeDocumentDatesPermissions) {
-    this.canEditProgrammeDocumentDates = editPermissions.start || editPermissions.end;
+  renderActions(editMode, canEditInterventionDates) {
+    if (!this.hideActionButtons(editMode, canEditInterventionDates)) {
+      return html`
+      <div class="layout-horizontal right-align row-padding-v">
+          <paper-button class="default" @tap="${this.cancelProgrammeDateEdit}">
+        Cancel
+        </paper-button>
+        <paper-button class="primary" @tap="${this.saveProgrammeDateEdit}">
+        Save
+        </paper-button>
+      </div>
+    `;
+    }
+  }
+
+  renderEditBtn(editMode, canEditInterventionDates) {
+    if (this.hideEditIcon(editMode, canEditInterventionDates)) {
+      return html`
+      <paper-icon-button
+        @tap="${this.allowEdit}"
+        icon="create"
+      >
+      </paper-icon-button>
+    `;
+    }
+  }
+
+  setCanEditInterventionDates(editPermissions: InterventionDatesPermissions) {
+    this.canEditInterventionDates = editPermissions.start || editPermissions.end;
   }
 
   validate() {
