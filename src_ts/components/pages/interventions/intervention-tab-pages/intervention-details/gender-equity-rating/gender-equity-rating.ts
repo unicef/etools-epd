@@ -65,7 +65,7 @@ export class GenderEquityRatingElement extends PermissionsMixin(connect(LitEleme
           <paper-radio-group
             selected="${this.genderEquityRating.gender_rating}"
             @selected-changed="${({detail}: CustomEvent) =>
-        this.genderEquityRating.setObjProperty('gender_rating', detail.value)}"
+        this.genderEquityRating!.setObjProperty('gender_rating', detail.value)}"
           >
             ${this._getRatingRadioButtonsTemplate(this.ratings, this.permissions.edit.gender)}
           </paper-radio-group>
@@ -77,7 +77,7 @@ export class GenderEquityRatingElement extends PermissionsMixin(connect(LitEleme
               .value="${this.genderEquityRating.gender_narrative}"
               ?required="${this.permissions.required.gender}"
               @value-changed="${({detail}: CustomEvent) =>
-        this.genderEquityRating.setObjProperty('sustainability_narrative', detail.value)}"
+        this.genderEquityRating!.setObjProperty('sustainability_narrative', detail.value)}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.gender)}"
             >
             </paper-input>
@@ -90,7 +90,7 @@ export class GenderEquityRatingElement extends PermissionsMixin(connect(LitEleme
           <paper-radio-group
             .selected="${this.genderEquityRating.sustainability_rating}"
             @selected-changed="${({detail}: CustomEvent) =>
-        this.genderEquityRating.setObjProperty('sustainability_rating', detail.value)}"
+        this.genderEquityRating!.setObjProperty('sustainability_rating', detail.value)}"
           >
             ${this._getRatingRadioButtonsTemplate(this.ratings, this.permissions.edit.sustainability)}
           </paper-radio-group>
@@ -102,7 +102,7 @@ export class GenderEquityRatingElement extends PermissionsMixin(connect(LitEleme
               .value="${this.genderEquityRating.sustainability_narrative}"
               ?required="${this.permissions.required.sustainability}"
               @value-changed="${({detail}: CustomEvent) =>
-        this.genderEquityRating.setObjProperty('sustainability_narrative', detail.value)}"
+        this.genderEquityRating!.setObjProperty('sustainability_narrative', detail.value)}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.sustainability)}"
             >
             </paper-input>
@@ -115,7 +115,7 @@ export class GenderEquityRatingElement extends PermissionsMixin(connect(LitEleme
           <paper-radio-group
             .selected="${this.genderEquityRating.equity_rating}"
             @selected-changed="${({detail}: CustomEvent) =>
-        this.genderEquityRating.setObjProperty('equity_rating', detail.value)}"
+        this.genderEquityRating!.setObjProperty('equity_rating', detail.value)}"
           >
             ${this._getRatingRadioButtonsTemplate(this.ratings, this.permissions.edit.equity)}
           </paper-radio-group>
@@ -127,7 +127,7 @@ export class GenderEquityRatingElement extends PermissionsMixin(connect(LitEleme
               .value="${this.genderEquityRating.equity_narrative}"
               ?required="${this.permissions.required.equity}"
               @value-changed="${({detail}: CustomEvent) =>
-        this.genderEquityRating.setObjProperty('equity_narrative', detail.value)}"
+        this.genderEquityRating!.setObjProperty('equity_narrative', detail.value)}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.equity)}"
             >
             </paper-input>
@@ -201,7 +201,6 @@ export class GenderEquityRatingElement extends PermissionsMixin(connect(LitEleme
     setTimeout(() => {
       this.genderEquityRating = cloneDeep(this.originalGenderEquityRating);
       this.editMode = false;
-      this.requestUpdate();
     }, 200);
   }
 
