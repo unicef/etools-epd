@@ -156,7 +156,7 @@ export class GenderEquityRatingElement extends PermissionsMixin(connect(LitEleme
   originalGenderEquityRating!: GenderEquityRating;
 
   @property({type: Object})
-  genderEquityRating!: GenderEquityRating;
+  genderEquityRating!: GenderEquityRating | undefined;
 
   @property({type: Object})
   permissions!: Permission<GenderEquityRatingPermissions>;
@@ -197,10 +197,11 @@ export class GenderEquityRatingElement extends PermissionsMixin(connect(LitEleme
   }
 
   cancelGenderEquity() {
-    this.genderEquityRating = new GenderEquityRating({} as any);
+    this.genderEquityRating = undefined;
     setTimeout(() => {
       this.genderEquityRating = cloneDeep(this.originalGenderEquityRating);
       this.editMode = false;
+      this.requestUpdate();
     }, 200);
   }
 

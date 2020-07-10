@@ -5,14 +5,6 @@ export class GenderEquityRating extends ModelsBase {
   constructor(intervention: Intervention) {
     super();
     this.setObjProperties(intervention);
-    // if (Object.keys(intervention).length) {
-    //   this.gender_rating = '2';
-    //   this.gender_narrative = 'gender_narrative';
-    //   this.equity_rating = '2';
-    //   this.equity_narrative = 'equity_narrative';
-    //   this.sustainability_rating = '2';
-    //   this.sustainability_narrative = 'sustainability_narrative';
-    // }
   }
   gender_rating = '';
   gender_narrative = '';
