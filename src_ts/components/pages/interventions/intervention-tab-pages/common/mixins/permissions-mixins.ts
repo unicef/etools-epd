@@ -1,5 +1,5 @@
 import {LitElement, property} from 'lit-element';
-import {Constructor} from '../types/types';
+import {Constructor} from '../../utils/types';
 
 function PermissionsMixin<T extends Constructor<LitElement>>(baseClass: T) {
   class PermissionsClass extends baseClass {

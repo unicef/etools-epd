@@ -1,4 +1,4 @@
-import {AnyObject} from '../../types/globals';
+import {AnyObject} from './types';
 
 export const fireEvent = (el: HTMLElement, eventName: string, eventDetail?: AnyObject) => {
   el.dispatchEvent(

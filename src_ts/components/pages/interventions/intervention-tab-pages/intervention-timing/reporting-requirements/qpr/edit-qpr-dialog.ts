@@ -7,6 +7,7 @@ import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import {prepareDatepickerDate} from '../../../utils/date-utils';
 // import EndpointsMixin from '../mixins/endpoints-mixin';
 import {getEndpoint} from '../../../utils/get-endpoints';
+import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import './qpr-list.js';
 import CONSTANTS from '../../../common/constants';
 import '@unicef-polymer/etools-date-time/calendar-lite.js';
@@ -230,7 +231,7 @@ class EditQprDialog extends PolymerElement {
   }
 
   _saveModifiedQprData() {
-    const endpoint = getEndpoint('reportingRequirements', {
+    const endpoint = getEndpoint(interventionEndpoints.reportingRequirements, {
       intervId: this.interventionId,
       reportType: CONSTANTS.REQUIREMENTS_REPORT_TYPE.QPR
     });

@@ -3,6 +3,7 @@ import {gridLayoutStyles} from '../styles/grid-layout-styles';
 // @lajos bellow 2 where imported from PMP
 // import EndpointsMixin from '../mixins/endpoints-mixin';
 import {getEndpoint} from '../../../utils/get-endpoints';
+import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import {prepareDatepickerDate} from '../../../utils/date-utils';
 
 import '@polymer/iron-label/iron-label';
@@ -96,12 +97,12 @@ class AddEditSpecialRepReq extends PolymerElement {
   _getEndpoint() {
     if (this._isNew()) {
       // new/create
-      return getEndpoint('specialReportingRequirements', {
+      return getEndpoint(interventionEndpoints.specialReportingRequirements, {
         intervId: this.interventionId
       });
     } else {
       // already saved... update/delete
-      return getEndpoint('specialReportingRequirementsUpdate', {
+      return getEndpoint(interventionEndpoints.specialReportingRequirementsUpdate, {
         reportId: this.item.id
       });
     }

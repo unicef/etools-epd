@@ -1,4 +1,5 @@
-import {getEndpoint} from '../../../utils/get-endpoints'
+import {getEndpoint} from '../../../utils/get-endpoints';
+import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import CONSTANTS from '../../../common/constants';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
@@ -29,12 +30,12 @@ function ReportingRequirementsCommonMixin<T extends Constructor<PolymerElement>>
 
     _getEndpointObj(id: string, type: string) {
       if (type === CONSTANTS.REQUIREMENTS_REPORT_TYPE.SPECIAL) {
-        return getEndpoint('specialReportingRequirements', {
+        return getEndpoint(interventionEndpoints.specialReportingRequirements, {
           intervId: id
         });
       }
 
-      return getEndpoint('reportingRequirements', {
+      return getEndpoint(interventionEndpoints.reportingRequirements, {
         intervId: id,
         reportType: type
       });

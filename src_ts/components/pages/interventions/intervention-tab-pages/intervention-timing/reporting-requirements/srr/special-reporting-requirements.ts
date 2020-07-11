@@ -17,12 +17,13 @@ import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/
 import {property} from '@polymer/decorators';
 import {AddEditSpecialRepReqEl} from './add-edit-special-rep-req';
 import EtoolsDialog from '@unicef-polymer/etools-dialog';
+import {getEndpoint} from '../../../utils/get-endpoints';
+import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 
 /**
  * @customElement
  * @polymer
  * @mixinFunction
- * @appliesMixin EndpointsMixin
  * @appliesMixin CommonMixin
  * @appliesMixin ReportingRequirementsCommonMixin
  */
@@ -136,7 +137,7 @@ class SpecialReportingRequirements extends CommonMixin(ReportingRequirementsComm
 
     if (this._itemToDeleteIndex > -1) {
       const itemToDelete = this.reportingRequirements[this._itemToDeleteIndex] as any;
-      const endpoint = this.getEndpoint('specialReportingRequirementsUpdate', {
+      const endpoint = getEndpoint(interventionEndpoints.specialReportingRequirementsUpdate, {
         reportId: itemToDelete.id
       });
       sendRequest({

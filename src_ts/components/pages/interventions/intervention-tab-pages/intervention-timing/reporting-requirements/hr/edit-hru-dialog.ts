@@ -24,8 +24,8 @@ import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {property} from '@polymer/decorators';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
-// better use AnyObject
 import {AnyObject} from '../../../utils/types';
+import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 
 /**
  * @polymer
@@ -259,7 +259,7 @@ class EditHruDialog extends connect(store)(PolymerElement) {
   _saveHurData() {
     this.updateStartDates(this.repStartDate);
     // @lajos TO BE REFACTORED and checked
-    const endpoint = getEndpoint('reportingRequirements', {
+    const endpoint = getEndpoint(interventionEndpoints.reportingRequirements, {
       intervId: this.interventionId,
       reportType: CONSTANTS.REQUIREMENTS_REPORT_TYPE.HR
     });
