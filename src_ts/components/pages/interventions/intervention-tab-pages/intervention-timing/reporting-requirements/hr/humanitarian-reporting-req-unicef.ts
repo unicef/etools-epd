@@ -1,11 +1,9 @@
-import {fireEvent} from '../../../../../../utils/fire-custom-event';
-import CONSTANTS from '../../../utils/constants';
-
+import {PolymerElement, html} from '@polymer/polymer';
+import {fireEvent} from '../../../utils/fire-custom-event';
+import CONSTANTS from '../../../common/constants';
 import '@polymer/paper-button/paper-button.js';
-
 import './edit-hru-dialog.js';
 import './hru-list.js';
-import {PolymerElement, html} from '@polymer/polymer';
 import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
 import FrontendPaginationMixin from '../mixins/frontend-pagination-mixin';
 import {ExpectedResult} from '../../../common/models/intervention-types';

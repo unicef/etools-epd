@@ -5,9 +5,10 @@ import '@polymer/paper-button/paper-button';
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
 
 import {prepareDatepickerDate} from '../../../utils/date-utils';
-import EndpointsMixin from '../mixins/endpoints-mixin';
+// import EndpointsMixin from '../mixins/endpoints-mixin';
+import {getEndpoint} from '../../../utils/get-endpoints';
 import './qpr-list.js';
-import CONSTANTS from '../../../utils/constants';
+import CONSTANTS from '../../../common/constants';
 import '@unicef-polymer/etools-date-time/calendar-lite.js';
 import {gridLayoutStyles} from '../styles/grid-layout-styles';
 import {buttonsStyles} from '../styles/buttons-styles';
@@ -18,14 +19,13 @@ import {property} from '@polymer/decorators';
 import {GenericObject} from '../../../common/models/globals.types';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
 import {QprListEl} from './qpr-list.js';
-import {fireEvent} from '../../../../../../utils/fire-custom-event';
+import {fireEvent} from '../../../utils/fire-custom-event';
 
 /**
  * @polymer
  * @customElement
- * @appliesMixin EndpointsMixin
  */
-class EditQprDialog extends EndpointsMixin(PolymerElement) {
+class EditQprDialog extends PolymerElement {
   static get template() {
     return html`
       ${gridLayoutStyles}${buttonsStyles}
@@ -230,7 +230,7 @@ class EditQprDialog extends EndpointsMixin(PolymerElement) {
   }
 
   _saveModifiedQprData() {
-    const endpoint = this.getEndpoint('reportingRequirements', {
+    const endpoint = getEndpoint('reportingRequirements', {
       intervId: this.interventionId,
       reportType: CONSTANTS.REQUIREMENTS_REPORT_TYPE.QPR
     });

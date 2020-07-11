@@ -16,12 +16,18 @@ import {gridLayoutStyles} from './styles/grid-layout-styles';
 import {pageCommonStyles} from './styles/page-common-styles';
 // @lajos needs to be checked if OK
 import {connect} from 'pwa-helpers/connect-mixin';
-// import {connect} from '../utils/store-subscribe-mixin';
-// @lajos Bellow will have to be checked
 import {store} from '../../../../../../redux/store';
+// bellow to be imported, or tested after migration to LIT
+// import {connect} from '../../utils/store-subscribe-mixin';
+// import {getStore} from '../../utils/redux-store-access';
+// move isEmpty and isEmptyObject methods
+
 import {property} from '@polymer/decorators';
 import {HumanitarianReportingReqUnicefEl} from './hr/humanitarian-reporting-req-unicef';
 import {QuarterlyReportingRequirementsEL} from './qpr/quarterly-reporting-requirements';
+import {AnyObject} from '../../../../../../types/globals';
+import get from 'lodash-es/get';
+import cloneDeep from 'lodash-es/cloneDeep';
 
 /**
  * @polymer
@@ -201,9 +207,18 @@ class PartnerReportingRequirements extends connect(store)(PolymerElement) {
   @property({type: Boolean})
   editMode!: boolean;
 
+  @property({type: Object})
+  intervention!: AnyObject;
+
   stateChanged(state: any) {
     // @lajos TO DO: get correct values for bellow
     // this.editMode = state.intervention!.permissions!.edit.reporting_requirements;
+    const currentIntervention = get(state, 'interventions.current');
+    this.intervention = cloneDeep(currentIntervention);
+    this.interventionId = this.intervention.id;
+    this.interventionStart = this.intervention.start;
+    this.interventionEnd = this.intervention.end;
+    this.expectedResults = this.intervention.result_links;
     this.editMode = false;
   }
 

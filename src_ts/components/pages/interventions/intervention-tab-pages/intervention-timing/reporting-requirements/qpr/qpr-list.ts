@@ -8,8 +8,8 @@ import CommonMixin from '../mixins/common-mixin';
 import ReportingReqPastDatesCheckMixin from '../mixins/reporting-req-past-dates-check';
 import {gridLayoutStyles} from '../styles/grid-layout-styles';
 import {reportingRequirementsListStyles} from '../styles/reporting-requirements-lists-styles';
-import {isEmptyObject} from '../../../common/types/types';
-import {fireEvent} from '../../../../../../utils/fire-custom-event';
+import {isEmptyObject} from '../../../utils/types';
+import {fireEvent} from '../../../utils/fire-custom-event';
 import {property} from '@polymer/decorators';
 import {IconsActionsEl} from '../../../common/layout/icons-actions';
 

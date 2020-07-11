@@ -10,7 +10,7 @@ import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-c
 import {gridLayoutStyles} from '../styles/grid-layout-styles';
 import {buttonsStyles} from '../styles/buttons-styles';
 import {reportingRequirementsListStyles} from '../styles/reporting-requirements-lists-styles';
-import CONSTANTS from '../../../utils/constants';
+import CONSTANTS from '../../../common/constants';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';

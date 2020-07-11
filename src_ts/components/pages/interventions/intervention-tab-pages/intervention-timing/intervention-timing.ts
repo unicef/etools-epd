@@ -18,6 +18,7 @@ export class InterventionTiming extends connect(LitElement) {
       Timing page
       <partner-reporting-requirements
         class="content-section"
+        <!--  bellow is not needed anymore...see stateChange -->
         intervention-id="${this.intervention.id}"
         intervention-start="${this.intervention.start}"
         intervention-end="${this.intervention.end}"
@@ -31,6 +32,7 @@ export class InterventionTiming extends connect(LitElement) {
   intervention!: AnyObject;
 
   stateChanged(state: any) {
+    // move this to component
     console.log('--------------------------------------------------------------');
     const currentIntervention = get(state, 'interventions.current');
     this.intervention = cloneDeep(currentIntervention);

@@ -1,9 +1,9 @@
-import EndpointsMixin from '../mixins/endpoints-mixin';
+import {getEndpoint} from '../../../utils/get-endpoints'
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import CONSTANTS from '../../../utils/constants';
+import CONSTANTS from '../../../common/constants';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {Constructor, isEmptyObject} from '../../../common/types/types';
+import {Constructor, isEmptyObject} from '../../../utils/types';
 import {PolymerElement} from '@polymer/polymer';
 import {property} from '@polymer/decorators';
 
@@ -13,7 +13,7 @@ import {property} from '@polymer/decorators';
  * @appliesMixin EndpointsMixin
  */
 function ReportingRequirementsCommonMixin<T extends Constructor<PolymerElement>>(baseClass: T) {
-  class ReportingRequirementsCommon extends EndpointsMixin(baseClass) {
+  class ReportingRequirementsCommon extends baseClass {
     @property({type: Array})
     reportingRequirements: [] = [];
 
@@ -29,12 +29,12 @@ function ReportingRequirementsCommonMixin<T extends Constructor<PolymerElement>>
 
     _getEndpointObj(id: string, type: string) {
       if (type === CONSTANTS.REQUIREMENTS_REPORT_TYPE.SPECIAL) {
-        return this.getEndpoint('specialReportingRequirements', {
+        return getEndpoint('specialReportingRequirements', {
           intervId: id
         });
       }
 
-      return this.getEndpoint('reportingRequirements', {
+      return getEndpoint('reportingRequirements', {
         intervId: id,
         reportType: type
       });

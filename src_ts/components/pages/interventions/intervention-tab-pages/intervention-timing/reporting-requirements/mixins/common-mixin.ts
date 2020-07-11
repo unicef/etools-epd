@@ -1,7 +1,7 @@
 // import {dedupingMixin} from '@polymer/polymer/lib/utils/mixin';
 // @lajos bellow 2 imported from PMP
 import {prettyDate} from '../../../utils/date-utils';
-import {Constructor, GenericObject} from '../../../common/models/globals.types';
+import {Constructor, AnyObject} from '../../../utils/types';
 import {PolymerElement} from '@polymer/polymer';
 
 /**
@@ -40,7 +40,7 @@ function CommonMixin<T extends Constructor<PolymerElement>>(baseClass: T) {
     }
 
     prepareEtoolsFileDataFromUrl(fileUrl: string) {
-      let files: GenericObject[] = [];
+      let files: AnyObject[] = [];
       if (typeof fileUrl === 'string' && fileUrl !== '') {
         const fileName = this.getFileNameFromURL(fileUrl);
         files = [

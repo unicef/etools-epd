@@ -1,7 +1,8 @@
 import {PolymerElement, html} from '@polymer/polymer';
 import {gridLayoutStyles} from '../styles/grid-layout-styles';
 // @lajos bellow 2 where imported from PMP
-import EndpointsMixin from '../mixins/endpoints-mixin';
+// import EndpointsMixin from '../mixins/endpoints-mixin';
+import {getEndpoint} from '../../../utils/get-endpoints';
 import {prepareDatepickerDate} from '../../../utils/date-utils';
 
 import '@polymer/iron-label/iron-label';
@@ -10,21 +11,20 @@ import '@unicef-polymer/etools-dialog/etools-dialog';
 
 import '@unicef-polymer/etools-date-time/calendar-lite';
 // @lajos To refactor bellow
-import {fireEvent} from '../../../../../../utils/fire-custom-event';
+import {fireEvent} from '../../../utils/fire-custom-event';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {property} from '@polymer/decorators';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
-import {GenericObject} from '../../../common/models/globals.types';
+import {AnyObject} from '../../../utils/types';
 
 /**
  * @polymer
  * @customElement
  * @mixinFunction
- * @appliesMixin EndpointsMixin
  */
-class AddEditSpecialRepReq extends EndpointsMixin(PolymerElement) {
+class AddEditSpecialRepReq extends PolymerElement {
   static get template() {
     // language=HTML
     return html`
@@ -84,7 +84,7 @@ class AddEditSpecialRepReq extends EndpointsMixin(PolymerElement) {
   interventionId!: number;
 
   @property({type: Object})
-  item!: GenericObject;
+  item!: AnyObject;
 
   @property({type: Object})
   toastMsgLoadingSource!: PolymerElement;
@@ -96,12 +96,12 @@ class AddEditSpecialRepReq extends EndpointsMixin(PolymerElement) {
   _getEndpoint() {
     if (this._isNew()) {
       // new/create
-      return this.getEndpoint('specialReportingRequirements', {
+      return getEndpoint('specialReportingRequirements', {
         intervId: this.interventionId
       });
     } else {
       // already saved... update/delete
-      return this.getEndpoint('specialReportingRequirementsUpdate', {
+      return getEndpoint('specialReportingRequirementsUpdate', {
         reportId: this.item.id
       });
     }

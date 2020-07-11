@@ -7,14 +7,16 @@ import '@unicef-polymer/etools-date-time/calendar-lite';
 import '@unicef-polymer/etools-date-time/datepicker-lite';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import './hru-list.js';
-import CONSTANTS from '../../../utils/constants';
+import CONSTANTS from '../../../common/constants';
 import {fireEvent} from '../../../../../../utils/fire-custom-event';
 import {gridLayoutStyles} from '../styles/grid-layout-styles';
 import {buttonsStyles} from '../styles/buttons-styles';
 import {requiredFieldStarredStyles} from '../../../common/styles/required-field-styles';
 import {prepareDatepickerDate, convertDate} from '../../../utils/date-utils';
-import EndpointsMixin from '../mixins/endpoints-mixin.js';
-import {isEmptyObject} from '../../../common/types/types';
+// this was refactored
+// import EndpointsMixin from '../mixins/endpoints-mixin';
+import {getEndpoint} from '../../../utils/get-endpoints';
+import {isEmptyObject} from '../../../utils/types';
 import {connect} from 'pwa-helpers/connect-mixin';
 // @lajos TO BE CHECKED, and fixed when migrating to Lit Element
 import {store} from '../../../../../../../redux/store';
@@ -22,14 +24,15 @@ import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {property} from '@polymer/decorators';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
-import {GenericObject} from '../../../common/models/globals.types';
+// better use AnyObject
+import {AnyObject} from '../../../utils/types';
 
 /**
  * @polymer
  * @customElement
  * @appliesMixin EndpointsMixin
  */
-class EditHruDialog extends connect(store)(EndpointsMixin(PolymerElement)) {
+class EditHruDialog extends connect(store)(PolymerElement) {
   static get template() {
     return html`
       ${requiredFieldStarredStyles}${gridLayoutStyles}${buttonsStyles}
@@ -137,7 +140,7 @@ class EditHruDialog extends connect(store)(EndpointsMixin(PolymerElement)) {
   selectedDate!: string;
 
   @property({type: Array})
-  hruData: GenericObject[] = [];
+  hruData: AnyObject[] = [];
 
   @property({type: Object})
   toastMsgLoadingSource!: PolymerElement;
@@ -153,7 +156,7 @@ class EditHruDialog extends connect(store)(EndpointsMixin(PolymerElement)) {
   }
 
   stateChanged(state: any) {
-    // @lajos TO DO check if in_amendment is neccesary
+    // @lajos in ammendment will be used!
     this.inAmendment = false;
     // original:
     // this.inAmendment = state.pageData!.in_amendment;
@@ -255,8 +258,8 @@ class EditHruDialog extends connect(store)(EndpointsMixin(PolymerElement)) {
 
   _saveHurData() {
     this.updateStartDates(this.repStartDate);
-
-    const endpoint = this.getEndpoint('reportingRequirements', {
+    // @lajos TO BE REFACTORED and checked
+    const endpoint = getEndpoint('reportingRequirements', {
       intervId: this.interventionId,
       reportType: CONSTANTS.REQUIREMENTS_REPORT_TYPE.HR
     });

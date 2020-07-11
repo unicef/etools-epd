@@ -1,11 +1,9 @@
 import {PolymerElement, html} from '@polymer/polymer';
 import uniq from 'lodash-es/uniq';
 import '@unicef-polymer/etools-data-table/etools-data-table';
-// @lajos this was imported from PMP
-import EndpointsMixin from '../mixins/endpoints-mixin';
 import CommonMixin from '../mixins/common-mixin';
 import {ResultLinkLowerResult, ExpectedResult} from '../../../common/models/intervention-types';
-import {isEmptyObject} from '../../../common/types/types';
+import {isEmptyObject} from '../../../utils/types';
 import {gridLayoutStyles} from '../styles/grid-layout-styles';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
@@ -18,7 +16,7 @@ import {property} from '@polymer/decorators';
  * @appliesMixin EndpointsMixin
  * @appliesMixin CommonMixin
  */
-class HumanitarianReportingReqCluster extends CommonMixin(EndpointsMixin(PolymerElement)) {
+class HumanitarianReportingReqCluster extends CommonMixin(PolymerElement) {
   static get template() {
     return html`
       ${gridLayoutStyles}
@@ -87,7 +85,7 @@ class HumanitarianReportingReqCluster extends CommonMixin(EndpointsMixin(Polymer
       this.reportingRequirements = [];
       return;
     }
-
+    // @lajos TO BE CHECKED and refactored
     this.fireRequest(
       'hrClusterReportingRequirements',
       {},

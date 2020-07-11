@@ -1,14 +1,13 @@
 import {PolymerElement, html} from '@polymer/polymer';
 import '@unicef-polymer/etools-data-table/etools-data-table';
-
 import '../../../common/layout/icons-actions';
 import CommonMixin from '../mixins/common-mixin';
-import {GenericObject} from '../../../common/models/globals.types';
-import {fireEvent} from '../../../../../../utils/fire-custom-event';
+import {AnyObject} from '../../../utils/types';
+import {fireEvent} from '../../../utils/fire-custom-event';
 import ReportingReqPastDatesCheckMixin from '../mixins/reporting-req-past-dates-check';
 import {gridLayoutStyles} from '../styles/grid-layout-styles';
 import {reportingRequirementsListStyles} from '../styles/reporting-requirements-lists-styles';
-import {isEmptyObject} from '../../../common/types/types';
+import {isEmptyObject} from '../../../utils/types';
 import {property} from '@polymer/decorators';
 import {IconsActionsEl} from '../../../common/layout/icons-actions';
 
@@ -59,7 +58,7 @@ class HruList extends CommonMixin(ReportingReqPastDatesCheckMixin(PolymerElement
   }
 
   @property({type: Array})
-  hruData: GenericObject[] = [];
+  hruData: AnyObject[] = [];
 
   @property({type: Boolean})
   _listItemEditable = false;
