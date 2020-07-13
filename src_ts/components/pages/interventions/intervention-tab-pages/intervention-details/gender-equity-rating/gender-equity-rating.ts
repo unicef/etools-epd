@@ -9,19 +9,20 @@ import {buttonsStyles} from '../../common/styles/button-styles';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import cloneDeep from 'lodash-es/cloneDeep';
-import {connect} from '../../utils/store-subscribe-mixin';
 import {AnyObject} from '../../../../../../types/globals';
 import PermissionsMixin from '../../common/mixins/permissions-mixins';
 import {selectGenderEquityRating, selectGenderEquityRatingPermissions} from './genderEquityRating.selectors';
 import {GenderEquityRating, GenderEquityRatingPermissions} from './genderEquityRating.models';
 import {Permission} from '../../common/models/intervention-types';
 import {validateRequiredFields} from '../../utils/validation-helper';
+import {getStore} from '../../utils/redux-store-access';
+import {connect} from 'pwa-helpers/connect-mixin';
 
 /**
  * @customElement
  */
 @customElement('gender-equity-rating')
-export class GenderEquityRatingElement extends PermissionsMixin(connect(LitElement)) {
+export class GenderEquityRatingElement extends connect(getStore())(PermissionsMixin(LitElement)) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }
