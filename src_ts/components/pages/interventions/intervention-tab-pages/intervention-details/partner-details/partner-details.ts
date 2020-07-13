@@ -6,14 +6,15 @@ import '@polymer/paper-icon-button/paper-icon-button';
 import '@unicef-polymer/etools-loading/etools-loading';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import {buttonsStyles} from '../../common/styles/button-styles';
-import {connect} from '../../utils/store-subscribe-mixin';
 import {PartnerDetails, PartnerDetailsPermissions} from './partnerDetails.models';
+import {getStore} from '../../utils/redux-store-access';
+import {connect} from 'pwa-helpers/connect-mixin';
 
 /**
  * @customElement
  */
 @customElement('partner-details')
-export class PartnerDetailsElement extends connect(LitElement) {
+export class PartnerDetailsElement extends connect(getStore())(LitElement) {
   static get styles() {
     return [buttonsStyles];
   }
