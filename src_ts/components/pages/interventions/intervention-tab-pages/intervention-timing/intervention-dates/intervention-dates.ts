@@ -1,5 +1,4 @@
 import {LitElement, html, customElement, property} from 'lit-element';
-import {connect} from '../../utils/store-subscribe-mixin';
 import PermissionsMixin from '../../common/mixins/permissions-mixins';
 import FrNumbersConsistencyMixin from '../../common/mixins/fr-numbers-consistency-mixin';
 import '@unicef-polymer/etools-date-time/datepicker-lite';
@@ -14,12 +13,14 @@ import {selectInterventionDates, selectInterventionDatesPermissions} from './int
 import get from 'lodash-es/get';
 import {validateRequiredFields} from '../../utils/validation-helper';
 import {buttonsStyles} from '../../common/styles/button-styles';
+import {connect} from 'pwa-helpers/connect-mixin';
+import {getStore} from '../../utils/redux-store-access';
 
 /**
  * @customElement
  */
 @customElement('intervention-dates')
-export class InterventionDates extends PermissionsMixin(FrNumbersConsistencyMixin(connect(LitElement))) {
+export class InterventionDates extends connect(getStore())(PermissionsMixin(FrNumbersConsistencyMixin(LitElement))) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }
