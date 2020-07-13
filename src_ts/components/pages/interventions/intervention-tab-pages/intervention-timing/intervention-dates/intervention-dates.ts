@@ -98,9 +98,6 @@ export class InterventionDates extends connect(getStore())(PermissionsMixin(FrNu
   @property({type: Boolean})
   showLoading = false;
 
-  @property({type: Boolean})
-  editMode = false;
-
   @property({type: Object})
   intervention!: Intervention;
 
@@ -133,17 +130,17 @@ export class InterventionDates extends connect(getStore())(PermissionsMixin(FrNu
       this.setCanEditInterventionDates(this.permissions.edit);
       this.originalInterventionDates = cloneDeep(this.interventionDates);
     }
-    this.populate(state);
+    // this.populate(state);
   }
 
-  populate(state: any) {
-    if (get(state, 'interventions.current.start')) {
-      this.interventionDates.start = state.interventions.current.start;
-    }
-    if (get(state, 'interventions.current.start')) {
-      this.interventionDates.end = state.interventions.current.end;
-    }
-  }
+  // populate(state: any) {
+  //   if (get(state, 'interventions.current.start')) {
+  //     this.interventionDates.start = state.interventions.current.start;
+  //   }
+  //   if (get(state, 'interventions.current.start')) {
+  //     this.interventionDates.end = state.interventions.current.end;
+  //   }
+  // }
 
   renderActions(editMode, canEditInterventionDates) {
     if (!this.hideActionButtons(editMode, canEditInterventionDates)) {

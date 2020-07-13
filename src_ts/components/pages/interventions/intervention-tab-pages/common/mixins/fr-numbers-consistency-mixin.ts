@@ -1,14 +1,13 @@
 import {LitElement, property} from 'lit-element';
 import {EtoolsCurrency} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-mixin';
 import {Constructor} from '../types/types';
-import {AnyObject} from '../../../../../../types/globals';
 import {Fr, FrsDetails, Intervention} from '../models/intervention-types';
 
 
 function FrNumbersConsistencyMixin<T extends Constructor<LitElement>>(baseClass: T) {
   class FrNumbersConsistencyClass extends EtoolsCurrency(baseClass) {
     @property({type: Object})
-    frsConsistencyWarnings: AnyObject = {
+    frsConsistencyWarnings = {
       amountsCannotBeCompared: 'FRs Amount and UNICEF Cash Contribution can not be compared.',
       tooManyFrsCurencies: 'More than 1 FR currency is available.',
       amountAndDisbursementNotDisplayed: 'Totals for FR amount and Actual Disbursement can not be displayed.',
@@ -24,7 +23,7 @@ function FrNumbersConsistencyMixin<T extends Constructor<LitElement>>(baseClass:
       FCmultiCurrFlagErrorMsg: 'There are multiple transaction currencies in VISION'
     };
     @property({type: Object})
-    frsValidationFields: AnyObject = {
+    frsValidationFields = {
       start_date: 'Start Date',
       end_date: 'End Date',
       pd_unicef_cash_contribution: 'UNICEF Cash Contribution',
