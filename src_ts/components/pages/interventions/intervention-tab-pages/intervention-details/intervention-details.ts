@@ -1,19 +1,14 @@
 import {LitElement, html} from 'lit-element';
-import {connect} from '../utils/store-subscribe-mixin';
 import './partner-details/partner-details';
 import './document-details/document-details';
 import './details-overview/details-overview';
-import {gridLayoutStylesLit} from '../common/styles/grid-layout-styles-lit';
 import './unicef-details/unicef-details';
 
 /**
  * @customElement
  */
-export class InterventionDetails extends connect(LitElement) {
-  static get styles() {
-    return [gridLayoutStylesLit];
-  }
-  public render() {
+export class InterventionDetails extends LitElement {
+  render() {
     // language=HTML
     return html`
       <style></style>
