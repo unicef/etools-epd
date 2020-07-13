@@ -11,20 +11,21 @@ import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
-import {connect} from '../../utils/store-subscribe-mixin';
 import {AnyObject} from '../../../../../../types/globals';
 import PermissionsMixin from '../../common/mixins/permissions-mixins';
 import {selectPdUnicefDetails, selectPdUnicefDetailsPermissions} from './pdUnicefDetails.selectors';
 import {PdUnicefDetails, PdUnicefDetailsPermissions} from './pdUnicefDetails.models';
 import {Permission} from '../../common/models/intervention-types';
 import {validateRequiredFields} from '../../utils/validation-helper';
+import {connect} from 'pwa-helpers/connect-mixin';
+import {getStore} from '../../utils/redux-store-access';
 // import {handleItemsNoLongerAssignedToCurrentCountry} from '../../utils/common-methods';
 
 /**
  * @customElement
  */
 @customElement('unicef-details')
-export class UnicefDetailsElement extends PermissionsMixin(connect(LitElement)) {
+export class UnicefDetailsElement extends connect(getStore())(PermissionsMixin(LitElement)) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }
