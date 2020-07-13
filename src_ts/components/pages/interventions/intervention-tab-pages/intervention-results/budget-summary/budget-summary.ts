@@ -1,17 +1,18 @@
 import {LitElement, customElement, html, property} from 'lit-element';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import '../../../../../../redux/actions/interventions';
-import {connect} from '../../utils/store-subscribe-mixin';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {elevationStyles} from '../../common/styles/elevation-styles';
 import {BudgetSummary} from './budgetSummary.models';
 import {selectBudgetSummary} from './budgetSummary.selectors';
+import {connect} from 'pwa-helpers/connect-mixin';
+import {getStore} from '../../utils/redux-store-access';
 
 /**
  * @customElement
  */
-@customElement('results-overview')
-export class ResultsOverview extends connect(LitElement) {
+@customElement('budget-summary')
+export class BudgetSummaryEl extends connect(getStore())(LitElement) {
   static get styles() {
     return [gridLayoutStylesLit, elevationStyles];
   }

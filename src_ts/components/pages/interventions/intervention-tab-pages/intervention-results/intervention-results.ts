@@ -1,5 +1,5 @@
 import {LitElement, customElement, html} from 'lit-element';
-import './results-overview/results-overview';
+import './budget-summary/budget-summary';
 /**
  * @customElement
  */
@@ -10,7 +10,7 @@ export class InterventionResults extends LitElement {
     return html`
       <style></style>
 
-      <results-overview></results-overview>
+      <budget-summary></budget-summary>
     `;
   }
 }
