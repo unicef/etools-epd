@@ -50,7 +50,7 @@ export class InterventionDates extends PermissionsMixin(FrNumbersConsistencyMixi
                 slot="field"
                 id="intStart"
                 label="Start date"
-                .value="${this.programmeDocumentDates.start}"
+                .value="${this.interventionDates.start}"
                 ?readonly="${!this.permissions.edit.start}"
                 ?required="${!this.permissions.required.start}"
                 error-message="Please select start date"
@@ -75,7 +75,7 @@ export class InterventionDates extends PermissionsMixin(FrNumbersConsistencyMixi
                 slot="field"
                 id="intEnd"
                 label="End date"
-                .value="${this.programmeDocumentDates.end}"
+                .value="${this.interventionDates.end}"
                 ?readonly="${!this.permissions.edit.end}"
                 ?required="${this.permissions.required.end}"
                 error-message="Please select end date"
@@ -104,10 +104,10 @@ export class InterventionDates extends PermissionsMixin(FrNumbersConsistencyMixi
   intervention!: Intervention;
 
   @property({type: Object})
-  originalProgrammeDocumentDates!: ProgrammeDocDates;
+  originalInterventionDates!: ProgrammeDocDates;
 
   @property({type: Object})
-  programmeDocumentDates!: ProgrammeDocDates;
+  interventionDates!: ProgrammeDocDates;
 
   @property({type: String})
   _frsStartConsistencyWarning = '';
@@ -127,35 +127,35 @@ export class InterventionDates extends PermissionsMixin(FrNumbersConsistencyMixi
 
   stateChanged(state: any) {
     if (state.interventions.current) {
-      this.programmeDocumentDates = selectInterventionDates(state);
+      this.interventionDates = selectInterventionDates(state);
       this.permissions = selectInterventionDatesPermissions(state);
       this.setCanEditInterventionDates(this.permissions.edit);
-      this.originalProgrammeDocumentDates = cloneDeep(this.programmeDocumentDates);
+      this.originalInterventionDates = cloneDeep(this.interventionDates);
     }
     this.populate(state);
   }
 
   populate(state: any) {
     if (get(state, 'interventions.current.start')) {
-      this.programmeDocumentDates.start = state.interventions.current.start;
+      this.interventionDates.start = state.interventions.current.start;
     }
     if (get(state, 'interventions.current.start')) {
-      this.programmeDocumentDates.end = state.interventions.current.end;
+      this.interventionDates.end = state.interventions.current.end;
     }
   }
 
   renderActions(editMode, canEditInterventionDates) {
     if (!this.hideActionButtons(editMode, canEditInterventionDates)) {
       return html`
-      <div class="layout-horizontal right-align row-padding-v">
-          <paper-button class="default" @tap="${this.cancelProgrammeDateEdit}">
-        Cancel
-        </paper-button>
-        <paper-button class="primary" @tap="${this.saveProgrammeDateEdit}">
-        Save
-        </paper-button>
-      </div>
-    `;
+        <div class="layout-horizontal right-align row-padding-v">
+          <paper-button class="default" @tap="${this.cancelInterventionDateEdit}">
+            Cancel
+          </paper-button>
+          <paper-button class="primary" @tap="${this.saveInterventionDateEdit}">
+            Save
+          </paper-button>
+        </div>
+      `;
     }
   }
 
@@ -179,12 +179,12 @@ export class InterventionDates extends PermissionsMixin(FrNumbersConsistencyMixi
     return validateRequiredFields(this);
   }
 
-  cancelProgrammeDateEdit() {
-    this.programmeDocumentDates = cloneDeep(this.originalProgrammeDocumentDates);
+  cancelInterventionDateEdit() {
+    this.interventionDates = cloneDeep(this.originalInterventionDates);
     this.editMode = false;
   }
 
-  saveProgrammeDateEdit() {
+  saveInterventionDateEdit() {
     if (!this.validate()) {
       return;
     }
