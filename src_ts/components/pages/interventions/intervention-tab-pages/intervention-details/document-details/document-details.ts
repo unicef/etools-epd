@@ -1,5 +1,4 @@
 import {LitElement, html, customElement, property} from 'lit-element';
-import {connect} from '../../utils/store-subscribe-mixin';
 import '@polymer/paper-button/paper-button';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@polymer/paper-input/paper-input';
@@ -14,12 +13,14 @@ import {Permission} from '../../common/models/intervention-types';
 import {cloneDeep} from '../../../../../utils/utils';
 import {DocumentDetailsPermissions, DocumentDetails} from './documentDetails.models';
 import PermissionsMixin from '../../common/mixins/permissions-mixins';
+import {getStore} from '../../utils/redux-store-access';
+import {connect} from 'pwa-helpers/connect-mixin';
 
 /**
  * @customElement
  */
 @customElement('document-details')
-export class PartnerDetailsElement extends PermissionsMixin(connect(LitElement)) {
+export class PartnerDetailsElement extends connect(getStore())(PermissionsMixin(LitElement)) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }
@@ -29,6 +30,10 @@ export class PartnerDetailsElement extends PermissionsMixin(connect(LitElement))
     return html`
       ${sharedStyles}
       <style>
+        :host {
+          display: block;
+          margin-bottom: 24px;
+        }
         paper-textarea[readonly] {
           --paper-input-container-underline: {
             display: none;

@@ -9,7 +9,6 @@ export class InterventionOverview extends LitElement {
     // language=HTML
     return html`
       <style></style>
-
       Overview page
     `;
   }
