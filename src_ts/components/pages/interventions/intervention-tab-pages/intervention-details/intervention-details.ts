@@ -3,6 +3,7 @@ import './partner-details/partner-details';
 import './document-details/document-details';
 import './details-overview/details-overview';
 import './unicef-details/unicef-details';
+import './gender-equity-rating/gender-equity-rating';
 
 /**
  * @customElement
@@ -16,6 +17,7 @@ export class InterventionDetails extends LitElement {
       <partner-details></partner-details>
       <unicef-details></unicef-details>
       <document-details></document-details>
+      <gender-equity-rating></gender-equity-rating>
     `;
   }
 }

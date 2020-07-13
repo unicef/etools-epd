@@ -30,6 +30,10 @@ export class PartnerDetailsElement extends connect(getStore())(PermissionsMixin(
     return html`
       ${sharedStyles}
       <style>
+        :host {
+          display: block;
+          margin-bottom: 24px;
+        }
         paper-textarea[readonly] {
           --paper-input-container-underline: {
             display: none;

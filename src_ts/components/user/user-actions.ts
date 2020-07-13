@@ -1,4 +1,3 @@
-import './etools-user';
 import {AnyObject} from '../../types/globals';
 import {updateUserData} from '../../redux/actions/user';
 import {getEndpoint} from '../../endpoints/endpoints';
