@@ -10,7 +10,6 @@ import {Intervention, Permission} from '../../common/models/intervention-types';
 import {ProgrammeDocDates, InterventionDatesPermissions} from './interventionDates.models';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {selectInterventionDates, selectInterventionDatesPermissions} from './interventionDates.selectors';
-import get from 'lodash-es/get';
 import {validateRequiredFields} from '../../utils/validation-helper';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {connect} from 'pwa-helpers/connect-mixin';
@@ -154,6 +153,8 @@ export class InterventionDates extends connect(getStore())(PermissionsMixin(FrNu
           </paper-button>
         </div>
       `;
+    } else {
+      return html``;
     }
   }
 
@@ -166,6 +167,8 @@ export class InterventionDates extends connect(getStore())(PermissionsMixin(FrNu
       >
       </paper-icon-button>
     `;
+    } else {
+      return html``;
     }
   }
 

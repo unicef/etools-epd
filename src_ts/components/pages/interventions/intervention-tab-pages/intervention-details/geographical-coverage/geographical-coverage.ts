@@ -1,9 +1,8 @@
 import {customElement, html, LitElement, property} from 'lit-element';
-import {connect} from '../../utils/store-subscribe-mixin';
 import '@polymer/paper-button/paper-button';
 import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
-import '../grouped-locations-dialog/grouped-locations-dialog';
-import {GroupedLocationsDialog} from '../grouped-locations-dialog/grouped-locations-dialog';
+import './grouped-locations-dialog';
+import {GroupedLocationsDialog} from './grouped-locations-dialog';
 
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '../../common/styles/button-styles';
@@ -11,13 +10,14 @@ import {Intervention} from '../../common/models/intervention-types';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {RootState} from '../../../../../../redux/store';
 import {isJsonStrMatch} from '../../../../../utils/utils';
-
+import {getStore} from '../../utils/redux-store-access';
+import {connect} from 'pwa-helpers/connect-mixin';
 
 /**
  * @customElement
  */
 @customElement('geographical-coverage')
-export class GeographicalCoverage extends connect(LitElement) {
+export class GeographicalCoverage extends connect(getStore())(LitElement) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }
