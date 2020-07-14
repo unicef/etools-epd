@@ -12,7 +12,7 @@ import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
 import {AnyObject} from '../../../../../../types/globals';
-import PermissionsMixin from '../../common/mixins/permissions-mixins';
+import CardComponentMixin from '../../common/mixins/card-component-mixin';
 import {selectPdUnicefDetails, selectPdUnicefDetailsPermissions} from './pdUnicefDetails.selectors';
 import {PdUnicefDetails, PdUnicefDetailsPermissions} from './pdUnicefDetails.models';
 import {Permission} from '../../common/models/intervention-types';
@@ -25,7 +25,7 @@ import {getStore} from '../../utils/redux-store-access';
  * @customElement
  */
 @customElement('unicef-details')
-export class UnicefDetailsElement extends connect(getStore())(PermissionsMixin(LitElement)) {
+export class UnicefDetailsElement extends connect(getStore())(CardComponentMixin(LitElement)) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }

@@ -26,13 +26,10 @@ export class DetailsOverview extends connect(getStore())(LitElement) {
           display: block;
           margin-bottom: 24px;
         }
-        .row-h {
-          padding-top: 5px;
-          padding-bottom: 5px;
-        }
+
       </style>
-      <section class="elevation" elevation="1">
-        <div class="row-h flex-c">
+      <section class="elevation content-wrapper" elevation="1">
+        <div class="layout-horizontal flex-c">
           <div class="col col-3">
             <span>
               <label class="paper-label">Document Type</label>

@@ -6,8 +6,11 @@ export class PartnerDetails extends ModelsBase {
     super();
     this.setObjProperties(intervention);
   }
-  partner!: number;
-  partner_name!: string;
+  partner_id: number | null = null;
+  partner = '';
+  partner_vendor = '';
+  partner_focal_points: number[] = [];
+  agreement: number | null = null;
 }
 
 export class PartnerDetailsPermissions extends ModelsBase {
@@ -15,6 +18,9 @@ export class PartnerDetailsPermissions extends ModelsBase {
     super();
     this.setObjProperties(permissions);
   }
-  partner!: boolean;
-  // TODO -add rest of props
+  partner_id = false;
+  partner = false;
+  partner_vendor = false;
+  partner_focal_points = false;
+  agreement = false;
 }

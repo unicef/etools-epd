@@ -6,7 +6,15 @@ export interface EtoolsEndpoint {
   cacheTableName?: string;
 }
 export interface EtoolsEndpoints {
-  [key: string]: EtoolsEndpoint;
+  userProfile: EtoolsEndpoint;
+  changeCountry: EtoolsEndpoint;
+  interventions: EtoolsEndpoint;
+  intervention: EtoolsEndpoint;
+  locations: EtoolsEndpoint;
+  static: EtoolsEndpoint;
+  partners: EtoolsEndpoint;
+  partnerStaffMembers: EtoolsEndpoint;
+  partnerAgreements: EtoolsEndpoint;
 }
 
 export const etoolsEndpoints: EtoolsEndpoints = {
@@ -30,5 +38,11 @@ export const etoolsEndpoints: EtoolsEndpoints = {
   },
   partners: {
     url: '/api/v2/partners/'
+  },
+  partnerStaffMembers: {
+    template: '/api/v2/partners/<%=id%>/staff-members/'
+  },
+  partnerAgreements: {
+    template: '/api/v2/agreement/<%=id%>/todo/'
   }
 };

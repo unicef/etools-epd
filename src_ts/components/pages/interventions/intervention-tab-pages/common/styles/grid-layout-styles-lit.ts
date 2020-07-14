@@ -7,6 +7,10 @@ export const gridLayoutStylesLit = css`
     width: 100%;
   }
 
+  .content-wrapper {
+    padding: 16px 24px;
+  }
+
   .layout-horizontal,
   .layout-vertical {
     box-sizing: border-box;
@@ -62,7 +66,7 @@ export const gridLayoutStylesLit = css`
 
   .row-h,
   .row-v {
-    padding: 16px 24px;
+    padding: 16px 0;
   }
 
   .row-v.t-border,
