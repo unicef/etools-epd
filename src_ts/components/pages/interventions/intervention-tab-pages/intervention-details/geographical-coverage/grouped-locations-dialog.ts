@@ -1,11 +1,12 @@
 import {LitElement, html, property, customElement, query} from 'lit-element';
-import {connect} from '../../utils/store-subscribe-mixin';
-import {Location} from '../geographical-coverage/geographicalCoverage.models';
+import {Location} from './geographicalCoverage.models';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
 import {isJsonStrMatch} from '../../../../../utils/utils';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {RootState} from '../../../../../../redux/store';
+import {getStore} from '../../utils/redux-store-access';
+import {connect} from 'pwa-helpers/connect-mixin';
 
 class GroupedLocations {
   adminLevelLocation: Location | null = null;
@@ -16,7 +17,7 @@ class GroupedLocations {
  * @customElement
  */
 @customElement('grouped-locations-dialog')
-export class GroupedLocationsDialog extends connect(LitElement) {
+export class GroupedLocationsDialog extends connect(getStore())(LitElement) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }
