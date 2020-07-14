@@ -3,7 +3,7 @@ import '@polymer/paper-button/paper-button';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@polymer/paper-radio-group';
 import '@unicef-polymer/etools-loading/etools-loading';
-import '@polymer/paper-input/paper-input';
+import '@polymer/paper-input/paper-textarea';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
@@ -39,11 +39,11 @@ export class GenderEquityRatingElement extends connect(getStore())(PermissionsMi
           display: block;
           margin-bottom: 24px;
         }
-        .pl-12 {
-          padding-left: 12px !important;
+        .pl-none {
+          padding-left: 0px !important;
         }
-        .pb-20 {
-          padding-bottom: 20px !important;
+        paper-radio-button:first-child {
+          padding-left: 0px !important;
         }
       </style>
 
@@ -60,78 +60,84 @@ export class GenderEquityRatingElement extends connect(getStore())(PermissionsMi
         </div>
 
         <div class="row-padding-v pb-20">
-          <div class="w100 pl-12">
-            <label>Gender Rating</label>
+          <div class="w100">
+            <label class="paper-label">Gender Rating</label>
           </div>
           <paper-radio-group
             selected="${this.genderEquityRating.gender_rating}"
             @selected-changed="${({detail}: CustomEvent) =>
-        this.genderEquityRating!.setObjProperty('gender_rating', detail.value)}"
+              this.genderEquityRating!.setObjProperty('gender_rating', detail.value)}"
           >
             ${this._getRatingRadioButtonsTemplate(this.ratings, this.permissions.edit.gender)}
           </paper-radio-group>
-          <div class="col col-6 pl-12">
-            <paper-input
+          <div class="col col-6 pl-none">
+            <paper-textarea
               label="Gender Narrative"
               always-float-label
               class="w100"
+              placeholder="&#8212;"
+              max-rows="4"
               .value="${this.genderEquityRating.gender_narrative}"
               ?required="${this.permissions.required.gender}"
               @value-changed="${({detail}: CustomEvent) =>
-        this.genderEquityRating!.setObjProperty('sustainability_narrative', detail.value)}"
+                this.genderEquityRating!.setObjProperty('gender_narrative', detail.value)}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.gender)}"
             >
-            </paper-input>
+            </paper-textarea>
           </div>
         </div>
         <div class="row-padding-v pb-20">
-          <div class="w100 pl-12">
-            <label>Sustainability Rating</label>
+          <div class="w100">
+            <label class="paper-label">Sustainability Rating</label>
           </div>
           <paper-radio-group
             .selected="${this.genderEquityRating.sustainability_rating}"
             @selected-changed="${({detail}: CustomEvent) =>
-        this.genderEquityRating!.setObjProperty('sustainability_rating', detail.value)}"
+              this.genderEquityRating!.setObjProperty('sustainability_rating', detail.value)}"
           >
             ${this._getRatingRadioButtonsTemplate(this.ratings, this.permissions.edit.sustainability)}
           </paper-radio-group>
-          <div class="col col-6 pl-12">
-            <paper-input
+          <div class="col col-6 pl-none">
+            <paper-textarea
               label="Sustainability Narrative"
               always-float-label
               class="w100"
+              placeholder="&#8212;"
+              max-rows="4"
               .value="${this.genderEquityRating.sustainability_narrative}"
               ?required="${this.permissions.required.sustainability}"
               @value-changed="${({detail}: CustomEvent) =>
-        this.genderEquityRating!.setObjProperty('sustainability_narrative', detail.value)}"
+                this.genderEquityRating!.setObjProperty('sustainability_narrative', detail.value)}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.sustainability)}"
             >
-            </paper-input>
+            </paper-textarea>
           </div>
         </div>
         <div class="row-padding-v pb-20">
-          <div class="w100 pl-12">
-            <label>Equity Rating</label>
+          <div class="w100">
+            <label class="paper-label">Equity Rating</label>
           </div>
           <paper-radio-group
             .selected="${this.genderEquityRating.equity_rating}"
             @selected-changed="${({detail}: CustomEvent) =>
-        this.genderEquityRating!.setObjProperty('equity_rating', detail.value)}"
+              this.genderEquityRating!.setObjProperty('equity_rating', detail.value)}"
           >
             ${this._getRatingRadioButtonsTemplate(this.ratings, this.permissions.edit.equity)}
           </paper-radio-group>
-          <div class="col col-6 pl-12">
-            <paper-input
+          <div class="col col-6 pl-none">
+            <paper-textarea
               label="Equity Narrative"
               always-float-label
               class="w100"
+              placeholder="&#8212;"
+              max-rows="4"
               .value="${this.genderEquityRating.equity_narrative}"
               ?required="${this.permissions.required.equity}"
               @value-changed="${({detail}: CustomEvent) =>
-        this.genderEquityRating!.setObjProperty('equity_narrative', detail.value)}"
+                this.genderEquityRating!.setObjProperty('equity_narrative', detail.value)}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.equity)}"
             >
-            </paper-input>
+            </paper-textarea
           </div>
         </div>
 
