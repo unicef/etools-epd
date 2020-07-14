@@ -48,3 +48,12 @@ export const getListDummydata = (paginator: EtoolsPaginator) => {
     }
   });
 };
+
+export const getGenderEquityRatingsDummy = () => {
+  return [
+    {label: 'Principal', value: '1'},
+    {label: 'Significant', value: '2'},
+    {label: 'Marginal', value: '3'},
+    {label: 'None', value: '4'}
+  ];
+};
