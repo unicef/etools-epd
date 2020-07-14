@@ -11,7 +11,7 @@ import {Intervention} from '../../common/models/intervention-types';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {RootState} from '../../../../../../redux/store';
 import {isJsonStrMatch} from '../../../../../utils/utils';
-import get from 'lodash-es/get';
+
 
 /**
  * @customElement
@@ -108,12 +108,12 @@ export class GeographicalCoverage extends connect(LitElement) {
   }
 
   locationsChanged(event: CustomEvent) {
-    this.intervention.flat_locations = event.detail.selectedItems.map((i: any) => i.id);
+    this.flatLocations = event.detail.selectedItems.map((i: any) => i.id);
   }
 
   private openLocationsDialog() {
     this.locationsDialog.adminLevel = null;
-    this.locationsDialog.interventionLocationIds = this.intervention.flat_locations;
+    this.locationsDialog.interventionLocationIds = this.flatLocations;
     (this.locationsDialog as GroupedLocationsDialog).openDialog();
   }
 

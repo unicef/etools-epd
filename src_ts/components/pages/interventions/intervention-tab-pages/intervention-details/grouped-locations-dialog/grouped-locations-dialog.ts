@@ -98,6 +98,8 @@ export class GroupedLocationsDialog extends connect(LitElement) {
     `;
   }
 
+  private _interventionLocIds: string[] = [];
+
   @property({type: Array}) // ??
   _adminLevels!: {id: number; name: string; admin_level: any}[];
 
@@ -119,12 +121,11 @@ export class GroupedLocationsDialog extends connect(LitElement) {
   interventionLocations: Location[] = [];
 
   @property({type: Array})
-  // @ts-ignore
-  interventionLocationIds!: string[];
+  get interventionLocationIds() {
+    return this._interventionLocIds;
+  }
 
-  // @ts-ignore
   set interventionLocationIds(locationIds: string[]) {
-    // this.interventionLocationIds = locationIds; // ???
     this.interventionLocationIdsChanged(locationIds);
   }
 
@@ -218,6 +219,7 @@ export class GroupedLocationsDialog extends connect(LitElement) {
       return;
     }
     this._setInterventionLocationsDetails(locationIds);
+    this._interventionLocIds = locationIds;
   }
 
   _setInterventionLocationsDetails(locationIds: any[]) {

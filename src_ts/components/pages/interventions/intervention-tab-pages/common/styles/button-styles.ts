@@ -1,4 +1,5 @@
 import {css} from 'lit-element';
+import {layoutCenterJustified, layoutHorizontal} from './flex-layout-styles';
 
 // language=HTML
 export const buttonsStyles = css`
@@ -73,9 +74,8 @@ export const buttonsStyles = css`
   }
 
   paper-button .btn-label {
-    @apply --layout-horizontal;
-    @apply --layout-flex;
-    @apply --layout-center-justified;
+    ${layoutHorizontal}
+    ${layoutCenterJustified}
   }
 
   .secondary-btn {
