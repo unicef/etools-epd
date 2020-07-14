@@ -187,8 +187,24 @@ export const sharedStyles = html`
     }
 
     .input-label[empty]::after {
-      content: "—";
+      content: '—';
       color: var(--secondary-text-color);
+    }
+
+    paper-textarea {
+      --paper-input-container-input: {
+        display: block;
+      }
+      --iron-autogrow-textarea: {
+        overflow: auto;
+        padding: 0;
+        max-height: 96px;
+      }
+    }
+    paper-textarea[readonly] {
+      --paper-input-container-underline: {
+        display: none;
+      }
     }
   </style>
 `;
