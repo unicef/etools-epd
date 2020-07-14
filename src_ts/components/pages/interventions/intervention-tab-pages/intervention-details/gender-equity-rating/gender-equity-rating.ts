@@ -137,7 +137,7 @@ export class GenderEquityRatingElement extends connect(getStore())(PermissionsMi
                 this.genderEquityRating!.setObjProperty('equity_narrative', detail.value)}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.equity)}"
             >
-            </paper-textarea
+            </paper-textarea>
           </div>
         </div>
 
