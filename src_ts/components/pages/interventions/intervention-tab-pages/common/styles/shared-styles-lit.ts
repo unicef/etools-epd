@@ -148,10 +148,13 @@ export const sharedStyles = html`
       }
     }
 
-    etools-dialog paper-textarea {
+    paper-textarea {
       --paper-input-container-input: {
         display: block;
       }
+    }
+
+    etools-dialog paper-textarea {
       --iron-autogrow-textarea: {
         overflow: auto;
         padding: 0;
