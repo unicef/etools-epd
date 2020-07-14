@@ -63,7 +63,7 @@ export class GeographicalCoverage extends connect(LitElement) {
             label="Location(s)"
             placeholder="&#8212;"
             .options="${this.locations}"
-            .selected-values="${this.intervention.flat_locations}"
+            .selected-values="${this.flatLocations}"
             option-label="name"
             option-value="id"
             error-message="Please select locations"
@@ -87,11 +87,8 @@ export class GeographicalCoverage extends connect(LitElement) {
 
   private locationsDialog!: GroupedLocationsDialog;
 
-  @property({
-    type: Object
-    // @ts-ignore
-  })
-  intervention!: Intervention;
+  @property({type: String})
+  flatLocations!: string[];
 
   @property({type: Object})
   originalIntervention!: Intervention;
@@ -108,7 +105,6 @@ export class GeographicalCoverage extends connect(LitElement) {
     if (!isJsonStrMatch(this.locations, state.commonData!.locations)) {
       this.locations = [...state.commonData!.locations];
     }
-    this.intervention = get(state, 'interventions.current');
   }
 
   locationsChanged(event: CustomEvent) {
@@ -116,10 +112,6 @@ export class GeographicalCoverage extends connect(LitElement) {
   }
 
   private openLocationsDialog() {
-    // if (!this.locationsDialog) {
-    //   this.createDialog();
-    //   (this.locationsDialog as GroupedLocationsDialog).openDialog();
-    // }
     this.locationsDialog.adminLevel = null;
     this.locationsDialog.interventionLocationIds = this.intervention.flat_locations;
     (this.locationsDialog as GroupedLocationsDialog).openDialog();
