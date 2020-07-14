@@ -34,21 +34,6 @@ export class PartnerDetailsElement extends connect(getStore())(PermissionsMixin(
           display: block;
           margin-bottom: 24px;
         }
-        paper-textarea {
-          --paper-input-container-input: {
-            display: block;
-          }
-          --iron-autogrow-textarea: {
-            overflow: auto;
-            padding: 0;
-            max-height: 96px;
-          }
-        }
-        paper-textarea[readonly] {
-          --paper-input-container-underline: {
-            display: none;
-          }
-        }
       </style>
 
       <etools-content-panel show-expand-btn panel-title="Document Details">
