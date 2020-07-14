@@ -100,13 +100,13 @@ export class GroupedLocationsDialog extends connect(LitElement) {
 
   private _interventionLocIds: string[] = [];
 
-  @property({type: Array}) // ??
   _adminLevels!: {id: number; name: string; admin_level: any}[];
 
   set adminLevels(locationTypes) {
     this._adminLevels = this._removeCountry(locationTypes);
   }
 
+  @property({type: Array})
   get adminLevels() {
     return this._adminLevels;
   }
