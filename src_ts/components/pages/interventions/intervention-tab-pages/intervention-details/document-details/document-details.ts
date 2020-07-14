@@ -34,6 +34,16 @@ export class PartnerDetailsElement extends connect(getStore())(PermissionsMixin(
           display: block;
           margin-bottom: 24px;
         }
+        paper-textarea {
+          --paper-input-container-input: {
+            display: block;
+          }
+          --iron-autogrow-textarea: {
+            overflow: auto;
+            padding: 0;
+            max-height: 96px;
+          }
+        }
         paper-textarea[readonly] {
           --paper-input-container-underline: {
             display: none;
@@ -93,7 +103,9 @@ export class PartnerDetailsElement extends connect(getStore())(PermissionsMixin(
           </paper-textarea>
         </div>
 
-        <div class="layout-horizontal right-align row-padding-v">
+        <div
+          class="layout-horizontal right-align row-padding-v"
+          ?hidden="${this.hideActionButtons(this.editMode, this.canEditDocumentDetails)}">
           <paper-button class="default" @tap="${this.cancelDocumentDetails}">
             Cancel
           </paper-button>
