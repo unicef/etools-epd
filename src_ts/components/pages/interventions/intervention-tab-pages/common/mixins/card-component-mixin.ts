@@ -43,11 +43,11 @@ function CardComponentMixin<T extends Constructor<LitElement>>(baseClass: T) {
     }
 
     cancel() {
-      throw Error('Not implemented');
+      throw new Error('Not implemented');
     }
 
     save() {
-      throw Error('Not implemented');
+      throw new Error('Not implemented');
     }
 
     renderActions(editMode: boolean, canEditAnyFields: boolean) {
@@ -70,16 +70,7 @@ function CardComponentMixin<T extends Constructor<LitElement>>(baseClass: T) {
         ? html``
         : html` <paper-icon-button @tap="${this.allowEdit}" icon="create"> </paper-icon-button> `;
     }
-
-    selectedItemChanged(detail: any, key: string) {
-      this.dataToSave[key] = detail.selected;
-    }
-
-    selectedItemsChanged(detail: any, key: string) {
-      this.dataToSave[key] = detail.selectedItems.map((i: any) => i.id);
-    }
   }
-
   return CardComponentClass;
 }
 

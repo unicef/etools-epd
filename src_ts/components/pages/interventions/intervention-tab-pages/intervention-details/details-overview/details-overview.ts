@@ -28,7 +28,7 @@ export class DetailsOverview extends connect(getStore())(LitElement) {
         }
 
       </style>
-      <section class="elevation content-wrapper" elevation="1">
+      <section class="elevation" elevation="1">
         <div class="layout-horizontal flex-c">
           <div class="col col-3">
             <span>

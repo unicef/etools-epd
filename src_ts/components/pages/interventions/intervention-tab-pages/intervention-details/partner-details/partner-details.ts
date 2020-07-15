@@ -14,7 +14,17 @@ import {getStore} from '../../utils/redux-store-access';
 import {connect} from 'pwa-helpers/connect-mixin';
 import CardComponentMixin from '../../common/mixins/card-component-mixin';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import {SharedStylesLit} from '../../../../../styles/shared-styles-lit';
+import get from 'lodash-es/get';
+import cloneDeep from 'lodash-es/cloneDeep';
+import {sharedStyles} from '../../common/styles/shared-styles-lit';
+import {validateRequiredFields} from '../../utils/validation-helper';
+import {patchIntervention} from '../../common/actions';
+import {sendRequest} from '@unicef-polymer/etools-ajax';
+import {getEndpoint} from '../../utils/endpoint-helper';
+import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import {isJsonStrMatch} from '../../utils/utils';
+import {isUnicefUSer} from '../../common/selectors';
 
 /**
  * @customElement
@@ -25,9 +35,13 @@ export class PartnerDetailsElement extends connect(getStore())(CardComponentMixi
     return [buttonsStyles, gridLayoutStylesLit];
   }
   render() {
+    if (!this.originalData) {
+      return html` ${sharedStyles}
+        <etools-loading loading-text="Loading..." active></etools-loading>`;
+    }
     // language=HTML
     return html`
-      ${SharedStylesLit}
+      ${sharedStyles}
       <style>
         :host {
           display: block;
@@ -42,43 +56,48 @@ export class PartnerDetailsElement extends connect(getStore())(CardComponentMixi
           ${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}
         </div>
 
-        <div class="row-h">
-          <paper-input
-            class="col col-7"
-            label="Partner Organization"
-            .value="${this.originalData.partner}"
-            required
-            readonly
-            always-float-label
-          >
-          </paper-input>
-
-          <etools-dropdown
-            class="col col-7"
-            id="agreements"
-            label="Agreements"
-            .options="${this.partnerAgreements}"
-            .selected="${this.originalData.agreement}"
-            option-value="id"
-            option-label="name"
-            trigger-value-change-event
-            @etools-selected-item-changed="${({detail}: CustomEvent) => this.selectedItemChanged(detail, 'agreement')}"
-            ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.agreement)}"
-            required
-            auto-validate
-          >
-          </etools-dropdown>
+        <div class="row-padding-v layout-horizontal">
+          <div class="col col-7">
+            <paper-input
+              class="w100"
+              label="Partner Organization"
+              .value="${this.originalData.partner}"
+              required
+              readonly
+              always-float-label
+            >
+            </paper-input>
+          </div>
+          <div class="col col-5">
+            <etools-dropdown
+              id="agreements"
+              label="Agreements"
+              .options="${this.partnerAgreements}"
+              .selected="${this.originalData.agreement}"
+              option-value="id"
+              option-label="name"
+              trigger-value-change-event
+              @etools-selected-item-changed="${({detail}: CustomEvent) =>
+                this.originalData!.setObjProperty('agreement', detail.value)}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.agreement)}"
+              required
+              auto-validate
+            >
+            </etools-dropdown>
+          </div>
         </div>
-        <div class="row-h">
-          <paper-input
-            class="col col-7"
-            label="Partner Vendor Number"
-            .value="${this.originalData.partner_vendor}"
-            required
-            readonly
-            always-float-label
-          >
-          </paper-input>
+        <div class="row-padding-v layout-horizontal">
+          <div class="col col-7">
+            <paper-input
+              class="w100"
+              label="Partner Vendor Number"
+              .value="${this.originalData.partner_vendor}"
+              required
+              readonly
+              always-float-label
+            >
+            </paper-input>
+          </div>
           <div class="col col-5 layout-vertical">
             <label for="agreementAuthOff" class="paper-label">Agreement Authorized Officers</label>
             <div id="agreementAuthOff">
@@ -86,20 +105,24 @@ export class PartnerDetailsElement extends connect(getStore())(CardComponentMixi
             </div>
           </div>
         </div>
-        <div class="row-h">
-          <etools-dropdown-multi
-            label="Partner Focal Point"
-            class="col col-7"
-            .selectedValues="${this.originalData.partner_focal_points}"
-            .options="${this.partnerStaffMembers}"
-            option-label="name"
-            option-value="id"
-            trigger-value-change-event
-            @etools-selected-items-changed="${({detail}: CustomEvent) =>
-              this.selectedItemsChanged(detail, 'partner_focal_points')}"
-            ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.partner_focal_points)}"
-          >
-          </etools-dropdown-multi>
+        <div class="row-padding-v">
+          <div class="col col-7">
+            <etools-dropdown-multi
+              label="Partner Focal Point"
+              .selectedValues="${this.originalData.partner_focal_points}"
+              .options="${this.partnerStaffMembers}"
+              option-label="name"
+              option-value="id"
+              trigger-value-change-event
+              @etools-selected-items-changed="${({detail}: CustomEvent) =>
+                this.originalData!.setObjProperty(
+                  'partner_focal_points',
+                  detail.selectedItems.map((i: any) => i.id)
+                )}"
+              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.partner_focal_points)}"
+            >
+            </etools-dropdown-multi>
+          </div>
         </div>
 
         ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
@@ -120,7 +143,7 @@ export class PartnerDetailsElement extends connect(getStore())(CardComponentMixi
   showLoading = false;
 
   @property({type: Array})
-  partnerAgreements!: [];
+  partnerAgreements!: any[];
 
   @property({type: Array})
   agreementAuthorizedOfficers!: [];
@@ -132,13 +155,61 @@ export class PartnerDetailsElement extends connect(getStore())(CardComponentMixi
     super.connectedCallback();
   }
 
-  stateChanged(state: any) {
+  async stateChanged(state: any) {
     if (!state.interventions.current) {
       return;
     }
-    this.originalData = selectPartnerDetails(state);
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'details')) {
+      return;
+    }
+
+    const newPartnerDetails = selectPartnerDetails(state);
+    if (!isJsonStrMatch(this.originalData, newPartnerDetails)) {
+      if (this.partnerIdHasChanged(newPartnerDetails)) {
+        await this.populateDropdowns(state, newPartnerDetails.partner_id!);
+      }
+      this.originalData = newPartnerDetails;
+    }
+
     this.permissions = selectPartnerDetailsPermissions(state);
     this.set_canEditAtLeastOneField(this.permissions.edit);
+  }
+
+  async populateDropdowns(state: any, partnerId: number) {
+    this.partnerStaffMembers = await this.getAllPartnerStaffMembers(partnerId!);
+
+    // if (isUnicefUSer(state)) {
+    //   this.filterAgreementsByPartner(get(state, 'agreements.list'), partnerId);
+    // } else {
+         this.partnerAgreements = await this.getPartnerAgreements(partnerId!);
+    // }
+  }
+
+  filterAgreementsByPartner(agreements: [], partnerId: number) {
+    this.partnerAgreements = agreements.filter((a: any) => a.partner === partnerId);
+  }
+
+  partnerIdHasChanged(newPartnerDetails: PartnerDetails) {
+    return String(get(this.originalData, 'partner_id')) !== String(newPartnerDetails.partner_id);
+  }
+
+  getAllPartnerStaffMembers(partnerId: number) {
+    return sendRequest({
+      endpoint: getEndpoint(interventionEndpoints.partnerStaffMembers, {id: partnerId})
+    }).then((resp) => {
+      resp.forEach((staff: any) => {
+        staff.name = staff.first_name + ' ' + staff.last_name;
+      });
+      return resp;
+    });
+  }
+
+  getPartnerAgreements(partnerId: number) {
+    return sendRequest({
+      endpoint: getEndpoint(interventionEndpoints.partnerStaffMembers, {id: partnerId})
+    }).then((resp) => {
+      return resp;
+    });
   }
 
   renderAgreementAuthorizedOfficers(authOfficers: []) {
@@ -152,8 +223,22 @@ export class PartnerDetailsElement extends connect(getStore())(CardComponentMixi
   }
 
   cancel() {
+    this.originalData = cloneDeep(this.originalData);
     this.editMode = false;
   }
 
-  save() {}
+  validate() {
+    return validateRequiredFields(this);
+  }
+
+  save() {
+    if (!this.validate()) {
+      return;
+    }
+    getStore()
+      .dispatch(patchIntervention(this.dataToSave))
+      .then(() => {
+        this.editMode = false;
+      });
+  }
 }

@@ -66,7 +66,7 @@ export const gridLayoutStylesLit = css`
 
   .row-h,
   .row-v {
-    padding: 16px 0;
+    padding: 16px 24px;
   }
 
   .row-v.t-border,

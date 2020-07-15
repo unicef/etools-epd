@@ -7,10 +7,18 @@ export interface EtoolsEndpoint {
 }
 export interface EtoolsEndpoints {
   intervention: EtoolsEndpoint;
+  partnerStaffMembers: EtoolsEndpoint;
+  partnerAgreements: EtoolsEndpoint;
 }
 
 export const interventionEndpoints: EtoolsEndpoints = {
   intervention: {
     template: '/api/v2/interventions/<%=interventionId%>/'
+  },
+  partnerStaffMembers: {
+    template: '/api/v2/partners/<%=id%>/staff-members/'
+  },
+  partnerAgreements: {
+    template: '/api/v2/agreement/<%=id%>/todo/'
   }
 };
