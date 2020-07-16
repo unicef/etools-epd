@@ -25,6 +25,10 @@ export class InterventionDates extends connect(getStore())(PermissionsMixin(FrNu
   }
 
   render() {
+    if (!this.interventionDates) {
+      return html` ${sharedStyles}
+        <etools-loading loading-text="Loading..." active></etools-loading>`;
+    }
     // language=HTML
     return html`
       ${sharedStyles}
@@ -63,6 +67,7 @@ export class InterventionDates extends connect(getStore())(PermissionsMixin(FrNu
             </etools-info-tooltip>
           </div>
 
+          <!-- End date -->
           <div class="col col-3">
             <etools-info-tooltip
               class="fr-nr-warn"
@@ -129,20 +134,12 @@ export class InterventionDates extends connect(getStore())(PermissionsMixin(FrNu
       this.setCanEditInterventionDates(this.permissions.edit);
       this.originalInterventionDates = cloneDeep(this.interventionDates);
     }
-    // this.populate(state);
   }
 
-  // populate(state: any) {
-  //   if (get(state, 'interventions.current.start')) {
-  //     this.interventionDates.start = state.interventions.current.start;
-  //   }
-  //   if (get(state, 'interventions.current.start')) {
-  //     this.interventionDates.end = state.interventions.current.end;
-  //   }
-  // }
-
-  renderActions(editMode, canEditInterventionDates) {
-    if (!this.hideActionButtons(editMode, canEditInterventionDates)) {
+  renderActions(editMode: boolean, canEditInterventionDates: boolean) {
+    if (this.hideActionButtons(editMode, canEditInterventionDates)) {
+      return html``;
+    } else {
       return html`
         <div class="layout-horizontal right-align row-padding-v">
           <paper-button class="default" @tap="${this.cancelInterventionDateEdit}">
@@ -153,22 +150,14 @@ export class InterventionDates extends connect(getStore())(PermissionsMixin(FrNu
           </paper-button>
         </div>
       `;
-    } else {
-      return html``;
     }
   }
 
-  renderEditBtn(editMode, canEditInterventionDates) {
+  renderEditBtn(editMode: boolean, canEditInterventionDates: boolean) {
     if (this.hideEditIcon(editMode, canEditInterventionDates)) {
-      return html`
-      <paper-icon-button
-        @tap="${this.allowEdit}"
-        icon="create"
-      >
-      </paper-icon-button>
-    `;
-    } else {
       return html``;
+    } else {
+      return html` <paper-icon-button @tap="${this.allowEdit}" icon="create"> </paper-icon-button> `;
     }
   }
 
