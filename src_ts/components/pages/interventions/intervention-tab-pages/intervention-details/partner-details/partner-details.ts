@@ -49,7 +49,7 @@ export class PartnerDetailsElement extends connect(getStore())(CardComponentMixi
         }
       </style>
 
-      <etools-content-panel panel-title="Partner Details">
+      <etools-content-panel show-expand-btn panel-title="Partner Details">
         <etools-loading loading-text="Loading..." .active="${this.showLoading}"></etools-loading>
 
         <div slot="panel-btns">
@@ -78,7 +78,7 @@ export class PartnerDetailsElement extends connect(getStore())(CardComponentMixi
               option-label="name"
               trigger-value-change-event
               @etools-selected-item-changed="${({detail}: CustomEvent) =>
-                this.originalData!.setObjProperty('agreement', detail.value)}"
+                this.selectedItemChanged(detail, 'agreement')}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.agreement)}"
               required
               auto-validate
@@ -115,10 +115,7 @@ export class PartnerDetailsElement extends connect(getStore())(CardComponentMixi
               option-value="id"
               trigger-value-change-event
               @etools-selected-items-changed="${({detail}: CustomEvent) =>
-                this.originalData!.setObjProperty(
-                  'partner_focal_points',
-                  detail.selectedItems.map((i: any) => i.id)
-                )}"
+                this.selectedItemsChanged(detail, 'partner_focal_points')}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.partner_focal_points)}"
             >
             </etools-dropdown-multi>
@@ -181,7 +178,7 @@ export class PartnerDetailsElement extends connect(getStore())(CardComponentMixi
     // if (isUnicefUSer(state)) {
     //   this.filterAgreementsByPartner(get(state, 'agreements.list'), partnerId);
     // } else {
-         this.partnerAgreements = await this.getPartnerAgreements(partnerId!);
+    this.partnerAgreements = await this.getPartnerAgreements(partnerId!);
     // }
   }
 
@@ -190,7 +187,7 @@ export class PartnerDetailsElement extends connect(getStore())(CardComponentMixi
   }
 
   partnerIdHasChanged(newPartnerDetails: PartnerDetails) {
-    return String(get(this.originalData, 'partner_id')) !== String(newPartnerDetails.partner_id);
+    return get(this.originalData, 'partner_id') !== newPartnerDetails.partner_id;
   }
 
   getAllPartnerStaffMembers(partnerId: number) {
@@ -216,8 +213,8 @@ export class PartnerDetailsElement extends connect(getStore())(CardComponentMixi
     if (!authOfficers || authOfficers.length) {
       return html`—`;
     } else {
-      return authOfficers.map((authOfficer) => {
-        return html``;
+      return authOfficers.map((authOfficer: any) => {
+        return html`${authOfficer.first_name} ${authOfficer.last_name} (${authOfficer.phone}, ${authOfficer.email})`;
       });
     }
   }
@@ -239,6 +236,7 @@ export class PartnerDetailsElement extends connect(getStore())(CardComponentMixi
       .dispatch(patchIntervention(this.dataToSave))
       .then(() => {
         this.editMode = false;
+        this.dataToSave = {};
       });
   }
 }

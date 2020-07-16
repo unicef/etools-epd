@@ -13,12 +13,12 @@ export interface EtoolsEndpoints {
 
 export const interventionEndpoints: EtoolsEndpoints = {
   intervention: {
-    template: '/api/v2/interventions/<%=interventionId%>/'
+    template: '/api/pmp/v3/interventions/<%=interventionId%>/'
   },
   partnerStaffMembers: {
     template: '/api/v2/partners/<%=id%>/staff-members/'
   },
   partnerAgreements: {
-    template: '/api/v2/agreement/<%=id%>/todo/'
+    template: '/api/pmp/v3/agreements/?partner_id=<%=id%>'
   }
 };

@@ -70,6 +70,14 @@ function CardComponentMixin<T extends Constructor<LitElement>>(baseClass: T) {
         ? html``
         : html` <paper-icon-button @tap="${this.allowEdit}" icon="create"> </paper-icon-button> `;
     }
+
+    selectedItemChanged(detail: any, key: string) {
+      this.dataToSave[key] = detail.selected;
+    }
+
+    selectedItemsChanged(detail: any, key: string) {
+      this.dataToSave[key] = detail.selectedItems.map((i: any) => i.id);
+    }
   }
   return CardComponentClass;
 }
