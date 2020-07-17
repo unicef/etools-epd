@@ -1,4 +1,5 @@
 import {css} from 'lit-element';
+import {layoutCenterJustified, layoutHorizontal} from './flex-layout-styles';
 
 // language=HTML
 export const buttonsStyles = css`
@@ -70,5 +71,16 @@ export const buttonsStyles = css`
   paper-button.error {
     color: var(--error-btn-color, #ffffff);
     background-color: var(--error-btn-bg-color, var(--error-color));
+  }
+
+  paper-button .btn-label {
+    ${layoutHorizontal}
+    ${layoutCenterJustified}
+  }
+
+  .secondary-btn {
+    --paper-button: {
+      @apply --basic-btn-style;
+    }
   }
 `;

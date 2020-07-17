@@ -34,11 +34,6 @@ export class PartnerDetailsElement extends connect(getStore())(PermissionsMixin(
           display: block;
           margin-bottom: 24px;
         }
-        paper-textarea[readonly] {
-          --paper-input-container-underline: {
-            display: none;
-          }
-        }
       </style>
 
       <etools-content-panel show-expand-btn panel-title="Document Details">
@@ -93,7 +88,9 @@ export class PartnerDetailsElement extends connect(getStore())(PermissionsMixin(
           </paper-textarea>
         </div>
 
-        <div class="layout-horizontal right-align row-padding-v">
+        <div
+          class="layout-horizontal right-align row-padding-v"
+          ?hidden="${this.hideActionButtons(this.editMode, this.canEditDocumentDetails)}">
           <paper-button class="default" @tap="${this.cancelDocumentDetails}">
             Cancel
           </paper-button>
