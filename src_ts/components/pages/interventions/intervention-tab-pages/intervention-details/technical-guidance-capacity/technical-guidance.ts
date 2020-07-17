@@ -1,11 +1,11 @@
 import {LitElement, html, customElement, property} from 'lit-element';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../../utils/redux-store-access';
-import PermissionsMixin from '../../common/mixins/permissions-mixins';
+import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {Permission} from '../../common/models/intervention-types';
+import {Permission} from '../../common/models/intervention.types';
 import {TechnicalDetails, TechnicalDetailsPermissions} from './technicalGuidance.models';
 import {cloneDeep} from '../../../../../utils/utils';
 import {selectTechnicalDetails, selectTechnicalDetailsPermissions} from './technicalGuidance.selectors';
@@ -14,7 +14,7 @@ import {selectTechnicalDetails, selectTechnicalDetailsPermissions} from './techn
  * @customElement
  */
 @customElement('technical-guidance')
-export class TechnicalGuidance extends connect(getStore())(PermissionsMixin(LitElement)) {
+export class TechnicalGuidance extends connect(getStore())(ComponentBaseMixin(LitElement)) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }
