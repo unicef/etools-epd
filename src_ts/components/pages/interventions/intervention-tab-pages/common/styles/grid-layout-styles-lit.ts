@@ -7,6 +7,10 @@ export const gridLayoutStylesLit = css`
     width: 100%;
   }
 
+  .content-wrapper {
+    padding: 16px 24px;
+  }
+
   .layout-horizontal,
   .layout-vertical {
     box-sizing: border-box;
