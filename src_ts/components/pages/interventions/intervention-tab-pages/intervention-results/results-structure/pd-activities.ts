@@ -4,13 +4,13 @@ import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import '@polymer/iron-icons';
 import {
   InterventionActivity
-} from '../../common/models/intervention-types';
+} from '../../common/models/intervention.types';
 
 @customElement('pd-activities')
 export class PdActivities extends LitElement {
   static get styles(): CSSResultArray {
     // language=CSS
-    return [gridLayoutStylesLit, ResultStructureStyles, css`      
+    return [gridLayoutStylesLit, ResultStructureStyles, css`
       :host {
         --green-background: #C4D7C6;
         --green-background-dark: #B3C6B5;
@@ -67,7 +67,7 @@ export class PdActivities extends LitElement {
           }
         }
       </style>
-      
+
       <div class="row-h align-items-center header">
         <div class="heading flex-auto">
            PD Activities
@@ -78,36 +78,36 @@ export class PdActivities extends LitElement {
         <div class="heading number-data flex-none">Total</div>
         <div class="heading number-data flex-none">%Partner</div>
       </div>
-      
+
       ${this.activities.map((activity: InterventionActivity) => html`
         <etools-data-table-row>
           <div slot="row-data" class="layout-horizontal">
             <!--    PD Activity name    -->
-            <div class="text flex-auto"> 
+            <div class="text flex-auto">
               ${activity.activity_name || '-'}
             </div>
-            
+
             <!--    CSO Cache    -->
             <div class="text number-data flex-none">
               ${this.formatCurrency(activity.cso_cash || 0)}
             </div>
-           
+
             <!--    UNICEF Cache    -->
            <div class="text number-data flex-none">
               ${this.formatCurrency(activity.unicef_cash || 0)}
            </div>
-           
+
             <!--    Total    -->
            <div class="text number-data flex-none">
               ${this.formatCurrency(this.getTotal(activity.cso_cash , activity.unicef_cash))}
            </div>
-           
+
             <!--    %Partner    -->
            <div class="text number-data flex-none">
               ${this.getPartnerPercent(activity.cso_cash, activity.unicef_cash)}
            </div>
          </div>
-         
+
         <!--    Indicator row collapsible Details    -->
         <div slot="row-data-details" class="row-h">
           <!--    Locations    -->
@@ -116,8 +116,8 @@ export class PdActivities extends LitElement {
             <div class="details-text">
              <b>Q1, Q2, Q4</b>
             </div>
-          </div> 
-          
+          </div>
+
           <!--    Section and Cluster    -->
           <div class="details-container full">
             <div class="text details-heading">Other comments</div>

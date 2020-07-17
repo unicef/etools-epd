@@ -3,7 +3,7 @@ import {css, html, CSSResultArray, customElement, LitElement, property} from 'li
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {selectInterventionResultLinks} from './results-structure.selectors';
 import {ResultStructureStyles} from './results-structure.styles';
-import {ExpectedResult, ResultLinkLowerResult} from '../../common/models/intervention-types';
+import {ExpectedResult, ResultLinkLowerResult} from '../../common/models/intervention.types';
 import '@unicef-polymer/etools-data-table';
 import '@unicef-polymer/etools-content-panel';
 import './cp-output-level';
@@ -54,18 +54,18 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
               <etools-data-table-row>
                 <div slot="row-data" class="layout-horizontal align-items-center">
                   <div class="flex-1 flex-fix">
-                    <div class="heading">Program Document output</div>  
+                    <div class="heading">Program Document output</div>
                     <div class="data bold-data">${pdOutput.name}</div>
                   </div>
-                  
+
                   <div class="flex-none">
-                    <div class="heading">Total Cache budget</div>  
+                    <div class="heading">Total Cache budget</div>
                     <div class="data">TTT 1231.144</div>
                   </div>
-                  
-                  <iron-icon icon="create" class="flex-none" ?hidden="${result.cp_output}"></iron-icon>  
+
+                  <iron-icon icon="create" class="flex-none" ?hidden="${result.cp_output}"></iron-icon>
                 </div>
-                  
+
                   <div slot="row-data-details">
                     <pd-indicators .indicators="${pdOutput.applied_indicators}"></pd-indicators>
                     <pd-activities></pd-activities>
@@ -74,7 +74,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
             `)}
           </cp-output-level>
         `)}
-        
+
         <!--  If CP Output level is shown - 'Add PD' button will be present inside cp-output-level component  -->
         ${!this.showCPOLevel ? html`
           <div ?hidden="${this.showCPOLevel}" class="add-pd row-h align-items-center">

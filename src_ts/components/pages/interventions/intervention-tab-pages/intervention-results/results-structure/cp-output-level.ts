@@ -1,7 +1,7 @@
 import {css, CSSResultArray, customElement, html, LitElement, property, TemplateResult} from 'lit-element';
 import {ResultStructureStyles} from './results-structure.styles';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import {ExpectedResult} from '../../common/models/intervention-types';
+import {ExpectedResult} from '../../common/models/intervention.types';
 import '@unicef-polymer/etools-data-table';
 import '@polymer/iron-icons';
 
@@ -54,21 +54,21 @@ export class CpOutputLevel extends LitElement {
               <!--      If PD is associated with CP Output      -->
               ${this.resultLink.cp_output ? html`
                 <div class="flex-1 flex-fix">
-                  <div class="heading">Country Program output</div>  
+                  <div class="heading">Country Program output</div>
                   <div class="data">${this.resultLink.cp_output_name}</div>
                 </div>
-              
+
                 <div class="flex-1 flex-fix">
-                  <div class="heading">Ram Indicators</div>  
+                  <div class="heading">Ram Indicators</div>
                   <div class="data">
                     ${this.resultLink.ram_indicator_names.map(
                       (name: string) => html`<div class="truncate">${name}</div>`
                     )}
                   </div>
                 </div>
-             
+
                 <div class="flex-none">
-                  <div class="heading">Total Cache budget</div>  
+                  <div class="heading">Total Cache budget</div>
                   <div class="data">TTT 1231.144</div>
                 </div>
               ` : html`
@@ -79,10 +79,10 @@ export class CpOutputLevel extends LitElement {
             `}
 
            </div>
-           
+
            <div slot="row-data-details">
             <slot></slot>
-            
+
             <div class="add-pd row-h align-items-center" ?hidden="${!this.resultLink.cp_output}">
               <iron-icon icon="add-box"></iron-icon>Add PD Output
             </div>

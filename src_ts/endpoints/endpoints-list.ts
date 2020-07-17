@@ -6,7 +6,13 @@ export interface EtoolsEndpoint {
   cacheTableName?: string;
 }
 export interface EtoolsEndpoints {
-  [key: string]: EtoolsEndpoint;
+  userProfile: EtoolsEndpoint;
+  changeCountry: EtoolsEndpoint;
+  interventions: EtoolsEndpoint;
+  intervention: EtoolsEndpoint;
+  locations: EtoolsEndpoint;
+  static: EtoolsEndpoint;
+  partners: EtoolsEndpoint;
 }
 
 export const etoolsEndpoints: EtoolsEndpoints = {

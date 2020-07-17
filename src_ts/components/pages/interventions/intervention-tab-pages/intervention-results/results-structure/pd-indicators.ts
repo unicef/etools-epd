@@ -2,7 +2,7 @@ import {LitElement, html, TemplateResult, CSSResultArray, css, customElement, pr
 import {ResultStructureStyles} from './results-structure.styles';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import '@polymer/iron-icons';
-import {Indicator} from '../../common/models/intervention-types';
+import {Indicator} from '../../common/models/intervention.types';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../../utils/redux-store-access';
 import {Disaggregation, DisaggregationValue, GenericObject, LocationObject, Section} from '../../common/types/types';
@@ -12,7 +12,7 @@ import {getMappedLocations} from '../../utils/locations-helper';
 export class PdIndicators extends connect(getStore())(LitElement) {
   static get styles(): CSSResultArray {
     // language=CSS
-    return [gridLayoutStylesLit, ResultStructureStyles, css`      
+    return [gridLayoutStylesLit, ResultStructureStyles, css`
       :host {
         --blue-background: #B6D5F1;
         --blue-background-dark: #A4C4E1;
@@ -45,7 +45,7 @@ export class PdIndicators extends connect(getStore())(LitElement) {
           }
         }
       </style>
-      
+
       <div class="row-h align-items-center header">
         <div class="heading flex-auto">
            PD Indicators
@@ -54,26 +54,26 @@ export class PdIndicators extends connect(getStore())(LitElement) {
         <div class="heading number-data flex-none">Baseline</div>
         <div class="heading number-data flex-none">Target</div>
       </div>
-      
+
       ${this.indicators.map((indicator: Indicator) => html`
         <etools-data-table-row>
           <div slot="row-data" class="layout-horizontal">
             <!--    Indicator name    -->
-            <div class="text flex-auto"> 
+            <div class="text flex-auto">
               ${indicator.indicator && indicator.indicator.title || '-'}
             </div>
-            
+
             <!--    Baseline    -->
             <div class="text number-data flex-none">
               ${indicator.baseline.v || '-'}
             </div>
-           
+
             <!--    Target    -->
            <div class="text number-data flex-none">
               ${indicator.target.v || '-'}
            </div>
          </div>
-         
+
         <!--    Indicator row collapsible Details    -->
         <div slot="row-data-details" class="row-h">
           <!--    Locations    -->
@@ -84,23 +84,23 @@ export class PdIndicators extends connect(getStore())(LitElement) {
                 <div class="details-list-item">${this.getLocationName(location)}</div>
                `) : '-'}
             </div>
-          </div> 
-          
+          </div>
+
           <!--    Section and Cluster    -->
           <div class="details-container">
             <div class="text details-heading">Section/Cluster</div>
             <div class="details-text">${this.getSectionAndCluster(indicator.section, indicator.cluster_name)}</div>
           </div>
-          
+
           <!--    Disagregations    -->
           <div class="details-container">
             <div class="text details-heading">Disagregation</div>
             <div class="details-text">
-              ${indicator.disaggregation.length ? 
+              ${indicator.disaggregation.length ?
                 indicator.disaggregation.map((disaggregation: string) => this.getDisaggregation(disaggregation)) :
                 '-'}
             </div>
-          </div> 
+          </div>
         </div>
         </etools-data-table-row>
       `)}
