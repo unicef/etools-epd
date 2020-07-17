@@ -1,5 +1,5 @@
 import {LitElement, html, property, customElement} from 'lit-element';
-import {Permission} from '../../common/models/intervention-types';
+import {Permission} from '../../common/models/intervention.types';
 import {selectPartnerDetails, selectPartnerDetailsPermissions} from './partnerDetails.selectors';
 import '@polymer/paper-button/paper-button';
 import '@polymer/paper-input/paper-input';
@@ -26,6 +26,8 @@ import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import {isJsonStrMatch} from '../../utils/utils';
 import {isUnicefUSer} from '../../common/selectors';
 import isEmpty from 'lodash-es/isEmpty';
+import {PartnerStaffMember} from '../../common/models/partner.types';
+import {MinimalAgreement} from '../../common/models/agreement.types';
 
 /**
  * @customElement
@@ -149,13 +151,13 @@ export class PartnerDetailsElement extends connect(getStore())(CardComponentMixi
   showLoading = false;
 
   @property({type: Array})
-  partnerAgreements!: any[];
+  partnerAgreements!: MinimalAgreement[];
 
   @property({type: Array})
-  agreementAuthorizedOfficers!: [];
+  agreementAuthorizedOfficers!: PartnerStaffMember[];
 
   @property({type: Array})
-  partnerStaffMembers!: [];
+  partnerStaffMembers!: PartnerStaffMember[];
 
   connectedCallback() {
     super.connectedCallback();
@@ -203,7 +205,7 @@ export class PartnerDetailsElement extends connect(getStore())(CardComponentMixi
     // }
   }
 
-  filterAgreementsByPartner(agreements: [], partnerId: number) {
+  filterAgreementsByPartner(agreements: MinimalAgreement[], partnerId: number) {
     this.partnerAgreements = agreements.filter((a: any) => a.partner === partnerId);
   }
 
@@ -215,7 +217,7 @@ export class PartnerDetailsElement extends connect(getStore())(CardComponentMixi
     return sendRequest({
       endpoint: getEndpoint(interventionEndpoints.partnerStaffMembers, {id: partnerId})
     }).then((resp) => {
-      resp.forEach((staff: any) => {
+      resp.forEach((staff: PartnerStaffMember) => {
         staff.name = staff.first_name + ' ' + staff.last_name;
       });
       return resp;
@@ -235,11 +237,11 @@ export class PartnerDetailsElement extends connect(getStore())(CardComponentMixi
     this.agreementAuthorizedOfficers = detail.selectedItem?.authorized_officers;
   }
 
-  renderAgreementAuthorizedOfficers(authOfficers: []) {
+  renderAgreementAuthorizedOfficers(authOfficers: PartnerStaffMember[]) {
     if (isEmpty(authOfficers)) {
       return html`—`;
     } else {
-      return authOfficers.map((authOfficer: any) => {
+      return authOfficers.map((authOfficer) => {
         return html`<div class="w100">
           ${this.renderNameEmailPhone(authOfficer)}
         </div>`;
@@ -247,17 +249,17 @@ export class PartnerDetailsElement extends connect(getStore())(CardComponentMixi
     }
   }
 
-  renderReadonlyPartnerFocalPoints(partnerStaffMembers: any[], partnerFocalPoints: number[]) {
+  renderReadonlyPartnerFocalPoints(partnerStaffMembers: PartnerStaffMember[], partnerFocalPoints: number[]) {
     if (isEmpty(partnerStaffMembers) || isEmpty(partnerFocalPoints)) {
       return html`—`;
     }
-    const focalPointDetails = partnerStaffMembers.filter((staff: any) => partnerFocalPoints.includes(staff.id));
+    const focalPointDetails = partnerStaffMembers.filter((staff) => partnerFocalPoints.includes(staff.id!));
     if (isEmpty(focalPointDetails)) {
       return html``;
     } else {
       return focalPointDetails.map((focal: any) => {
         return html`<div class="w100">
-        ${this.renderNameEmailPhone(focal)}
+          ${this.renderNameEmailPhone(focal)}
         </div>`;
       });
     }

@@ -1,4 +1,4 @@
-import {InterventionPermissionsFields, Intervention} from '../../common/models/intervention-types';
+import {InterventionPermissionsFields, Intervention} from '../../common/models/intervention.types';
 import {ModelsBase} from '../../common/models/models.base';
 
 export class PartnerDetails extends ModelsBase {

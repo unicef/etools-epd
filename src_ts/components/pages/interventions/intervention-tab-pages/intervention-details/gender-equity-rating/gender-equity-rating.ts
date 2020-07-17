@@ -13,7 +13,7 @@ import {AnyObject} from '../../../../../../types/globals';
 import CardComponentMixin from '../../common/mixins/card-component-mixin';
 import {selectGenderEquityRating, selectGenderEquityRatingPermissions} from './genderEquityRating.selectors';
 import {GenderEquityRating, GenderEquityRatingPermissions} from './genderEquityRating.models';
-import {Permission} from '../../common/models/intervention-types';
+import {Permission} from '../../common/models/intervention.types';
 import {validateRequiredFields} from '../../utils/validation-helper';
 import {getStore} from '../../utils/redux-store-access';
 import {connect} from 'pwa-helpers/connect-mixin';

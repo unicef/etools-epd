@@ -9,7 +9,7 @@ import {buttonsStyles} from '../../common/styles/button-styles';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {selectDocumentDetails, selectDocumentDetailsPermissions} from './documentDetails.selectors';
-import {Permission} from '../../common/models/intervention-types';
+import {Permission} from '../../common/models/intervention.types';
 import {cloneDeep} from '../../../../../utils/utils';
 import {DocumentDetailsPermissions, DocumentDetails} from './documentDetails.models';
 import CardComponentMixin from '../../common/mixins/card-component-mixin';

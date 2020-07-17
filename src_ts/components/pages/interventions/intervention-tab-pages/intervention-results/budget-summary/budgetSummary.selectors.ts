@@ -1,5 +1,5 @@
 import {createSelector} from 'reselect';
-import {PlannedBudget} from '../../common/models/intervention-types';
+import {PlannedBudget} from '../../common/models/intervention.types';
 import {BudgetSummary} from './budgetSummary.models';
 import {currentInterventionPlannedBudget} from '../../common/selectors';
 
