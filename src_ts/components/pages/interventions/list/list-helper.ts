@@ -9,7 +9,7 @@ import {abortRequestByKey} from '@unicef-polymer/etools-ajax/etools-iron-request
 export type ListHelperResponse<T> = {
   list: T[];
   paginator: EtoolsPaginator;
-}
+};
 
 export class InterventionsListHelper {
   private listData: InterventionListData[] = [];
@@ -27,8 +27,9 @@ export class InterventionsListHelper {
     const list: InterventionListData[] = this.paginate(Number(page), Number(pageSize), sortedList);
     const paginator: EtoolsPaginator = this.getPaginationData(Number(page), Number(pageSize), filteredList.length);
     return {
-      list, paginator
-    }
+      list,
+      paginator
+    };
   }
 
   private async getFilteredList(filtersParams: GenericObject<string>): Promise<InterventionListData[]> {
@@ -52,17 +53,20 @@ export class InterventionsListHelper {
   }
 
   private listRequest(filtersParams: GenericObject<string>): Promise<InterventionListData[]> {
-    return sendRequest({
-      endpoint: getEndpoint(etoolsEndpoints.interventions),
-      params: filtersParams
-    }, this.requestUid)
-      .catch((error: any) => {
-        // don't update flag if request was aborted
-        if (error.status !== 0) {
-          this.requestInProcess = false;
-        }
-        return Promise.reject(error);
-      })
+    return sendRequest(
+      {
+        endpoint: getEndpoint(etoolsEndpoints.interventions),
+        params: filtersParams
+      },
+      this.requestUid
+    ).catch((error: any) => {
+      // don't update flag if request was aborted
+      if (error.status !== 0) {
+        this.requestInProcess = false;
+      }
+      console.log(error);
+      return [];
+    });
   }
 
   private sortList(list: InterventionListData[], sort = ''): InterventionListData[] {
@@ -70,17 +74,14 @@ export class InterventionsListHelper {
     if (!field || !direction || !list.length || !list[0].hasOwnProperty(field)) {
       return list;
     }
-    const sorted: InterventionListData[] = sortBy(
-      list,
-      (intervention: InterventionListData) => {
-        if (field === 'end' || field === 'start') {
-          const stringDate: string | null = intervention[field];
-          return stringDate ? new Date(stringDate).getTime() : 0;
-        } else {
-          return intervention[field];
-        }
+    const sorted: InterventionListData[] = sortBy(list, (intervention: InterventionListData) => {
+      if (field === 'end' || field === 'start') {
+        const stringDate: string | null = intervention[field];
+        return stringDate ? new Date(stringDate).getTime() : 0;
+      } else {
+        return intervention[field];
       }
-    );
+    });
     return direction === 'asc' ? sorted : sorted.reverse();
   }
 
@@ -97,7 +98,7 @@ export class InterventionsListHelper {
       total_pages: count ? Math.ceil(count / pageSize) : 0,
       count: count,
       visible_range: this.getVisibleRange(pageSize, page, count)
-    }
+    };
   }
 
   private getVisibleRange(pageSize: number, page: number, count: number): [number, number] {

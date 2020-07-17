@@ -156,7 +156,7 @@ export class InterventionList extends connect(store)(LitElement) {
     }
   ];
 
-  private listHelper: InterventionsListHelper = new InterventionsListHelper();
+  private listHelper = new InterventionsListHelper();
   private routeDetails!: RouteDetails | null;
   private paramsInitialized = false;
 
