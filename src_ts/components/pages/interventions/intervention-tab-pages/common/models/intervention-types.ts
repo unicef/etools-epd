@@ -5,7 +5,7 @@ export interface ExpectedResult {
   intervention: number;
   ll_results: ResultLinkLowerResult[];
   ram_indicators: number[];
-  ram_indicator_names: number[];
+  ram_indicator_names: string[];
 }
 
 export interface ResultLinkLowerResult {
@@ -221,4 +221,39 @@ export class InterventionAmendment {
   signed_date: string | null = null;
   signed_amendment_attachment: number | string | null = null;
   internal_prc_review: number | string | null = null;
+}
+
+export type InterventionActivity = {
+  created: string;
+  modified: string;
+  activity_name: string;
+  context_details: string;
+  unicef_cash: number;
+  cso_cash: number;
+  unicef_suppies: number;
+  cso_supplies: number;
+  time_periods: InterventionActivityTimeframe[];
+  intervention: number;
+  items: InterventionActivityItem[];
+}
+
+export type InterventionActivityItem = {
+  created: string;
+  modified: string;
+  name: string;
+  other_details: string;
+  unicef_cash: number;
+  cso_cash: number;
+  unicef_suppies: number
+  cso_supplies: number;
+  total: number;
+  intervention_activity: number;
+}
+
+export type InterventionActivityTimeframe = {
+  created: string;
+  modified: string
+  start_date: string;
+  end_date: string;
+  intervention: number;
 }

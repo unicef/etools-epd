@@ -1,7 +1,7 @@
 import {css} from 'lit-element';
 import {layoutHorizontal, layoutVertical, layoutFlex, layoutWrap} from './flex-layout-styles';
 
-// language=HTML
+// language=CSS
 export const gridLayoutStylesLit = css`
   .w100 {
     width: 100%;
@@ -183,6 +183,20 @@ export const gridLayoutStylesLit = css`
   .col-12 {
     flex: 0 0 100%;
     max-width: 100%;
+  }
+  
+  .flex-1 { flex: 1 }
+  .flex-2 { flex: 2 }
+  .flex-3 { flex: 3 }
+  .flex-4 { flex: 4 }
+  .flex-5 { flex: 5 }
+  .flex-6 { flex: 6 }
+  .flex-7 { flex: 7 }
+  .flex-auto { flex: auto }
+  .flex-none { flex: none }
+  .flex-fix {
+    min-width: 0;
+    min-height: 0;
   }
 
   /* TODO: more classes will e added if needed */
