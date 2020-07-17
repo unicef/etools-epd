@@ -25,6 +25,7 @@ import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import {isJsonStrMatch} from '../../utils/utils';
 import {isUnicefUSer} from '../../common/selectors';
+import isEmpty from 'lodash-es/isEmpty';
 
 /**
  * @customElement
@@ -75,10 +76,9 @@ export class PartnerDetailsElement extends connect(getStore())(CardComponentMixi
               .options="${this.partnerAgreements}"
               .selected="${this.originalData.agreement}"
               option-value="id"
-              option-label="name"
+              option-label="agreement_number_status"
               trigger-value-change-event
-              @etools-selected-item-changed="${({detail}: CustomEvent) =>
-                this.selectedItemChanged(detail, 'agreement')}"
+              @etools-selected-item-changed="${({detail}: CustomEvent) => this.selectedAgreementChanged(detail)}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.agreement)}"
               required
               auto-validate
@@ -106,19 +106,28 @@ export class PartnerDetailsElement extends connect(getStore())(CardComponentMixi
           </div>
         </div>
         <div class="row-padding-v">
-          <div class="col col-7">
+          <div class="col col-7 layout-vertical">
             <etools-dropdown-multi
-              label="Partner Focal Point"
-              .selectedValues="${this.originalData.partner_focal_points}"
+              label="Partner Focal Points"
+              .selectedValues="${cloneDeep(this.originalData.partner_focal_points)}"
               .options="${this.partnerStaffMembers}"
               option-label="name"
               option-value="id"
               trigger-value-change-event
               @etools-selected-items-changed="${({detail}: CustomEvent) =>
                 this.selectedItemsChanged(detail, 'partner_focal_points')}"
-              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.partner_focal_points)}"
+              ?hidden="${this.isReadonly(this.editMode, this.permissions.edit.partner_focal_points)}"
             >
             </etools-dropdown-multi>
+            ${this.isReadonly(this.editMode, this.permissions.edit.partner_focal_points)
+              ? html`<label for="focalPointsDetails" class="paper-label">Partner Focal Points</label>
+                  <div id="focalPointsDetails">
+                    ${this.renderReadonlyPartnerFocalPoints(
+                      this.partnerStaffMembers,
+                      this.originalData.partner_focal_points
+                    )}
+                  </div>`
+              : html``}
           </div>
         </div>
 
@@ -160,6 +169,20 @@ export class PartnerDetailsElement extends connect(getStore())(CardComponentMixi
       return;
     }
 
+    await this.setPartnerDetailsAndPopulateDropdowns(state);
+
+    this.sePermissions(state);
+  }
+
+  private sePermissions(state: any) {
+    const newPermissions = selectPartnerDetailsPermissions(state);
+    if (!isJsonStrMatch(this.permissions, newPermissions)) {
+      this.permissions = newPermissions;
+      this.set_canEditAtLeastOneField(this.permissions.edit);
+    }
+  }
+
+  async setPartnerDetailsAndPopulateDropdowns(state: any) {
     const newPartnerDetails = selectPartnerDetails(state);
     if (!isJsonStrMatch(this.originalData, newPartnerDetails)) {
       if (this.partnerIdHasChanged(newPartnerDetails)) {
@@ -167,14 +190,12 @@ export class PartnerDetailsElement extends connect(getStore())(CardComponentMixi
       }
       this.originalData = newPartnerDetails;
     }
-
-    this.permissions = selectPartnerDetailsPermissions(state);
-    this.set_canEditAtLeastOneField(this.permissions.edit);
   }
 
   async populateDropdowns(state: any, partnerId: number) {
     this.partnerStaffMembers = await this.getAllPartnerStaffMembers(partnerId!);
 
+    // Uncomment when we can login with partner users
     // if (isUnicefUSer(state)) {
     //   this.filterAgreementsByPartner(get(state, 'agreements.list'), partnerId);
     // } else {
@@ -203,18 +224,41 @@ export class PartnerDetailsElement extends connect(getStore())(CardComponentMixi
 
   getPartnerAgreements(partnerId: number) {
     return sendRequest({
-      endpoint: getEndpoint(interventionEndpoints.partnerStaffMembers, {id: partnerId})
+      endpoint: getEndpoint(interventionEndpoints.partnerAgreements, {id: partnerId})
     }).then((resp) => {
       return resp;
     });
   }
 
+  selectedAgreementChanged(detail: any) {
+    this.selectedItemChanged(detail, 'agreement');
+    this.agreementAuthorizedOfficers = detail.selectedItem?.authorized_officers;
+  }
+
   renderAgreementAuthorizedOfficers(authOfficers: []) {
-    if (!authOfficers || authOfficers.length) {
+    if (isEmpty(authOfficers)) {
       return html`—`;
     } else {
       return authOfficers.map((authOfficer: any) => {
-        return html`${authOfficer.first_name} ${authOfficer.last_name} (${authOfficer.phone}, ${authOfficer.email})`;
+        return html`<div class="w100">
+          ${this.renderNameEmailPhone(authOfficer)}
+        </div>`;
+      });
+    }
+  }
+
+  renderReadonlyPartnerFocalPoints(partnerStaffMembers: any[], partnerFocalPoints: number[]) {
+    if (isEmpty(partnerStaffMembers) || isEmpty(partnerFocalPoints)) {
+      return html`—`;
+    }
+    const focalPointDetails = partnerStaffMembers.filter((staff: any) => partnerFocalPoints.includes(staff.id));
+    if (isEmpty(focalPointDetails)) {
+      return html``;
+    } else {
+      return focalPointDetails.map((focal: any) => {
+        return html`<div class="w100">
+        ${this.renderNameEmailPhone(focal)}
+        </div>`;
       });
     }
   }

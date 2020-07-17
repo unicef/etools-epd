@@ -71,8 +71,12 @@ function CardComponentMixin<T extends Constructor<LitElement>>(baseClass: T) {
         : html` <paper-icon-button @tap="${this.allowEdit}" icon="create"> </paper-icon-button> `;
     }
 
+    renderNameEmailPhone(item: any) {
+      return html`${item.first_name} ${item.last_name} (${item.email}, ${item.phone})`;
+    }
+
     selectedItemChanged(detail: any, key: string) {
-      this.dataToSave[key] = detail.selected;
+      this.dataToSave[key] = detail.selectedItem?.id;
     }
 
     selectedItemsChanged(detail: any, key: string) {
