@@ -10,7 +10,7 @@ import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {AnyObject} from '../../../../../../types/globals';
-import CardComponentMixin from '../../common/mixins/card-component-mixin';
+import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {selectGenderEquityRating, selectGenderEquityRatingPermissions} from './genderEquityRating.selectors';
 import {GenderEquityRating, GenderEquityRatingPermissions} from './genderEquityRating.models';
 import {Permission} from '../../common/models/intervention.types';
@@ -22,7 +22,7 @@ import {connect} from 'pwa-helpers/connect-mixin';
  * @customElement
  */
 @customElement('gender-equity-rating')
-export class GenderEquityRatingElement extends connect(getStore())(CardComponentMixin(LitElement)) {
+export class GenderEquityRatingElement extends connect(getStore())(ComponentBaseMixin(LitElement)) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }

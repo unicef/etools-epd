@@ -12,7 +12,7 @@ import {buttonsStyles} from '../../common/styles/button-styles';
 import {PartnerDetails, PartnerDetailsPermissions} from './partnerDetails.models';
 import {getStore} from '../../utils/redux-store-access';
 import {connect} from 'pwa-helpers/connect-mixin';
-import CardComponentMixin from '../../common/mixins/card-component-mixin';
+import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import get from 'lodash-es/get';
 import cloneDeep from 'lodash-es/cloneDeep';
@@ -33,7 +33,7 @@ import {MinimalAgreement} from '../../common/models/agreement.types';
  * @customElement
  */
 @customElement('partner-details')
-export class PartnerDetailsElement extends connect(getStore())(CardComponentMixin(LitElement)) {
+export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixin(LitElement)) {
   static get styles() {
     return [buttonsStyles, gridLayoutStylesLit];
   }

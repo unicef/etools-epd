@@ -1,5 +1,5 @@
 import {LitElement, html, customElement, property} from 'lit-element';
-import CardComponentMixin from '../../common/mixins/card-component-mixin';
+import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import FrNumbersConsistencyMixin from '../../common/mixins/fr-numbers-consistency-mixin';
 import '@unicef-polymer/etools-date-time/datepicker-lite';
 import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
@@ -19,7 +19,7 @@ import {getStore} from '../../utils/redux-store-access';
  * @customElement
  */
 @customElement('intervention-dates')
-export class InterventionDates extends connect(getStore())(CardComponentMixin(FrNumbersConsistencyMixin(LitElement))) {
+export class InterventionDates extends connect(getStore())(ComponentBaseMixin(FrNumbersConsistencyMixin(LitElement))) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }

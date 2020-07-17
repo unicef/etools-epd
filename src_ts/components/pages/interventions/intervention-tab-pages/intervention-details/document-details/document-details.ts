@@ -12,7 +12,7 @@ import {selectDocumentDetails, selectDocumentDetailsPermissions} from './documen
 import {Permission} from '../../common/models/intervention.types';
 import {cloneDeep} from '../../../../../utils/utils';
 import {DocumentDetailsPermissions, DocumentDetails} from './documentDetails.models';
-import CardComponentMixin from '../../common/mixins/card-component-mixin';
+import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {getStore} from '../../utils/redux-store-access';
 import {connect} from 'pwa-helpers/connect-mixin';
 
@@ -20,7 +20,7 @@ import {connect} from 'pwa-helpers/connect-mixin';
  * @customElement
  */
 @customElement('document-details')
-export class PartnerDetailsElement extends connect(getStore())(CardComponentMixin(LitElement)) {
+export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixin(LitElement)) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }
