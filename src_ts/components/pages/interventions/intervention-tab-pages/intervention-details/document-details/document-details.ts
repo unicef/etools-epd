@@ -15,6 +15,7 @@ import {DocumentDetailsPermissions, DocumentDetails} from './documentDetails.mod
 import PermissionsMixin from '../../common/mixins/permissions-mixins';
 import {getStore} from '../../utils/redux-store-access';
 import {connect} from 'pwa-helpers/connect-mixin';
+import {validateRequiredFields} from '../../utils/validation-helper';
 
 /**
  * @customElement
@@ -26,6 +27,10 @@ export class PartnerDetailsElement extends connect(getStore())(PermissionsMixin(
   }
 
   render() {
+    if (!this.documentDetails) {
+      return html` ${sharedStyles}
+        <etools-loading loading-text="Loading..." active></etools-loading>`;
+    }
     // language=HTML
     return html`
       ${sharedStyles}
@@ -33,11 +38,6 @@ export class PartnerDetailsElement extends connect(getStore())(PermissionsMixin(
         :host {
           display: block;
           margin-bottom: 24px;
-        }
-        paper-textarea[readonly] {
-          --paper-input-container-underline: {
-            display: none;
-          }
         }
       </style>
 
@@ -56,8 +56,11 @@ export class PartnerDetailsElement extends connect(getStore())(PermissionsMixin(
           <paper-input
             id="title"
             label="Title"
+            always-float-label
+            placeholder="—"
             .value="${this.documentDetails.title}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.title)}"
+            ?required="${this.permissions.required.title}"
           >
           </paper-input>
         </div>
@@ -66,9 +69,12 @@ export class PartnerDetailsElement extends connect(getStore())(PermissionsMixin(
           <paper-textarea
             id="context"
             label="Context"
+            always-float-label
             type="text"
+            placeholder="—"
             .value="${this.documentDetails.context}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.context)}"
+            ?required="${this.permissions.required.context}"
           >
           </paper-textarea>
         </div>
@@ -77,8 +83,11 @@ export class PartnerDetailsElement extends connect(getStore())(PermissionsMixin(
           <paper-textarea
             id="implementation-strategy"
             label="Implementation Strategy"
+            always-float-label
+            placeholder="—"
             .value="${this.documentDetails.implementation_strategy}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.implementation_strategy)}"
+            ?required="${this.permissions.required.implementation_strategy}"
           >
           </paper-textarea>
         </div>
@@ -87,13 +96,18 @@ export class PartnerDetailsElement extends connect(getStore())(PermissionsMixin(
           <paper-textarea
             id="ip_progr_contrib"
             label="Partner non-financial contribution"
+            always-float-label
+            placeholder="—"
             .value="${this.documentDetails.ip_progr_contrib}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.ip_progr_contrib)}"
+            ?required="${this.permissions.required.ip_progr_contrib}"
           >
           </paper-textarea>
         </div>
 
-        <div class="layout-horizontal right-align row-padding-v">
+        <div
+          class="layout-horizontal right-align row-padding-v"
+          ?hidden="${this.hideActionButtons(this.editMode, this.canEditDocumentDetails)}">
           <paper-button class="default" @tap="${this.cancelDocumentDetails}">
             Cancel
           </paper-button>
@@ -143,7 +157,12 @@ export class PartnerDetailsElement extends connect(getStore())(PermissionsMixin(
     this.editMode = false;
   }
 
+  validate() {
+    return validateRequiredFields(this);
+  }
+
   saveDocumentDetails() {
+    this.validate();
     this.editMode = false;
   }
 }
