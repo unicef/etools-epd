@@ -6,7 +6,7 @@ import {GroupedLocationsDialog} from './grouped-locations-dialog';
 
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '../../common/styles/button-styles';
-import {Intervention} from '../../common/models/intervention-types';
+import {Intervention} from '../../common/models/intervention.types';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {RootState} from '../../../../../../redux/store';
 import {isJsonStrMatch} from '../../../../../utils/utils';

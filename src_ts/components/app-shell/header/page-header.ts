@@ -68,6 +68,7 @@ export class PageHeader extends connect(store)(LitElement) {
         : ''}
         </div>
         <div class="content-align">
+          <countries-dropdown></countries-dropdown>
           <support-btn></support-btn>
 
           <etools-profile-dropdown

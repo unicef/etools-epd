@@ -9,10 +9,10 @@ import {buttonsStyles} from '../../common/styles/button-styles';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {selectDocumentDetails, selectDocumentDetailsPermissions} from './documentDetails.selectors';
-import {Permission} from '../../common/models/intervention-types';
+import {Permission} from '../../common/models/intervention.types';
 import {cloneDeep} from '../../../../../utils/utils';
 import {DocumentDetailsPermissions, DocumentDetails} from './documentDetails.models';
-import PermissionsMixin from '../../common/mixins/permissions-mixins';
+import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {getStore} from '../../utils/redux-store-access';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {validateRequiredFields} from '../../utils/validation-helper';
@@ -21,7 +21,7 @@ import {validateRequiredFields} from '../../utils/validation-helper';
  * @customElement
  */
 @customElement('document-details')
-export class PartnerDetailsElement extends connect(getStore())(PermissionsMixin(LitElement)) {
+export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixin(LitElement)) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }
