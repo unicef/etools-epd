@@ -17,6 +17,7 @@ import {selectLocations, selectLocationsPermissions} from './geographicalCoverag
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {validateRequiredFields} from '../../utils/validation-helper';
 import {patchIntervention} from '../../common/actions';
+import {selectPartnerDetailsPermissions} from '../partner-details/partnerDetails.selectors';
 
 /**
  * @customElement
@@ -74,7 +75,7 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
         <etools-loading loading-text="Loading..." .active="${this.showLoading}"></etools-loading>
 
         <div slot="panel-btns">
-          ${this.renderEditBtn(this.editMode, this.canEditLocations)}
+          ${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}
         </div>
 
         <div class="flex-c no-side-pad">
@@ -97,7 +98,7 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
           <paper-button
             class="secondary-btn see-locations right-align"
             @tap="${this.openLocationsDialog}"
-            ?hidden="${this.hideActionButtons(this.editMode, this.canEditLocations)}"
+            ?hidden="${this.hideActionButtons(this.editMode, this.canEditAtLeastOneField)}"
             ?disabled="${this._isEmpty(this.flatLocations)}"
             title="See all locations"
           >
@@ -106,7 +107,7 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
           </paper-button>
         </div>
 
-        ${this.renderActions(this.editMode, this.canEditLocations)}
+        ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
       </etools-content-panel>
     `;
   }
@@ -125,9 +126,6 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
   @property({type: Boolean})
   showLoading = false;
 
-  @property({type: Boolean})
-  canEditLocations!: boolean;
-
   @property({type: Object})
   permissions!: Permission<LocationsPermissions>;
 
@@ -136,18 +134,21 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
   }
 
   stateChanged(state: any) {
+    if (!state.interventions.current) {
+      return;
+    }
     if (!isJsonStrMatch(this.locations, state.commonData!.locations)) {
       this.locations = [...state.commonData!.locations];
     }
-
-    if (state.interventions.current) {
-      this.permissions = selectLocationsPermissions(state);
-      this.setCanEditLocations(this.permissions.edit);
-    }
+    this.sePermissions(state);
   }
 
-  setCanEditLocations(editPermissions: LocationsPermissions) {
-    this.canEditLocations = editPermissions.locations;
+  private sePermissions(state: any) {
+    const newPermissions = selectLocationsPermissions(state);
+    if (!isJsonStrMatch(this.permissions, newPermissions)) {
+      this.permissions = newPermissions;
+      this.set_canEditAtLeastOneField(this.permissions.edit);
+    }
   }
 
   locationsChanged(event: CustomEvent) {
@@ -192,7 +193,6 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
       .dispatch(patchIntervention(this.locations))
       .then(() => {
         this.editMode = false;
-        this.locations = [];
       });
   }
 }
