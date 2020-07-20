@@ -19,7 +19,6 @@ import {getIntervention} from '../../../../redux/actions/interventions';
 import {setStore, getStore} from './utils/redux-store-access';
 import {currentPage, currentSubpage} from './common/selectors';
 import {elevationStyles} from './common/styles/elevation-styles';
-import {mapLocations} from './utils/locations-helper';
 
 /**
  * @LitElement
@@ -133,8 +132,6 @@ export class InterventionTabs extends LitElement {
    */
   _routeDetails!: RouteDetails;
 
-  private locationsMapped: boolean = false;
-
   connectedCallback() {
     super.connectedCallback();
   }
@@ -166,11 +163,6 @@ export class InterventionTabs extends LitElement {
           getStore().dispatch(getIntervention(currentInterventionId));
         }
       }
-    }
-    const locations = state.commonData && state.commonData.locations;
-    if (locations && !this.locationsMapped) {
-      this.locationsMapped = true;
-      mapLocations(locations);
     }
   }
 

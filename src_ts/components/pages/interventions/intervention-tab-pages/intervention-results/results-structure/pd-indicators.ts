@@ -5,8 +5,7 @@ import '@polymer/iron-icons';
 import {Indicator} from '../../common/models/intervention.types';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../../utils/redux-store-access';
-import {Disaggregation, DisaggregationValue, GenericObject, LocationObject, Section} from '../../common/types/types';
-import {getMappedLocations} from '../../utils/locations-helper';
+import {Disaggregation, DisaggregationValue, LocationObject, Section} from '../../common/types/types';
 
 @customElement('pd-indicators')
 export class PdIndicators extends connect(getStore())(LitElement) {
@@ -23,7 +22,7 @@ export class PdIndicators extends connect(getStore())(LitElement) {
   }
 
   @property({type: Array}) indicators: Indicator[] = [];
-  @property() private locations: GenericObject<LocationObject> = {};
+  @property() private locations: LocationObject[] = [];
   @property() private sections: Section[] = [];
   @property() private disaggregations: Disaggregation[] = [];
 
@@ -107,18 +106,16 @@ export class PdIndicators extends connect(getStore())(LitElement) {
     `;
   }
 
-  connectedCallback(): void {
-    super.connectedCallback();
-    getMappedLocations().then((locations: GenericObject<LocationObject>) => (this.locations = locations));
-  }
-
   stateChanged(state: any): void {
-    this.sections = state.commonData && state.commonData.sections || {};
-    this.disaggregations = state.commonData && state.commonData.disaggregations || {};
+    this.sections = state.commonData && state.commonData.sections || [];
+    this.locations = state.commonData && state.commonData.locations || [];
+    this.disaggregations = state.commonData && state.commonData.disaggregations || [];
   }
 
   getLocationName(id: string | number): string {
-    const location: LocationObject = this.locations[id];
+    const location: LocationObject | undefined = this.locations.find(
+      (location: LocationObject) => location.id === String(id)
+    );
     return location ? `${location.name} [${location.p_code}]` : '';
   }
 
