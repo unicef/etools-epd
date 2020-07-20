@@ -15,6 +15,7 @@ import {buttonsStyles} from '../../common/styles/button-styles';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../../utils/redux-store-access';
 import {patchIntervention} from '../../common/actions';
+import {isJsonStrMatch} from '../../utils/utils';
 
 /**
  * @customElement
@@ -39,7 +40,7 @@ export class InterventionDates extends connect(getStore())(ComponentBaseMixin(Fr
         <etools-loading loading-text="Loading..." .active="${this.showLoading}"></etools-loading>
 
         <div slot="panel-btns">
-          ${this.renderEditBtn(this.editMode, this.canEditInterventionDates)}
+          ${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}
         </div>
         <div class="layout-horizontal row-padding-v">
           <div class="col col-3">
@@ -95,7 +96,7 @@ export class InterventionDates extends connect(getStore())(ComponentBaseMixin(Fr
           </div>
         </div>
 
-        ${this.renderActions(this.editMode, this.canEditInterventionDates)}
+        ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
       </etools-content-panel>
     `;
   }
@@ -121,24 +122,25 @@ export class InterventionDates extends connect(getStore())(ComponentBaseMixin(Fr
   @property({type: Object})
   permissions!: Permission<InterventionDatesPermissions>;
 
-  @property({type: Boolean})
-  canEditInterventionDates!: boolean;
-
   connectedCallback() {
     super.connectedCallback();
   }
 
   stateChanged(state: any) {
-    if (state.interventions.current) {
-      this.interventionDates = selectInterventionDates(state);
-      this.permissions = selectInterventionDatesPermissions(state);
-      this.setCanEditInterventionDates(this.permissions.edit);
-      this.originalInterventionDates = cloneDeep(this.interventionDates);
+    if (!state.interventions.current) {
+      return;
     }
+    this.interventionDates = selectInterventionDates(state);
+    this.originalInterventionDates = cloneDeep(this.interventionDates);
+    this.sePermissions(state);
   }
 
-  setCanEditInterventionDates(editPermissions: InterventionDatesPermissions) {
-    this.canEditInterventionDates = editPermissions.start || editPermissions.end;
+  private sePermissions(state: any) {
+    const newPermissions = selectInterventionDatesPermissions(state);
+    if (!isJsonStrMatch(this.permissions, newPermissions)) {
+      this.permissions = newPermissions;
+      this.set_canEditAtLeastOneField(this.permissions.edit);
+    }
   }
 
   validate() {
