@@ -64,8 +64,8 @@ export class InterventionsListHelper {
       if (error.status !== 0) {
         this.requestInProcess = false;
       }
-      console.log(error);
-      return [];
+      // This error must be handled inside component
+      return Promise.reject(error);
     });
   }
 
