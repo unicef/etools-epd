@@ -12,7 +12,7 @@ export class InterventionResults extends LitElement {
       <style></style>
 
       <budget-summary></budget-summary>
-      
+
       <results-structure></results-structure>
     `;
   }

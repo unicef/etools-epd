@@ -49,7 +49,7 @@ import {
   loadLocations,
   loadStaticData,
   loadSections,
-  loadDisaggregations,
+  loadDisaggregations
 } from '../../redux/actions/common-data';
 import {EtoolsUserModel} from '../user/user-model';
 

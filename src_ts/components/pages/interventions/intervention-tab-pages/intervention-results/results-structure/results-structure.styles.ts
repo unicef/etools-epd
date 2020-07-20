@@ -37,7 +37,7 @@ export const ResultStructureStyles: CSSResult = css`
     border: 1px solid var(--main-border-color);
     padding-left: 56px !important;
   }
-  div[slot="row-data"] {
+  div[slot='row-data'] {
     width: 100%;
   }
   .details-container {

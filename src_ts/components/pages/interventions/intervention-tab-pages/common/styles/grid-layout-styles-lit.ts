@@ -188,16 +188,34 @@ export const gridLayoutStylesLit = css`
     flex: 0 0 100%;
     max-width: 100%;
   }
-  
-  .flex-1 { flex: 1 }
-  .flex-2 { flex: 2 }
-  .flex-3 { flex: 3 }
-  .flex-4 { flex: 4 }
-  .flex-5 { flex: 5 }
-  .flex-6 { flex: 6 }
-  .flex-7 { flex: 7 }
-  .flex-auto { flex: auto }
-  .flex-none { flex: none }
+
+  .flex-1 {
+    flex: 1;
+  }
+  .flex-2 {
+    flex: 2;
+  }
+  .flex-3 {
+    flex: 3;
+  }
+  .flex-4 {
+    flex: 4;
+  }
+  .flex-5 {
+    flex: 5;
+  }
+  .flex-6 {
+    flex: 6;
+  }
+  .flex-7 {
+    flex: 7;
+  }
+  .flex-auto {
+    flex: auto;
+  }
+  .flex-none {
+    flex: none;
+  }
   .flex-fix {
     min-width: 0;
     min-height: 0;

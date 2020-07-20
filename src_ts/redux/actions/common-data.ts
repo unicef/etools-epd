@@ -3,7 +3,7 @@ import {AnyObject, Disaggregation, LocationObject, Section} from '../../types/gl
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {etoolsEndpoints} from '../../endpoints/endpoints-list';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
-import {getGenderEquityRatingsDummy} from '../../components/pages/interventions/list/list-dummy-data'
+import {getGenderEquityRatingsDummy} from '../../components/pages/interventions/list/list-dummy-data';
 
 const LOGS_PREFIX = 'Redux common-data actions';
 

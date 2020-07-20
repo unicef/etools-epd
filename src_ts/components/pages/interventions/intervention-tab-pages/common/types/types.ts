@@ -12,7 +12,7 @@ export interface AnyObject {
 
 export type GenericObject<T> = {
   [key: string]: T;
-}
+};
 
 export type LocationObject = {
   id: string;
@@ -23,9 +23,9 @@ export type LocationObject = {
     created: string;
     modified: string;
     name: string;
-    admin_level: null
-  }
-}
+    admin_level: null;
+  };
+};
 
 export type Section = {
   id: string;
@@ -38,17 +38,17 @@ export type Section = {
   dashboard: boolean;
   color: string;
   active: boolean;
-}
+};
 
 export type Disaggregation = {
   active: boolean;
   disaggregation_values: DisaggregationValue[];
   id: number;
   name: string;
-}
+};
 
 export type DisaggregationValue = {
   active: boolean;
   id: number;
   value: string;
-}
+};

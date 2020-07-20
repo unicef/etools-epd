@@ -14,7 +14,8 @@ export const getUrlQueryStringSort = (sortFields: EtoolsTableSortItem[]): string
   if (sortFields.length > 0) {
     sort = sortFields
       .filter(({sort}: EtoolsTableSortItem) => Boolean(sort))
-      .map((sortItem: EtoolsTableSortItem) => `${sortItem.name}.${sortItem.sort}`).join('|');
+      .map((sortItem: EtoolsTableSortItem) => `${sortItem.name}.${sortItem.sort}`)
+      .join('|');
   }
   return sort;
 };

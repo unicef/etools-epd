@@ -160,13 +160,7 @@ export class InterventionDates extends connect(getStore())(ComponentBaseMixin(Fr
 
   renderEditBtn(editMode, canEditInterventionDates) {
     if (this.hideEditIcon(editMode, canEditInterventionDates)) {
-      return html`
-      <paper-icon-button
-        @tap="${this.allowEdit}"
-        icon="create"
-      >
-      </paper-icon-button>
-    `;
+      return html` <paper-icon-button @tap="${this.allowEdit}" icon="create"> </paper-icon-button> `;
     } else {
       return html``;
     }

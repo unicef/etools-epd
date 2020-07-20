@@ -236,7 +236,7 @@ export type InterventionActivity = {
   time_periods: InterventionActivityTimeframe[];
   intervention: number;
   items: InterventionActivityItem[];
-}
+};
 
 export type InterventionActivityItem = {
   created: string;
@@ -245,16 +245,16 @@ export type InterventionActivityItem = {
   other_details: string;
   unicef_cash: number;
   cso_cash: number;
-  unicef_suppies: number
+  unicef_suppies: number;
   cso_supplies: number;
   total: number;
   intervention_activity: number;
-}
+};
 
 export type InterventionActivityTimeframe = {
   created: string;
-  modified: string
+  modified: string;
   start_date: string;
   end_date: string;
   intervention: number;
-}
+};

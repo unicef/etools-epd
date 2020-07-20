@@ -5,7 +5,9 @@ import {
   SET_LOCATIONS,
   SET_LOCATION_TYPES,
   SET_DOCUMENT_TYPES,
-  SET_GENDER_EQUITY_RATINGS, SET_SECTIONS, SET_DISAGGREGATIONS,
+  SET_GENDER_EQUITY_RATINGS,
+  SET_SECTIONS,
+  SET_DISAGGREGATIONS
 } from '../actions/common-data';
 import {RootAction} from '../store';
 import {Disaggregation, LocationObject, Section} from '../../types/globals';
