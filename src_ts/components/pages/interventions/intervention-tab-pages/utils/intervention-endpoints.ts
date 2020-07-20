@@ -11,6 +11,7 @@ export interface EtoolsEndpoints {
 
 export const interventionEndpoints: EtoolsEndpoints = {
   intervention: {
-    template: '/api/v2/interventions/<%=interventionId%>/'
+    // template: '/api/v2/interventions/<%=interventionId%>/'
+    template: '/api/pmp/v3/interventions/<%=interventionId%>/'
   }
 };

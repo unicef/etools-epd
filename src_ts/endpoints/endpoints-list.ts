@@ -17,10 +17,12 @@ export const etoolsEndpoints: EtoolsEndpoints = {
     url: '/api/v3/users/changecountry/'
   },
   interventions: {
-    url: '/api/v2/interventions/'
+    // url: '/api/v2/interventions/'
+    url: '/api/pmp/v3/interventions/'
   },
   intervention: {
-    template: '/api/v2/interventions/<%=interventionId%>/'
+    // template: '/api/v2/interventions/<%=interventionId%>/'
+    template: '/api/pmp/v3/interventions/<%=interventionId%>/'
   },
   locations: {
     url: '/api/locations-light/'
