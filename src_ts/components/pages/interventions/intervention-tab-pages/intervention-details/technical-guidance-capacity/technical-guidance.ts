@@ -9,6 +9,8 @@ import {Permission} from '../../common/models/intervention.types';
 import {TechnicalDetails, TechnicalDetailsPermissions} from './technicalGuidance.models';
 import {cloneDeep} from '../../../../../utils/utils';
 import {selectTechnicalDetails, selectTechnicalDetailsPermissions} from './technicalGuidance.selectors';
+import {patchIntervention} from '../../common/actions';
+import {validateRequiredFields} from '../../utils/validation-helper';
 
 /**
  * @customElement
@@ -34,11 +36,7 @@ export class TechnicalGuidance extends connect(getStore())(ComponentBaseMixin(Li
         <etools-loading loading-text="Loading..." .active="${this.showLoading}"></etools-loading>
 
         <div slot="panel-btns">
-          <paper-icon-button
-            icon="create"
-            @tap="${this.allowEdit}"
-            ?hidden="${this.hideEditIcon(this.editMode, this.canEditTechnicalDetails)}"
-          ></paper-icon-button>
+          ${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}
         </div>
 
         <div class="row-padding-v">
@@ -96,7 +94,7 @@ export class TechnicalGuidance extends connect(getStore())(ComponentBaseMixin(Li
           </paper-textarea>
         </div>
 
-        ${this.renderActions(this.editMode, this.canEditTechnicalDetails)}
+        ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
       </etools-content-panel>
     `;
   }
@@ -109,9 +107,6 @@ export class TechnicalGuidance extends connect(getStore())(ComponentBaseMixin(Li
 
   @property({type: Boolean})
   showLoading = false;
-
-  @property({type: Boolean})
-  canEditTechnicalDetails!: boolean;
 
   @property({type: Object})
   originalTechnicalDetails = {};
@@ -126,37 +121,28 @@ export class TechnicalGuidance extends connect(getStore())(ComponentBaseMixin(Li
     }
     this.technicalDetails = selectTechnicalDetails(state);
     this.permissions = selectTechnicalDetailsPermissions(state);
-    this.setCanEditTechnicalDetails(this.permissions.edit);
+    this.set_canEditAtLeastOneField(this.permissions.edit);
     this.originalTechnicalDetails = cloneDeep(this.technicalDetails);
   }
 
-  setCanEditTechnicalDetails(_editPermissions: TechnicalDetailsPermissions) {
-    this.canEditTechnicalDetails = true;
-  }
-
-  renderActions(editMode: boolean, canEditTechnicalDetails: boolean) {
-    if (!this.hideActionButtons(editMode, canEditTechnicalDetails)) {
-      return html`
-        <div class="layout-horizontal right-align row-padding-v">
-          <paper-button class="default" @tap="${this.cancelTechnicalDetails}">
-            Cancel
-          </paper-button>
-          <paper-button class="primary" @tap="${this.saveTechnicalDetails}">
-            Save
-          </paper-button>
-        </div>
-      `;
-    }
-    return html``;
-  }
-
-  cancelTechnicalDetails() {
+  cancel() {
     Object.assign(this.technicalDetails, this.originalTechnicalDetails);
     this.technicalDetails = cloneDeep(this.originalTechnicalDetails);
     this.editMode = false;
   }
 
-  saveTechnicalDetails() {
-    this.editMode = false;
+  validate() {
+    return validateRequiredFields(this);
+  }
+
+  save() {
+    if (!this.validate()) {
+      return;
+    }
+    getStore()
+      .dispatch(patchIntervention(this.technicalDetails))
+      .then(() => {
+        this.editMode = false;
+      });
   }
 }
