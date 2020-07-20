@@ -1,7 +1,7 @@
 import {LitElement, property} from 'lit-element';
 import {EtoolsCurrency} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-mixin';
 import {Constructor} from '../types/types';
-import {Fr, FrsDetails, Intervention} from '../models/intervention-types';
+import {Fr, FrsDetails, Intervention} from '../models/intervention.types';
 
 
 function FrNumbersConsistencyMixin<T extends Constructor<LitElement>>(baseClass: T) {

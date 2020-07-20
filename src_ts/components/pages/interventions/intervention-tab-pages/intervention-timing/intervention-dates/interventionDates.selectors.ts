@@ -1,5 +1,5 @@
 import {createSelector} from 'reselect';
-import {Intervention, Permission, InterventionPermissionsFields} from '../../common/models/intervention-types';
+import {Intervention, Permission, InterventionPermissionsFields} from '../../common/models/intervention.types';
 import {ProgrammeDocDates, InterventionDatesPermissions} from './interventionDates.models';
 import {currentInterventionPermissions, currentIntervention} from '../../common/selectors';
 

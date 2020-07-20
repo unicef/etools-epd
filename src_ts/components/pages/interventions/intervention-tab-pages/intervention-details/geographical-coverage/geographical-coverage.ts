@@ -11,16 +11,16 @@ import {cloneDeep, isJsonStrMatch} from '../../../../../utils/utils';
 import {getStore} from '../../utils/redux-store-access';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {layoutHorizontal} from '../../common/styles/flex-layout-styles';
-import PermissionsMixin from '../../common/mixins/permissions-mixins';
 import {Locations, LocationsPermissions} from './geographicalCoverage.models';
-import {Permission} from '../../common/models/intervention-types';
+import {Permission} from '../../common/models/intervention.types';
 import {selectLocations, selectLocationsPermissions} from './geographicalCoverage.selectors';
+import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 
 /**
  * @customElement
  */
 @customElement('geographical-coverage')
-export class GeographicalCoverage extends connect(getStore())(PermissionsMixin(LitElement)) {
+export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin(LitElement)) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }

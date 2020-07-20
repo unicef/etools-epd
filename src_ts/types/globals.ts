@@ -17,3 +17,14 @@ export interface UnicefUser {
   name: string;
   email: string;
 }
+
+export type GenericObject<T> = {
+  [key: string]: T;
+}
+
+export type ListResponse<T> = {
+  count: number;
+  next: string | null;
+  prev: string | null;
+  results: T[];
+}

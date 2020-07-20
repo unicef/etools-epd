@@ -1,5 +1,5 @@
 import pick from 'lodash-es/pick';
-import {Intervention, InterventionPermissionsFields, PlannedBudget} from './intervention-types';
+import {Intervention, InterventionPermissionsFields, PlannedBudget} from './intervention.types';
 import {AnyObject} from '../types/types';
 
 export class ModelsBase {

@@ -1,12 +1,12 @@
 import {LitElement, html, customElement, property} from 'lit-element';
-import PermissionsMixin from '../../common/mixins/permissions-mixins';
+import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import FrNumbersConsistencyMixin from '../../common/mixins/fr-numbers-consistency-mixin';
 import '@unicef-polymer/etools-date-time/datepicker-lite';
 import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {Intervention, Permission} from '../../common/models/intervention-types';
+import {Intervention, Permission} from '../../common/models/intervention.types';
 import {ProgrammeDocDates, InterventionDatesPermissions} from './interventionDates.models';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {selectInterventionDates, selectInterventionDatesPermissions} from './interventionDates.selectors';
@@ -19,7 +19,7 @@ import {getStore} from '../../utils/redux-store-access';
  * @customElement
  */
 @customElement('intervention-dates')
-export class InterventionDates extends connect(getStore())(PermissionsMixin(FrNumbersConsistencyMixin(LitElement))) {
+export class InterventionDates extends connect(getStore())(ComponentBaseMixin(FrNumbersConsistencyMixin(LitElement))) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }

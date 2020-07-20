@@ -193,6 +193,7 @@ export class Intervention {
   unicef_focal_points: [] = [];
   partner?: string;
   partner_focal_points: [] = [];
+  partner_vendor = '';
   partner_authorized_officer_signatory?: string;
   offices: [] = [];
   sections: [] = [];
