@@ -93,8 +93,7 @@ export class GroupedLocationsDialog extends connect(getStore())(LitElement) {
         >
         </etools-dropdown>
 
-        ${this._renderMessage(this.message)}
-        ${this._renderGrouping(this.adminLevel)}
+        ${this._renderMessage(this.message)} ${this._renderGrouping(this.adminLevel)}
       </etools-dialog>
     `;
   }
@@ -165,18 +164,22 @@ export class GroupedLocationsDialog extends connect(getStore())(LitElement) {
           ${this.interventionLocations.map((item: Location) => html`<div class="top-padding">- ${item.name}</div>`)}
         </div>
         <div class="row-padding-v">
-          ${this.groupedLocations.map(item => html`
-            <div class="parent-padding">
-              <div class="adminLevelLoc">${item.adminLevelLocation.name}</div>
-              <div class="left-padding">
-                ${item.subordinateLocations.map(sub => html`
-                  <div class="child-bottom-padding">
-                    - ${sub.name}
-                  </div>
-                `)}
+          ${this.groupedLocations.map(
+            (item) => html`
+              <div class="parent-padding">
+                <div class="adminLevelLoc">${item.adminLevelLocation.name}</div>
+                <div class="left-padding">
+                  ${item.subordinateLocations.map(
+                    (sub) => html`
+                      <div class="child-bottom-padding">
+                        - ${sub.name}
+                      </div>
+                    `
+                  )}
+                </div>
               </div>
-            </div>
-          `)}
+            `
+          )}
         </div>
       `;
     } else {
