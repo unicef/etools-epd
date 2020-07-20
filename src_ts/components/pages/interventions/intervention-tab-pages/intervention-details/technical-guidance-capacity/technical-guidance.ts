@@ -45,6 +45,8 @@ export class TechnicalGuidance extends connect(getStore())(ComponentBaseMixin(Li
           <paper-input
             id="technicalGuidance"
             label="Technical Guidance"
+            always-float-label
+            placeholder="—"
             .value="${this.technicalDetails.technical_guidance}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.technical_guidance)}"
             ?required="${this.permissions.required.technical_guidance}"
@@ -57,6 +59,8 @@ export class TechnicalGuidance extends connect(getStore())(ComponentBaseMixin(Li
             id="capacityDevelopment"
             label="Capacity Development"
             type="text"
+            always-float-label
+            placeholder="—"
             .value="${this.technicalDetails.capacity_development}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.capacity_development)}"
             ?required="${this.permissions.required.capacity_development}"
@@ -69,6 +73,8 @@ export class TechnicalGuidance extends connect(getStore())(ComponentBaseMixin(Li
             id="otherPartnersInvolved"
             label="Other Partners Involved"
             type="text"
+            always-float-label
+            placeholder="—"
             .value="${this.technicalDetails.other_partners_involved}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.other_partners_involved)}"
             ?required="${this.permissions.required.other_partners_involved}"
@@ -81,6 +87,8 @@ export class TechnicalGuidance extends connect(getStore())(ComponentBaseMixin(Li
             id="otherInformation"
             label="Other Information"
             type="text"
+            always-float-label
+            placeholder="—"
             .value="${this.technicalDetails.other_info}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.other_info)}"
             ?required="${this.permissions.required.other_info}"
