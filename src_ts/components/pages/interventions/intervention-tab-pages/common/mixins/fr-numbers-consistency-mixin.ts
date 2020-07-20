@@ -3,7 +3,6 @@ import {EtoolsCurrency} from '@unicef-polymer/etools-currency-amount-input/mixin
 import {Constructor} from '../types/types';
 import {Fr, FrsDetails, Intervention} from '../models/intervention.types';
 
-
 function FrNumbersConsistencyMixin<T extends Constructor<LitElement>>(baseClass: T) {
   class FrNumbersConsistencyClass extends EtoolsCurrency(baseClass) {
     @property({type: Object})

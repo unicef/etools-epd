@@ -31,7 +31,6 @@ export class DetailsOverview extends connect(getStore())(LitElement) {
           padding-top: 5px;
           padding-bottom: 5px;
         }
-
       </style>
       <section class="elevation" elevation="1">
         <div class="row-h flex-c">
