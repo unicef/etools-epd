@@ -14,6 +14,7 @@ import {validateRequiredFields} from '../../utils/validation-helper';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../../utils/redux-store-access';
+import {patchIntervention} from '../../common/actions';
 
 /**
  * @customElement
@@ -136,31 +137,6 @@ export class InterventionDates extends connect(getStore())(ComponentBaseMixin(Fr
     }
   }
 
-  renderActions(editMode: boolean, canEditInterventionDates: boolean) {
-    if (this.hideActionButtons(editMode, canEditInterventionDates)) {
-      return html``;
-    } else {
-      return html`
-        <div class="layout-horizontal right-align row-padding-v">
-          <paper-button class="default" @tap="${this.cancelInterventionDateEdit}">
-            Cancel
-          </paper-button>
-          <paper-button class="primary" @tap="${this.saveInterventionDateEdit}">
-            Save
-          </paper-button>
-        </div>
-      `;
-    }
-  }
-
-  renderEditBtn(editMode: boolean, canEditInterventionDates: boolean) {
-    if (this.hideEditIcon(editMode, canEditInterventionDates)) {
-      return html``;
-    } else {
-      return html` <paper-icon-button @tap="${this.allowEdit}" icon="create"> </paper-icon-button> `;
-    }
-  }
-
   setCanEditInterventionDates(editPermissions: InterventionDatesPermissions) {
     this.canEditInterventionDates = editPermissions.start || editPermissions.end;
   }
@@ -169,16 +145,20 @@ export class InterventionDates extends connect(getStore())(ComponentBaseMixin(Fr
     return validateRequiredFields(this);
   }
 
-  cancelInterventionDateEdit() {
+  cancel() {
     this.interventionDates = cloneDeep(this.originalInterventionDates);
     this.editMode = false;
   }
 
-  saveInterventionDateEdit() {
+  save() {
     if (!this.validate()) {
       return;
     }
 
-    this.editMode = false;
+    getStore()
+      .dispatch(patchIntervention(this.interventionDates))
+      .then(() => {
+        this.editMode = false;
+      });
   }
 }
