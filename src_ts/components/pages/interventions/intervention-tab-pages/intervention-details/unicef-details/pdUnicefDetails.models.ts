@@ -1,5 +1,5 @@
 import {ModelsBase} from '../../common/models/models.base';
-import {InterventionPermissionsFields, Intervention} from '../../common/models/intervention-types';
+import {InterventionPermissionsFields, Intervention} from '../../common/models/intervention.types';
 import {AnyObject} from '../../../../../../types/globals';
 
 export class PdUnicefDetails extends ModelsBase {

@@ -1,6 +1,6 @@
 import {AnyObject} from '../../types/globals';
 import {_sendRequest} from '../../components/pages/interventions/intervention-tab-pages/utils/request-helper';
-import {Intervention} from '../../components/pages/interventions/intervention-tab-pages/common/models/intervention-types';
+import {Intervention} from '../../components/pages/interventions/intervention-tab-pages/common/models/intervention.types';
 import {etoolsEndpoints} from '../../endpoints/endpoints-list';
 import {getEndpoint} from '../../endpoints/endpoints';
 
