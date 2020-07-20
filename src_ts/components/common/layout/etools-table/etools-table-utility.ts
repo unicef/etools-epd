@@ -2,13 +2,8 @@
  * Utility functions used in etools data lists
  */
 
-import {EtoolsTableColumn, EtoolsTableColumnSort} from './etools-table';
 import {AnyObject} from '../../../../types/globals';
-import {
-  selectedValueTypeByFilterKey,
-  FilterKeysAndTheirSelectedValues
-} from '../../../pages/interventions/list/filters';
-
+import {EtoolsTableColumn, EtoolsTableColumnSort} from '@unicef-polymer/etools-table/etools-table';
 export interface EtoolsTableSortItem {
   name: string;
   sort: EtoolsTableColumnSort;
@@ -17,7 +12,9 @@ export interface EtoolsTableSortItem {
 export const getUrlQueryStringSort = (sortFields: EtoolsTableSortItem[]): string => {
   let sort = '';
   if (sortFields.length > 0) {
-    sort = sortFields.map((sortItem: EtoolsTableSortItem) => `${sortItem.name}.${sortItem.sort}`).join('|');
+    sort = sortFields
+      .filter(({sort}: EtoolsTableSortItem) => Boolean(sort))
+      .map((sortItem: EtoolsTableSortItem) => `${sortItem.name}.${sortItem.sort}`).join('|');
   }
   return sort;
 };
@@ -77,25 +74,4 @@ export const buildUrlQueryString = (params: AnyObject): string => {
   }
 
   return queryParams.join('&');
-};
-
-/**
- * TODO - probably should move out of etools-table-utility because it uses
- * selectedValueTypeByFilterKey specific to this application
- */
-export const getSelectedFiltersFromUrlParams = (params: AnyObject): FilterKeysAndTheirSelectedValues => {
-  const selectedFilters: AnyObject = {};
-
-  for (const filterKey in params) {
-    if (params[filterKey]) {
-      if (selectedValueTypeByFilterKey[filterKey] === 'Array') {
-        selectedFilters[filterKey] = params[filterKey].split(',');
-      } else if (selectedValueTypeByFilterKey[filterKey] === 'boolean') {
-        selectedFilters[filterKey] = params[filterKey] === 'true';
-      } else {
-        selectedFilters[filterKey] = params[filterKey];
-      }
-    }
-  }
-  return selectedFilters as FilterKeysAndTheirSelectedValues;
 };

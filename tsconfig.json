@@ -11,7 +11,8 @@
     "noFallthroughCasesInSwitch": true,
     "experimentalDecorators": true,
     "esModuleInterop": true,
-    "outDir": "src"
+    "outDir": "src",
+    "typeRoots": ["./src_ts/types"]
   },
   "include": [
     "src_ts/**/*.ts"

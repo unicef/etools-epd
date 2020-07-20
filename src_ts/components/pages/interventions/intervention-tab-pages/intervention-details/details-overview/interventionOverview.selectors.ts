@@ -1,5 +1,5 @@
 import {createSelector} from 'reselect';
-import {Intervention} from '../../common/models/intervention-types';
+import {Intervention} from '../../common/models/intervention.types';
 import {InterventionOverview} from './interventionOverview.models';
 import {currentIntervention} from '../../common/selectors';
 
