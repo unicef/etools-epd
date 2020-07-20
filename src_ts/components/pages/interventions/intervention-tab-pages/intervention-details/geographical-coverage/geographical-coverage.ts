@@ -15,6 +15,8 @@ import {Locations, LocationsPermissions} from './geographicalCoverage.models';
 import {Permission} from '../../common/models/intervention.types';
 import {selectLocations, selectLocationsPermissions} from './geographicalCoverage.selectors';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
+import {validateRequiredFields} from '../../utils/validation-helper';
+import {patchIntervention} from '../../common/actions';
 
 /**
  * @customElement
@@ -72,11 +74,7 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
         <etools-loading loading-text="Loading..." .active="${this.showLoading}"></etools-loading>
 
         <div slot="panel-btns">
-          <paper-icon-button
-            icon="create"
-            @tap="${this.allowEdit}"
-            ?hidden="${this.hideEditIcon(this.editMode, this.canEditLocations)}"
-          ></paper-icon-button>
+          ${this.renderEditBtn(this.editMode, this.canEditLocations)}
         </div>
 
         <div class="flex-c no-side-pad">
@@ -176,30 +174,25 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
     }
   }
 
-  cancelLocations() {
+  validate() {
+    return validateRequiredFields(this);
+  }
+
+  cancel() {
     Object.assign(this.locations, this.originalLocations);
     this.locations = cloneDeep(this.originalLocations);
     this.editMode = false;
   }
 
-  saveLocations() {
-    this.editMode = false;
-  }
-
-  renderActions(editMode: boolean, canEditLocations: boolean) {
-    if (!this.hideActionButtons(editMode, canEditLocations)) {
-      return html`
-        <div class="layout-horizontal right-align row-padding-v">
-          <paper-button class="default" @tap="${this.cancelLocations}">
-            Cancel
-          </paper-button>
-          <paper-button class="primary" @tap="${this.saveLocations}">
-            Save
-          </paper-button>
-        </div>
-      `;
-    } else {
-      return html``;
+  save() {
+    if (!this.validate()) {
+      return;
     }
+    getStore()
+      .dispatch(patchIntervention(this.locations))
+      .then(() => {
+        this.editMode = false;
+        this.locations = [];
+      });
   }
 }
