@@ -66,6 +66,7 @@ export const sharedStyles = html`
     etools-dropdown[readonly],
     etools-dropdown-multi[readonly],
     datepicker-lite[readonly],
+    etools-currency-amount-input[readonly],
     paper-input[readonly],
     paper-textarea[readonly] {
       --paper-input-container-underline: {
