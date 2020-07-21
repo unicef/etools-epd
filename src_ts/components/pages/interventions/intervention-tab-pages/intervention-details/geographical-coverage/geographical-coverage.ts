@@ -11,13 +11,14 @@ import {cloneDeep, isJsonStrMatch} from '../../../../../utils/utils';
 import {getStore} from '../../utils/redux-store-access';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {layoutHorizontal} from '../../common/styles/flex-layout-styles';
-import {Locations, LocationsPermissions} from './geographicalCoverage.models';
+import {LocationsPermissions} from './geographicalCoverage.models';
 import {Permission} from '../../common/models/intervention.types';
-import {selectLocations, selectLocationsPermissions} from './geographicalCoverage.selectors';
+import {selectLocationsPermissions} from './geographicalCoverage.selectors';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {validateRequiredFields} from '../../utils/validation-helper';
 import {patchIntervention} from '../../common/actions';
-import {selectPartnerDetailsPermissions} from '../partner-details/partnerDetails.selectors';
+import isEmpty from 'lodash-es/isEmpty';
+import get from 'lodash-es/get';
 
 /**
  * @customElement
@@ -29,7 +30,7 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
   }
 
   render() {
-    if (!this.locations) {
+    if (!this.originalData) {
       return html` ${sharedStyles}
         <etools-loading loading-text="Loading..." active></etools-loading>`;
     }
@@ -83,23 +84,24 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
             id="locations"
             label="Location(s)"
             placeholder="&#8212;"
-            .options="${this.locations}"
-            .selected-values="${this.flatLocations}"
-            ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.locations)}"
-            ?required="${this.permissions.required.locations}"
+            .options="${this.allLocations}"
+            .selectedValues="${this.originalData.flat_locations}"
+            ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.flat_locations)}"
+            ?required="${this.permissions.required.flat_locations}"
             option-label="name"
             option-value="id"
             error-message="Please select locations"
             disable-on-focus-handling
             trigger-value-change-event
-            @etools-selected-items-changed="${this.locationsChanged}"
+            @etools-selected-items-changed="${({detail}: CustomEvent) =>
+              this.selectedItemsChanged(detail, 'flat_locations')}"
           >
           </etools-dropdown-multi>
           <paper-button
             class="secondary-btn see-locations right-align"
             @tap="${this.openLocationsDialog}"
             ?hidden="${this.hideActionButtons(this.editMode, this.canEditAtLeastOneField)}"
-            ?disabled="${this._isEmpty(this.flatLocations)}"
+            ?disabled="${this._isEmpty(this.originalData.flat_locations)}"
             title="See all locations"
           >
             <iron-icon icon="add"></iron-icon>
@@ -114,14 +116,8 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
 
   private locationsDialog!: GroupedLocationsDialog;
 
-  @property({type: String})
-  flatLocations!: string[];
-
-  @property({type: Object})
-  originalLocations = [];
-
   @property({type: Array})
-  locations!: Locations[];
+  allLocations!: any[];
 
   @property({type: Boolean})
   showLoading = false;
@@ -137,8 +133,11 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
     if (!state.interventions.current) {
       return;
     }
-    if (!isJsonStrMatch(this.locations, state.commonData!.locations)) {
-      this.locations = [...state.commonData!.locations];
+    if (!isJsonStrMatch(this.allLocations, state.commonData!.locations)) {
+      this.allLocations = [...state.commonData!.locations];
+    }
+    if (!isJsonStrMatch(get(this.originalData, 'flat_locations'), get(state, 'interventions.current.flat_locations'))) {
+      this.originalData = {flat_locations: get(state, 'interventions.current.flat_locations')};
     }
     this.sePermissions(state);
   }
@@ -151,14 +150,10 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
     }
   }
 
-  locationsChanged(event: CustomEvent) {
-    this.flatLocations = event.detail.selectedItems.map((i: any) => i.id);
-  }
-
   private openLocationsDialog() {
     this.createDialog();
     this.locationsDialog.adminLevel = null;
-    this.locationsDialog.interventionLocationIds = this.flatLocations;
+    this.locationsDialog.interventionLocationIds = this.originalData.flat_locations;
     (this.locationsDialog as GroupedLocationsDialog).openDialog();
   }
 
@@ -169,10 +164,8 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
     document.querySelector('body')!.appendChild(this.locationsDialog);
   }
 
-  _isEmpty(array) {
-    if (array) {
-      return !array.length;
-    }
+  _isEmpty(array: any[]) {
+    return isEmpty(array);
   }
 
   validate() {
@@ -180,8 +173,7 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
   }
 
   cancel() {
-    Object.assign(this.locations, this.originalLocations);
-    this.locations = cloneDeep(this.originalLocations);
+    this.originalData = cloneDeep(this.originalData);
     this.editMode = false;
   }
 
@@ -190,7 +182,7 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
       return;
     }
     getStore()
-      .dispatch(patchIntervention(this.locations))
+      .dispatch(patchIntervention(this.dataToSave))
       .then(() => {
         this.editMode = false;
       });

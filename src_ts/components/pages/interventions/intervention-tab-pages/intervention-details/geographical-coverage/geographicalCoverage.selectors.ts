@@ -1,11 +1,7 @@
 import {createSelector} from 'reselect';
-import {Intervention, Permission, InterventionPermissionsFields} from '../../common/models/intervention-types';
-import {currentInterventionPermissions, currentIntervention} from '../../common/selectors';
-import {Locations, LocationsPermissions} from './geographicalCoverage.models';
-
-export const selectLocations = createSelector(currentIntervention, (intervention: Intervention) => {
-  return new Locations(intervention);
-});
+import {Permission, InterventionPermissionsFields} from '../../common/models/intervention.types';
+import {currentInterventionPermissions} from '../../common/selectors';
+import {LocationsPermissions} from './geographicalCoverage.models';
 
 export const selectLocationsPermissions = createSelector(
   currentInterventionPermissions,
