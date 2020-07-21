@@ -104,10 +104,12 @@ export const defaultFilters: EtoolsFilter[] = [
       {
         id: 'HPD',
         name: 'Humanitarian Programme Document'
-      }, {
+      },
+      {
         id: 'PD',
         name: 'Programme Document'
-      }, {
+      },
+      {
         id: 'SSFA',
         name: 'SSFA'
       }
@@ -163,10 +165,7 @@ export const defaultFilters: EtoolsFilter[] = [
   }
 ];
 
-export const updateFiltersSelectedValues = (
-  params: RouteQueryParams,
-  filters: EtoolsFilter[]
-) => {
+export const updateFiltersSelectedValues = (params: RouteQueryParams, filters: EtoolsFilter[]) => {
   const availableFilters = [...filters];
 
   const selectedFilters: FilterKeysAndTheirSelectedValues = getSelectedFiltersFromUrlParams(params);

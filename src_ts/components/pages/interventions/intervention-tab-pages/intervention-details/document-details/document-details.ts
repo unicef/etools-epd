@@ -104,6 +104,7 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
         </div>
 
         ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
+   
       </etools-content-panel>
     `;
   }

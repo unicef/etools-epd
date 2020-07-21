@@ -20,19 +20,19 @@ type InterventionListData = {
   grants: [];
   id: number;
   location_p_codes: [];
-  metadata: {}
+  metadata: {};
   multi_curr_flag: boolean;
   number: string;
   offices: number[];
   offices_names: string[];
   partner_name: string;
-  section_names: string[]
-  sections: number[]
-  start: string | null
+  section_names: string[];
+  sections: number[];
+  start: string | null;
   status: string;
   title: string;
   total_budget: string;
   total_unicef_budget: string;
   unicef_cash: string;
   unicef_focal_points: number[];
-}
+};

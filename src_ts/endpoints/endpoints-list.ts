@@ -13,6 +13,8 @@ export interface EtoolsEndpoints {
   locations: EtoolsEndpoint;
   static: EtoolsEndpoint;
   partners: EtoolsEndpoint;
+  sections: EtoolsEndpoint;
+  disaggregations: EtoolsEndpoint;
 }
 
 export const etoolsEndpoints: EtoolsEndpoints = {
@@ -26,7 +28,7 @@ export const etoolsEndpoints: EtoolsEndpoints = {
     url: '/api/v2/interventions/'
   },
   intervention: {
-    template: '/api/v2/interventions/<%=interventionId%>/'
+    template: '/api/pmp/v3/interventions/<%=interventionId%>/'
   },
   locations: {
     url: '/api/locations-light/'
@@ -36,5 +38,11 @@ export const etoolsEndpoints: EtoolsEndpoints = {
   },
   partners: {
     url: '/api/v2/partners/'
+  },
+  sections: {
+    url: '/api/sections/'
+  },
+  disaggregations: {
+    url: '/api/v2/reports/disaggregations/'
   }
 };

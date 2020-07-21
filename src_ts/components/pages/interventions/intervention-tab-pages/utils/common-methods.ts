@@ -15,8 +15,6 @@ export const handleItemsNoLongerAssignedToCurrentCountry = (availableItems: AnyO
   }
 };
 
-
 export const pageIsNotCurrentlyActive = (routeDetails: any, routeName: string, subRouteName: string) => {
   return !(routeDetails && routeDetails.routeName === routeName && routeDetails.subRouteName === subRouteName);
 };
-
