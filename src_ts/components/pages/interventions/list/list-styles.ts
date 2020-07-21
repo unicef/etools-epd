@@ -54,17 +54,17 @@ export const InterventionsTableStyles: CSSResult = css`
     line-height: 15px;
     color: rgba(0, 0, 0, 0.87);
   }
-  td[data-label="Doc Type"],
-  td[data-label="Start Date"],
-  td[data-label="End Date"],
+  td[data-label='Doc Type'],
+  td[data-label='Start Date'],
+  td[data-label='End Date'],
   th {
     white-space: nowrap;
   }
-  td[data-label="Doc Type"] {
+  td[data-label='Doc Type'] {
     width: 100px;
   }
-  td[data-label="Title"],
-  td[data-label="Partner Org Name"] {
+  td[data-label='Title'],
+  td[data-label='Partner Org Name'] {
     width: 27%;
   }
 `;

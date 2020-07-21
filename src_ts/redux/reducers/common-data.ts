@@ -5,14 +5,19 @@ import {
   SET_LOCATIONS,
   SET_LOCATION_TYPES,
   SET_DOCUMENT_TYPES,
-  SET_GENDER_EQUITY_RATINGS
+  SET_GENDER_EQUITY_RATINGS,
+  SET_SECTIONS,
+  SET_DISAGGREGATIONS
 } from '../actions/common-data';
 import {RootAction} from '../store';
+import {Disaggregation, LocationObject, Section} from '../../types/globals';
 
 export interface CommonDataState {
   unicefUsers: [];
   partners: [];
-  locations: [];
+  locations: LocationObject[];
+  sections: Section[];
+  disaggregations: Disaggregation[];
   locationTypes: [];
   documentTypes: [];
   genderEquityRatings: [];
@@ -22,6 +27,8 @@ const INITIAL_COMMON_DATA: CommonDataState = {
   unicefUsers: [],
   partners: [],
   locations: [],
+  sections: [],
+  disaggregations: [],
   locationTypes: [],
   documentTypes: [],
   genderEquityRatings: []
@@ -43,6 +50,16 @@ const commonData: Reducer<CommonDataState, RootAction> = (state = INITIAL_COMMON
       return {
         ...state,
         locations: action.locations
+      };
+    case SET_SECTIONS:
+      return {
+        ...state,
+        sections: action.sections
+      };
+    case SET_DISAGGREGATIONS:
+      return {
+        ...state,
+        disaggregations: action.disaggregations
       };
     case SET_LOCATION_TYPES:
       return {

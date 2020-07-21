@@ -107,7 +107,8 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
 
         <div
           class="layout-horizontal right-align row-padding-v"
-          ?hidden="${this.hideActionButtons(this.editMode, this.canEditDocumentDetails)}">
+          ?hidden="${this.hideActionButtons(this.editMode, this.canEditDocumentDetails)}"
+        >
           <paper-button class="default" @tap="${this.cancelDocumentDetails}">
             Cancel
           </paper-button>

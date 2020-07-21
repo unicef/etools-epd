@@ -17,3 +17,10 @@ export class LocationsPermissions extends ModelsBase {
   }
   locations = true;
 }
+export interface AdminLevel {
+  id: number;
+  name: string;
+  admin_level: string | null;
+  created: string;
+  modified: string;
+}
