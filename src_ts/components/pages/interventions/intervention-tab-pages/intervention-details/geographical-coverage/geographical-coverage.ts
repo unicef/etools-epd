@@ -66,10 +66,6 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
           max-width: 100%;
         }
 
-        .no-side-pad {
-          ${layoutHorizontal}
-          padding: 16px 0;
-        }
       </style>
 
       <etools-content-panel show-expand-btn panel-title="Geographical Coverage">
@@ -79,7 +75,7 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
           ${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}
         </div>
 
-        <div class="flex-c no-side-pad">
+        <div class="flex-c layout-horizontal row-padding-v">
           <etools-dropdown-multi
             id="locations"
             label="Location(s)"

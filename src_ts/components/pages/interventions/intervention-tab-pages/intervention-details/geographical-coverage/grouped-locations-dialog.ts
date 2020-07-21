@@ -7,6 +7,7 @@ import {RootState} from '../../../../../../redux/store';
 import {getStore} from '../../utils/redux-store-access';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {LocationObject} from '../../common/types/types';
+import get from 'lodash-es/get';
 
 class GroupedLocations {
   adminLevelLocation: LocationObject | null = null;
@@ -93,7 +94,7 @@ export class GroupedLocationsDialog extends connect(getStore())(LitElement) {
         >
         </etools-dropdown>
 
-        ${this._renderMessage(this.message)} ${this._renderGrouping(this.adminLevel)}
+        ${this._renderMessage(this.message)} ${this._renderGrouping(this.groupedLocations, this.interventionLocations)}
       </etools-dialog>
     `;
   }
@@ -157,16 +158,15 @@ export class GroupedLocationsDialog extends connect(getStore())(LitElement) {
     super.connectedCallback();
   }
 
-  _renderGrouping(adminLevel: string | null) {
-    if (adminLevel) {
-      return html``;
+  _renderGrouping(groupedLocations: GroupedLocations[], interventionLocations: LocationObject[]) {
+    if (!this.adminLevel) {
+      return html`<div class="row-padding-v">
+        ${interventionLocations.map((item: LocationObject) => html`<div class="top-padding">- ${item.name}</div>`)}
+      </div>`;
     }
     return html`
       <div class="row-padding-v">
-        ${this.interventionLocations.map((item: LocationObject) => html`<div class="top-padding">- ${item.name}</div>`)}
-      </div>
-      <div class="row-padding-v">
-        ${this.groupedLocations.map(
+        ${groupedLocations.map(
           (item) => html`
             <div class="parent-padding">
               <div class="adminLevelLoc">${item.adminLevelLocation!.name}</div>
@@ -238,11 +238,12 @@ export class GroupedLocationsDialog extends connect(getStore())(LitElement) {
   }
 
   adminLevelChanged(event: CustomEvent) {
-    const selectedAdminLevel = event.detail && event.detail.selectedItem;
-    if (!selectedAdminLevel) {
+    const selectedAdminLevelName = get(event.detail, 'selectedItem.name');
+    if (!selectedAdminLevelName) {
       this.groupedLocations = [];
       return;
     }
+    this.adminLevel = selectedAdminLevelName;
 
     this.message = '';
     const groupedLocations: GroupedLocations[] = [];
@@ -252,7 +253,7 @@ export class GroupedLocationsDialog extends connect(getStore())(LitElement) {
     for (i = 0; i < this.interventionLocations.length; i++) {
       const grouping = new GroupedLocations();
 
-      if (this.interventionLocations[i].gateway.name === selectedAdminLevel) {
+      if (this.interventionLocations[i].gateway.name === selectedAdminLevelName) {
         // gateway.name is location_type
         grouping.adminLevelLocation = this.interventionLocations[i];
         groupedLocations.push(grouping);
@@ -260,7 +261,7 @@ export class GroupedLocationsDialog extends connect(getStore())(LitElement) {
       }
 
       // Find admin level parent location
-      const adminLevelLocation = this._findAdminLevelParent(this.interventionLocations[i], selectedAdminLevel);
+      const adminLevelLocation = this._findAdminLevelParent(this.interventionLocations[i], selectedAdminLevelName);
       if (!adminLevelLocation) {
         locationsUnableToGroup.push(this.interventionLocations[i].name);
         continue;
