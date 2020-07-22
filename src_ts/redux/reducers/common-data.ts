@@ -9,10 +9,11 @@ import {
   SET_SECTIONS,
   SET_DISAGGREGATIONS,
   SET_OFFICES,
-  SET_ALL_STATIC_DATA
+  SET_ALL_STATIC_DATA,
+  SET_CP_OUTPUTS
 } from '../actions/common-data';
 import {RootAction} from '../store';
-import {Disaggregation, LocationObject, Section, LabelAndValue} from '../../types/globals';
+import {CpOutput, Disaggregation, LocationObject, Section, LabelAndValue} from '../../types/globals';
 
 export interface CommonDataState {
   unicefUsers: [];
@@ -20,6 +21,7 @@ export interface CommonDataState {
   locations: LocationObject[];
   sections: Section[];
   disaggregations: Disaggregation[];
+  cpOutputs: CpOutput[];
   locationTypes: [];
   documentTypes: [];
   genderEquityRatings: [];
@@ -37,7 +39,8 @@ const INITIAL_COMMON_DATA: CommonDataState = {
   documentTypes: [],
   genderEquityRatings: [],
   interventionAmendmentTypes: [],
-  offices: []
+  offices: [],
+  cpOutputs: []
 };
 
 const commonData: Reducer<CommonDataState, RootAction> = (state = INITIAL_COMMON_DATA, action) => {
@@ -100,6 +103,11 @@ const commonData: Reducer<CommonDataState, RootAction> = (state = INITIAL_COMMON
         genderEquityRatings: action.staticData.genderEquityRatings,
         interventionAmendmentTypes: action.staticData.interventionAmendmentTypes,
         offices: action.staticData.offices
+      };
+    case SET_CP_OUTPUTS:
+      return {
+        ...state,
+        cpOutputs: action.cpOutputs
       };
     default:
       return state;

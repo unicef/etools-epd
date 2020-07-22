@@ -1,5 +1,5 @@
 import {Action, ActionCreator} from 'redux';
-import {AnyObject, Disaggregation, LocationObject, Section} from '../../types/globals';
+import {AnyObject, Disaggregation, LocationObject, Section, CpOutput} from '../../types/globals';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {etoolsEndpoints} from '../../endpoints/endpoints-list';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
@@ -18,9 +18,14 @@ export const SET_GENDER_EQUITY_RATINGS = 'SET_GENDER_EQUITY_RATINGS';
 export const SET_OFFICES = 'SET_OFFICES';
 export const SET_STATIC_DATA = 'SET_STATIC_DATA';
 export const SET_ALL_STATIC_DATA = 'SET_ALL_STATIC_DATA';
+export const SET_CP_OUTPUTS = 'SET_CP_OUTPUTS';
 
 export interface CommonDataActionSetUnicefUsers extends Action<'SET_UNICEF_USERS'> {
   unicefUsers: AnyObject[];
+}
+
+export interface CommonDataActionSetCpOutputsData extends Action<'SET_CP_OUTPUTS'> {
+  cpOutputs: CpOutput[];
 }
 
 export interface CommonDataActionSetLocations extends Action<'SET_LOCATIONS'> {
@@ -52,6 +57,7 @@ export interface CommonDataActionSetGenderEquityRatings extends Action<'SET_OFFI
 }
 
 export type CommonDataAction =
+  | CommonDataActionSetCpOutputsData
   | CommonDataActionSetUnicefUsers
   | CommonDataActionSetLocations
   | CommonDataActionSetLocationTypes
@@ -65,6 +71,13 @@ export const setUnicefUsers: ActionCreator<CommonDataActionSetUnicefUsers> = (un
   return {
     type: SET_UNICEF_USERS,
     unicefUsers
+  };
+};
+
+export const setCpOutputs: ActionCreator<CommonDataActionSetCpOutputsData> = (cpOutputs: CpOutput[]) => {
+  return {
+    type: SET_CP_OUTPUTS,
+    cpOutputs
   };
 };
 
@@ -117,6 +130,20 @@ export const getPartners = () => {
   return sendRequest({
     endpoint: {url: etoolsEndpoints.partners.url!}
   });
+};
+
+export const loadDropdownsData = () => (dispatch: any) => {
+  sendRequest({
+    endpoint: {url: etoolsEndpoints.dropdownsData.url!}
+  })
+    .then((resp: any) => {
+      if (resp.cp_outputs) {
+        return dispatch(setCpOutputs(resp.cp_outputs));
+      }
+    })
+    .catch((error: AnyObject) => {
+      logError('loadDropdownsData req error...', LOGS_PREFIX, error);
+    });
 };
 
 export const loadLocations = () => (dispatch: any) => {

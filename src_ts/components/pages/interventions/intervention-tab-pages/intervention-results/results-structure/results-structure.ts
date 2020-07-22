@@ -1,9 +1,9 @@
 import {getStore} from '../../utils/redux-store-access';
 import {css, html, CSSResultArray, customElement, LitElement, property} from 'lit-element';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import {selectInterventionResultLinks} from './results-structure.selectors';
+import {selectInterventionId, selectInterventionResultLinks} from './results-structure.selectors';
 import {ResultStructureStyles} from './results-structure.styles';
-import {ExpectedResult, ResultLinkLowerResult} from '../../common/models/intervention.types';
+import {CpOutput, ExpectedResult, ResultLinkLowerResult} from '../../common/models/intervention.types';
 import '@unicef-polymer/etools-data-table';
 import '@unicef-polymer/etools-content-panel';
 import './cp-output-level';
@@ -46,12 +46,14 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
     ];
   }
 
-  @property()
-  resultLinks: ExpectedResult[] = [];
+  @property() resultLinks: ExpectedResult[] = [];
+  @property() interventionId!: number;
 
   @property({type: Boolean}) showCPOLevel = true;
   @property({type: Boolean}) showIndicators = true;
   @property({type: Boolean}) showActivities = true;
+
+  private cpOutputs: CpOutput[] = [];
 
   render() {
     // language=HTML
@@ -100,7 +102,12 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
         </div>
         ${this.resultLinks.map(
           (result: ExpectedResult) => html`
-            <cp-output-level ?show-cpo-level="${this.showCPOLevel}" .resultLink="${result}">
+            <cp-output-level
+              ?show-cpo-level="${this.showCPOLevel}"
+              .resultLink="${result}"
+              .cpOutputs="${this.cpOutputs}"
+              .interventionId="${this.interventionId}"
+            >
               ${result.ll_results.map(
                 (pdOutput: ResultLinkLowerResult) => html`
                   <etools-data-table-row>
@@ -146,6 +153,11 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
 
   stateChanged(state: any) {
     this.resultLinks = selectInterventionResultLinks(state);
+    this.interventionId = selectInterventionId(state)
+    const cpOutputs: number[] = (this.resultLinks || []).map(({cp_output}: ExpectedResult) => cp_output);
+    this.cpOutputs = ((state.commonData && state.commonData.cpOutputs) || []).filter(
+      ({id}: CpOutput) => !cpOutputs.includes(id)
+    );
   }
 
   updateTableView(indicators: boolean, activities: boolean): void {

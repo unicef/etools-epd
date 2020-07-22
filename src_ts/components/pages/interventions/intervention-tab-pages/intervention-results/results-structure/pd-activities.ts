@@ -60,6 +60,8 @@ export class PdActivities extends LitElement {
     return html`
       <style>
         etools-data-table-row {
+          --list-bg-color: var(--green-background);
+          --list-second-bg-color: var(--green-background);
           --list-row-collapse-wrapper: {
             padding: 0 !important;
             background-color: var(--green-background-dark);

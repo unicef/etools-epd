@@ -283,3 +283,14 @@ export type InterventionActivityTimeframe = {
   end_date: string;
   intervention: number;
 };
+
+export interface ResultIndicator {
+  current: number;
+  id: number;
+  name: string;
+  result: number;
+  sector_current: null | number;
+  sector_total: null | number;
+  total: null | number;
+  unit: null | number;
+}

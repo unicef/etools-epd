@@ -12,6 +12,9 @@ export interface EtoolsEndpoints {
   specialReportingRequirements: EtoolsEndpoint;
   reportingRequirements: EtoolsEndpoint;
   specialReportingRequirementsUpdate: EtoolsEndpoint;
+  resultLinks: EtoolsEndpoint;
+  ramIndicators: EtoolsEndpoint;
+  resultLinkDetails: EtoolsEndpoint;
   attachmentsUpload: EtoolsEndpoint;
   interventionAmendmentAdd: EtoolsEndpoint;
 }
@@ -34,6 +37,15 @@ export const interventionEndpoints: EtoolsEndpoints = {
   },
   specialReportingRequirementsUpdate: {
     template: '/api/v2/reports/interventions/special-reporting-requirements/<%=reportId%>/'
+  },
+  resultLinks: {
+    template: '/api/v2/interventions/<%=id%>/result-links/'
+  },
+  resultLinkDetails: {
+    template: '/api/v2/interventions/result-links/<%=result_link%>/'
+  },
+  ramIndicators: {
+    template: '/api/v2/reports/results/<%=id%>/indicators/'
   },
   attachmentsUpload: {
     url: '/api/v2/attachments/upload/'

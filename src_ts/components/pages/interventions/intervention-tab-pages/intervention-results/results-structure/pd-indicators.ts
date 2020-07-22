@@ -34,14 +34,15 @@ export class PdIndicators extends connect(getStore())(LitElement) {
     // language=HTML
     return html`
       <style>
-        etools-data-table-row {
+        :host etools-data-table-row.test {
+          --list-bg-color: var(--blue-background);
+          --list-second-bg-color: var(--blue-background);
           --list-row-collapse-wrapper: {
             padding: 0 !important;
             background-color: var(--blue-background-dark);
             border-top: 1px solid var(--main-border-color);
           }
           --list-row-wrapper: {
-            background-color: var(--blue-background) !important;
             min-height: 55px;
             border: 1px solid var(--main-border-color) !important;
             border-bottom: none !important;
@@ -60,7 +61,7 @@ export class PdIndicators extends connect(getStore())(LitElement) {
 
       ${this.indicators.map(
         (indicator: Indicator) => html`
-          <etools-data-table-row>
+          <etools-data-table-row class="test">
             <div slot="row-data" class="layout-horizontal">
               <!--    Indicator name    -->
               <div class="text flex-auto">
