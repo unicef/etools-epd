@@ -200,5 +200,13 @@ export const sharedStyles = html`
         display: none;
       }
     }
+
+    .summary {
+      padding: 10px 0px;
+    }
+
+    .summary .row-h {
+      padding: 0px 24px;
+    }
   </style>
 `;

@@ -26,10 +26,6 @@ export class DetailsOverview extends connect(getStore())(LitElement) {
           display: block;
           margin-bottom: 24px;
         }
-
-        .summary .row-h {
-          padding: 0px 16px;
-        }
       </style>
       <section class="elevation summary" elevation="1">
         <div class="row-h flex-c">
