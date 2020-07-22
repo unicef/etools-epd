@@ -163,6 +163,8 @@ export class InterventionPermissionsFields {
   // review & sign - FR Numbers
   frs = false;
 
+  locations = false;
+
   // attachments
   attachments = false;
   [x: string]: boolean;
@@ -209,6 +211,7 @@ export class Intervention {
   planned_visits: PlannedVisit[] = [];
   in_amendment = false;
   amendments: InterventionAmendment[] = [];
+  locations: [] = [];
   // distributions: [];
   activation_letter_attachment: number | string | null = null;
   technical_guidance = '';
