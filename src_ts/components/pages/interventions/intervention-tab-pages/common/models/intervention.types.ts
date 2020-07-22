@@ -141,6 +141,11 @@ export class InterventionPermissionsFields {
   // details - Planned Visits
   planned_visits = false;
 
+  technical_guidance = false;
+  capacity_development = false;
+  other_partners_involved = false;
+  other_info = false;
+
   // review & sign - Signatures & Dates
   submission_date = false;
   submission_date_prc = false;
@@ -206,6 +211,10 @@ export class Intervention {
   amendments: InterventionAmendment[] = [];
   // distributions: [];
   activation_letter_attachment: number | string | null = null;
+  technical_guidance = '';
+  capacity_development = '';
+  other_partners_involved = '';
+  other_info = '';
   attachments: InterventionAttachment[] = [];
   permissions?: Permission<InterventionPermissionsFields>;
   [key: string]: any;
