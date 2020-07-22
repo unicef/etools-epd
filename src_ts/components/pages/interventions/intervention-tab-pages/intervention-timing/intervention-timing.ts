@@ -4,6 +4,7 @@ import get from 'lodash-es/get';
 import './reporting-requirements/partner-reporting-requirements';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {connect} from '../utils/store-subscribe-mixin';
+import './intervention-dates/intervention-dates';
 
 /**
  * @customElement
@@ -16,15 +17,8 @@ export class InterventionTiming extends connect(LitElement) {
       <style></style>
 
       Timing page
-      <partner-reporting-requirements
-        class="content-section"
-        <!--  bellow is not needed anymore...see stateChange -->
-        intervention-id="${this.intervention.id}"
-        intervention-start="${this.intervention.start}"
-        intervention-end="${this.intervention.end}"
-        expected-results="${this.intervention.result_links}"
-      >
-      </partner-reporting-requirements>
+      <partner-reporting-requirements class="content-section"> </partner-reporting-requirements>
+      <intervention-dates></intervention-dates>
     `;
   }
 

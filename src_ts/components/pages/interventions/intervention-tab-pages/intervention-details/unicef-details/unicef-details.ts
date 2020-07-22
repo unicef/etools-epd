@@ -11,25 +11,30 @@ import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
-import {connect} from '../../utils/store-subscribe-mixin';
 import {AnyObject} from '../../../../../../types/globals';
-import PermissionsMixin from '../../common/mixins/permissions-mixins';
+import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {selectPdUnicefDetails, selectPdUnicefDetailsPermissions} from './pdUnicefDetails.selectors';
 import {PdUnicefDetails, PdUnicefDetailsPermissions} from './pdUnicefDetails.models';
-import {Permission} from '../../common/models/intervention-types';
+import {Permission} from '../../common/models/intervention.types';
 import {validateRequiredFields} from '../../utils/validation-helper';
+import {connect} from 'pwa-helpers/connect-mixin';
+import {getStore} from '../../utils/redux-store-access';
 // import {handleItemsNoLongerAssignedToCurrentCountry} from '../../utils/common-methods';
 
 /**
  * @customElement
  */
 @customElement('unicef-details')
-export class UnicefDetailsElement extends PermissionsMixin(connect(LitElement)) {
+export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin(LitElement)) {
   static get styles() {
     return [gridLayoutStylesLit, buttonsStyles];
   }
   render() {
     // language=HTML
+    if (!this.pdUnicefDetails) {
+      return html` ${sharedStyles}
+        <etools-loading loading-text="Loading..." active></etools-loading>`;
+    }
     return html`
     ${sharedStyles}
       <style>
@@ -96,7 +101,7 @@ export class UnicefDetailsElement extends PermissionsMixin(connect(LitElement)) 
               .options="${this.cluster_list}"
               option-label="name"
               option-value="id"
-              .selectedValues="${this.pdUnicefDetails.clusters}"
+              .selectedValues="${this.pdUnicefDetails.cluster_names}"
               readonly
               trigger-value-change-event>
           </div>
@@ -199,11 +204,11 @@ export class UnicefDetailsElement extends PermissionsMixin(connect(LitElement)) 
     // @@dci need to refactor this when things got clear
     if (!this.isUnicefUser) {
       // if user is not Unicef user, this is opened in read-only mode and we just display already saved
-      this.focal_point_list = [...this.pdUnicefDetails.focal_point_list];
-      this.section_list = [...this.pdUnicefDetails.section_list];
-      this.cluster_list = [...this.pdUnicefDetails.cluster_list];
-      this.office_list = [...this.pdUnicefDetails.office_list];
-      this.budget_owner_list = [...this.pdUnicefDetails.budget_owner_list];
+      this.focal_point_list = [...this.pdUnicefDetails.unicef_focal_points];
+      this.section_list = [...this.pdUnicefDetails.sections];
+      this.cluster_list = [...this.pdUnicefDetails.cluster_names];
+      this.office_list = [...this.pdUnicefDetails.offices];
+      this.budget_owner_list = [...this.pdUnicefDetails.unicef_budget_owner];
     } else {
       if (get(state, 'commonData.unicefUsers.length')) {
         this.focal_point_list = [...state.commonData!.unicefUsers];

@@ -149,9 +149,6 @@ export const sharedStyles = html`
     }
 
     etools-dialog paper-textarea {
-      --paper-input-container-input: {
-        display: block;
-      }
       --iron-autogrow-textarea: {
         overflow: auto;
         padding: 0;
@@ -169,6 +166,39 @@ export const sharedStyles = html`
     }
     .font-bold {
       font-weight: bold;
+    }
+
+    .paper-label {
+      font-size: 12px;
+      color: var(--secondary-text-color);
+      padding-top: 8px;
+    }
+
+    .input-label {
+      min-height: 24px;
+      padding-top: 4px;
+      min-width: 0;
+    }
+
+    .input-label[empty]::after {
+      content: '—';
+      color: var(--secondary-text-color);
+    }
+
+    paper-textarea {
+      --paper-input-container-input: {
+        display: block;
+      }
+      --iron-autogrow-textarea: {
+        overflow: auto;
+        padding: 0;
+        max-height: 96px;
+      }
+    }
+    paper-textarea[readonly] {
+      --paper-input-container-underline: {
+        display: none;
+      }
     }
   </style>
 `;
