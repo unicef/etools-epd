@@ -2,17 +2,18 @@ import {LitElement, customElement, html, property} from 'lit-element';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import '../../../../../../redux/actions/interventions';
-import {connect} from '../../utils/store-subscribe-mixin';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {elevationStyles} from '../../common/styles/elevation-styles';
 import {InterventionOverview} from './interventionOverview.models';
 import {selectInterventionOverview} from './interventionOverview.selectors';
+import {getStore} from '../../utils/redux-store-access';
+import {connect} from 'pwa-helpers/connect-mixin';
 
 /**
  * @customElement
  */
 @customElement('details-overview')
-export class DetailsOverview extends connect(LitElement) {
+export class DetailsOverview extends connect(getStore())(LitElement) {
   static get styles() {
     return [gridLayoutStylesLit, elevationStyles];
   }
@@ -25,6 +26,7 @@ export class DetailsOverview extends connect(LitElement) {
           display: block;
           margin-bottom: 24px;
         }
+
         .row-h {
           padding-top: 5px;
           padding-bottom: 5px;

@@ -63,11 +63,12 @@ export class PageHeader extends connect(store)(LitElement) {
         <div class="titlebar content-align">
           <img id="app-logo" src="images/etools-logo-color-white.svg" alt="eTools" />
           ${this.isStaging
-        ? html`<div class="envWarning">
+            ? html`<div class="envWarning">
            <span class='envLong'> - </span>${this.environment} <span class='envLong'>  TESTING ENVIRONMENT</div>`
-        : ''}
+            : ''}
         </div>
         <div class="content-align">
+          <countries-dropdown></countries-dropdown>
           <support-btn></support-btn>
 
           <etools-profile-dropdown

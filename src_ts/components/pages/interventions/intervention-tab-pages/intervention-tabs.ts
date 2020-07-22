@@ -16,7 +16,6 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
 import {isJsonStrMatch} from '../../../utils/utils';
 import {getIntervention} from '../../../../redux/actions/interventions';
-import {connect} from './utils/store-subscribe-mixin';
 import {setStore, getStore} from './utils/redux-store-access';
 import {currentPage, currentSubpage} from './common/selectors';
 import {elevationStyles} from './common/styles/elevation-styles';
@@ -26,7 +25,7 @@ import {elevationStyles} from './common/styles/elevation-styles';
  * @customElement
  */
 @customElement('intervention-tabs')
-export class InterventionTabs extends connect(LitElement) {
+export class InterventionTabs extends LitElement {
   static get styles() {
     return [elevationStyles, pageLayoutStyles, pageContentHeaderSlottedStyles];
   }
@@ -113,14 +112,19 @@ export class InterventionTabs extends connect(LitElement) {
   @property({type: Object})
   intervention!: AnyObject;
 
-  @property({type: Object})
-  // @ts-ignore
-  protected store: any;
+  _storeUnsubscribe!: () => void;
+  _store!: AnyObject;
 
-  // @ts-ignore
+  @property({type: Object})
+  get store() {
+    return this._store;
+  }
+
   set store(parentAppReduxStore: any) {
     setStore(parentAppReduxStore);
-    this.storeSubscribe();
+    this._storeUnsubscribe = getStore().subscribe(() => this.stateChanged(getStore().getState()));
+    this.stateChanged(getStore().getState());
+    this._store = parentAppReduxStore;
   }
 
   /*
@@ -133,6 +137,7 @@ export class InterventionTabs extends connect(LitElement) {
   }
 
   disconnectedCallback() {
+    this._storeUnsubscribe();
     super.disconnectedCallback();
   }
 

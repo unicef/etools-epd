@@ -1,15 +1,25 @@
 import {EtoolsFilter, EtoolsFilterTypes} from '../../../common/layout/filters/etools-filters';
 import {AnyObject} from '../../../../types/globals';
 import {isJsonStrMatch} from '../../../utils/utils';
+import {RouteQueryParams} from '../../../../routing/router';
+
+export const DRAFT_STATUS = 'draft';
+export const SIGNED_STATUS = 'signed';
+export const ACTIVE_STATUS = 'active';
+export const ENDED_STATUS = 'ended';
+export const CLOSED_STATUS = 'closed';
+export const SUSPENDED_STATUS = 'suspended';
+export const TERMINATED_STATUS = 'terminated';
 
 export enum FilterKeys {
   q = 'q',
   status = 'status',
-  unicef_focal_point = 'unicef_focal_point',
-  partner = 'partner',
-  created_date = 'created_date',
-  page_size = 'page_size',
-  sort = 'sort'
+  document_type = 'document_type',
+  partners = 'partners',
+  start = 'start',
+  end = 'end',
+  endAfter = 'endAfter',
+  contingency_pd = 'contingency_pd'
 }
 
 export type FilterKeysAndTheirSelectedValues = {[key in FilterKeys]?: any};
@@ -17,19 +27,23 @@ export type FilterKeysAndTheirSelectedValues = {[key in FilterKeys]?: any};
 export const defaultSelectedFilters: FilterKeysAndTheirSelectedValues = {
   q: '',
   status: [],
-  unicef_focal_point: [],
-  partner: [],
-  created_date: null
+  document_type: [],
+  partners: [],
+  start: null,
+  end: null,
+  endAfter: null,
+  contingency_pd: false
 };
 
 export const selectedValueTypeByFilterKey: AnyObject = {
   [FilterKeys.q]: 'string',
   [FilterKeys.status]: 'Array',
-  [FilterKeys.unicef_focal_point]: 'Array',
-  [FilterKeys.partner]: 'Array',
-  [FilterKeys.created_date]: 'string',
-  [FilterKeys.page_size]: 'string',
-  [FilterKeys.sort]: 'string'
+  [FilterKeys.document_type]: 'Array',
+  [FilterKeys.partners]: 'Array',
+  [FilterKeys.start]: 'string',
+  [FilterKeys.end]: 'string',
+  [FilterKeys.endAfter]: 'string',
+  [FilterKeys.contingency_pd]: 'boolean'
 };
 
 export const defaultFilters: EtoolsFilter[] = [
@@ -46,28 +60,32 @@ export const defaultFilters: EtoolsFilter[] = [
     type: EtoolsFilterTypes.DropdownMulti,
     selectionOptions: [
       {
-        id: 'draft',
+        id: DRAFT_STATUS,
         name: 'Draft'
       },
       {
-        id: 'in_progress',
-        name: 'In Progress'
+        id: SIGNED_STATUS,
+        name: 'Signed'
       },
       {
-        id: 'submitted',
-        name: 'Submitted'
+        id: ACTIVE_STATUS,
+        name: 'Active'
       },
       {
-        id: 'rejected',
-        name: 'Rejected'
+        id: ENDED_STATUS,
+        name: 'Ended'
       },
       {
-        id: 'final',
-        name: 'Final'
+        id: CLOSED_STATUS,
+        name: 'Closed'
       },
       {
-        id: 'cancelled',
-        name: 'Cancelled'
+        id: SUSPENDED_STATUS,
+        name: 'Suspended'
+      },
+      {
+        id: TERMINATED_STATUS,
+        name: 'Terminated'
       }
     ],
     optionValue: 'id',
@@ -79,25 +97,38 @@ export const defaultFilters: EtoolsFilter[] = [
     disabled: false
   },
   {
-    filterName: 'UNICEF Focal Point',
-    filterKey: 'unicef_focal_point',
+    filterName: 'PD/SSFA Type',
+    filterKey: FilterKeys.document_type,
     type: EtoolsFilterTypes.DropdownMulti,
-    selectionOptions: [],
-    selectedValue: [],
-    selected: true,
-    minWidth: '350px',
-    hideSearch: false,
-    disabled: false,
+    selectionOptions: [
+      {
+        id: 'HPD',
+        name: 'Humanitarian Programme Document'
+      },
+      {
+        id: 'PD',
+        name: 'Programme Document'
+      },
+      {
+        id: 'SSFA',
+        name: 'SSFA'
+      }
+    ],
     optionValue: 'id',
-    optionLabel: 'name'
+    optionLabel: 'name',
+    selectedValue: [],
+    selected: false,
+    minWidth: '350px',
+    hideSearch: true,
+    disabled: false
   },
   {
     filterName: 'Partner Org',
-    filterKey: FilterKeys.partner,
+    filterKey: FilterKeys.partners,
     type: EtoolsFilterTypes.DropdownMulti,
     selectionOptions: [],
     selectedValue: [],
-    selected: true,
+    selected: false,
     minWidth: '350px',
     hideSearch: false,
     disabled: false,
@@ -105,20 +136,39 @@ export const defaultFilters: EtoolsFilter[] = [
     optionLabel: 'name'
   },
   {
-    filterName: 'Created Date',
-    filterKey: FilterKeys.created_date,
+    filterName: 'Contingency PD',
+    type: EtoolsFilterTypes.Toggle,
+    filterKey: FilterKeys.contingency_pd,
+    selectedValue: false,
+    selected: true
+  },
+  {
+    filterName: 'Ends Before',
+    type: EtoolsFilterTypes.Date,
+    filterKey: FilterKeys.end,
+    selectedValue: '',
+    selected: false
+  },
+  {
+    filterName: 'Starts After',
+    filterKey: FilterKeys.start,
     type: EtoolsFilterTypes.Date,
     selectedValue: null,
-    selected: true
+    selected: false
+  },
+  {
+    filterName: 'Ends After',
+    type: EtoolsFilterTypes.Date,
+    filterKey: FilterKeys.endAfter,
+    selectedValue: '',
+    selected: false
   }
 ];
 
-export const updateFiltersSelectedValues = (
-  selectedFilters: FilterKeysAndTheirSelectedValues,
-  filters: EtoolsFilter[]
-) => {
+export const updateFiltersSelectedValues = (params: RouteQueryParams, filters: EtoolsFilter[]) => {
   const availableFilters = [...filters];
 
+  const selectedFilters: FilterKeysAndTheirSelectedValues = getSelectedFiltersFromUrlParams(params);
   for (const fKey in selectedFilters) {
     if (fKey) {
       const selectedValue = selectedFilters[fKey as FilterKeys];
@@ -143,4 +193,21 @@ export const updateFilterSelectionOptions = (filters: EtoolsFilter[], fKey: stri
       filter.selectionOptions = [...options];
     }
   }
+};
+
+export const getSelectedFiltersFromUrlParams = (params: AnyObject): FilterKeysAndTheirSelectedValues => {
+  const selectedFilters: AnyObject = {};
+
+  for (const filterKey in params) {
+    if (params[filterKey]) {
+      if (selectedValueTypeByFilterKey[filterKey] === 'Array') {
+        selectedFilters[filterKey] = params[filterKey].split(',');
+      } else if (selectedValueTypeByFilterKey[filterKey] === 'boolean') {
+        selectedFilters[filterKey] = params[filterKey] === 'true';
+      } else {
+        selectedFilters[filterKey] = params[filterKey];
+      }
+    }
+  }
+  return selectedFilters as FilterKeysAndTheirSelectedValues;
 };

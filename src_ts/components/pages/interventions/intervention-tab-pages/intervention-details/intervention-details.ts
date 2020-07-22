@@ -1,19 +1,16 @@
 import {LitElement, html} from 'lit-element';
-import {connect} from '../utils/store-subscribe-mixin';
 import './partner-details/partner-details';
 import './document-details/document-details';
 import './details-overview/details-overview';
-import {gridLayoutStylesLit} from '../common/styles/grid-layout-styles-lit';
 import './unicef-details/unicef-details';
+import './gender-equity-rating/gender-equity-rating';
+import './geographical-coverage/geographical-coverage';
 
 /**
  * @customElement
  */
-export class InterventionDetails extends connect(LitElement) {
-  static get styles() {
-    return [gridLayoutStylesLit];
-  }
-  public render() {
+export class InterventionDetails extends LitElement {
+  render() {
     // language=HTML
     return html`
       <style></style>
@@ -21,6 +18,8 @@ export class InterventionDetails extends connect(LitElement) {
       <partner-details></partner-details>
       <unicef-details></unicef-details>
       <document-details></document-details>
+      <gender-equity-rating></gender-equity-rating>
+      <geographical-coverage></geographical-coverage>
     `;
   }
 }

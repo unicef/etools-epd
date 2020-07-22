@@ -44,7 +44,14 @@ import {SMALL_MENU_ACTIVE_LOCALSTORAGE_KEY} from '../../config/config';
 import {getCurrentUser} from '../user/user-actions';
 import {EtoolsRouter} from '../../routing/routes';
 import {RouteDetails} from '../../routing/router';
-import {loadPartners, loadLocations, loadStaticData} from '../../redux/actions/common-data';
+import {
+  loadPartners,
+  loadLocations,
+  loadStaticData,
+  loadSections,
+  loadDisaggregations
+} from '../../redux/actions/common-data';
+import {EtoolsUserModel} from '../user/user-model';
 
 store.addReducers({
   user,
@@ -177,6 +184,8 @@ export class AppShell extends connect(store)(LitElement) {
       if (user) {
         store.dispatch(loadPartners());
         store.dispatch(loadLocations());
+        store.dispatch(loadSections());
+        store.dispatch(loadDisaggregations());
         store.dispatch(loadStaticData());
       }
     });

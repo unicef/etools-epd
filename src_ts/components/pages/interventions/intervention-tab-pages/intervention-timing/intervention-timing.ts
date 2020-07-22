@@ -1,4 +1,5 @@
 import {LitElement, customElement, html} from 'lit-element';
+import './intervention-dates/intervention-dates';
 
 /**
  * @customElement
@@ -10,7 +11,7 @@ export class InterventionTiming extends LitElement {
     return html`
       <style></style>
 
-      Timing page
+      <intervention-dates></intervention-dates>
     `;
   }
 }

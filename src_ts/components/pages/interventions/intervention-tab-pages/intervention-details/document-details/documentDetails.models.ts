@@ -1,15 +1,15 @@
 import {ModelsBase} from '../../common/models/models.base';
-import {InterventionPermissionsFields, Intervention} from '../../common/models/intervention-types';
+import {InterventionPermissionsFields, Intervention} from '../../common/models/intervention.types';
 
 export class DocumentDetails extends ModelsBase {
   constructor(intervention: Intervention) {
     super();
     this.setObjProperties(intervention);
   }
-  title!: string;
-  context!: string;
-  implementation_strategy!: string;
-  ip_progr_contrib!: string;
+  title = '';
+  context = '';
+  implementation_strategy = '';
+  ip_progr_contrib = '';
 }
 
 export class DocumentDetailsPermissions extends ModelsBase {
@@ -17,8 +17,8 @@ export class DocumentDetailsPermissions extends ModelsBase {
     super();
     this.setObjProperties(permissions);
   }
-  title!: true;
-  context!: true;
-  implementation_strategy!: true;
-  ip_progr_contrib!: true;
+  title = true;
+  context = true;
+  implementation_strategy = true;
+  ip_progr_contrib = true;
 }
