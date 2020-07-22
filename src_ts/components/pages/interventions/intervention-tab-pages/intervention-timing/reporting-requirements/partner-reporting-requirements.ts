@@ -16,11 +16,7 @@ import {gridLayoutStyles} from './styles/grid-layout-styles';
 import {pageCommonStyles} from './styles/page-common-styles';
 // @lajos needs to be checked if OK
 import {connect} from 'pwa-helpers/connect-mixin';
-import {store} from '../../../../../../redux/store';
-// bellow to be imported, or tested after migration to LIT
-// import {connect} from '../../utils/store-subscribe-mixin';
-// import {getStore} from '../../utils/redux-store-access';
-// move isEmpty and isEmptyObject methods
+import {getStore} from '../../utils/redux-store-access';
 
 import {property} from '@polymer/decorators';
 import {HumanitarianReportingReqUnicefEl} from './hr/humanitarian-reporting-req-unicef';
@@ -33,7 +29,7 @@ import cloneDeep from 'lodash-es/cloneDeep';
  * @polymer
  * @customElement
  */
-class PartnerReportingRequirements extends connect(store)(PolymerElement) {
+class PartnerReportingRequirements extends connect(getStore())(PolymerElement) {
   static get template() {
     return html`
       ${gridLayoutStyles}${pageCommonStyles}

@@ -6,7 +6,7 @@ import './edit-hru-dialog.js';
 import './hru-list.js';
 import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
 import FrontendPaginationMixin from '../mixins/frontend-pagination-mixin';
-import {ExpectedResult} from '../../../common/models/intervention-types';
+import {ExpectedResult} from '../../../common/models/intervention.types';
 import {gridLayoutStyles} from '../styles/grid-layout-styles';
 import {buttonsStyles} from '../styles/buttons-styles';
 import {property} from '@polymer/decorators';
