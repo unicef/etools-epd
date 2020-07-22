@@ -187,27 +187,30 @@ export class AppShell extends connect(store)(LitElement) {
       if (user) {
         Promise.allSettled([getPartners(), getLocations(), getSections(), getDisaggregations(), getStaticData()]).then(
           (response: any[]) => {
-            const data: Partial<CommonDataState> = {};
-            data.partners = this.getValue(response[0]);
-            data.locations = this.getValue(response[1]);
-            data.sections = this.getValue(response[2]);
-            data.disaggregations = this.getValue(response[3]);
-
-            const staticData = this.getValue(response[4], {});
-            data.locationTypes = isEmpty(staticData.location_types) ? [] : staticData.location_types;
-            data.documentTypes = isEmpty(staticData.intervention_doc_type) ? [] : staticData.intervention_doc_type;
-            data.genderEquityRatings = isEmpty(staticData.genderEquityRatings)
-              ? getGenderEquityRatingsDummy()
-              : staticData.genderEquityRatings;
-
             store.dispatch({
               type: SET_ALL_STATIC_DATA,
-              staticData: data
+              staticData: this.formatResponse(response)
             });
           }
         );
       }
     });
+  }
+
+  private formatResponse(response: any[]) {
+    const data: Partial<CommonDataState> = {};
+    data.partners = this.getValue(response[0]);
+    data.locations = this.getValue(response[1]);
+    data.sections = this.getValue(response[2]);
+    data.disaggregations = this.getValue(response[3]);
+
+    const staticData = this.getValue(response[4], {});
+    data.locationTypes = isEmpty(staticData.location_types) ? [] : staticData.location_types;
+    data.documentTypes = isEmpty(staticData.intervention_doc_type) ? [] : staticData.intervention_doc_type;
+    data.genderEquityRatings = isEmpty(staticData.genderEquityRatings)
+      ? getGenderEquityRatingsDummy()
+      : staticData.genderEquityRatings;
+    return data;
   }
 
   getValue(response: {status: string; value?: any; reason?: any}, defaultValue: any = []) {
