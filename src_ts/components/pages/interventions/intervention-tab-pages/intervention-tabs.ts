@@ -33,7 +33,6 @@ export class InterventionTabs extends LitElement {
   render() {
     // main template
     // language=HTML
-    console.log('intervention-tabs');
     return html`
       ${SharedStylesLit}
       <style>
@@ -152,7 +151,6 @@ export class InterventionTabs extends LitElement {
       const currentInterventionId = get(state, 'app.routeDetails.params.interventionId');
       const currentIntervention = get(state, 'interventions.current');
       if (currentInterventionId !== String(get(this.intervention, 'id'))) {
-        console.log('stateChanged intervention-tabs');
         if (currentIntervention) {
           if (!isJsonStrMatch(this.intervention, currentIntervention)) {
             this.intervention = cloneDeep(currentIntervention);

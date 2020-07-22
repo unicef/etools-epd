@@ -164,6 +164,7 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
   }
 
   async stateChanged(state: any) {
+    console.log("partner-details stateChanged");
     if (!state.interventions.current) {
       return;
     }
@@ -173,28 +174,21 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
 
     await this.setPartnerDetailsAndPopulateDropdowns(state);
 
-    this.sePermissions(state);
-  }
-
-  private sePermissions(state: any) {
-    const newPermissions = selectPartnerDetailsPermissions(state);
-    if (!isJsonStrMatch(this.permissions, newPermissions)) {
-      this.permissions = newPermissions;
-      this.set_canEditAtLeastOneField(this.permissions.edit);
-    }
+    this.permissions = selectPartnerDetailsPermissions(state);
+    this.set_canEditAtLeastOneField(this.permissions.edit);
   }
 
   async setPartnerDetailsAndPopulateDropdowns(state: any) {
     const newPartnerDetails = selectPartnerDetails(state);
     if (!isJsonStrMatch(this.originalData, newPartnerDetails)) {
       if (this.partnerIdHasChanged(newPartnerDetails)) {
-        await this.populateDropdowns(state, newPartnerDetails.partner_id!);
+        await this.populateDropdowns(newPartnerDetails.partner_id!);
       }
       this.originalData = newPartnerDetails;
     }
   }
 
-  async populateDropdowns(state: any, partnerId: number) {
+  async populateDropdowns(partnerId: number) {
     this.partnerStaffMembers = await this.getAllPartnerStaffMembers(partnerId!);
 
     // Uncomment when we can login with partner users
