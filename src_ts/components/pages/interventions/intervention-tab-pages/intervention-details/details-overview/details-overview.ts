@@ -27,59 +27,58 @@ export class DetailsOverview extends connect(getStore())(LitElement) {
           margin-bottom: 24px;
         }
 
-        .row-h {
-          padding-top: 5px;
-          padding-bottom: 5px;
+        .summary .row-h {
+          padding: 0px 16px;
         }
       </style>
-      <section class="elevation" elevation="1">
+      <section class="elevation summary" elevation="1">
         <div class="row-h flex-c">
-          <div class="col col-3">
+          <div class="col col-2">
             <span>
               <label class="paper-label">Document Type</label>
             </span>
           </div>
-          <div class="col col-3">
+          <div class="col col-1">
             <span>
               <label class="paper-label">CFEI Number</label>
             </span>
           </div>
-          <div class="col col-2">
+          <div class="col col-1">
             <span>
               <label class="paper-label">Humanitarian</label>
             </span>
           </div>
-          <div class="col col-2">
+          <div class="col col-1">
             <span>
               <label class="paper-label">Contingency</label>
             </span>
           </div>
         </div>
         <div class="row-h flex-c">
-          <div class="col col-3">
+          <div class="col col-2">
             <span>
               <label class="input-label" ?empty="${!this.interventionOverview.document_type}">
                 ${this.interventionOverview.document_type}
               </label>
             </span>
           </div>
-          <div class="col col-3">
+          <div class="col col-1">
             <span>
               <label class="input-label" ?empty="${!this.interventionOverview.cfei_number}">
                 ${this.interventionOverview.cfei_number}
               </label>
             </span>
           </div>
-          <div class="col col-2">
+          <div class="col col-1">
             <span>
-              <label class="input-label" ?empty="${!this.interventionOverview.contingency_pd}">
+              <label class="input-label">
                 ${this._getText(this.interventionOverview.contingency_pd)}
               </label>
             </span>
           </div>
-          <div class="col col-2">
+          <div class="col col-1">
             <span>
-              <label class="input-label" ?empty="${!this.interventionOverview.humanitarian}">
+              <label class="input-label">
                 ${this._getText(this.interventionOverview.humanitarian)}
               </label>
             </span>
@@ -104,7 +103,7 @@ export class DetailsOverview extends connect(getStore())(LitElement) {
 
   private _getText(value: boolean): string {
     if (value === undefined) {
-      return '';
+      return '-';
     }
     if (value) {
       return 'Yes';
