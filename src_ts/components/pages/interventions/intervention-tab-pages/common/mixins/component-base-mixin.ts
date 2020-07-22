@@ -13,7 +13,7 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
     originalData!: any;
 
     @property({type: Object})
-    dataToSave!: any;
+    dataToSave: any = {};
 
     @property({type: Object})
     permissions!: any;
