@@ -11,6 +11,8 @@ import {cloneDeep} from '../../../../../utils/utils';
 import {selectTechnicalDetails, selectTechnicalDetailsPermissions} from './technicalGuidance.selectors';
 import {patchIntervention} from '../../common/actions';
 import {validateRequiredFields} from '../../utils/validation-helper';
+import '@polymer/paper-input/paper-textarea';
+import '@unicef-polymer/etools-loading/etools-loading';
 
 /**
  * @customElement
@@ -22,6 +24,10 @@ export class TechnicalGuidance extends connect(getStore())(ComponentBaseMixin(Li
   }
 
   render() {
+    if (!this.originalData) {
+      return html` ${sharedStyles}
+        <etools-loading loading-text="Loading..." active></etools-loading>`;
+    }
     // language=HTML
     return html`
       ${sharedStyles}
@@ -40,16 +46,17 @@ export class TechnicalGuidance extends connect(getStore())(ComponentBaseMixin(Li
         </div>
 
         <div class="row-padding-v">
-          <paper-input
+          <paper-textarea
             id="technicalGuidance"
             label="Technical Guidance"
             always-float-label
             placeholder="—"
-            .value="${this.technicalDetails.technical_guidance}"
+            .value="${this.originalData.technical_guidance}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.technical_guidance)}"
             ?required="${this.permissions.required.technical_guidance}"
+            @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'technical_guidance')}"
           >
-          </paper-input>
+          </paper-textarea>
         </div>
 
         <div class="row-padding-v">
@@ -59,9 +66,10 @@ export class TechnicalGuidance extends connect(getStore())(ComponentBaseMixin(Li
             type="text"
             always-float-label
             placeholder="—"
-            .value="${this.technicalDetails.capacity_development}"
+            .value="${this.originalData.capacity_development}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.capacity_development)}"
             ?required="${this.permissions.required.capacity_development}"
+            @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'capacity_development')}"
           >
           </paper-textarea>
         </div>
@@ -73,9 +81,10 @@ export class TechnicalGuidance extends connect(getStore())(ComponentBaseMixin(Li
             type="text"
             always-float-label
             placeholder="—"
-            .value="${this.technicalDetails.other_partners_involved}"
+            .value="${this.originalData.other_partners_involved}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.other_partners_involved)}"
             ?required="${this.permissions.required.other_partners_involved}"
+            @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'other_partners_involved')}"
           >
           </paper-textarea>
         </div>
@@ -87,9 +96,10 @@ export class TechnicalGuidance extends connect(getStore())(ComponentBaseMixin(Li
             type="text"
             always-float-label
             placeholder="—"
-            .value="${this.technicalDetails.other_info}"
+            .value="${this.originalData.other_info}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.other_info)}"
             ?required="${this.permissions.required.other_info}"
+            @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'other_info')}"
           >
           </paper-textarea>
         </div>
@@ -100,16 +110,13 @@ export class TechnicalGuidance extends connect(getStore())(ComponentBaseMixin(Li
   }
 
   @property({type: Object})
-  technicalDetails!: TechnicalDetails;
+  originalData!: TechnicalDetails;
 
   @property({type: Object})
   permissions!: Permission<TechnicalDetailsPermissions>;
 
   @property({type: Boolean})
   showLoading = false;
-
-  @property({type: Object})
-  originalTechnicalDetails = {};
 
   connectedCallback() {
     super.connectedCallback();
@@ -119,15 +126,13 @@ export class TechnicalGuidance extends connect(getStore())(ComponentBaseMixin(Li
     if (!state.interventions.current) {
       return;
     }
-    this.technicalDetails = selectTechnicalDetails(state);
+    this.originalData = selectTechnicalDetails(state);
     this.permissions = selectTechnicalDetailsPermissions(state);
     this.set_canEditAtLeastOneField(this.permissions.edit);
-    this.originalTechnicalDetails = cloneDeep(this.technicalDetails);
   }
 
   cancel() {
-    Object.assign(this.technicalDetails, this.originalTechnicalDetails);
-    this.technicalDetails = cloneDeep(this.originalTechnicalDetails);
+    this.originalData = cloneDeep(this.originalData);
     this.editMode = false;
   }
 
@@ -140,7 +145,7 @@ export class TechnicalGuidance extends connect(getStore())(ComponentBaseMixin(Li
       return;
     }
     getStore()
-      .dispatch(patchIntervention(this.technicalDetails))
+      .dispatch(patchIntervention(this.dataToSave))
       .then(() => {
         this.editMode = false;
       });
