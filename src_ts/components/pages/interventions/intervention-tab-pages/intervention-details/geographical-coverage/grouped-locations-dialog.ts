@@ -1,5 +1,4 @@
 import {LitElement, html, property, customElement, query} from 'lit-element';
-import {Location} from './geographicalCoverage.models';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
 import {isJsonStrMatch} from '../../../../../utils/utils';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
@@ -7,10 +6,12 @@ import {buttonsStyles} from '../../common/styles/button-styles';
 import {RootState} from '../../../../../../redux/store';
 import {getStore} from '../../utils/redux-store-access';
 import {connect} from 'pwa-helpers/connect-mixin';
+import {LocationObject} from '../../common/types/types';
+import get from 'lodash-es/get';
 
 class GroupedLocations {
-  adminLevelLocation: Location | null = null;
-  subordinateLocations: Location[] = [];
+  adminLevelLocation: LocationObject | null = null;
+  subordinateLocations: LocationObject[] = [];
 }
 
 /**
@@ -93,8 +94,7 @@ export class GroupedLocationsDialog extends connect(getStore())(LitElement) {
         >
         </etools-dropdown>
 
-        ${this._renderMessage(this.message)}
-        ${this._renderGrouping(this.adminLevel)}
+        ${this._renderMessage(this.message)} ${this._renderGrouping(this.groupedLocations, this.interventionLocations)}
       </etools-dialog>
     `;
   }
@@ -116,10 +116,10 @@ export class GroupedLocationsDialog extends connect(getStore())(LitElement) {
   adminLevel!: string | null;
 
   @property({type: Array})
-  locations!: Location[];
+  allLocations!: LocationObject[];
 
   @property({type: Array})
-  interventionLocations: Location[] = [];
+  interventionLocations: LocationObject[] = [];
 
   @property({type: Array})
   get interventionLocationIds() {
@@ -146,8 +146,8 @@ export class GroupedLocationsDialog extends connect(getStore())(LitElement) {
   groupedLocDialog!: EtoolsDialog;
 
   stateChanged(state: RootState) {
-    if (!isJsonStrMatch(this.locations, state.commonData!.locations)) {
-      this.locations = [...state.commonData!.locations];
+    if (!isJsonStrMatch(this.allLocations, state.commonData!.locations)) {
+      this.allLocations = [...state.commonData!.locations];
     }
     if (!isJsonStrMatch(this.adminLevels, state.commonData!.locationTypes)) {
       this.adminLevels = [...state.commonData!.locationTypes];
@@ -158,39 +158,41 @@ export class GroupedLocationsDialog extends connect(getStore())(LitElement) {
     super.connectedCallback();
   }
 
-  _renderGrouping(adminLevel) {
-    if (adminLevel) {
-      return html`
-        <div class="row-padding-v">
-          ${this.interventionLocations.map((item: Location) => html`<div class="top-padding">- ${item.name}</div>`)}
-        </div>
-        <div class="row-padding-v">
-          ${this.groupedLocations.map(item => html`
+  _renderGrouping(groupedLocations: GroupedLocations[], interventionLocations: LocationObject[]) {
+    if (!this.adminLevel) {
+      return html`<div class="row-padding-v">
+        ${interventionLocations.map((item: LocationObject) => html`<div class="top-padding">- ${item.name}</div>`)}
+      </div>`;
+    }
+    return html`
+      <div class="row-padding-v">
+        ${groupedLocations.map(
+          (item) => html`
             <div class="parent-padding">
-              <div class="adminLevelLoc">${item.adminLevelLocation.name}</div>
+              <div class="adminLevelLoc">${item.adminLevelLocation!.name}</div>
               <div class="left-padding">
-                ${item.subordinateLocations.map(sub => html`
-                  <div class="child-bottom-padding">
-                    - ${sub.name}
-                  </div>
-                `)}
+                ${item.subordinateLocations.map(
+                  (sub) => html`
+                    <div class="child-bottom-padding">
+                      - ${sub.name}
+                    </div>
+                  `
+                )}
               </div>
             </div>
-          `)}
-        </div>
-      `;
-    } else {
-      return html``;
-    }
+          `
+        )}
+      </div>
+    `;
   }
 
   _renderMessage(message: string) {
     if (message !== '') {
       return html`
-      <div class="bordered-div"">
-        ${message}
-      </div>
-    `;
+        <div class="bordered-div">
+          ${message}
+        </div>
+      `;
     } else {
       return html``;
     }
@@ -215,7 +217,7 @@ export class GroupedLocationsDialog extends connect(getStore())(LitElement) {
   }
 
   interventionLocationIdsChanged(locationIds: string[]) {
-    if (!locationIds || !locationIds.length || !this.locations) {
+    if (!locationIds || !locationIds.length || !this.allLocations) {
       this.interventionLocations = [];
       return;
     }
@@ -227,7 +229,7 @@ export class GroupedLocationsDialog extends connect(getStore())(LitElement) {
     locationIds = locationIds.map(function (loc) {
       return parseInt(loc);
     });
-    const interventionLocations: Location[] = this.locations.filter(function (loc: any) {
+    const interventionLocations = this.allLocations.filter(function (loc: any) {
       return locationIds.indexOf(parseInt(loc.id)) > -1;
     });
 
@@ -236,11 +238,12 @@ export class GroupedLocationsDialog extends connect(getStore())(LitElement) {
   }
 
   adminLevelChanged(event: CustomEvent) {
-    const selectedAdminLevel = event.detail && event.detail.selectedItem;
-    if (!selectedAdminLevel) {
+    const selectedAdminLevelName = get(event.detail, 'selectedItem.name');
+    if (!selectedAdminLevelName) {
       this.groupedLocations = [];
       return;
     }
+    this.adminLevel = selectedAdminLevelName;
 
     this.message = '';
     const groupedLocations: GroupedLocations[] = [];
@@ -250,7 +253,7 @@ export class GroupedLocationsDialog extends connect(getStore())(LitElement) {
     for (i = 0; i < this.interventionLocations.length; i++) {
       const grouping = new GroupedLocations();
 
-      if (this.interventionLocations[i].gateway.name === selectedAdminLevel) {
+      if (this.interventionLocations[i].gateway.name === selectedAdminLevelName) {
         // gateway.name is location_type
         grouping.adminLevelLocation = this.interventionLocations[i];
         groupedLocations.push(grouping);
@@ -258,7 +261,7 @@ export class GroupedLocationsDialog extends connect(getStore())(LitElement) {
       }
 
       // Find admin level parent location
-      const adminLevelLocation = this._findAdminLevelParent(this.interventionLocations[i], selectedAdminLevel);
+      const adminLevelLocation = this._findAdminLevelParent(this.interventionLocations[i], selectedAdminLevelName);
       if (!adminLevelLocation) {
         locationsUnableToGroup.push(this.interventionLocations[i].name);
         continue;
@@ -298,11 +301,11 @@ export class GroupedLocationsDialog extends connect(getStore())(LitElement) {
     return existingGroup;
   }
 
-  _findAdminLevelParent(location: Location, adminLevel: string): Location | null {
+  _findAdminLevelParent(location: LocationObject, adminLevel: string): LocationObject | null {
     if (!location.parent) {
       return null;
     }
-    const parentLoc: Location | undefined = this.locations.find(function (loc: any) {
+    const parentLoc = this.allLocations.find(function (loc: any) {
       return parseInt(loc.id) === parseInt(location.parent as string);
     });
     if (!parentLoc) {

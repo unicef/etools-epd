@@ -12,44 +12,44 @@ export const SUSPENDED_STATUS = 'suspended';
 export const TERMINATED_STATUS = 'terminated';
 
 export enum FilterKeys {
-  q = 'q',
+  search = 'search',
   status = 'status',
   document_type = 'document_type',
   partners = 'partners',
   start = 'start',
   end = 'end',
-  endAfter = 'endAfter',
+  end_after = 'end_after',
   contingency_pd = 'contingency_pd'
 }
 
 export type FilterKeysAndTheirSelectedValues = {[key in FilterKeys]?: any};
 
 export const defaultSelectedFilters: FilterKeysAndTheirSelectedValues = {
-  q: '',
+  search: '',
   status: [],
   document_type: [],
   partners: [],
   start: null,
   end: null,
-  endAfter: null,
+  end_after: null,
   contingency_pd: false
 };
 
 export const selectedValueTypeByFilterKey: AnyObject = {
-  [FilterKeys.q]: 'string',
+  [FilterKeys.search]: 'string',
   [FilterKeys.status]: 'Array',
   [FilterKeys.document_type]: 'Array',
   [FilterKeys.partners]: 'Array',
   [FilterKeys.start]: 'string',
   [FilterKeys.end]: 'string',
-  [FilterKeys.endAfter]: 'string',
+  [FilterKeys.end_after]: 'string',
   [FilterKeys.contingency_pd]: 'boolean'
 };
 
 export const defaultFilters: EtoolsFilter[] = [
   {
     filterName: 'Search records',
-    filterKey: FilterKeys.q,
+    filterKey: FilterKeys.search,
     type: EtoolsFilterTypes.Search,
     selectedValue: '',
     selected: true
@@ -104,10 +104,12 @@ export const defaultFilters: EtoolsFilter[] = [
       {
         id: 'HPD',
         name: 'Humanitarian Programme Document'
-      }, {
+      },
+      {
         id: 'PD',
         name: 'Programme Document'
-      }, {
+      },
+      {
         id: 'SSFA',
         name: 'SSFA'
       }
@@ -157,16 +159,13 @@ export const defaultFilters: EtoolsFilter[] = [
   {
     filterName: 'Ends After',
     type: EtoolsFilterTypes.Date,
-    filterKey: FilterKeys.endAfter,
+    filterKey: FilterKeys.end_after,
     selectedValue: '',
     selected: false
   }
 ];
 
-export const updateFiltersSelectedValues = (
-  params: RouteQueryParams,
-  filters: EtoolsFilter[]
-) => {
+export const updateFiltersSelectedValues = (params: RouteQueryParams, filters: EtoolsFilter[]) => {
   const availableFilters = [...filters];
 
   const selectedFilters: FilterKeysAndTheirSelectedValues = getSelectedFiltersFromUrlParams(params);

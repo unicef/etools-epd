@@ -5,7 +5,7 @@ export interface ExpectedResult {
   intervention: number;
   ll_results: ResultLinkLowerResult[];
   ram_indicators: number[];
-  ram_indicator_names: number[];
+  ram_indicator_names: string[];
 }
 
 export interface ResultLinkLowerResult {
@@ -141,6 +141,11 @@ export class InterventionPermissionsFields {
   // details - Planned Visits
   planned_visits = false;
 
+  technical_guidance = false;
+  capacity_development = false;
+  other_partners_involved = false;
+  other_info = false;
+
   // review & sign - Signatures & Dates
   submission_date = false;
   submission_date_prc = false;
@@ -157,6 +162,8 @@ export class InterventionPermissionsFields {
 
   // review & sign - FR Numbers
   frs = false;
+
+  locations = false;
 
   // attachments
   attachments = false;
@@ -204,8 +211,13 @@ export class Intervention {
   planned_visits: PlannedVisit[] = [];
   in_amendment = false;
   amendments: InterventionAmendment[] = [];
+  locations: [] = [];
   // distributions: [];
   activation_letter_attachment: number | string | null = null;
+  technical_guidance = '';
+  capacity_development = '';
+  other_partners_involved = '';
+  other_info = '';
   attachments: InterventionAttachment[] = [];
   permissions?: Permission<InterventionPermissionsFields>;
   [key: string]: any;
@@ -223,3 +235,38 @@ export class InterventionAmendment {
   signed_amendment_attachment: number | string | null = null;
   internal_prc_review: number | string | null = null;
 }
+
+export type InterventionActivity = {
+  created: string;
+  modified: string;
+  activity_name: string;
+  context_details: string;
+  unicef_cash: number;
+  cso_cash: number;
+  unicef_suppies: number;
+  cso_supplies: number;
+  time_periods: InterventionActivityTimeframe[];
+  intervention: number;
+  items: InterventionActivityItem[];
+};
+
+export type InterventionActivityItem = {
+  created: string;
+  modified: string;
+  name: string;
+  other_details: string;
+  unicef_cash: number;
+  cso_cash: number;
+  unicef_suppies: number;
+  cso_supplies: number;
+  total: number;
+  intervention_activity: number;
+};
+
+export type InterventionActivityTimeframe = {
+  created: string;
+  modified: string;
+  start_date: string;
+  end_date: string;
+  intervention: number;
+};

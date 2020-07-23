@@ -4,16 +4,18 @@ import {connect} from 'pwa-helpers/connect-mixin';
 import {RootState, store} from '../../../redux/store';
 
 import '../../common/layout/page-content-header/page-content-header';
-import {
-  pageContentHeaderSlottedStyles
-} from '../../common/layout/page-content-header/page-content-header-slotted-styles';
+import {pageContentHeaderSlottedStyles} from '../../common/layout/page-content-header/page-content-header-slotted-styles';
 
 import '../../common/layout/filters/etools-filters';
 import {
   ACTIVE_STATUS,
-  defaultFilters, DRAFT_STATUS, ENDED_STATUS, SIGNED_STATUS, SUSPENDED_STATUS,
+  defaultFilters,
+  DRAFT_STATUS,
+  ENDED_STATUS,
+  SIGNED_STATUS,
+  SUSPENDED_STATUS,
   updateFilterSelectionOptions,
-  updateFiltersSelectedValues,
+  updateFiltersSelectedValues
 } from './list/filters';
 import {ROOT_PATH} from '../../../config/config';
 import {EtoolsFilter} from '../../common/layout/filters/etools-filters';
@@ -22,13 +24,11 @@ import {buttonsStyles} from '../../styles/button-styles';
 import {elevationStyles} from '../../styles/lit-styles/elevation-styles';
 import '@unicef-polymer/etools-table/etools-table';
 import {
-  EtoolsTableColumn, EtoolsTableColumnSort,
-  EtoolsTableColumnType,
+  EtoolsTableColumn,
+  EtoolsTableColumnSort,
+  EtoolsTableColumnType
 } from '@unicef-polymer/etools-table/etools-table';
-import {
-  EtoolsPaginator,
-  defaultPaginator
-} from '@unicef-polymer/etools-table/pagination/etools-pagination';
+import {EtoolsPaginator, defaultPaginator} from '@unicef-polymer/etools-table/pagination/etools-pagination';
 import {
   buildUrlQueryString,
   getSortFields,
@@ -260,10 +260,12 @@ export class InterventionList extends connect(store)(LitElement) {
   }
 
   private dataRequiredByFiltersHasBeenLoaded(state: RootState): boolean {
-    return !!(state.commonData &&
+    return !!(
+      state.commonData &&
       get(state, 'commonData.partners.length') &&
       this.routeDetails!.queryParams &&
-      Object.keys(this.routeDetails!.queryParams).length > 0);
+      Object.keys(this.routeDetails!.queryParams).length > 0
+    );
   }
 
   private populateDropdownFilterOptionsFromCommonData(commonData: any, currentFilters: EtoolsFilter[]) {
@@ -283,7 +285,7 @@ export class InterventionList extends connect(store)(LitElement) {
           return {
             ...column,
             sort: direction as EtoolsTableColumnSort
-          }
+          };
         }
       });
     }
@@ -294,10 +296,9 @@ export class InterventionList extends connect(store)(LitElement) {
         page_size: '20',
         status: [DRAFT_STATUS, SIGNED_STATUS, ACTIVE_STATUS, ENDED_STATUS, SUSPENDED_STATUS]
       });
-      return false
+      return false;
     } else {
       return true;
     }
   }
-
 }

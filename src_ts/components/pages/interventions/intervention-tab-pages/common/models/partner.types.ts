@@ -1,6 +1,3 @@
-import {ModelsBase} from './models.base';
-import {AnyObject} from '../../../../../../types/globals';
-
 export class PartnerStaffMember {
   id: number | null = null;
   name?: string;
