@@ -22,10 +22,9 @@ import {fireEvent} from '../../../../../utils/fire-custom-event';
 import {Intervention, Fr, InterventionPermissionsFields} from '../../common/models/intervention.types';
 import {Agreement} from '../../common/models/agreement.types';
 import CONSTANTS from '../../common/constants';
-import {pageCommonStyles} from '../../../../styles/page-common-styles.js';
+import {pageCommonStyles} from '../../common/styles/page-common-styles';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import {SharedStylesLit} from '../../../styles/shared-styles-lit';
-import {requiredFieldStarredStyles} from '../../../../styles/required-field-styles.js';
+import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {getStore} from '../../utils/redux-store-access';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {isJsonStrMatch, copy} from '../../utils/utils';
@@ -34,9 +33,9 @@ import {
   INCREASE_UNSAVED_UPLOADS,
   DECREASE_UNSAVED_UPLOADS
 } from '../../utils/upload-status';
-import {logError} from '@unicef-polymer/etools-behaviors/etools-logging.js';
+import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {Permission, MinimalUser} from '../../common/models/intervention.types';
-import DatePickerLite from '@unicef-polymer/etools-date-time/datepicker-lite.js';
+import DatePickerLite from '@unicef-polymer/etools-date-time/datepicker-lite';
 
 /**
  * @polymer
@@ -51,11 +50,11 @@ class InterventionReviewAndSign extends connect(getStore())(
   ComponentBaseMixin(UploadsMixin(MissingDropdownOptionsMixin(LitElement)))
 ) {
   static get styles() {
-    return [gridLayoutStylesLit, SharedStylesLit];
+    return [gridLayoutStylesLit];
   }
   static get template() {
     return html`
-      ${pageCommonStyles} ${gridLayoutStyles} ${SharedStyles} ${requiredFieldStarredStyles}
+      ${pageCommonStyles} ${sharedStyles}
       <style>
         :host {
           @apply --layout-vertical;
@@ -341,7 +340,7 @@ class InterventionReviewAndSign extends connect(getStore())(
     ];
   }
 
-  stateChanged(state: RootState) {
+  stateChanged(state: any) {
     if (!isJsonStrMatch(this.permissions, state.pageData!.permissions)) {
       this.permissions = copy(state.pageData!.permissions);
     }
@@ -362,6 +361,7 @@ class InterventionReviewAndSign extends connect(getStore())(
       active: false,
       loadingSource: 'interv-page'
     });
+    // @lajos: review this
     this.setDropdownMissingOptionsAjaxDetails(this.$.signedByUnicef, 'unicefUsers', {dropdown: true});
     fireEvent(this, 'tab-content-attached');
   }
@@ -374,7 +374,7 @@ class InterventionReviewAndSign extends connect(getStore())(
       });
     } else {
       if (this.intervention.prc_review_attachment) {
-        store.dispatch({type: DECREASE_UNSAVED_UPLOADS});
+        getStore().dispatch({type: DECREASE_UNSAVED_UPLOADS});
       }
       this._resetPrcFields();
     }
@@ -386,6 +386,7 @@ class InterventionReviewAndSign extends connect(getStore())(
   }
 
   _updateStyles() {
+    // @lajos chek whatabout this function
     this.updateStyles();
   }
 
@@ -436,7 +437,7 @@ class InterventionReviewAndSign extends connect(getStore())(
       fieldSelectors.push(...dateFields);
     }
     fieldSelectors.forEach((selector: string) => {
-      const field = this.shadowRoot!.querySelector(selector) as PolymerElement & {validate(): boolean};
+      const field = this.shadowRoot!.querySelector(selector) as LitElement & {validate(): boolean};
       if (field && !field.validate()) {
         valid = false;
       }
@@ -521,31 +522,31 @@ class InterventionReviewAndSign extends connect(getStore())(
   }
 
   _signedPDUploadFinished(e: CustomEvent) {
-    store.dispatch({type: DECREASE_UPLOADS_IN_PROGRESS});
+    getStore().dispatch({type: DECREASE_UPLOADS_IN_PROGRESS});
     if (e.detail.success) {
       const response = e.detail.success;
       this.set('intervention.signed_pd_attachment', response.id);
-      store.dispatch({type: INCREASE_UNSAVED_UPLOADS});
+      getStore().dispatch({type: INCREASE_UNSAVED_UPLOADS});
     }
   }
 
   _signedPDDocDelete(_e: CustomEvent) {
     this.set('intervention.signed_pd_attachment', null);
-    store.dispatch({type: DECREASE_UNSAVED_UPLOADS});
+    getStore().dispatch({type: DECREASE_UNSAVED_UPLOADS});
   }
 
   _prcRevDocUploadFinished(e: CustomEvent) {
-    store.dispatch({type: DECREASE_UPLOADS_IN_PROGRESS});
+    getStore().dispatch({type: DECREASE_UPLOADS_IN_PROGRESS});
     if (e.detail.success) {
       const response = e.detail.success;
       this.set('intervention.prc_review_attachment', response.id);
-      store.dispatch({type: INCREASE_UNSAVED_UPLOADS});
+      getStore().dispatch({type: INCREASE_UNSAVED_UPLOADS});
     }
   }
 
   _prcRevDocDelete(_e: CustomEvent) {
     this.set('intervention.prc_review_attachment', null);
-    store.dispatch({type: DECREASE_UNSAVED_UPLOADS});
+    getStore().dispatch({type: DECREASE_UNSAVED_UPLOADS});
     this._resetPrcFieldsValidations();
   }
 
