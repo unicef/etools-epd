@@ -36,13 +36,22 @@ class PartnerReportingRequirements extends connect(getStore())(PolymerElement) {
       <style>
         :host {
           display: block;
+          margin-bottom: 24px;
           width: 100%;
           -webkit-box-sizing: border-box;
           -moz-box-sizing: border-box;
           box-sizing: border-box;
         }
 
+        etools-content-panel {
+          --ecp-content-padding: 0;
+        }
+
         /* ------------------------------- */
+
+        .reporting-req-data {
+          border-left: 1px solid var(--darker-divider-color);
+        }
 
         .nav-menu {
           @apply --layout-vertical;
@@ -77,9 +86,7 @@ class PartnerReportingRequirements extends connect(getStore())(PolymerElement) {
 
         /* ------------------------------- */
 
-        .reporting-req-data {
-          border-left: 1px solid var(--darker-divider-color);
-        }
+
 
         .edit-rep-req {
           color: var(--medium-icon-color);
