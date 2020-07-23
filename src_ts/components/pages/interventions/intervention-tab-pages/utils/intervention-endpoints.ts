@@ -9,6 +9,7 @@ export interface EtoolsEndpoints {
   intervention: EtoolsEndpoint;
   partnerStaffMembers: EtoolsEndpoint;
   partnerAgreements: EtoolsEndpoint;
+  attachmentsUpload: EtoolsEndpoint;
 }
 
 export const interventionEndpoints: EtoolsEndpoints = {
@@ -20,5 +21,8 @@ export const interventionEndpoints: EtoolsEndpoints = {
   },
   partnerAgreements: {
     template: '/api/pmp/v3/agreements/?partner_id=<%=id%>'
+  },
+  attachmentsUpload: {
+    url: '/api/v2/attachments/upload/'
   }
 };
