@@ -32,12 +32,14 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
   render() {
     // language=HTML
     if (!this.pdUnicefDetails) {
-      return html` ${sharedStyles}
+      return html`<style>
+          ${sharedStyles}
+        </style>
         <etools-loading loading-text="Loading..." active></etools-loading>`;
     }
     return html`
-    ${sharedStyles}
       <style>
+      ${sharedStyles}
         :host {
           display: block;
           margin-bottom: 24px;

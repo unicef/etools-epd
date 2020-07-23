@@ -1,3 +1,4 @@
+/* eslint-disable lit/no-legacy-template-syntax */
 import {PolymerElement, html} from '@polymer/polymer';
 import {fireEvent} from '../../../utils/fire-custom-event';
 import CONSTANTS from '../../../common/constants';
@@ -7,13 +8,13 @@ import './hru-list.js';
 import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
 import FrontendPaginationMixin from '../mixins/frontend-pagination-mixin';
 import {ExpectedResult} from '../../../common/models/intervention.types';
-import {gridLayoutStyles} from '../styles/grid-layout-styles';
-import {buttonsStyles} from '../styles/buttons-styles';
+import {gridLayoutStylesPolymer} from '../styles/grid-layout-styles-polymer';
+import {buttonsStyles} from '../styles/buttons-styles-polymer';
 import {property} from '@polymer/decorators';
 import {EditHruDialog} from './edit-hru-dialog.js';
 import {HruListEl} from './hru-list.js';
 // import {sharedStyles} from '../../../common/styles/shared-styles-lit';
-import {SharedStyles} from '../styles/shared-styles';
+import {SharedStyles} from '../styles/shared-styles-polymer';
 
 /**
  * @customElement
@@ -25,7 +26,7 @@ import {SharedStyles} from '../styles/shared-styles';
 class HumanitarianReportingReqUnicef extends FrontendPaginationMixin(ReportingRequirementsCommonMixin(PolymerElement)) {
   static get template() {
     return html`
-      ${gridLayoutStyles}${SharedStyles}${buttonsStyles}
+      ${gridLayoutStylesPolymer}${SharedStyles}${buttonsStyles}
       <style>
         :host {
           display: block;

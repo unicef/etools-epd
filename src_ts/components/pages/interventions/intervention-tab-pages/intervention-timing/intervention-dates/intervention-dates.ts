@@ -28,14 +28,15 @@ export class InterventionDates extends connect(getStore())(ComponentBaseMixin(Fr
 
   render() {
     if (!this.interventionDates) {
-      return html` ${sharedStyles}
+      return html`<style>
+          ${sharedStyles}
+        </style>
         <etools-loading loading-text="Loading..." active></etools-loading>`;
     }
     // language=HTML
     return html`
-      ${sharedStyles}
       <style>
-        :host {
+        ${sharedStyles} :host {
           display: block;
           margin-bottom: 24px;
         }

@@ -7,7 +7,7 @@ import '../mixins/reporting-req-past-dates-check';
 import '../styles/reporting-requirements-lists-styles';
 import CommonMixin from '../mixins/common-mixin';
 import ReportingReqPastDatesCheckMixin from '../mixins/reporting-req-past-dates-check';
-import {gridLayoutStyles} from '../styles/grid-layout-styles';
+import {gridLayoutStylesPolymer} from '../styles/grid-layout-styles-polymer';
 import {reportingRequirementsListStyles} from '../styles/reporting-requirements-lists-styles';
 import {fireEvent} from '../../../utils/fire-custom-event';
 import {property} from '@polymer/decorators';
@@ -23,7 +23,7 @@ import {isEmptyObject} from '../../../utils/utils';
 class QprList extends CommonMixin(ReportingReqPastDatesCheckMixin(PolymerElement)) {
   static get template() {
     return html`
-      ${reportingRequirementsListStyles}${gridLayoutStyles}
+      ${reportingRequirementsListStyles}${gridLayoutStylesPolymer}
       <style include="data-table-styles"></style>
 
       <etools-data-table-header no-collapse no-title>

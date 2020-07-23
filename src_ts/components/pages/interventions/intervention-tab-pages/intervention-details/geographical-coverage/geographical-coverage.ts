@@ -30,14 +30,15 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
 
   render() {
     if (!this.originalData) {
-      return html` ${sharedStyles}
+      return html`<style>
+          ${sharedStyles}
+        </style>
         <etools-loading loading-text="Loading..." active></etools-loading>`;
     }
     // language=HTML
     return html`
-      ${sharedStyles}
       <style>
-        :host {
+        ${sharedStyles} :host {
           display: block;
           margin-bottom: 24px;
         }
@@ -64,7 +65,6 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
         #locations {
           max-width: 100%;
         }
-
       </style>
 
       <etools-content-panel show-expand-btn panel-title="Geographical Coverage">

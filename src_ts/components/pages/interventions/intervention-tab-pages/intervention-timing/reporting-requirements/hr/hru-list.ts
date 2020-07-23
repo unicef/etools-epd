@@ -5,7 +5,7 @@ import '../../../common/layout/icons-actions';
 import CommonMixin from '../mixins/common-mixin';
 import {fireEvent} from '../../../utils/fire-custom-event';
 import ReportingReqPastDatesCheckMixin from '../mixins/reporting-req-past-dates-check';
-import {gridLayoutStyles} from '../styles/grid-layout-styles';
+import {gridLayoutStylesPolymer} from '../styles/grid-layout-styles-polymer';
 import {reportingRequirementsListStyles} from '../styles/reporting-requirements-lists-styles';
 import {property} from '@polymer/decorators';
 import {IconsActionsEl} from '../../../common/layout/icons-actions';
@@ -22,7 +22,7 @@ class HruList extends CommonMixin(ReportingReqPastDatesCheckMixin(PolymerElement
   static get template() {
     // language=HTML
     return html`
-      ${reportingRequirementsListStyles}${gridLayoutStyles}
+      ${reportingRequirementsListStyles}${gridLayoutStylesPolymer}
       <style include="data-table-styles">
         :host([with-scroll]) {
           max-height: 400px;

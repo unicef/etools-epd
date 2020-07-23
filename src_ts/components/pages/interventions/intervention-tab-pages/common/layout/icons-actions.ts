@@ -5,9 +5,10 @@ import '@polymer/iron-flex-layout/iron-flex-layout';
 import '@polymer/paper-icon-button/paper-icon-button';
 
 // @lajos TO DO refactor
-import {fireEvent} from '../../../../../utils/fire-custom-event';
 import {property} from '@polymer/decorators';
 import {AnyObject} from '../../common/models/globals.types';
+import {_layoutHorizontal, _layoutCenter} from '../styles/flex-layout-styles';
+import {fireEvent} from '../../utils/fire-custom-event';
 
 /**
  * @polymer
@@ -22,8 +23,8 @@ class IconsActions extends PolymerElement {
         }
 
         :host {
-          @apply --layout-horizontal;
-          @apply --layout-center;
+          ${_layoutHorizontal}
+          ${_layoutCenter}
           background-color: var(--list-second-bg-color);
           position: absolute;
           top: 1px;
