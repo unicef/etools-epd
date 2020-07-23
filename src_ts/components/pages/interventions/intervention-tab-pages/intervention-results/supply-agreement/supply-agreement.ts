@@ -13,6 +13,13 @@ import {EtoolsTableColumn, EtoolsTableColumnType, EtoolsTableChildRow} from '@un
 import './supply-agreement-dialog';
 import {SupplyAgreementDialog} from './supply-agreement-dialog';
 import {InterventionSupplyItem} from '../../common/models/intervention.types';
+import {buttonsStyles} from '../../../../../styles/button-styles';
+
+export const customStyles = html`
+  <style>
+
+  </style>
+ `;
 
 @customElement('supply-agreements')
 export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElement)) {
@@ -39,7 +46,7 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
           @edit-item="${this.editSupplyItem}"
           @delete-item="${this.deleteSupplyItem}"
           .getChildRowTemplateMethod="${this.getChildRowTemplate.bind(this)}"
-          .extraCSS="${sharedStyles}"
+          .extraCSS="${this.getTableStyle()}"
           showEdit
           showDelete
         >
@@ -62,7 +69,7 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
       label: 'Item (all prices in PD Currency)',
       name: 'title',
       type: EtoolsTableColumnType.Text,
-      css: 'item-col'
+      css: 'w-60'
     },
     {
       label: 'Number of Units',
@@ -126,6 +133,9 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
     }
   }
 
+  getTableStyle() {
+    return html`${sharedStyles} ${customStyles}`;
+  }
   editSupplyItem(e: CustomEvent) {
     this.openSupplyDialog(e.detail);
   }

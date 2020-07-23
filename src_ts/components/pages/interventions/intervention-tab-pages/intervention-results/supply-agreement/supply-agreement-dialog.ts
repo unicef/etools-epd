@@ -67,7 +67,7 @@ export class SupplyAgreementDialog extends connect(getStore())(LitElement) {
             value="${this.supplyItem.unit_price ? this.supplyItem.unit_price : ''}"
             label="Price / Unit"
             allowed-pattern="[0-9]"
-            placeholder="Enter price/unit"
+            placeholder="Enter price / unit"
             required
           >
           </paper-input>
