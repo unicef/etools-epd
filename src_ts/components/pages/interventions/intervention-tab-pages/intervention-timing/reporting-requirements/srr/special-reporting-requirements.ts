@@ -17,7 +17,7 @@ import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/
 import {property} from '@polymer/decorators';
 import {AddEditSpecialRepReqEl} from './add-edit-special-rep-req';
 import EtoolsDialog from '@unicef-polymer/etools-dialog';
-import {getEndpoint} from '../../../utils/get-endpoints';
+import {getEndpoint} from '../../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 
 /**

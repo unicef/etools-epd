@@ -6,7 +6,7 @@ import '@unicef-polymer/etools-dialog/etools-dialog.js';
 
 import {prepareDatepickerDate} from '../../../utils/date-utils';
 // import EndpointsMixin from '../mixins/endpoints-mixin';
-import {getEndpoint} from '../../../utils/get-endpoints';
+import {getEndpoint} from '../../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import './qpr-list.js';
 import CONSTANTS from '../../../common/constants';

@@ -2,12 +2,13 @@ import {PolymerElement, html} from '@polymer/polymer';
 import uniq from 'lodash-es/uniq';
 import '@unicef-polymer/etools-data-table/etools-data-table';
 import CommonMixin from '../mixins/common-mixin';
-import {ResultLinkLowerResult, ExpectedResult} from '../../../common/models/intervention-types';
+import {ResultLinkLowerResult, ExpectedResult} from '../../../common/models/intervention.types';
 import {isEmptyObject} from '../../../utils/types';
 import {gridLayoutStyles} from '../styles/grid-layout-styles';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {property} from '@polymer/decorators';
+import {fireEvent} from '../../../utils/fire-custom-event';
 
 /**
  * @customElement
@@ -86,6 +87,7 @@ class HumanitarianReportingReqCluster extends CommonMixin(PolymerElement) {
       return;
     }
     // @lajos TO BE CHECKED and refactored
+    // NEED HELP HERE: see user-actions.ts
     this.fireRequest(
       'hrClusterReportingRequirements',
       {},

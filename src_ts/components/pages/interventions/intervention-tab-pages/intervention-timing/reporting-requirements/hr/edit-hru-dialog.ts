@@ -8,14 +8,14 @@ import '@unicef-polymer/etools-date-time/datepicker-lite';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import './hru-list.js';
 import CONSTANTS from '../../../common/constants';
-import {fireEvent} from '../../../../../../utils/fire-custom-event';
+import {fireEvent} from '../../../utils/fire-custom-event';
 import {gridLayoutStyles} from '../styles/grid-layout-styles';
 import {buttonsStyles} from '../styles/buttons-styles';
 import {requiredFieldStarredStyles} from '../../../common/styles/required-field-styles';
 import {prepareDatepickerDate, convertDate} from '../../../utils/date-utils';
 // this was refactored
 // import EndpointsMixin from '../mixins/endpoints-mixin';
-import {getEndpoint} from '../../../utils/get-endpoints';
+import {getEndpoint} from '../../../utils/endpoint-helper';
 import {isEmptyObject} from '../../../utils/types';
 import {connect} from 'pwa-helpers/connect-mixin';
 // @lajos TO BE CHECKED, and fixed when migrating to Lit Element

@@ -1,4 +1,4 @@
-import {getEndpoint} from '../../../utils/get-endpoints';
+import {getEndpoint} from '../../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import CONSTANTS from '../../../common/constants';

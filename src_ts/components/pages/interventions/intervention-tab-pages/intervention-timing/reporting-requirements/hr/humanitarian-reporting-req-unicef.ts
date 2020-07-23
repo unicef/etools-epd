@@ -12,7 +12,7 @@ import {buttonsStyles} from '../styles/buttons-styles';
 import {property} from '@polymer/decorators';
 import {EditHruDialog} from './edit-hru-dialog.js';
 import {HruListEl} from './hru-list.js';
-import {sharedStyles} from '../../../common/styles/shared-styles-lit';
+// import {sharedStyles} from '../../../common/styles/shared-styles-lit';
 import {SharedStyles} from '../styles/shared-styles';
 
 /**
@@ -25,7 +25,7 @@ import {SharedStyles} from '../styles/shared-styles';
 class HumanitarianReportingReqUnicef extends FrontendPaginationMixin(ReportingRequirementsCommonMixin(PolymerElement)) {
   static get template() {
     return html`
-      ${gridLayoutStyles}${sharedStyles}${SharedStyles}${buttonsStyles}
+      ${gridLayoutStyles}${SharedStyles}${buttonsStyles}
       <style>
         :host {
           display: block;

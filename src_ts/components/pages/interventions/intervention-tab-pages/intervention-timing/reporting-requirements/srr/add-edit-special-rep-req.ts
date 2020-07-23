@@ -2,7 +2,7 @@ import {PolymerElement, html} from '@polymer/polymer';
 import {gridLayoutStyles} from '../styles/grid-layout-styles';
 // @lajos bellow 2 where imported from PMP
 // import EndpointsMixin from '../mixins/endpoints-mixin';
-import {getEndpoint} from '../../../utils/get-endpoints';
+import {getEndpoint} from '../../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import {prepareDatepickerDate} from '../../../utils/date-utils';
 

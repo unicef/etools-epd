@@ -9,6 +9,9 @@ export interface EtoolsEndpoints {
   intervention: EtoolsEndpoint;
   partnerStaffMembers: EtoolsEndpoint;
   partnerAgreements: EtoolsEndpoint;
+  specialReportingRequirements: EtoolsEndpoint;
+  reportingRequirements: EtoolsEndpoint;
+  specialReportingRequirementsUpdate: EtoolsEndpoint;
 }
 
 export const interventionEndpoints: EtoolsEndpoints = {
@@ -20,5 +23,14 @@ export const interventionEndpoints: EtoolsEndpoints = {
   },
   partnerAgreements: {
     template: '/api/pmp/v3/agreements/?partner_id=<%=id%>'
+  },
+  specialReportingRequirements: {
+    template: '/api/v2/reports/interventions/<%=intervId%>/special-reporting-requirements/'
+  },
+  reportingRequirements: {
+    template: '/api/v2/interventions/<%=intervId%>/reporting-requirements/<%=reportType%>/'
+  },
+  specialReportingRequirementsUpdate: {
+    template: '/api/v2/reports/interventions/special-reporting-requirements/<%=reportId%>/'
   }
 };
