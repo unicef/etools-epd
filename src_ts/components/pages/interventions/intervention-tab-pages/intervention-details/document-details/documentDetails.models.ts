@@ -9,7 +9,7 @@ export class DocumentDetails extends ModelsBase {
   title = '';
   context = '';
   implementation_strategy = '';
-  ip_progr_contrib = '';
+  ip_program_contribution = '';
 }
 
 export class DocumentDetailsPermissions extends ModelsBase {
@@ -20,5 +20,5 @@ export class DocumentDetailsPermissions extends ModelsBase {
   title = true;
   context = true;
   implementation_strategy = true;
-  ip_progr_contrib = true;
+  ip_program_contribution = true;
 }
