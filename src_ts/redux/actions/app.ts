@@ -29,7 +29,6 @@ const updateStoreRouteDetails: ActionCreator<AppActionUpdateRouteDetails> = (rou
 };
 
 const loadPageComponents: ActionCreator<ThunkResult> = (routeDetails: RouteDetails) => (dispatch) => {
-  console.log('loadPageComponents', routeDetails);
   if (!routeDetails) {
     // invalid route => redirect to 404 page
     updateAppLocation(ROUTE_404, true);
@@ -42,10 +41,10 @@ const loadPageComponents: ActionCreator<ThunkResult> = (routeDetails: RouteDetai
   filesToImport.forEach((filePath: string) => {
     import(importBase + filePath)
       .then(() => {
-        console.log(`component: ${filePath} has been loaded... yey!`);
+        // console.info(`component: ${filePath} has been loaded... yey!`);
       })
       .catch((importError: any) => {
-        console.log('component import failed...', importError);
+        console.info('component import failed...', importError);
       });
   });
 
