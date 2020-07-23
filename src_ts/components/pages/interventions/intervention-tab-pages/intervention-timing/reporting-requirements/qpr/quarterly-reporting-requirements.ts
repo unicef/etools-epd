@@ -1,3 +1,4 @@
+/* eslint-disable lit/no-legacy-template-syntax */
 import {PolymerElement, html} from '@polymer/polymer';
 import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
 import CONSTANTS from '../../../common/constants';

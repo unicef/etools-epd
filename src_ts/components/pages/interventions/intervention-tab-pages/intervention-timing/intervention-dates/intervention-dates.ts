@@ -34,7 +34,12 @@ export class InterventionDates extends connect(getStore())(ComponentBaseMixin(Fr
     // language=HTML
     return html`
       ${sharedStyles}
-      <style></style>
+      <style>
+        :host {
+          display: block;
+          margin-bottom: 24px;
+        }
+      </style>
 
       <etools-content-panel show-expand-btn panel-title="Programme Document Dates">
         <etools-loading loading-text="Loading..." .active="${this.showLoading}"></etools-loading>

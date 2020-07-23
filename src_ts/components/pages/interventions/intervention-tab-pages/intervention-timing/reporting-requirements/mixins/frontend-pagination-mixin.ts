@@ -1,6 +1,6 @@
-import {Constructor} from '../../../utils/types';
 import {PolymerElement} from '@polymer/polymer';
 import {property} from '@polymer/decorators';
+import {Constructor} from '../../../common/models/globals.types';
 
 function FrontendPaginationMixin<T extends Constructor<PolymerElement>>(baseClass: T) {
   class FrontendPaginationClass extends baseClass {

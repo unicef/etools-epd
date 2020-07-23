@@ -1,3 +1,4 @@
+/* eslint-disable lit/no-legacy-template-syntax */
 import {PolymerElement, html} from '@polymer/polymer';
 import '@polymer/iron-label/iron-label';
 import '@polymer/paper-button/paper-button';
@@ -17,7 +18,7 @@ import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser.js';
 import {property} from '@polymer/decorators';
-import {GenericObject} from '../../../common/models/globals.types';
+import {AnyObject} from '../../../common/models/globals.types';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog.js';
 import {QprListEl} from './qpr-list.js';
 import {fireEvent} from '../../../utils/fire-custom-event';
@@ -149,7 +150,7 @@ class EditQprDialog extends PolymerElement {
   inAmendment!: boolean;
 
   @property({type: Array})
-  qprData: GenericObject[] = [];
+  qprData: AnyObject[] = [];
 
   @property({type: Boolean})
   addOrModifyQprDialogOpened = false;
@@ -165,7 +166,7 @@ class EditQprDialog extends PolymerElement {
   };
 
   @property({type: Object})
-  _editedQprDatesSet!: GenericObject;
+  _editedQprDatesSet!: AnyObject;
 
   @property({type: Number})
   _qprDatesSetEditedIndex = -1;

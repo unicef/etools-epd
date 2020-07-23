@@ -1,3 +1,4 @@
+/* eslint-disable lit/no-legacy-template-syntax */
 import {PolymerElement, html} from '@polymer/polymer';
 import '@polymer/iron-icons/iron-icons';
 import '@polymer/iron-flex-layout/iron-flex-layout';
@@ -6,7 +7,7 @@ import '@polymer/paper-icon-button/paper-icon-button';
 // @lajos TO DO refactor
 import {fireEvent} from '../../../../../utils/fire-custom-event';
 import {property} from '@polymer/decorators';
-import {GenericObject} from '../../common/models/globals.types';
+import {AnyObject} from '../../common/models/globals.types';
 
 /**
  * @polymer
@@ -44,7 +45,7 @@ class IconsActions extends PolymerElement {
   }
 
   @property({type: Object})
-  itemDetails!: GenericObject;
+  itemDetails!: AnyObject;
 
   @property({type: Boolean})
   showEdit = true;

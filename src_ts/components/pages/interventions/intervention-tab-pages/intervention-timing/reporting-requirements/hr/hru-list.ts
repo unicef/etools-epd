@@ -1,15 +1,16 @@
+/* eslint-disable lit/no-legacy-template-syntax */
 import {PolymerElement, html} from '@polymer/polymer';
 import '@unicef-polymer/etools-data-table/etools-data-table';
 import '../../../common/layout/icons-actions';
 import CommonMixin from '../mixins/common-mixin';
-import {AnyObject} from '../../../utils/types';
 import {fireEvent} from '../../../utils/fire-custom-event';
 import ReportingReqPastDatesCheckMixin from '../mixins/reporting-req-past-dates-check';
 import {gridLayoutStyles} from '../styles/grid-layout-styles';
 import {reportingRequirementsListStyles} from '../styles/reporting-requirements-lists-styles';
-import {isEmptyObject} from '../../../utils/types';
 import {property} from '@polymer/decorators';
 import {IconsActionsEl} from '../../../common/layout/icons-actions';
+import {AnyObject} from '../../../common/models/globals.types';
+import {isEmptyObject} from '../../../utils/utils';
 
 /**
  * @polymer

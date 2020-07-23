@@ -1,3 +1,4 @@
+/* eslint-disable lit/no-legacy-template-syntax */
 import {PolymerElement, html} from '@polymer/polymer';
 import {gridLayoutStyles} from '../styles/grid-layout-styles';
 // @lajos bellow 2 where imported from PMP
@@ -18,7 +19,7 @@ import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {property} from '@polymer/decorators';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
-import {AnyObject} from '../../../utils/types';
+import {AnyObject} from '../../../common/models/globals.types';
 
 /**
  * @polymer

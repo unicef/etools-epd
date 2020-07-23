@@ -24,7 +24,7 @@ import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import {isJsonStrMatch} from '../../utils/utils';
-import {isUnicefUSer} from '../../common/selectors';
+// import {isUnicefUSer} from '../../common/selectors';
 import isEmpty from 'lodash-es/isEmpty';
 import {PartnerStaffMember} from '../../common/models/partner.types';
 import {MinimalAgreement} from '../../common/models/agreement.types';

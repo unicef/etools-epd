@@ -1,3 +1,4 @@
+/* eslint-disable lit/no-legacy-template-syntax */
 import {PolymerElement, html} from '@polymer/polymer';
 import '@polymer/paper-button/paper-button';
 import '@unicef-polymer/etools-data-table/etools-data-table';

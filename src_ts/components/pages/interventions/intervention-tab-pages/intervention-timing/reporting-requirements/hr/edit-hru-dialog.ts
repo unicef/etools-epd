@@ -1,3 +1,4 @@
+/* eslint-disable lit/no-legacy-template-syntax */
 import {PolymerElement, html} from '@polymer/polymer';
 import '@polymer/paper-button/paper-button.js';
 declare const moment: any;
@@ -16,7 +17,6 @@ import {prepareDatepickerDate, convertDate} from '../../../utils/date-utils';
 // this was refactored
 // import EndpointsMixin from '../mixins/endpoints-mixin';
 import {getEndpoint} from '../../../utils/endpoint-helper';
-import {isEmptyObject} from '../../../utils/types';
 import {connect} from 'pwa-helpers/connect-mixin';
 // @lajos TO BE CHECKED, and fixed when migrating to Lit Element
 import {store} from '../../../../../../../redux/store';
@@ -24,8 +24,9 @@ import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {property} from '@polymer/decorators';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
-import {AnyObject} from '../../../utils/types';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
+import {AnyObject} from '../../../common/models/globals.types.js';
+import {isEmptyObject} from '../../../utils/utils.js';
 
 /**
  * @polymer
@@ -155,7 +156,7 @@ class EditHruDialog extends connect(store)(PolymerElement) {
     return ['intervDataChanged(interventionStart, interventionId)'];
   }
 
-  stateChanged(state: any) {
+  stateChanged(_state: any) {
     // @lajos in ammendment will be used!
     this.inAmendment = false;
     // original:
