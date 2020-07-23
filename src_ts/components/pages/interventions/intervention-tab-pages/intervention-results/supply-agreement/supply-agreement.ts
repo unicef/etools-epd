@@ -8,21 +8,31 @@ import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import '@unicef-polymer/etools-loading';
 import {AnyObject} from '../../../../../../types/globals';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
+import {buttonsStyles} from '../../common/styles/button-styles';
+import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {getSupplyItems} from '../../../list/list-dummy-data';
 import {EtoolsTableColumn, EtoolsTableColumnType, EtoolsTableChildRow} from '@unicef-polymer/etools-table/etools-table';
 import './supply-agreement-dialog';
 import {SupplyAgreementDialog} from './supply-agreement-dialog';
 import {InterventionSupplyItem} from '../../common/models/intervention.types';
-import {buttonsStyles} from '../../../../../styles/button-styles';
 
-export const customStyles = html`
+const customStyles = html`
   <style>
-
+    .col_title {
+      width: 99%;
+    }
+    .col_nowrap {
+      width: 1%;
+      white-space: nowrap;
+    }
   </style>
- `;
+`;
 
 @customElement('supply-agreements')
 export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElement)) {
+  static get styles() {
+    return [gridLayoutStylesLit, buttonsStyles];
+  }
   render() {
     return html`
       ${sharedStyles}
@@ -32,12 +42,29 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
           margin-bottom: 24px;
           --ecp-content-padding: 0;
         }
+        .mr-40 {
+          margin-right: 40px;
+        }
+        .f-12 {
+          font-size: 12px;
+        }
       </style>
       <etools-content-panel panel-title="Supply Agreement">
         <etools-loading loading-text="Loading..." .active="${this.showLoading}"></etools-loading>
 
         <div slot="panel-btns">
-          <paper-icon-button @tap="${() => this.addSupplyItem()}" icon="add"> </paper-icon-button>
+          <span class="mr-40">
+            <label class="label-input font-bold">TOTAL SUPPLY BUDGET: </label>
+            <label class="f-12 font-bold">LBP 54353</label>
+          </span>
+          <paper-icon-button
+            ?hidden="${this.hideEditIcon(this.editMode, this.canEditSupply)}"
+            @tap="${this.allowEdit}"
+            icon="create"
+          >
+          </paper-icon-button>
+          <paper-icon-button ?hidden="${!this.editMode}" @tap="${() => this.addSupplyItem()}" icon="add">
+          </paper-icon-button>
         </div>
 
         <etools-table
@@ -47,10 +74,19 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
           @delete-item="${this.deleteSupplyItem}"
           .getChildRowTemplateMethod="${this.getChildRowTemplate.bind(this)}"
           .extraCSS="${this.getTableStyle()}"
-          showEdit
-          showDelete
+          .showEdit=${this.editMode}
+          .showDelete=${this.editMode}
         >
         </etools-table>
+
+        <div
+          class="layout-horizontal right-align row-padding-v"
+          ?hidden="${this.hideActionButtons(this.editMode, this.canEditSupply)}"
+        >
+          <paper-button class="default" @tap="${this.cancelSupply}">
+            Cancel
+          </paper-button>
+        </div>
       </etools-content-panel>
     `;
   }
@@ -69,30 +105,30 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
       label: 'Item (all prices in PD Currency)',
       name: 'title',
       type: EtoolsTableColumnType.Text,
-      css: 'w-60'
+      cssClass: 'col_title'
     },
     {
       label: 'Number of Units',
       name: 'unit_number',
-      type: EtoolsTableColumnType.Text
+      type: EtoolsTableColumnType.Number,
+      cssClass: 'col_nowrap'
     },
     {
       label: 'Price / Unit',
       name: 'unit_price',
-      type: EtoolsTableColumnType.Text
+      type: EtoolsTableColumnType.Number,
+      cssClass: 'col_nowrap'
     },
     {
       label: 'Total Price',
       name: 'total_price',
-      type: EtoolsTableColumnType.Text
+      cssClass: 'col_nowrap',
+      type: EtoolsTableColumnType.Number
     }
   ];
 
-  @property({type: String})
-  assessmentId: string | number | null = null;
-
-  @property({type: Object})
-  assessment!: AnyObject;
+  @property({type: Boolean})
+  canEditSupply = true;
 
   async stateChanged(_state: any) {
     this.dataItems = getSupplyItems();
@@ -120,6 +156,30 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
     return childRow;
   }
 
+  hideEditIcon(editMode: boolean, canEdit: boolean) {
+    return !canEdit || editMode;
+  }
+
+  getTableStyle() {
+    return html`${sharedStyles} ${customStyles}`;
+  }
+
+  cancelSupply() {
+    this.editMode = false;
+  }
+
+  editSupplyItem(e: CustomEvent) {
+    this.openSupplyDialog(e.detail);
+  }
+
+  addSupplyItem() {
+    this.openSupplyDialog(new InterventionSupplyItem());
+  }
+
+  deleteSupplyItem(event: CustomEvent) {
+    console.log(event);
+  }
+
   private openSupplyDialog(item: InterventionSupplyItem) {
     this.createDialog();
     this.supplyItemDialog.supplyItem = item;
@@ -131,20 +191,5 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
       this.supplyItemDialog = document.createElement('supply-agreement-dialog') as SupplyAgreementDialog;
       document.querySelector('body')!.appendChild(this.supplyItemDialog);
     }
-  }
-
-  getTableStyle() {
-    return html`${sharedStyles} ${customStyles}`;
-  }
-  editSupplyItem(e: CustomEvent) {
-    this.openSupplyDialog(e.detail);
-  }
-
-  addSupplyItem() {
-    this.openSupplyDialog(new InterventionSupplyItem());
-  }
-
-  deleteSupplyItem(event: CustomEvent) {
-    console.log(event);
   }
 }

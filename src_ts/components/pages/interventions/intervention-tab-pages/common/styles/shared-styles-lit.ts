@@ -130,7 +130,6 @@ export const sharedStyles = html`
       }
     }
 
-
     paper-input[required][label],
     paper-textarea[required][label],
     paper-input-container[required],
