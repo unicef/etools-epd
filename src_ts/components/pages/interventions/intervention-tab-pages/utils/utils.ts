@@ -14,3 +14,7 @@ export const isEmptyObject = (a: any) => {
   }
   return isObject(a) && Object.keys(a).length === 0;
 };
+
+export const cloneDeep = (obj: any) => {
+  return JSON.parse(JSON.stringify(obj));
+};

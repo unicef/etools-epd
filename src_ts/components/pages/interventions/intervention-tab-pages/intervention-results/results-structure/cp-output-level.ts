@@ -1,11 +1,12 @@
 import {css, CSSResultArray, customElement, html, LitElement, property, TemplateResult} from 'lit-element';
 import {ResultStructureStyles} from './results-structure.styles';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import {CpOutput, ExpectedResult} from '../../common/models/intervention.types';
+import {ExpectedResult} from '../../common/models/intervention.types';
 import '@unicef-polymer/etools-data-table';
 import '@polymer/iron-icons';
 import {openDialog} from '../../utils/dialog';
-import './modals/add-cp-output';
+import './modals/add-ram-indicators';
+import {fireEvent} from '../../../../../utils/fire-custom-event';
 
 @customElement('cp-output-level')
 export class CpOutputLevel extends LitElement {
@@ -34,7 +35,6 @@ export class CpOutputLevel extends LitElement {
 
   @property() interventionId!: number;
   @property() resultLink!: ExpectedResult;
-  @property() cpOutputs: CpOutput[] = [];
   @property({type: Boolean, reflect: true, attribute: 'show-cpo-level'}) showCPOLevel = false;
 
   protected render(): TemplateResult {
@@ -98,7 +98,7 @@ export class CpOutputLevel extends LitElement {
                 <slot></slot>
 
                 <div class="add-pd row-h align-items-center" ?hidden="${!this.resultLink.cp_output}">
-                  <iron-icon icon="add-box"></iron-icon>Add PD Output
+                  <iron-icon icon="add-box" @click="${() => this.addPD()}"></iron-icon>Add PD Output
                 </div>
               </div>
             </etools-data-table-row>
@@ -109,7 +109,7 @@ export class CpOutputLevel extends LitElement {
 
   openPopup(): void {
     openDialog({
-      dialog: 'add-cp-output',
+      dialog: 'add-ram-indicators',
       dialogData: {
         cpOutputId: this.resultLink.cp_output,
         cpOutputName: this.resultLink.cp_output_name,
@@ -118,5 +118,8 @@ export class CpOutputLevel extends LitElement {
         interventionId: this.interventionId
       }
     });
+  }
+  addPD(): void {
+    fireEvent(this, 'add-pd');
   }
 }

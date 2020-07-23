@@ -17,6 +17,7 @@ export interface ResultLinkLowerResult {
   code?: string;
   created?: string;
   result_link?: number;
+  cp_output: number | null;
 }
 
 export class IndicatorIndicator {

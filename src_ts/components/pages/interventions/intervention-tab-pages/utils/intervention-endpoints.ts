@@ -15,6 +15,8 @@ export interface EtoolsEndpoints {
   resultLinks: EtoolsEndpoint;
   ramIndicators: EtoolsEndpoint;
   resultLinkDetails: EtoolsEndpoint;
+  pdDetails: EtoolsEndpoint;
+  createPd: EtoolsEndpoint;
   attachmentsUpload: EtoolsEndpoint;
   interventionAmendmentAdd: EtoolsEndpoint;
 }
@@ -46,6 +48,12 @@ export const interventionEndpoints: EtoolsEndpoints = {
   },
   ramIndicators: {
     template: '/api/v2/reports/results/<%=id%>/indicators/'
+  },
+  pdDetails: {
+    template: '/api/<%=id%>/'
+  },
+  createPd: {
+    template: '/api/test/'
   },
   attachmentsUpload: {
     url: '/api/v2/attachments/upload/'

@@ -9,7 +9,9 @@ import '@unicef-polymer/etools-content-panel';
 import './cp-output-level';
 import './pd-indicators';
 import './pd-activities';
+import './modals/pd-output-dialog';
 import {connect} from 'pwa-helpers/connect-mixin';
+import {openDialog} from '../../utils/dialog';
 
 /**
  * @customElement
@@ -47,7 +49,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
   }
 
   @property() resultLinks: ExpectedResult[] = [];
-  @property() interventionId!: number;
+  @property() interventionId!: number | null;
 
   @property({type: Boolean}) showCPOLevel = true;
   @property({type: Boolean}) showIndicators = true;
@@ -105,13 +107,13 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
             <cp-output-level
               ?show-cpo-level="${this.showCPOLevel}"
               .resultLink="${result}"
-              .cpOutputs="${this.cpOutputs}"
               .interventionId="${this.interventionId}"
+              @add-pd="${() => this.openPdOutputDialog({}, result.cp_output, result.cp_output_name)}"
             >
               ${result.ll_results.map(
                 (pdOutput: ResultLinkLowerResult) => html`
                   <etools-data-table-row>
-                    <div slot="row-data" class="layout-horizontal align-items-center">
+                    <div slot="row-data" class="layout-horizontal align-items-center editable-row">
                       <div class="flex-1 flex-fix">
                         <div class="heading">Program Document output</div>
                         <div class="data bold-data">${pdOutput.name}</div>
@@ -122,7 +124,12 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
                         <div class="data">TTT 1231.144</div>
                       </div>
 
-                      <iron-icon icon="create" class="flex-none" ?hidden="${result.cp_output}"></iron-icon>
+                      <div class="hover-block">
+                        <paper-icon-button
+                          icon="icons:create"
+                          @tap="${() => this.openPdOutputDialog(pdOutput, result.cp_output, result.cp_output_name)}"
+                        ></paper-icon-button>
+                      </div>
                     </div>
 
                     <div slot="row-data-details">
@@ -142,7 +149,11 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
         <!--  If CP Output level is shown - 'Add PD' button will be present inside cp-output-level component  -->
         ${!this.showCPOLevel
           ? html`
-              <div ?hidden="${this.showCPOLevel}" class="add-pd row-h align-items-center">
+              <div
+                ?hidden="${this.showCPOLevel}"
+                class="add-pd row-h align-items-center"
+                @click="${() => this.openPdOutputDialog()}"
+              >
                 <iron-icon icon="add-box"></iron-icon>Add PD Output
               </div>
             `
@@ -153,15 +164,29 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
 
   stateChanged(state: any) {
     this.resultLinks = selectInterventionResultLinks(state);
-    this.interventionId = selectInterventionId(state)
-    const cpOutputs: number[] = (this.resultLinks || []).map(({cp_output}: ExpectedResult) => cp_output);
-    this.cpOutputs = ((state.commonData && state.commonData.cpOutputs) || []).filter(
-      ({id}: CpOutput) => !cpOutputs.includes(id)
-    );
+    this.interventionId = selectInterventionId(state);
+    this.cpOutputs = (state.commonData && state.commonData.cpOutputs) || [];
   }
 
   updateTableView(indicators: boolean, activities: boolean): void {
     this.showIndicators = indicators;
     this.showActivities = activities;
+  }
+
+  openPdOutputDialog(): void;
+  openPdOutputDialog(pdOutput: Partial<ResultLinkLowerResult>, cpOutput: number, cpoName: string): void;
+  openPdOutputDialog(pdOutput?: Partial<ResultLinkLowerResult>, cpOutput?: number, cpoName?: string): void {
+    const currentOutputExists = Boolean(this.cpOutputs.find(({id}: CpOutput) => id === cpOutput));
+    const cpOutputs: CpOutput[] = currentOutputExists
+      ? this.cpOutputs
+      : [{id: cpOutput, name: cpoName} as CpOutput, ...this.cpOutputs];
+    openDialog<any>({
+      dialog: 'pd-output-dialog',
+      dialogData: {
+        pdOutput: pdOutput ? {...pdOutput, cp_output: cpOutput} : undefined,
+        cpOutputs,
+        hideCpOutputs: false
+      }
+    });
   }
 }

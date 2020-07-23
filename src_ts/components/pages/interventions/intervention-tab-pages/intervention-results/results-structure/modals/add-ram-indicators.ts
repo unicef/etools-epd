@@ -9,8 +9,8 @@ import {GenericObject} from '../../../common/types/types';
 import {getStore} from '../../../utils/redux-store-access';
 import {getIntervention} from '../../../../../../../redux/actions/interventions';
 
-@customElement('add-cp-output')
-export class AddCpOutput extends LitElement {
+@customElement('add-ram-indicators')
+export class AddRamIndicators extends LitElement {
   @property() dialogOpened = true;
   @property() loadingInProcess = false;
 
