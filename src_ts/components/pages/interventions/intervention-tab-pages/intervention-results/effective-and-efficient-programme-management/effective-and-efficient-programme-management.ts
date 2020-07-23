@@ -41,15 +41,7 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
         :host {
           display: block;
           margin-bottom: 24px;
-        }
-
-        etools-table {
-          --child-item-padding: 2px 4px;
-          --child-item-margin: 4px 8px;
-          --child-item-cursor: pointer;
-          --child-item-white-space: normal;
-          --child-item-float: none;
-          --child-row-inner-container-height: 30px;
+          --ecp-content-padding: 0;
         }
       </style>
 
