@@ -10,6 +10,9 @@ import {AnyObject} from '../../../../../../types/globals';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {getSupplyItems} from '../../../list/list-dummy-data';
 import {EtoolsTableColumn, EtoolsTableColumnType, EtoolsTableChildRow} from '@unicef-polymer/etools-table/etools-table';
+import './supply-agreement-dialog';
+import {SupplyAgreementDialog} from './supply-agreement-dialog';
+import {InterventionSupplyItem} from '../../common/models/intervention.types';
 
 @customElement('supply-agreements')
 export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElement)) {
@@ -27,14 +30,14 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
         <etools-loading loading-text="Loading..." .active="${this.showLoading}"></etools-loading>
 
         <div slot="panel-btns">
-          <paper-icon-button @tap="${() => this.openAddDialog()}" icon="add"> </paper-icon-button>
+          <paper-icon-button @tap="${() => this.addSupplyItem()}" icon="add"> </paper-icon-button>
         </div>
 
         <etools-table
           .columns="${this.columns}"
           .items="${this.dataItems}"
-          @edit-item="${this.editSupplyPoint}"
-          @delete-item="${this.deleteSupplyPoint}"
+          @edit-item="${this.editSupplyItem}"
+          @delete-item="${this.deleteSupplyItem}"
           .getChildRowTemplateMethod="${this.getChildRowTemplate.bind(this)}"
           .extraCSS="${sharedStyles}"
           showEdit
@@ -44,6 +47,8 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
       </etools-content-panel>
     `;
   }
+
+  private supplyItemDialog!: SupplyAgreementDialog;
 
   @property({type: Array})
   dataItems: AnyObject[] = [];
@@ -86,14 +91,6 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
     this.dataItems = getSupplyItems();
   }
 
-  connectedCallback() {
-    super.connectedCallback();
-  }
-
-  disconnectedCallback() {
-    super.disconnectedCallback();
-  }
-
   getChildRowTemplate(item: any): EtoolsTableChildRow {
     const childRow = {} as EtoolsTableChildRow;
     childRow.showExpanded = false;
@@ -116,13 +113,28 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
     return childRow;
   }
 
-  editSupplyPoint(event: CustomEvent) {
-    console.log(event);
+  private openSupplyDialog(item: InterventionSupplyItem) {
+    this.createDialog();
+    this.supplyItemDialog.supplyItem = item;
+    this.supplyItemDialog.openDialog();
   }
 
-  deleteSupplyPoint(event: CustomEvent) {
-    console.log(event);
+  createDialog() {
+    if (!this.supplyItemDialog) {
+      this.supplyItemDialog = document.createElement('supply-agreement-dialog') as SupplyAgreementDialog;
+      document.querySelector('body')!.appendChild(this.supplyItemDialog);
+    }
   }
 
-  openAddDialog() {}
+  editSupplyItem(e: CustomEvent) {
+    this.openSupplyDialog(e.detail);
+  }
+
+  addSupplyItem() {
+    this.openSupplyDialog(new InterventionSupplyItem());
+  }
+
+  deleteSupplyItem(event: CustomEvent) {
+    console.log(event);
+  }
 }

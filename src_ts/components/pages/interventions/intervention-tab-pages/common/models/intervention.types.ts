@@ -114,10 +114,10 @@ export class InterventionSupplyItem {
   created?: string;
   modified?: string;
   title = '';
-  unit_number: number | null = null;
-  unit_price: number | null = null;
+  unit_number: number | undefined = undefined;
+  unit_price: number | undefined = undefined;
   result = '';
-  total_price: number | null = null;
+  total_price: number | undefined = undefined;
   other_mentions = '';
   intervention = '';
   outputs: string[] = [];

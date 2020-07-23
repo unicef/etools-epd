@@ -19,6 +19,10 @@ export class DetailsOverview extends connect(getStore())(LitElement) {
   }
   render() {
     // language=HTML
+    if (!this.interventionOverview) {
+      return html` ${sharedStyles}
+        <etools-loading loading-text="Loading..." active></etools-loading>`;
+    }
     return html`
       ${sharedStyles}
       <style>

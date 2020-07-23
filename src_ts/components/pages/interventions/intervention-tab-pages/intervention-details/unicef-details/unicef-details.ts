@@ -202,7 +202,7 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
 
   populateDropdownOptions(state: any) {
     // @@dci need to refactor this when things got clear
-    if (!this.isUnicefUser) {
+    if (!this.isUnicefUser && this.pdUnicefDetails) {
       // if user is not Unicef user, this is opened in read-only mode and we just display already saved
       this.focal_point_list = [...this.pdUnicefDetails.unicef_focal_points];
       this.section_list = [...this.pdUnicefDetails.sections];
