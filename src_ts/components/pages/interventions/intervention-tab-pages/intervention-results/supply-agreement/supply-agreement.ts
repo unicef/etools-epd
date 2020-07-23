@@ -25,6 +25,10 @@ const customStyles = html`
       width: 1%;
       white-space: nowrap;
     }
+    .expand-cell iron-icon {
+      width: 70px !important;
+      color: #2b2b2b !important;
+    }
   </style>
 `;
 
@@ -57,13 +61,7 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
             <label class="label-input font-bold">TOTAL SUPPLY BUDGET: </label>
             <label class="f-12 font-bold">LBP 54353</label>
           </span>
-          <paper-icon-button
-            ?hidden="${this.hideEditIcon(this.editMode, this.canEditSupply)}"
-            @tap="${this.allowEdit}"
-            icon="create"
-          >
-          </paper-icon-button>
-          <paper-icon-button ?hidden="${!this.editMode}" @tap="${() => this.addSupplyItem()}" icon="add">
+          <paper-icon-button ?hidden="${!this.canEditSupply}" @tap="${() => this.addSupplyItem()}" icon="add">
           </paper-icon-button>
         </div>
 
@@ -74,19 +72,11 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
           @delete-item="${this.deleteSupplyItem}"
           .getChildRowTemplateMethod="${this.getChildRowTemplate.bind(this)}"
           .extraCSS="${this.getTableStyle()}"
-          .showEdit=${this.editMode}
-          .showDelete=${this.editMode}
+          .showEdit=${this.canEditSupply}
+          .showDelete=${this.canEditSupply}
         >
         </etools-table>
 
-        <div
-          class="layout-horizontal right-align row-padding-v"
-          ?hidden="${this.hideActionButtons(this.editMode, this.canEditSupply)}"
-        >
-          <paper-button class="default" @tap="${this.cancelSupply}">
-            Cancel
-          </paper-button>
-        </div>
       </etools-content-panel>
     `;
   }
