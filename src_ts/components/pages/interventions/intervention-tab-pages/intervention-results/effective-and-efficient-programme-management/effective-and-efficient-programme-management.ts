@@ -23,7 +23,6 @@ import {
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {Permission} from '../../common/models/intervention.types';
 import {ProgrammeManagementActivityPermissions} from './effectiveAndEfficientProgrammeManagement.models';
-// import {layoutHorizontal} from '../../common/styles/flex-layout-styles';
 
 /**
  * @customElement
@@ -43,7 +42,7 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
           display: block;
           margin-bottom: 24px;
         }
-        
+
         etools-table {
           --child-item-padding: 2px 4px;
           --child-item-margin: 4px 8px;
@@ -52,19 +51,19 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
           --child-item-float: none;
           --child-row-inner-container-height: 30px;
         }
-
       </style>
 
       <etools-content-panel panel-title="Effective and efficient programme management">
         <etools-loading loading-text="Loading..." .active="${this.showLoading}"></etools-loading>
 
         <div slot="panel-btns">
-          Total
+          Total: ${this.total_amount}
         </div>
 
         <etools-table
           .items="${this.activities}"
           .columns="${this.columns}"
+          .extraCSS="${sharedStyles}"
           .getChildRowTemplateMethod="${this.getChildRowTemplate.bind(this)}"
         >
         </etools-table>
@@ -85,13 +84,14 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
     },
     {
       title: 'Standard activity',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In iaculis metus et neque viverra ',
+      description:
+        'There are many variations of passages available, but the majority have suffered alteration in some form',
       unicef_cash: 125,
       partner_contribution: 751
     },
     {
       title: 'Standard activity',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In iaculis metus et neque viverra ',
+      description: 'It is a long established fact that a reader will be distracted by the readable content',
       unicef_cash: 652,
       partner_contribution: 441
     }
@@ -127,14 +127,13 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
   private activityDialog!: ActivityDialog;
 
   @property({type: Number})
-  total_amount!: number;
+  total_amount: number = 0;
 
   @property({type: Object})
   permissions!: Permission<ProgrammeManagementActivityPermissions>;
 
   connectedCallback() {
     super.connectedCallback();
-    // console.log(this.getChildRowTemplate(this.activities));
   }
 
   stateChanged(state: any) {
@@ -170,23 +169,17 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
     document.querySelector('body')!.appendChild(this.activityDialog);
   }
 
-  getChildRowTemplate(activities: any): EtoolsTableChildRow {
+  getChildRowTemplate(item: any): EtoolsTableChildRow {
     const childRow = {} as EtoolsTableChildRow;
-    // childRow.showExpanded = false;
-    if (childRow.showExpanded) {
-      childRow.rowHTML = html`
-        <td colspan="7">
-          <div class="child-row-inner-container">
-            ${activities.map(
-              (item: any) => html`<div>
-                <paper-textarea .value="${item.description}"></paper-textarea>
-              </div>`
-            )}
-          </div>
-        </td>
-      `;
-    }
-    console.log(childRow);
+    childRow.showExpanded = false;
+    childRow.rowHTML = html`
+      <td colspan="7">
+        <div class="child-row-inner-container">
+          <label class="label-input">Description</label><br />
+          <label>${item.description}</label>
+        </div>
+      </td>
+    `;
     return childRow;
   }
 }
