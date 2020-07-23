@@ -130,6 +130,7 @@ export const sharedStyles = html`
       }
     }
 
+
     paper-input[required][label],
     paper-textarea[required][label],
     paper-input-container[required],
@@ -148,6 +149,10 @@ export const sharedStyles = html`
       }
     }
 
+    .label-input {
+      color: var(--secondary-text-color, #737373);
+      font-size: 12px;
+    }
     etools-dialog paper-textarea {
       --iron-autogrow-textarea: {
         overflow: auto;

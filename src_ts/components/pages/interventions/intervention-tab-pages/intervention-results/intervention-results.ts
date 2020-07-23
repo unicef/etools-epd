@@ -1,5 +1,6 @@
 import {LitElement, customElement, html} from 'lit-element';
 import './budget-summary/budget-summary';
+import './supply-agreement/supply-agreement';
 import './results-structure/results-structure';
 /**
  * @customElement
@@ -12,7 +13,7 @@ export class InterventionResults extends LitElement {
       <style></style>
 
       <budget-summary></budget-summary>
-
+      <supply-agreements></supply-agreements>
       <results-structure></results-structure>
     `;
   }
