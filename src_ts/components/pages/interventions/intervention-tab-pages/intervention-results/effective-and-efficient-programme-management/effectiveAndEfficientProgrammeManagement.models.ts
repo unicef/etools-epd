@@ -10,11 +10,10 @@ export class ProgrammeManagement extends ModelsBase {
   total_amount: number | null = null;
 }
 
-export class ProgrammeManagementPermissions extends ModelsBase {
+export class ProgrammeManagementActivityPermissions extends ModelsBase {
   constructor(permissions: InterventionPermissionsFields) {
     super();
     this.setObjProperties(permissions);
   }
-  activities = false;
-  total_amount = false;
+  programme_management_activity = false;
 }
