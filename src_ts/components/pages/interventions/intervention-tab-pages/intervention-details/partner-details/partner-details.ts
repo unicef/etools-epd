@@ -164,7 +164,6 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
   }
 
   async stateChanged(state: any) {
-    console.log("partner-details stateChanged");
     if (!state.interventions.current) {
       return;
     }
