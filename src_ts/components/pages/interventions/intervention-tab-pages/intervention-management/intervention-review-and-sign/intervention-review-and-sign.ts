@@ -1,41 +1,41 @@
-import {PolymerElement, html} from '@polymer/polymer';
-import '@polymer/iron-icons/iron-icons.js';
-import '@polymer/iron-flex-layout/iron-flex-layout.js';
+import {customElement, LitElement, html, property} from 'lit-element';
+import '@polymer/iron-icons/iron-icons';
+import '@polymer/iron-flex-layout/iron-flex-layout';
 import '@polymer/paper-checkbox/paper-checkbox';
-import '@polymer/paper-input/paper-input.js';
+import '@polymer/paper-input/paper-input';
 
-import '@unicef-polymer/etools-content-panel/etools-content-panel.js';
-import '@unicef-polymer/etools-dropdown/etools-dropdown.js';
-import '@unicef-polymer/etools-upload/etools-upload.js';
+import '@unicef-polymer/etools-content-panel/etools-content-panel';
+import '@unicef-polymer/etools-dropdown/etools-dropdown';
+import '@unicef-polymer/etools-upload/etools-upload';
 
-import '@unicef-polymer/etools-date-time/datepicker-lite.js';
+import '@unicef-polymer/etools-date-time/datepicker-lite';
 
-import '../../../../layout/etools-form-element-wrapper.js';
+import '../../../../layout/etools-form-element-wrapper';
 
 import './components/amendments/pd-amendments.js.js';
 import './components/fund-reservations/fund-reservations.js.js';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import MissingDropdownOptionsMixin from '../../common/mixins/missing-dropdwn-options-mixin';
-import UploadsMixin from '../../../../mixins/uploads-mixin.js';
-import {fireEvent} from '../../../../utils/fire-custom-event.js';
-import {Intervention, Fr, InterventionPermissionsFields} from '../../../../../typings/intervention.types.js';
-import {Agreement} from '../../../agreements/agreement.types.js';
-import CONSTANTS from '../../../../../config/app-constants.js';
+import UploadsMixin from '../../common/mixins/uploads-mixin';
+// @lajos: to review changes
+import {fireEvent} from '../../../../../utils/fire-custom-event';
+import {Intervention, Fr, InterventionPermissionsFields} from '../../common/models/intervention.types';
+import {Agreement} from '../../common/models/agreement.types';
+import CONSTANTS from '../../common/constants';
 import {pageCommonStyles} from '../../../../styles/page-common-styles.js';
-import {gridLayoutStyles} from '../../../../styles/grid-layout-styles.js';
-import {SharedStyles} from '../../../../styles/shared-styles.js';
+import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
+import {SharedStylesLit} from '../../../styles/shared-styles-lit';
 import {requiredFieldStarredStyles} from '../../../../styles/required-field-styles.js';
+import {getStore} from '../../utils/redux-store-access';
 import {connect} from 'pwa-helpers/connect-mixin';
-import {store, RootState} from '../../../../../store.js';
-import {isJsonStrMatch, copy} from '../../../../utils/utils.js';
+import {isJsonStrMatch, copy} from '../../utils/utils';
 import {
   DECREASE_UPLOADS_IN_PROGRESS,
   INCREASE_UNSAVED_UPLOADS,
   DECREASE_UNSAVED_UPLOADS
-} from '../../../../../actions/upload-status.js';
+} from '../../utils/upload-status';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging.js';
-import {property} from '@polymer/decorators';
-import {Permission, MinimalUser} from '../../../../../typings/globals.types.js';
+import {Permission, MinimalUser} from '../../common/models/intervention.types';
 import DatePickerLite from '@unicef-polymer/etools-date-time/datepicker-lite.js';
 
 /**
@@ -46,9 +46,13 @@ import DatePickerLite from '@unicef-polymer/etools-date-time/datepicker-lite.js'
  * @appliesMixin MissingDropdownOptionsMixin
  * @appliesMixin UploadsMixin
  */
-class InterventionReviewAndSign extends connect(store)(
-  ComponentBaseMixin(UploadsMixin(MissingDropdownOptionsMixin(PolymerElement)))
+@customElement('intervention-tabs')
+class InterventionReviewAndSign extends connect(getStore())(
+  ComponentBaseMixin(UploadsMixin(MissingDropdownOptionsMixin(LitElement)))
 ) {
+  static get styles() {
+    return [gridLayoutStylesLit, SharedStylesLit];
+  }
   static get template() {
     return html`
       ${pageCommonStyles} ${gridLayoutStyles} ${SharedStyles} ${requiredFieldStarredStyles}
@@ -90,9 +94,9 @@ class InterventionReviewAndSign extends connect(store)(
               id="submissionDateField"
               label="Document Submission Date"
               value="{{intervention.submission_date}}"
-              readonly$="[[!permissions.edit.submission_date]]"
+              readonly="?[[!permissions.edit.submission_date]]"
               selected-date-display-format="D MMM YYYY"
-              required$="[[permissions.required.submission_date]]"
+              required="?[[permissions.required.submission_date]]"
               max-date="[[getCurrentDate()]]"
               max-date-error-msg="Date can not be in the future"
               error-message="Document Submission Date is required"
@@ -105,8 +109,8 @@ class InterventionReviewAndSign extends connect(store)(
             <etools-form-element-wrapper no-placeholder>
               <paper-checkbox
                 checked="{{intervention.submitted_to_prc}}"
-                disabled$="[[_isSubmittedToPrcCheckReadonly(permissions.edit.prc_review_attachment, _lockSubmitToPrc)]]"
-                hidden$="[[!_isNotSSFA(intervention.document_type)]]"
+                disabled="?[[_isSubmittedToPrcCheckReadonly(permissions.edit.prc_review_attachment, _lockSubmitToPrc)]]"
+                hidden="?[[!_isNotSSFA(intervention.document_type)]]"
               >
                 Submitted to PRC?
               </paper-checkbox>
@@ -121,8 +125,8 @@ class InterventionReviewAndSign extends connect(store)(
                 id="submissionDatePrcField"
                 label="Submission Date to PRC"
                 value="{{intervention.submission_date_prc}}"
-                readonly$="[[!permissions.edit.submission_date_prc]]"
-                required$="[[intervention.prc_review_attachment]]"
+                readonly="?[[!permissions.edit.submission_date_prc]]"
+                required="?[[intervention.prc_review_attachment]]"
                 selected-date-display-format="D MMM YYYY"
                 auto-validate
               >
@@ -134,8 +138,8 @@ class InterventionReviewAndSign extends connect(store)(
                 id="reviewDatePrcField"
                 label="Review Date by PRC"
                 value="{{intervention.review_date_prc}}"
-                readonly$="[[!permissions.edit.review_date_prc]]"
-                required$="[[intervention.prc_review_attachment]]"
+                readonly="?[[!permissions.edit.review_date_prc]]"
+                required="?[[intervention.prc_review_attachment]]"
                 selected-date-display-format="D MMM YYYY"
                 auto-validate
               >
@@ -149,13 +153,13 @@ class InterventionReviewAndSign extends connect(store)(
                 accept=".doc,.docx,.pdf,.jpg,.png"
                 file-url="[[intervention.prc_review_attachment]]"
                 upload-endpoint="[[uploadEndpoint]]"
-                on-upload-finished="_prcRevDocUploadFinished"
-                readonly$="[[!permissions.edit.prc_review_attachment]]"
+                @upload-finished="_prcRevDocUploadFinished"
+                readonly="?[[!permissions.edit.prc_review_attachment]]"
                 show-delete-btn="[[showPrcReviewDeleteBtn(intervention.status,
                                     permissions.edit.prc_review_attachment)]]"
-                on-delete-file="_prcRevDocDelete"
-                on-upload-started="_onUploadStarted"
-                on-change-unsaved-file="_onChangeUnsavedFile"
+                @delete-file="_prcRevDocDelete"
+                @upload-started="_onUploadStarted"
+                @change-unsaved-file="_onChangeUnsavedFile"
               >
               </etools-upload>
             </div>
@@ -170,8 +174,8 @@ class InterventionReviewAndSign extends connect(store)(
               placeholder="&#8212;"
               options="[[agreementAuthorizedOfficers]]"
               selected="{{intervention.partner_authorized_officer_signatory}}"
-              readonly$="[[!permissions.edit.partner_authorized_officer_signatory]]"
-              required$="[[permissions.required.partner_authorized_officer_signatory]]"
+              readonly="?[[!permissions.edit.partner_authorized_officer_signatory]]"
+              required="?[[permissions.required.partner_authorized_officer_signatory]]"
               auto-validate
               error-message="Please select Partner Authorized Officer"
             >
@@ -184,7 +188,7 @@ class InterventionReviewAndSign extends connect(store)(
               label="Signed by Partner Date"
               value="{{intervention.signed_by_partner_date}}"
               readonly="[[!permissions.edit.signed_by_partner_date]]"
-              required$="[[permissions.required.signed_by_partner_date]]"
+              required="?[[permissions.required.signed_by_partner_date]]"
               auto-validate
               error-message="Date is required"
               max-date-error-msg="Date can not be in the future"
@@ -208,7 +212,7 @@ class InterventionReviewAndSign extends connect(store)(
               label="Signed by UNICEF Date"
               value="{{intervention.signed_by_unicef_date}}"
               readonly="[[!permissions.edit.signed_by_unicef_date]]"
-              required$="[[permissions.required.signed_by_unicef_date]]"
+              required="?[[permissions.required.signed_by_unicef_date]]"
               auto-validate
               error-message="Date is required"
               max-date-error-msg="Date can not be in the future"
@@ -229,7 +233,7 @@ class InterventionReviewAndSign extends connect(store)(
               option-value="id"
               option-label="name"
               selected="{{intervention.unicef_signatory}}"
-              readonly$="[[!permissions.edit.unicef_signatory]]"
+              readonly="?[[!permissions.edit.unicef_signatory]]"
               auto-validate
               error-message="Please select UNICEF user"
             >
@@ -245,15 +249,15 @@ class InterventionReviewAndSign extends connect(store)(
               accept=".doc,.docx,.pdf,.jpg,.png"
               file-url="[[intervention.signed_pd_attachment]]"
               upload-endpoint="[[uploadEndpoint]]"
-              on-upload-finished="_signedPDUploadFinished"
+              @upload-finished="_signedPDUploadFinished"
               show-delete-btn="[[showSignedPDDeleteBtn(intervention.status, permissions.edit.signed_pd_attachment)]]"
-              on-delete-file="_signedPDDocDelete"
+              @delete-file="_signedPDDocDelete"
               auto-validate
-              readonly$="[[!permissions.edit.signed_pd_attachment]]"
-              required$="[[permissions.required.signed_pd_attachment]]"
+              readonly="?[[!permissions.edit.signed_pd_attachment]]"
+              required="?[[permissions.required.signed_pd_attachment]]"
               error-message="Please select Signed PD/SSFA document"
-              on-upload-started="_onUploadStarted"
-              on-change-unsaved-file="_onChangeUnsavedFile"
+              @upload-started="_onUploadStarted"
+              @change-unsaved-file="_onChangeUnsavedFile"
             >
             </etools-upload>
           </div>
@@ -295,7 +299,7 @@ class InterventionReviewAndSign extends connect(store)(
         class="content-section"
         intervention="[[intervention]]"
         edit-mode="[[permissions.edit.frs]]"
-        on-frs-update="_handleFrsUpdate"
+        @frs-update="_handleFrsUpdate"
       >
       </fund-reservations>
     `;

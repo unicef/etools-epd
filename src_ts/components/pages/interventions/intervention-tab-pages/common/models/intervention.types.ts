@@ -270,3 +270,11 @@ export type InterventionActivityTimeframe = {
   end_date: string;
   intervention: number;
 };
+
+export class MinimalUser {
+  first_name!: string;
+  last_name!: string;
+  middle_name!: string;
+  name!: string;
+  email!: string;
+}
