@@ -36,6 +36,7 @@ import {
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {Permission, MinimalUser} from '../../common/models/intervention.types';
 import DatePickerLite from '@unicef-polymer/etools-date-time/datepicker-lite';
+import {AnyObject} from '../../../../../../types/globals';
 
 /**
  * @polymer
@@ -319,8 +320,8 @@ class InterventionReviewAndSign extends connect(getStore())(
   @property({type: Object, observer: '_agreementChanged'})
   agreement!: Agreement;
 
-  @property({type: Array})
-  agreementAuthorizedOfficers!: [];
+  @property({type: Object})
+  agreementAuthorizedOfficers!: AnyObject;
 
   @property({type: Boolean})
   _lockSubmitToPrc = false;
@@ -397,12 +398,13 @@ class InterventionReviewAndSign extends connect(getStore())(
   _interventionChanged(intervention: Intervention) {
     // check if submitted to PRC was already saved
     if (intervention && intervention.id && intervention.submitted_to_prc) {
-      this.set('_lockSubmitToPrc', true);
+      this._lockSubmitToPrc = true;
     } else {
-      this.set('_lockSubmitToPrc', false);
+      this._lockSubmitToPrc = false;
     }
     if (!intervention.prc_review_attachment) {
-      this.set('intervention.prc_review_attachment', null);
+      // @lajos: review declaration of bellow... originally did not have null as definition
+      this.intervention.prc_review_attachment = null;
     }
   }
 
@@ -418,8 +420,8 @@ class InterventionReviewAndSign extends connect(getStore())(
           label: officer.first_name + ' ' + officer.last_name
         };
       });
-
-      this.set('agreementAuthorizedOfficers', authorizedOfficerData);
+      // @lajos: originally this was declared as array...but as per above it is object....
+      this.agreementAuthorizedOfficers = authorizedOfficerData;
     }
   }
 
@@ -473,24 +475,24 @@ class InterventionReviewAndSign extends connect(getStore())(
 
     const submittedToPrc = this._showSubmittedToPrcFields(this.intervention.submitted_to_prc);
     if (!submittedToPrc) {
-      this.set('intervention.submitted_to_prc', false);
+      this.intervention.submitted_to_prc = false;
       this._resetPrcFields();
     }
   }
 
   _resetPrcFields() {
-    this.set('intervention.intervention.submission_date_prc', null);
-    this.set('intervention.review_date_prc', null);
-    this.set('intervention.prc_review_attachment', null);
+    this.intervention.intervention.submission_date_prc = null;
+    this.intervention.intervention.review_date_prc = null;
+    this.intervention.intervention.prc_review_attachment = null;
   }
 
   // update FR Number on intervention
   _handleFrsUpdate(e: CustomEvent) {
     e.stopImmediatePropagation();
     try {
-      this.set('intervention.frs_details', e.detail.frsDetails);
+      this.intervention.frs_details = e.detail.frsDetails;
       const frIds = e.detail.frsDetails.frs.map((fr: Fr) => fr.id);
-      this.set('intervention.frs', frIds);
+      this.intervention = {...this.intervention, frs: frIds};
     } catch (err) {
       logError('[_handleFrsUpdate] An error occurred during FR Numbers update', null, err);
     }
@@ -525,13 +527,14 @@ class InterventionReviewAndSign extends connect(getStore())(
     getStore().dispatch({type: DECREASE_UPLOADS_IN_PROGRESS});
     if (e.detail.success) {
       const response = e.detail.success;
-      this.set('intervention.signed_pd_attachment', response.id);
+      this.intervention.signed_pd_attachment = response.id;
       getStore().dispatch({type: INCREASE_UNSAVED_UPLOADS});
     }
   }
 
   _signedPDDocDelete(_e: CustomEvent) {
     this.set('intervention.signed_pd_attachment', null);
+    this.intervention.signed_pd_attachment = null;
     getStore().dispatch({type: DECREASE_UNSAVED_UPLOADS});
   }
 
@@ -539,13 +542,13 @@ class InterventionReviewAndSign extends connect(getStore())(
     getStore().dispatch({type: DECREASE_UPLOADS_IN_PROGRESS});
     if (e.detail.success) {
       const response = e.detail.success;
-      this.set('intervention.prc_review_attachment', response.id);
+      this.intervention.prc_review_attachment = response.id;
       getStore().dispatch({type: INCREASE_UNSAVED_UPLOADS});
     }
   }
 
   _prcRevDocDelete(_e: CustomEvent) {
-    this.set('intervention.prc_review_attachment', null);
+    this.intervention.prc_review_attachment = null;
     getStore().dispatch({type: DECREASE_UNSAVED_UPLOADS});
     this._resetPrcFieldsValidations();
   }

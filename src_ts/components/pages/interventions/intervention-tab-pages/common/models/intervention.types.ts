@@ -182,8 +182,9 @@ export class Intervention {
   country_programme?: number;
   number?: string;
   reference_number_year?: string | null = null;
-  prc_review_attachment?: number | string;
-  signed_pd_attachment?: number | string;
+  // @lajos: bellow 2 did have originally null....but in code they can be assigned null
+  prc_review_attachment?: number | string | null;
+  signed_pd_attachment?: number | string | null;
   title?: string;
   status = '';
   start = '';
