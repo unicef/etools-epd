@@ -1,3 +1,6 @@
+import {customElement, LitElement, html, property} from 'lit-element';
+import {getStore} from '../../../../utils/redux-store-access';
+import {connect} from 'pwa-helpers/connect-mixin';
 import '@polymer/polymer/lib/mixins/gesture-event-listeners.js';
 import '@polymer/iron-icons/iron-icons.js';
 import '@polymer/paper-input/paper-input.js';
@@ -6,12 +9,11 @@ import '@polymer/paper-icon-button/paper-icon-button.js';
 
 import '@unicef-polymer/etools-dialog/etools-dialog.js';
 import RepeatableDataSetsMixin from '../../../../../../mixins/repeatable-data-sets-mixin';
-import {PolymerElement, html} from '@polymer/polymer';
-import {fireEvent} from '../../../../../../utils/fire-custom-event';
+// @lajos: to review changes
+import {fireEvent} from '../../../../../../../utils/fire-custom-event';
 import {gridLayoutStyles} from '../../../../../../styles/grid-layout-styles';
 import {repeatableDataSetsStyles} from '../../../../../../styles/repeatable-data-sets-styles';
 import {buttonsStyles} from '../../../../../../styles/buttons-styles';
-import {property} from '@polymer/decorators';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
 import {PaperInputElement} from '@polymer/paper-input/paper-input';
 import {PaperDialogElement} from '@polymer/paper-dialog/paper-dialog';
@@ -21,7 +23,8 @@ import {PaperDialogElement} from '@polymer/paper-dialog/paper-dialog';
  * @customElement
  * @appliesMixin RepeatableDataSetsMixinMixin
  */
-class UpdateFrNumbers extends RepeatableDataSetsMixin(PolymerElement) {
+@customElement('update-fr-numbers')
+class UpdateFrNumbers extends connect(getStore())(RepeatableDataSetsMixin(LitElement)) {
   static get template() {
     return html`
       ${gridLayoutStyles} ${repeatableDataSetsStyles} ${buttonsStyles}
@@ -246,5 +249,4 @@ class UpdateFrNumbers extends RepeatableDataSetsMixin(PolymerElement) {
   }
 }
 
-window.customElements.define('update-fr-numbers', UpdateFrNumbers);
 export {UpdateFrNumbers as UpdateFrNumbersEl};

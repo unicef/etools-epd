@@ -46,7 +46,7 @@ import {AnyObject} from '../../../../../../types/globals';
  * @appliesMixin MissingDropdownOptionsMixin
  * @appliesMixin UploadsMixin
  */
-@customElement('intervention-tabs')
+@customElement('intervention-review-and-sign')
 class InterventionReviewAndSign extends connect(getStore())(
   ComponentBaseMixin(UploadsMixin(MissingDropdownOptionsMixin(LitElement)))
 ) {
@@ -533,7 +533,6 @@ class InterventionReviewAndSign extends connect(getStore())(
   }
 
   _signedPDDocDelete(_e: CustomEvent) {
-    this.set('intervention.signed_pd_attachment', null);
     this.intervention.signed_pd_attachment = null;
     getStore().dispatch({type: DECREASE_UNSAVED_UPLOADS});
   }
@@ -565,7 +564,5 @@ class InterventionReviewAndSign extends connect(getStore())(
     return new Date();
   }
 }
-
-window.customElements.define('intervention-review-and-sign', InterventionReviewAndSign);
 
 export default InterventionReviewAndSign;
