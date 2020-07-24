@@ -26,8 +26,8 @@ export class BudgetSummaryEl extends connect(getStore())(LitElement) {
           margin-bottom: 24px;
         }
       </style>
-      <section class="elevation summary" elevation="1">
-        <div class="row-h flex-c">
+      <section class="elevation content-wrapper" elevation="1">
+        <div class="layout-horizontal">
           <div class="col col-1">
             <span>
               <label class="paper-label">Budget Currency</label>
@@ -74,7 +74,7 @@ export class BudgetSummaryEl extends connect(getStore())(LitElement) {
             </span>
           </div>
         </div>
-        <div class="row-h flex-c">
+        <div class="layout-horizontal">
           <div class="col col-1">
             <span>
               <label class="input-label" ?empty="${!this.budgetSummary.currency}">
