@@ -44,6 +44,9 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
         .view-toggle-button[active] {
           background-color: #009688;
         }
+        .no-results {
+          padding: 24px;
+        }
       `
     ];
   }
@@ -66,6 +69,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
           margin-bottom: 24px;
         }
         etools-data-table-row {
+          --list-row-wrapper-padding: 5px 12px 5px 0;
           --list-row-collapse-wrapper: {
             padding: 0 !important;
             border-bottom: 1px solid var(--main-border-color) !important;
@@ -137,7 +141,10 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
                         ?hidden="${!this.showIndicators}"
                         .indicators="${pdOutput.applied_indicators}"
                       ></pd-indicators>
-                      <pd-activities ?hidden="${!this.showActivities}"></pd-activities>
+                      <pd-activities
+                        .activities="${pdOutput.activities}"
+                        ?hidden="${!this.showActivities}"
+                      ></pd-activities>
                     </div>
                   </etools-data-table-row>
                 `
@@ -145,6 +152,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
             </cp-output-level>
           `
         )}
+        ${!this.resultLinks.length ? html` <div class="no-results">There are no results added.</div> ` : ''}
 
         <!--  If CP Output level is shown - 'Add PD' button will be present inside cp-output-level component  -->
         ${!this.showCPOLevel
@@ -185,7 +193,8 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
       dialogData: {
         pdOutput: pdOutput ? {...pdOutput, cp_output: cpOutput} : undefined,
         cpOutputs,
-        hideCpOutputs: false
+        hideCpOutputs: false,
+        interventionId: this.interventionId
       }
     });
   }

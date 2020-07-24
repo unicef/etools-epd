@@ -34,7 +34,7 @@ export class PdIndicators extends connect(getStore())(LitElement) {
     // language=HTML
     return html`
       <style>
-        :host etools-data-table-row.test {
+        :host etools-data-table-row {
           --list-bg-color: var(--blue-background);
           --list-second-bg-color: var(--blue-background);
           --list-row-collapse-wrapper: {
@@ -47,6 +47,9 @@ export class PdIndicators extends connect(getStore())(LitElement) {
             border: 1px solid var(--main-border-color) !important;
             border-bottom: none !important;
           }
+        }
+        .editable-row .hover-block {
+          background-color: var(--blue-background) !important;
         }
       </style>
 
@@ -61,7 +64,7 @@ export class PdIndicators extends connect(getStore())(LitElement) {
 
       ${this.indicators.map(
         (indicator: Indicator) => html`
-          <etools-data-table-row class="test">
+          <etools-data-table-row>
             <div slot="row-data" class="layout-horizontal">
               <!--    Indicator name    -->
               <div class="text flex-auto">
@@ -114,6 +117,15 @@ export class PdIndicators extends connect(getStore())(LitElement) {
           </etools-data-table-row>
         `
       )}
+      ${!this.indicators.length
+        ? html`
+            <div class="layout-horizontal empty-row">
+              <div class="text flex-auto">-</div>
+              <div class="text number-data flex-none">-</div>
+              <div class="text number-data flex-none">-</div>
+            </div>
+          `
+        : ''}
     `;
   }
 

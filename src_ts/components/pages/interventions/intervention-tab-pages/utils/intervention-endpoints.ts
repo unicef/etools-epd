@@ -50,10 +50,10 @@ export const interventionEndpoints: EtoolsEndpoints = {
     template: '/api/v2/reports/results/<%=id%>/indicators/'
   },
   pdDetails: {
-    template: '/api/<%=id%>/'
+    template: '/api/pmp/v3/interventions/<%=intervention_id%>/pd-outputs/<%=pd_id%>/'
   },
   createPd: {
-    template: '/api/test/'
+    template: '/api/pmp/v3/interventions/<%=intervention_id%>/pd-outputs/'
   },
   attachmentsUpload: {
     url: '/api/v2/attachments/upload/'

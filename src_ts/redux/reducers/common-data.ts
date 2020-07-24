@@ -109,6 +109,17 @@ const commonData: Reducer<CommonDataState, RootAction> = (state = INITIAL_COMMON
         ...state,
         cpOutputs: action.cpOutputs
       };
+    case SET_ALL_STATIC_DATA:
+      return {
+        ...state,
+        partners: action.staticData.partners,
+        locations: action.staticData.locations,
+        sections: action.staticData.sections,
+        disaggregations: action.staticData.disaggregations,
+        locationTypes: action.staticData.locationTypes,
+        documentTypes: action.staticData.documentTypes,
+        genderEquityRatings: action.staticData.genderEquityRatings
+      };
     default:
       return state;
   }

@@ -7,6 +7,8 @@ import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/et
 import {DataMixin} from '../../../common/mixins/data-mixin';
 import {getDifference} from '../../../common/mixins/objects-diff';
 import '@unicef-polymer/etools-dialog';
+import {getStore} from '../../../utils/redux-store-access';
+import {getIntervention} from '../../../../../../../redux/actions/interventions';
 
 @customElement('pd-output-dialog')
 export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElement) {
@@ -17,15 +19,18 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
   @property() cpOutputs: CpOutput[] = [];
   @property() hideCpOutputs = false;
 
+  interventionId!: number;
+
   get unassociated(): boolean {
     return Boolean(this.editedData.id && !this.editedData.cp_output);
   }
 
-  set dialogData({pdOutput, cpOutputs, hideCpOutputs}: any) {
+  set dialogData({pdOutput, cpOutputs, hideCpOutputs, interventionId}: any) {
     this.data = pdOutput;
     this.cpOutputs = cpOutputs || [];
     this.hideCpOutputs = hideCpOutputs;
     this.isEditDialog = Boolean(pdOutput && pdOutput.id);
+    this.interventionId = interventionId;
   }
 
   protected render(): TemplateResult {
@@ -80,6 +85,8 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
             required
             ?invalid="${this.errors.name}"
             .errorMessage="${this.errors.name && this.errors.name[0]}"
+            @focus="${() => this.resetFieldError('name')}"
+            @tap="${() => this.resetFieldError('name')}"
           ></paper-input>
 
           <paper-input
@@ -91,6 +98,8 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
             required
             ?invalid="${this.errors.code}"
             .errorMessage="${this.errors.code && this.errors.code[0]}"
+            @focus="${() => this.resetFieldError('code')}"
+            @tap="${() => this.resetFieldError('code')}"
           ></paper-input>
 
           ${this.hideCpOutputs
@@ -113,6 +122,8 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
                   ?disabled="${!this.isEditDialog}"
                   ?invalid="${this.errors.cp_output}"
                   .errorMessage="${this.errors.cp_output && this.errors.cp_output[0]}"
+                  @focus="${() => this.resetFieldError('cp_output')}"
+                  @tap="${() => this.resetFieldError('cp_output')}"
                 ></etools-dropdown>
               `}
         </div>
@@ -131,8 +142,8 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
     this.loadingInProcess = true;
     // get endpoint
     const endpoint: EtoolsRequestEndpoint = this.isEditDialog
-      ? getEndpoint(interventionEndpoints.pdDetails, {id: this.editedData.id})
-      : getEndpoint(interventionEndpoints.createPd);
+      ? getEndpoint(interventionEndpoints.pdDetails, {pd_id: this.editedData.id, intervention_id: this.interventionId})
+      : getEndpoint(interventionEndpoints.createPd, {intervention_id: this.interventionId});
 
     // get changed fields
     const diff: Partial<ResultLinkLowerResult> = getDifference<ResultLinkLowerResult>(
@@ -147,6 +158,11 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
       method: this.isEditDialog ? 'PATCH' : 'POST',
       body: this.isEditDialog ? {id: this.editedData.id, ...diff} : diff
     })
+      .then(() =>
+        getStore()
+          .dispatch(getIntervention(String(this.interventionId)))
+          .catch(() => Promise.resolve())
+      )
       .then(() => {
         fireEvent(this, 'dialog-closed', {confirmed: true});
       })

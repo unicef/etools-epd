@@ -72,6 +72,10 @@ export const ResultStructureStyles: CSSResult = css`
   .editable-row {
     position: relative;
   }
+  .editable-row.fixed-height {
+    height: 55px;
+    align-items: center;
+  }
   .editable-row .hover-block {
     display: none;
     position: absolute;
@@ -90,6 +94,10 @@ export const ResultStructureStyles: CSSResult = css`
 
   .editable-row:hover > .hover-block {
     display: flex;
+    align-items: center;
     cursor: pointer;
+  }
+  .empty-row {
+    padding: 16px 24px 16px 56px;
   }
 `;

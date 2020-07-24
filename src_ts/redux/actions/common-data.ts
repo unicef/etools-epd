@@ -19,6 +19,8 @@ export const SET_OFFICES = 'SET_OFFICES';
 export const SET_STATIC_DATA = 'SET_STATIC_DATA';
 export const SET_ALL_STATIC_DATA = 'SET_ALL_STATIC_DATA';
 export const SET_CP_OUTPUTS = 'SET_CP_OUTPUTS';
+export const SET_STATIC_DATA = 'SET_STATIC_DATA';
+export const SET_ALL_STATIC_DATA = 'SET_ALL_STATIC_DATA';
 
 export interface CommonDataActionSetUnicefUsers extends Action<'SET_UNICEF_USERS'> {
   unicefUsers: AnyObject[];
@@ -144,6 +146,12 @@ export const loadDropdownsData = () => (dispatch: any) => {
     .catch((error: AnyObject) => {
       logError('loadDropdownsData req error...', LOGS_PREFIX, error);
     });
+};
+
+export const getPartners = () => {
+  return sendRequest({
+    endpoint: {url: etoolsEndpoints.partners.url!}
+  });
 };
 
 export const loadLocations = () => (dispatch: any) => {

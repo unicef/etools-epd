@@ -43,6 +43,7 @@ export class CpOutputLevel extends LitElement {
         etools-data-table-row {
           overflow: hidden;
           --list-second-bg-color: var(--secondary-background-color) !important;
+          --list-row-wrapper-padding: 5px 12px 5px 0;
           --list-row-collapse-wrapper: {
             padding: 0 !important;
             margin-bottom: 10px;
@@ -50,9 +51,7 @@ export class CpOutputLevel extends LitElement {
             border-bottom: 1px solid var(--main-border-color) !important;
           }
           --list-row-wrapper: {
-            /*background-color: var(--primary-background-color) !important;*/
             border-bottom: none !important;
-            padding: 5px 4px;
           }
         }
       </style>

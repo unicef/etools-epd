@@ -13,6 +13,7 @@ export interface ResultLinkLowerResult {
   id: number;
   name: string;
   applied_indicators: Indicator[];
+  activities: InterventionActivity[];
 
   code?: string;
   created?: string;
@@ -253,7 +254,7 @@ export class InterventionAmendment {
 export type InterventionActivity = {
   created: string;
   modified: string;
-  activity_name: string;
+  name: string;
   context_details: string;
   unicef_cash: number;
   cso_cash: number;
