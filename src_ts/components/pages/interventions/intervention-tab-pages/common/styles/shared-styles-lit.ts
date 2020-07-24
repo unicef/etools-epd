@@ -185,6 +185,11 @@ export const sharedStyles = html`
       color: var(--secondary-text-color);
     }
 
+    paper-radio-group:focus,
+    paper-textarea[focused] {
+      outline: none;
+    }
+
     paper-textarea {
       --paper-input-container-input: {
         display: block;
