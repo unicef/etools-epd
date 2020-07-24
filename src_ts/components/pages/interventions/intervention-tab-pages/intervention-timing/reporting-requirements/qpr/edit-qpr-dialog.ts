@@ -30,7 +30,7 @@ import {fireEvent} from '../../../utils/fire-custom-event';
 class EditQprDialog extends PolymerElement {
   static get template() {
     return html`
-      ${gridLayoutStylesPolymer}${buttonsStyles}
+      ${gridLayoutStylesPolymer()}${buttonsStyles}
       <style>
         *[hidden] {
           display: none !important;

@@ -18,8 +18,6 @@ import {prepareDatepickerDate, convertDate} from '../../../utils/date-utils';
 // import EndpointsMixin from '../mixins/endpoints-mixin';
 import {getEndpoint} from '../../../utils/endpoint-helper';
 import {connect} from 'pwa-helpers/connect-mixin';
-// @lajos TO BE CHECKED, and fixed when migrating to Lit Element
-import {store} from '../../../../../../../redux/store';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {property} from '@polymer/decorators';
@@ -27,16 +25,17 @@ import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import {AnyObject} from '../../../common/models/globals.types.js';
 import {isEmptyObject} from '../../../utils/utils.js';
+import {getStore} from '../../../utils/redux-store-access.js';
 
 /**
  * @polymer
  * @customElement
  * @appliesMixin EndpointsMixin
  */
-class EditHruDialog extends connect(store)(PolymerElement) {
+class EditHruDialog extends connect(getStore())(PolymerElement) {
   static get template() {
     return html`
-      ${requiredFieldStarredStyles}${gridLayoutStylesPolymer}${buttonsStyles}
+      ${requiredFieldStarredStyles}${gridLayoutStylesPolymer()}${buttonsStyles}
       <style include="data-table-styles">
         *[hidden] {
           display: none !important;

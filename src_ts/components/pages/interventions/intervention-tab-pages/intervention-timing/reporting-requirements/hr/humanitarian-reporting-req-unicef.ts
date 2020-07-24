@@ -26,7 +26,7 @@ import {SharedStyles} from '../styles/shared-styles-polymer';
 class HumanitarianReportingReqUnicef extends FrontendPaginationMixin(ReportingRequirementsCommonMixin(PolymerElement)) {
   static get template() {
     return html`
-      ${gridLayoutStylesPolymer}${SharedStyles}${buttonsStyles}
+      ${gridLayoutStylesPolymer()}${SharedStyles()}${buttonsStyles}
       <style>
         :host {
           display: block;

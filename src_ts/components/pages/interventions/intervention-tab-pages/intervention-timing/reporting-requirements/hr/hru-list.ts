@@ -22,7 +22,7 @@ class HruList extends CommonMixin(ReportingReqPastDatesCheckMixin(PolymerElement
   static get template() {
     // language=HTML
     return html`
-      ${reportingRequirementsListStyles}${gridLayoutStylesPolymer}
+      ${reportingRequirementsListStyles}${gridLayoutStylesPolymer()}
       <style include="data-table-styles">
         :host([with-scroll]) {
           max-height: 400px;

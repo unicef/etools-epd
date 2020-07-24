@@ -20,7 +20,7 @@ import {isEmptyObject} from '../../../utils/utils';
 class HumanitarianReportingReqCluster extends CommonMixin(PolymerElement) {
   static get template() {
     return html`
-      ${gridLayoutStylesPolymer}
+      ${gridLayoutStylesPolymer()}
       <style include="data-table-styles">
         :host {
           display: block;

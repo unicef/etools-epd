@@ -33,7 +33,7 @@ import {AnyObject} from '../../common/models/globals.types';
 class PartnerReportingRequirements extends connect(getStore())(PolymerElement) {
   static get template() {
     return html`
-      ${gridLayoutStylesPolymer}${pageCommonStyles}
+      ${gridLayoutStylesPolymer()}${pageCommonStyles}
       <style>
         :host {
           display: block;

@@ -23,7 +23,7 @@ import {isEmptyObject} from '../../../utils/utils';
 class QprList extends CommonMixin(ReportingReqPastDatesCheckMixin(PolymerElement)) {
   static get template() {
     return html`
-      ${reportingRequirementsListStyles}${gridLayoutStylesPolymer}
+      ${reportingRequirementsListStyles}${gridLayoutStylesPolymer()}
       <style include="data-table-styles"></style>
 
       <etools-data-table-header no-collapse no-title>

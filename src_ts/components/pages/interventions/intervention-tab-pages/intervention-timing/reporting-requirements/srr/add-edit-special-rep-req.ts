@@ -30,7 +30,7 @@ class AddEditSpecialRepReq extends PolymerElement {
   static get template() {
     // language=HTML
     return html`
-      ${gridLayoutStylesPolymer}
+      ${gridLayoutStylesPolymer()}
       <style>
         :host {
           display: block;

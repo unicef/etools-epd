@@ -26,7 +26,7 @@ class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRequireme
 ) {
   static get template() {
     return html`
-      ${gridLayoutStylesPolymer}${buttonsStyles}
+      ${gridLayoutStylesPolymer()}${buttonsStyles}
       <style>
         *[hidden] {
           display: none !important;

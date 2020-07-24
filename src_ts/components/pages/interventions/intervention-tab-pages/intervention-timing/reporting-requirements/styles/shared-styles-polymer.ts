@@ -233,6 +233,10 @@ import {unsafeHTML} from 'lit-html/directives/unsafe-html.js';
 //   </style>
 // `;
 
-export const SharedStyles = html`<style>
-  ${unsafeHTML(sharedStylesContent)}
-</style>`;
+export const SharedStyles = () => {
+  const template = document.createElement('template');
+  template.innerHTML = `<style>
+    ${sharedStylesContent}
+   </style>`;
+  return template;
+};

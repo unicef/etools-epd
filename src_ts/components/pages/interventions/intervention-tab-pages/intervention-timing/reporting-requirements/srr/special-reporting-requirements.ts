@@ -31,7 +31,7 @@ import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 class SpecialReportingRequirements extends CommonMixin(ReportingRequirementsCommonMixin(PolymerElement)) {
   static get template() {
     return html`
-      ${reportingRequirementsListStyles}${gridLayoutStylesPolymer}${buttonsStyles}
+      ${reportingRequirementsListStyles}${gridLayoutStylesPolymer()}${buttonsStyles}
       <style include="data-table-styles"></style>
 
       <div class="row-h" hidden$="[[!_empty(reportingRequirements, reportingRequirements.length)]]">
