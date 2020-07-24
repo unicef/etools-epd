@@ -25,13 +25,9 @@ export class BudgetSummaryEl extends connect(getStore())(LitElement) {
           display: block;
           margin-bottom: 24px;
         }
-        .row-h {
-          padding-top: 5px;
-          padding-bottom: 5px;
-        }
       </style>
-      <section class="elevation page-content" elevation="1">
-        <div class="row-h flex-c">
+      <section class="elevation content-wrapper" elevation="1">
+        <div class="layout-horizontal">
           <div class="col col-1">
             <span>
               <label class="paper-label">Budget Currency</label>
@@ -42,7 +38,7 @@ export class BudgetSummaryEl extends connect(getStore())(LitElement) {
               <label class="paper-label">Budget HQ Rate</label>
             </span>
           </div>
-          <div class="col col-1">
+          <div class="col col-2">
             <span>
               <label class="paper-label">% Prgm Effectiveness</label>
             </span>
@@ -78,7 +74,7 @@ export class BudgetSummaryEl extends connect(getStore())(LitElement) {
             </span>
           </div>
         </div>
-        <div class="row-h flex-c">
+        <div class="layout-horizontal">
           <div class="col col-1">
             <span>
               <label class="input-label" ?empty="${!this.budgetSummary.currency}">
@@ -93,7 +89,7 @@ export class BudgetSummaryEl extends connect(getStore())(LitElement) {
               </label>
             </span>
           </div>
-          <div class="col col-1">
+          <div class="col col-2">
             <span>
               <label class="input-label" ?empty="${!this.budgetSummary.prgm_effectiveness}">
                 ${this.budgetSummary.prgm_effectiveness} %
