@@ -185,6 +185,7 @@ export class AppShell extends connect(store)(LitElement) {
 
     getCurrentUser().then((user: EtoolsUserModel) => {
       if (user) {
+        // @ts-ignore
         Promise.allSettled([getPartners(), getLocations(), getSections(), getDisaggregations(), getStaticData()]).then(
           (response: any[]) => {
             store.dispatch({

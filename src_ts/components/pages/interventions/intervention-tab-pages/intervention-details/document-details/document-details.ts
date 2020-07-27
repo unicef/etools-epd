@@ -30,14 +30,15 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
 
   render() {
     if (!this.documentDetails) {
-      return html` ${sharedStyles}
+      return html`<style>
+          ${sharedStyles}
+        </style>
         <etools-loading loading-text="Loading..." active></etools-loading>`;
     }
     // language=HTML
     return html`
-      ${sharedStyles}
       <style>
-        :host {
+        ${sharedStyles} :host {
           display: block;
           margin-bottom: 24px;
         }

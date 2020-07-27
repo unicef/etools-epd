@@ -21,9 +21,8 @@ export class DetailsOverview extends connect(getStore())(LitElement) {
   render() {
     // language=HTML
     return html`
-      ${sharedStyles}
       <style>
-        :host {
+        ${sharedStyles} :host {
           display: block;
           margin-bottom: 24px;
         }
