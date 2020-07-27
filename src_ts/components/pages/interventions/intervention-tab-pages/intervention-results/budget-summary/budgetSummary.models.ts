@@ -12,9 +12,8 @@ export class BudgetSummary extends ModelsBase {
   hq_rate = '';
   prgm_effectiveness = '';
   total_cso = '';
-  total_unicef = '';
-  total_supply = '';
-  partner_contrib = '';
+  unicef_cash_local = '';
+  partner_contribution_local = '';
   total_cash = '';
   total_amt = '';
 }
