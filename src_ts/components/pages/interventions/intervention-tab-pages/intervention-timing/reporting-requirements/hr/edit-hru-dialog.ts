@@ -10,16 +10,14 @@ import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import './hru-list.js';
 import CONSTANTS from '../../../common/constants';
 import {fireEvent} from '../../../utils/fire-custom-event';
-import {gridLayoutStyles} from '../styles/grid-layout-styles';
-import {buttonsStyles} from '../styles/buttons-styles';
+import {gridLayoutStylesPolymer} from '../styles/grid-layout-styles-polymer';
+import {buttonsStyles} from '../styles/buttons-styles-polymer';
 import {requiredFieldStarredStyles} from '../../../common/styles/required-field-styles';
 import {prepareDatepickerDate, convertDate} from '../../../utils/date-utils';
 // this was refactored
 // import EndpointsMixin from '../mixins/endpoints-mixin';
 import {getEndpoint} from '../../../utils/endpoint-helper';
 import {connect} from 'pwa-helpers/connect-mixin';
-// @lajos TO BE CHECKED, and fixed when migrating to Lit Element
-import {store} from '../../../../../../../redux/store';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {property} from '@polymer/decorators';
@@ -27,16 +25,17 @@ import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import {AnyObject} from '../../../common/models/globals.types.js';
 import {isEmptyObject} from '../../../utils/utils.js';
+import {getStore} from '../../../utils/redux-store-access.js';
 
 /**
  * @polymer
  * @customElement
  * @appliesMixin EndpointsMixin
  */
-class EditHruDialog extends connect(store)(PolymerElement) {
+class EditHruDialog extends connect(getStore())(PolymerElement) {
   static get template() {
     return html`
-      ${requiredFieldStarredStyles}${gridLayoutStyles}${buttonsStyles}
+      ${requiredFieldStarredStyles}${gridLayoutStylesPolymer()}${buttonsStyles}
       <style include="data-table-styles">
         *[hidden] {
           display: none !important;

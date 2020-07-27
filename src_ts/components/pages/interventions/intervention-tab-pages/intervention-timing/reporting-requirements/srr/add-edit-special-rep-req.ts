@@ -1,6 +1,6 @@
 /* eslint-disable lit/no-legacy-template-syntax */
 import {PolymerElement, html} from '@polymer/polymer';
-import {gridLayoutStyles} from '../styles/grid-layout-styles';
+import {gridLayoutStylesPolymer} from '../styles/grid-layout-styles-polymer';
 // @lajos bellow 2 where imported from PMP
 // import EndpointsMixin from '../mixins/endpoints-mixin';
 import {getEndpoint} from '../../../utils/endpoint-helper';
@@ -30,7 +30,7 @@ class AddEditSpecialRepReq extends PolymerElement {
   static get template() {
     // language=HTML
     return html`
-      ${gridLayoutStyles}
+      ${gridLayoutStylesPolymer()}
       <style>
         :host {
           display: block;

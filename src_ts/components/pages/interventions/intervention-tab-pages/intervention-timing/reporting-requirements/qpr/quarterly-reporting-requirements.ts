@@ -2,8 +2,8 @@
 import {PolymerElement, html} from '@polymer/polymer';
 import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
 import CONSTANTS from '../../../common/constants';
-import {gridLayoutStyles} from '../styles/grid-layout-styles';
-import {buttonsStyles} from '../styles/buttons-styles';
+import {gridLayoutStylesPolymer} from '../styles/grid-layout-styles-polymer';
+import {buttonsStyles} from '../styles/buttons-styles-polymer';
 import GenerateQuarterlyReportingRequirementsMixin from '../mixins/generate-quarterly-reporting-requirements-mixin';
 
 import '@polymer/paper-button/paper-button.js';
@@ -26,7 +26,7 @@ class QuarterlyReportingRequirements extends GenerateQuarterlyReportingRequireme
 ) {
   static get template() {
     return html`
-      ${gridLayoutStyles}${buttonsStyles}
+      ${gridLayoutStylesPolymer()}${buttonsStyles}
       <style>
         *[hidden] {
           display: none !important;

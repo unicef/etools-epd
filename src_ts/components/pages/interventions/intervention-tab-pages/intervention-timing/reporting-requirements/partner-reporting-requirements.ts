@@ -13,7 +13,7 @@ import './qpr/quarterly-reporting-requirements';
 import './hr/humanitarian-reporting-req-unicef';
 import './hr/humanitarian-reporting-req-cluster';
 import './srr/special-reporting-requirements';
-import {gridLayoutStyles} from './styles/grid-layout-styles';
+import {gridLayoutStylesPolymer} from './styles/grid-layout-styles-polymer';
 import {pageCommonStyles} from './styles/page-common-styles';
 // @lajos needs to be checked if OK
 import {connect} from 'pwa-helpers/connect-mixin';
@@ -33,7 +33,7 @@ import {AnyObject} from '../../common/models/globals.types';
 class PartnerReportingRequirements extends connect(getStore())(PolymerElement) {
   static get template() {
     return html`
-      ${gridLayoutStyles}${pageCommonStyles}
+      ${gridLayoutStylesPolymer()}${pageCommonStyles}
       <style>
         :host {
           display: block;
