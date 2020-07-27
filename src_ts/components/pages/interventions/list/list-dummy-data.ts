@@ -1,7 +1,7 @@
 /**
  * TODO: this file provide mock-up data for list page
  */
-import {EtoolsPaginator} from '../../../common/layout/etools-table/pagination/paginator';
+import {InterventionSupplyItem} from '../intervention-tab-pages/common/models/intervention.types';
 
 const ratings: string[] = ['Low', 'High', 'Medium'];
 const statuses: string[] = ['Assigned', 'Submitted', 'Rejected'];
@@ -32,7 +32,7 @@ while (i < 150) {
   i++;
 }
 
-export const getListDummydata = (paginator: EtoolsPaginator) => {
+export const getListDummydata = (paginator: any) => {
   return new Promise((resolve, reject) => {
     try {
       const sliceStart = (paginator.page - 1) * paginator.page_size;
@@ -56,4 +56,23 @@ export const getGenderEquityRatingsDummy = () => {
     {label: 'Marginal', value: '3'},
     {label: 'None', value: '4'}
   ];
+};
+
+export const getSupplyItems = () => {
+  const arr = [];
+  let i = 0;
+  while (i < 10) {
+    const supplyItem = new InterventionSupplyItem();
+    supplyItem.id = i;
+    supplyItem.title = `Title ${i}`;
+    supplyItem.result = `CP Output ${i}`;
+    supplyItem.other_mentions = `Other mentions ${i}`;
+    supplyItem.unit_number = i;
+    supplyItem.unit_price = Math.floor(Math.random() * Math.floor(15));
+    supplyItem.total_price = supplyItem.unit_number * supplyItem.unit_price;
+    supplyItem.outputs = ['CP Output Health Related', 'CP Output Health Related', 'CP Output Health Related'];
+    arr.push(supplyItem);
+    i++;
+  }
+  return arr;
 };

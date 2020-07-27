@@ -7,7 +7,8 @@ import {
   SET_DOCUMENT_TYPES,
   SET_GENDER_EQUITY_RATINGS,
   SET_SECTIONS,
-  SET_DISAGGREGATIONS
+  SET_DISAGGREGATIONS,
+  SET_ALL_STATIC_DATA
 } from '../actions/common-data';
 import {RootAction} from '../store';
 import {Disaggregation, LocationObject, Section} from '../../types/globals';
@@ -75,6 +76,17 @@ const commonData: Reducer<CommonDataState, RootAction> = (state = INITIAL_COMMON
       return {
         ...state,
         genderEquityRatings: action.genderEquityRatings
+      };
+    case SET_ALL_STATIC_DATA:
+      return {
+        ...state,
+        partners: action.staticData.partners,
+        locations: action.staticData.locations,
+        sections: action.staticData.sections,
+        disaggregations: action.staticData.disaggregations,
+        locationTypes: action.staticData.locationTypes,
+        documentTypes: action.staticData.documentTypes,
+        genderEquityRatings: action.staticData.genderEquityRatings
       };
     default:
       return state;

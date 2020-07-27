@@ -1,5 +1,5 @@
 import {LitElement, property, html} from 'lit-element';
-import {Constructor, AnyObject} from '../types/types';
+import {Constructor, AnyObject} from '../models/globals.types';
 
 function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
   class ComponentBaseClass extends baseClass {
@@ -92,7 +92,6 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
     valueChanged(detail: any, key: string) {
       this.dataToSave[key] = detail.value;
     }
-
   }
   return ComponentBaseClass;
 }

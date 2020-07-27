@@ -109,6 +109,20 @@ export class PlannedVisit {
   programmatic: any;
 }
 
+export class InterventionSupplyItem {
+  id: number | null = null;
+  created?: string;
+  modified?: string;
+  title = '';
+  unit_number: number | undefined = undefined;
+  unit_price: number | undefined = undefined;
+  result = '';
+  total_price: number | undefined = undefined;
+  other_mentions = '';
+  intervention = '';
+  outputs: string[] = [];
+}
+
 export class InterventionPermissionsFields {
   id = false;
   status = false;

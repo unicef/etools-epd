@@ -15,6 +15,8 @@ export const SET_LOCATION_TYPES = 'SET_LOCATION_TYPES';
 export const SET_DISAGGREGATIONS = 'SET_DISAGGREGATIONS';
 export const SET_DOCUMENT_TYPES = 'SET_DOCUMENT_TYPES';
 export const SET_GENDER_EQUITY_RATINGS = 'SET_GENDER_EQUITY_RATINGS';
+export const SET_STATIC_DATA = 'SET_STATIC_DATA';
+export const SET_ALL_STATIC_DATA = 'SET_ALL_STATIC_DATA';
 
 export interface CommonDataActionSetUnicefUsersData extends Action<'SET_UNICEF_USERS_DATA'> {
   unicefUsersData: AnyObject[];
@@ -88,27 +90,6 @@ export const setDisaggregations = (disaggregations: Disaggregation[]) => {
   };
 };
 
-export const setLocationTypes = (locationTypes: AnyObject[]) => {
-  return {
-    type: SET_LOCATION_TYPES,
-    locationTypes
-  };
-};
-
-export const setDocumentTypes = (documentTypes: AnyObject[]) => {
-  return {
-    type: SET_DOCUMENT_TYPES,
-    documentTypes
-  };
-};
-
-export const setGenderEquityRatings = (genderEquityRatings: AnyObject[]) => {
-  return {
-    type: SET_GENDER_EQUITY_RATINGS,
-    genderEquityRatings
-  };
-};
-
 export const loadPartners = () => (dispatch: any) => {
   sendRequest({
     endpoint: {url: etoolsEndpoints.partners.url!}
@@ -117,6 +98,12 @@ export const loadPartners = () => (dispatch: any) => {
     .catch((error: AnyObject) => {
       logError('loadPartners req error...', LOGS_PREFIX, error);
     });
+};
+
+export const getPartners = () => {
+  return sendRequest({
+    endpoint: {url: etoolsEndpoints.partners.url!}
+  });
 };
 
 export const loadLocations = () => (dispatch: any) => {
@@ -129,6 +116,12 @@ export const loadLocations = () => (dispatch: any) => {
     });
 };
 
+export const getLocations = () => {
+  return sendRequest({
+    endpoint: {url: etoolsEndpoints.locations.url!}
+  });
+};
+
 export const loadSections = () => (dispatch: any) => {
   sendRequest({
     endpoint: {url: etoolsEndpoints.sections.url!}
@@ -137,6 +130,12 @@ export const loadSections = () => (dispatch: any) => {
     .catch((error: AnyObject) => {
       logError('loadSections req error...', LOGS_PREFIX, error);
     });
+};
+
+export const getSections = () => {
+  return sendRequest({
+    endpoint: {url: etoolsEndpoints.sections.url!}
+  });
 };
 
 export const loadDisaggregations = () => (dispatch: any) => {
@@ -149,19 +148,25 @@ export const loadDisaggregations = () => (dispatch: any) => {
     });
 };
 
+export const getDisaggregations = () => {
+  return sendRequest({
+    endpoint: {url: etoolsEndpoints.disaggregations.url!}
+  });
+};
+
 const handleStaticData = (staticData: AnyObject) => (dispatch: any) => {
   if (staticData) {
-    if (staticData.location_types) {
-      dispatch(setLocationTypes(staticData.location_types));
-    }
-    if (staticData.intervention_doc_type) {
-      dispatch(setDocumentTypes(staticData.intervention_doc_type));
-    }
-    if (staticData.genderEquityRatings) {
-      dispatch(setGenderEquityRatings(staticData.genderEquityRatings));
-    } else {
-      dispatch(setGenderEquityRatings(getGenderEquityRatingsDummy()));
-    }
+    const data = {
+      location_types: staticData.location_types,
+      intervention_doc_type: staticData.intervention_doc_type,
+      genderEquityRatings: staticData.genderEquityRatings
+        ? staticData.genderEquityRatings
+        : getGenderEquityRatingsDummy()
+    };
+    dispatch({
+      type: SET_STATIC_DATA,
+      staticData: data
+    });
   }
 };
 
@@ -173,4 +178,10 @@ export const loadStaticData = () => (dispatch: any) => {
     .catch((error: AnyObject) => {
       logError('loadStaticData req error...', LOGS_PREFIX, error);
     });
+};
+
+export const getStaticData = () => {
+  return sendRequest({
+    endpoint: {url: etoolsEndpoints.static.url!}
+  });
 };

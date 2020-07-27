@@ -16,6 +16,8 @@ import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {getStore} from '../../utils/redux-store-access';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {validateRequiredFields} from '../../utils/validation-helper';
+import {isJsonStrMatch} from '../../utils/utils';
+import {patchIntervention} from '../../common/actions';
 
 /**
  * @customElement
@@ -28,14 +30,15 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
 
   render() {
     if (!this.documentDetails) {
-      return html` ${sharedStyles}
+      return html`<style>
+          ${sharedStyles}
+        </style>
         <etools-loading loading-text="Loading..." active></etools-loading>`;
     }
     // language=HTML
     return html`
-      ${sharedStyles}
       <style>
-        :host {
+        ${sharedStyles} :host {
           display: block;
           margin-bottom: 24px;
         }
@@ -45,11 +48,7 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
         <etools-loading loading-text="Loading..." .active="${this.showLoading}"></etools-loading>
 
         <div slot="panel-btns">
-          <paper-icon-button
-            icon="create"
-            @tap="${this.allowEdit}"
-            ?hidden="${this.hideEditIcon(this.editMode, this.canEditDocumentDetails)}"
-          ></paper-icon-button>
+          ${this.renderEditBtn(this.editMode, this.canEditAtLeastOneField)}
         </div>
 
         <div class="row-padding-v">
@@ -59,6 +58,7 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
             always-float-label
             placeholder="—"
             .value="${this.documentDetails.title}"
+            @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'title')}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.title)}"
             ?required="${this.permissions.required.title}"
           >
@@ -73,6 +73,7 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
             type="text"
             placeholder="—"
             .value="${this.documentDetails.context}"
+            @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'context')}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.context)}"
             ?required="${this.permissions.required.context}"
           >
@@ -86,6 +87,7 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
             always-float-label
             placeholder="—"
             .value="${this.documentDetails.implementation_strategy}"
+            @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'implementation_strategy')}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.implementation_strategy)}"
             ?required="${this.permissions.required.implementation_strategy}"
           >
@@ -94,28 +96,19 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
 
         <div class="row-padding-v">
           <paper-textarea
-            id="ip_progr_contrib"
+            id="ip_program_contribution"
             label="Partner non-financial contribution"
             always-float-label
             placeholder="—"
-            .value="${this.documentDetails.ip_progr_contrib}"
-            ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.ip_progr_contrib)}"
-            ?required="${this.permissions.required.ip_progr_contrib}"
+            .value="${this.documentDetails.ip_program_contribution}"
+            @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'ip_program_contribution')}"
+            ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.ip_program_contribution)}"
+            ?required="${this.permissions.required.ip_program_contribution}"
           >
           </paper-textarea>
         </div>
 
-        <div
-          class="layout-horizontal right-align row-padding-v"
-          ?hidden="${this.hideActionButtons(this.editMode, this.canEditDocumentDetails)}"
-        >
-          <paper-button class="default" @tap="${this.cancelDocumentDetails}">
-            Cancel
-          </paper-button>
-          <paper-button class="primary" @tap="${this.saveDocumentDetails}">
-            Save
-          </paper-button>
-        </div>
+        ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
       </etools-content-panel>
     `;
   }
@@ -143,16 +136,19 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
       return;
     }
     this.documentDetails = selectDocumentDetails(state);
-    this.permissions = selectDocumentDetailsPermissions(state);
-    this.setCanEditDocumentDetails(this.permissions.edit);
     this.originalDocumentDetails = cloneDeep(this.documentDetails);
+    this.sePermissions(state);
   }
 
-  setCanEditDocumentDetails(_editPermissions: DocumentDetailsPermissions) {
-    this.canEditDocumentDetails = true; // TODO
+  private sePermissions(state: any) {
+    const newPermissions = selectDocumentDetailsPermissions(state);
+    if (!isJsonStrMatch(this.permissions, newPermissions)) {
+      this.permissions = newPermissions;
+      this.set_canEditAtLeastOneField(this.permissions.edit);
+    }
   }
 
-  cancelDocumentDetails() {
+  cancel() {
     Object.assign(this.documentDetails, this.originalDocumentDetails);
     this.documentDetails = cloneDeep(this.originalDocumentDetails);
     this.editMode = false;
@@ -162,8 +158,15 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
     return validateRequiredFields(this);
   }
 
-  saveDocumentDetails() {
-    this.validate();
-    this.editMode = false;
+  save() {
+    if (!this.validate()) {
+      return;
+    }
+    getStore()
+      .dispatch(patchIntervention(this.dataToSave))
+      .then(() => {
+        this.editMode = false;
+        this.dataToSave = {};
+      });
   }
 }

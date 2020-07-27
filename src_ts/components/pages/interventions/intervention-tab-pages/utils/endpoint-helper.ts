@@ -1,7 +1,7 @@
 import {EtoolsRequestEndpoint} from '@unicef-polymer/etools-ajax';
 import cloneDeep from 'lodash-es/cloneDeep';
-import {AnyObject} from '../common/types/types';
 import {EtoolsEndpoint} from './intervention-endpoints';
+import {AnyObject} from '../common/models/globals.types';
 
 const generateUrlFromTemplate = (tmpl: string, data: AnyObject | undefined) => {
   if (!tmpl) {
