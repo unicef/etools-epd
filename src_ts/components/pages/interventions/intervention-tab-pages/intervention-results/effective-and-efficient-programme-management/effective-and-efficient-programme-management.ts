@@ -36,7 +36,9 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
   render() {
     // language=HTML
     return html`
-      ${sharedStyles}
+      <style>
+        ${sharedStyles}
+      </style>
       <style>
         :host {
           display: block;
