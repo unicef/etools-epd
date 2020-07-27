@@ -39,9 +39,8 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
   }
   render() {
     return html`
-      ${sharedStyles}
       <style>
-        :host {
+        ${sharedStyles} :host {
           display: block;
           margin-bottom: 24px;
           --ecp-content-padding: 0;
@@ -146,12 +145,11 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
     return childRow;
   }
 
-  hideEditIcon(editMode: boolean, canEdit: boolean) {
-    return !canEdit || editMode;
-  }
-
   getTableStyle() {
-    return html`${sharedStyles} ${customStyles}`;
+    return html`<style>
+        ${sharedStyles}
+      </style>
+      ${customStyles}`;
   }
 
   cancelSupply() {

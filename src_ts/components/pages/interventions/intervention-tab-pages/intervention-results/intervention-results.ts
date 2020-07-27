@@ -15,9 +15,9 @@ export class InterventionResults extends LitElement {
       <style></style>
 
       <budget-summary></budget-summary>
-      <supply-agreements></supply-agreements>
       <results-structure></results-structure>
       <effective-and-efficient-programme-management></effective-and-efficient-programme-management>
+      <supply-agreements></supply-agreements>
     `;
   }
 }

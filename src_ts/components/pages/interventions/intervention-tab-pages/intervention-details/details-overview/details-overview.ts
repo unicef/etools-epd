@@ -21,7 +21,9 @@ export class DetailsOverview extends connect(getStore())(LitElement) {
   render() {
     // language=HTML
     if (!this.interventionOverview) {
-      return html` ${sharedStyles}
+      return html` <style>
+          ${sharedStyles}
+        </style>
         <etools-loading loading-text="Loading..." active></etools-loading>`;
     }
     return html`

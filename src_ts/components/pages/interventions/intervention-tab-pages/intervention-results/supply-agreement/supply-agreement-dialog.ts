@@ -20,8 +20,8 @@ export class SupplyAgreementDialog extends connect(getStore())(LitElement) {
   render() {
     // language=HTML
     return html`
-    ${sharedStyles}
       <style>
+        ${sharedStyles}
       </style>
 
       <etools-dialog
