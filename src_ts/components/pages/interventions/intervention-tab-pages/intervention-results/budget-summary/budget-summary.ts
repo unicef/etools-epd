@@ -7,6 +7,8 @@ import {BudgetSummary} from './budgetSummary.models';
 import {selectBudgetSummary} from './budgetSummary.selectors';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../../utils/redux-store-access';
+import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import get from 'lodash-es/get';
 
 /**
  * @customElement
@@ -76,64 +78,64 @@ export class BudgetSummaryEl extends connect(getStore())(LitElement) {
         <div class="layout-horizontal">
           <div class="col col-1">
             <span>
-              <label class="input-label" ?empty="${!this.budgetSummary.currency}">
-                ${this.budgetSummary.currency}
+              <label class="input-label" ?empty="${!this.budgetSummary?.currency}">
+                ${this.budgetSummary?.currency}
               </label>
             </span>
           </div>
           <div class="col col-1">
             <span>
-              <label class="input-label" ?empty="${!this.budgetSummary.hq_rate}">
-                ${this.budgetSummary.hq_rate} %
+              <label class="input-label" ?empty="${!this.budgetSummary?.hq_rate}">
+                ${this.budgetSummary?.hq_rate} %
               </label>
             </span>
           </div>
           <div class="col col-2">
             <span>
-              <label class="input-label" ?empty="${!this.budgetSummary.prgm_effectiveness}">
-                ${this.budgetSummary.prgm_effectiveness} %
+              <label class="input-label" ?empty="${!this.budgetSummary?.prgm_effectiveness}">
+                ${this.budgetSummary?.prgm_effectiveness} %
               </label>
             </span>
           </div>
           <div class="col col-1">
             <span>
-              <label class="input-label" ?empty="${!this.budgetSummary.total_cso}">
-                ${this.budgetSummary.total_cso}
+              <label class="input-label" ?empty="${!this.budgetSummary?.total_cso}">
+                ${this.budgetSummary?.total_cso}
               </label>
             </span>
           </div>
           <div class="col col-1">
             <span>
-              <label class="input-label" ?empty="${!this.budgetSummary.total_unicef}">
-                ${this.budgetSummary.total_unicef}
+              <label class="input-label" ?empty="${!this.budgetSummary?.total_unicef}">
+                ${this.budgetSummary?.total_unicef}
               </label>
             </span>
           </div>
           <div class="col col-1">
             <span>
-              <label class="input-label" ?empty="${!this.budgetSummary.total_supply}">
-                ${this.budgetSummary.total_supply}
+              <label class="input-label" ?empty="${!this.budgetSummary?.total_supply}">
+                ${this.budgetSummary?.total_supply}
               </label>
             </span>
           </div>
           <div class="col col-1">
             <span>
-              <label class="input-label" ?empty="${!this.budgetSummary.partner_contrib}">
-                ${this.budgetSummary.partner_contrib}
+              <label class="input-label" ?empty="${!this.budgetSummary?.partner_contrib}">
+                ${this.budgetSummary?.partner_contrib}
               </label>
             </span>
           </div>
           <div class="col col-1">
             <span>
-              <label class="input-label" ?empty="${!this.budgetSummary.total_cash}">
-                ${this.budgetSummary.total_cash}
+              <label class="input-label" ?empty="${!this.budgetSummary?.total_cash}">
+                ${this.budgetSummary?.total_cash}
               </label>
             </span>
           </div>
           <div class="col col-2">
             <span>
-              <label class="input-label" ?empty="${!this.budgetSummary.total_amt}">
-                ${this.budgetSummary.total_amt}
+              <label class="input-label" ?empty="${!this.budgetSummary?.total_amt}">
+                ${this.budgetSummary?.total_amt}
               </label>
             </span>
           </div>
@@ -150,6 +152,9 @@ export class BudgetSummaryEl extends connect(getStore())(LitElement) {
   }
 
   public stateChanged(state: any) {
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'results')) {
+      return;
+    }
     if (state.interventions.current) {
       this.budgetSummary = selectBudgetSummary(state);
     }
