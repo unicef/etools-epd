@@ -12,7 +12,7 @@ import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import './qpr-list.js';
 import CONSTANTS from '../../../common/constants';
 import '@unicef-polymer/etools-date-time/calendar-lite.js';
-import {gridLayoutStylesPolymer} from '../styles/grid-layout-styles-polymer';
+import {gridLayoutStylesPolymer} from '../../../common/styles/grid-layout-styles-polymer';
 import {buttonsStyles} from '../styles/buttons-styles-polymer';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';

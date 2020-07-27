@@ -10,7 +10,7 @@ import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import './hru-list.js';
 import CONSTANTS from '../../../common/constants';
 import {fireEvent} from '../../../utils/fire-custom-event';
-import {gridLayoutStylesPolymer} from '../styles/grid-layout-styles-polymer';
+import {gridLayoutStylesPolymer} from '../../../common/styles/grid-layout-styles-polymer';
 import {buttonsStyles} from '../styles/buttons-styles-polymer';
 import {requiredFieldStarredStyles} from '../../../common/styles/required-field-styles';
 import {prepareDatepickerDate, convertDate} from '../../../utils/date-utils';

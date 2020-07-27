@@ -134,7 +134,7 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
     if (!state.interventions.current) {
       return;
     }
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'details')) {
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'results')) {
       return;
     }
 

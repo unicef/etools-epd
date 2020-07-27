@@ -1,6 +1,6 @@
 /* eslint-disable lit/no-legacy-template-syntax */
 import {PolymerElement, html} from '@polymer/polymer';
-import {gridLayoutStylesPolymer} from '../styles/grid-layout-styles-polymer';
+import {gridLayoutStylesPolymer} from '../../../common/styles/grid-layout-styles-polymer';
 // @lajos bellow 2 where imported from PMP
 // import EndpointsMixin from '../mixins/endpoints-mixin';
 import {getEndpoint} from '../../../utils/endpoint-helper';
