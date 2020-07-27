@@ -24,7 +24,7 @@ import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import {isJsonStrMatch} from '../../utils/utils';
-import {isUnicefUSer} from '../../common/selectors';
+// import {isUnicefUSer} from '../../common/selectors';
 import isEmpty from 'lodash-es/isEmpty';
 import {PartnerStaffMember} from '../../common/models/partner.types';
 import {MinimalAgreement} from '../../common/models/agreement.types';
@@ -39,14 +39,15 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
   }
   render() {
     if (!this.originalData) {
-      return html` ${sharedStyles}
+      return html`<style>
+          ${sharedStyles}
+        </style>
         <etools-loading loading-text="Loading..." active></etools-loading>`;
     }
     // language=HTML
     return html`
-      ${sharedStyles}
       <style>
-        :host {
+        ${sharedStyles} :host {
           display: block;
           margin-bottom: 24px;
         }
@@ -173,28 +174,21 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
 
     await this.setPartnerDetailsAndPopulateDropdowns(state);
 
-    this.sePermissions(state);
-  }
-
-  private sePermissions(state: any) {
-    const newPermissions = selectPartnerDetailsPermissions(state);
-    if (!isJsonStrMatch(this.permissions, newPermissions)) {
-      this.permissions = newPermissions;
-      this.set_canEditAtLeastOneField(this.permissions.edit);
-    }
+    this.permissions = selectPartnerDetailsPermissions(state);
+    this.set_canEditAtLeastOneField(this.permissions.edit);
   }
 
   async setPartnerDetailsAndPopulateDropdowns(state: any) {
     const newPartnerDetails = selectPartnerDetails(state);
     if (!isJsonStrMatch(this.originalData, newPartnerDetails)) {
       if (this.partnerIdHasChanged(newPartnerDetails)) {
-        await this.populateDropdowns(state, newPartnerDetails.partner_id!);
+        await this.populateDropdowns(newPartnerDetails.partner_id!);
       }
       this.originalData = newPartnerDetails;
     }
   }
 
-  async populateDropdowns(state: any, partnerId: number) {
+  async populateDropdowns(partnerId: number) {
     this.partnerStaffMembers = await this.getAllPartnerStaffMembers(partnerId!);
 
     // Uncomment when we can login with partner users

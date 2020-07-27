@@ -9,6 +9,7 @@ documentContainer.innerHTML = `
         --primary-color: #0099ff;
         --primary-background-color: #FFFFFF;
         --secondary-background-color: #eeeeee;
+        --medium-theme-background-color: #eeeeee;
 
         --primary-text-color: rgba(0, 0, 0, 0.87);
         --secondary-text-color: rgba(0, 0, 0, 0.54);
@@ -22,6 +23,7 @@ documentContainer.innerHTML = `
         --main-border-color: #c1c1c1;
         --light-divider-color: rgba(0, 0, 0, 0.12);
         --dark-divider-color: rgba(0, 0, 0, 0.40);
+        --darker-divider-color: #9D9D9D;
 
         --dark-icon-color: rgba(0, 0, 0, 0.65);
         --light-icon-color: rgba(255, 255, 255, 1);
@@ -75,7 +77,14 @@ documentContainer.innerHTML = `
         --paper-checkbox-unchecked-color: var(--secondary-text-color);
         --paper-radio-button-checked-color: var(--primary-color);
         --paper-radio-button-unchecked-color: var(--secondary-text-color);
-
+        --basic-btn-style: {
+          width: auto;
+          margin: 0;
+          color: var(--primary-color);
+          padding: 0 5px 0 0;
+          font-size: 14px;
+          font-weight: bold;
+        };
       }
     </style>
   </custom-style>`;

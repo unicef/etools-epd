@@ -1,6 +1,6 @@
 import {ModelsBase} from '../../common/models/models.base';
 import {InterventionPermissionsFields, Intervention} from '../../common/models/intervention.types';
-import {AnyObject} from '../../../../../../types/globals';
+import {AnyObject} from '../../common/models/globals.types';
 
 export class PdUnicefDetails extends ModelsBase {
   constructor(intervention: Intervention) {

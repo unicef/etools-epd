@@ -6,8 +6,8 @@ import {buttonsStyles} from '../../common/styles/button-styles';
 import {RootState} from '../../../../../../redux/store';
 import {getStore} from '../../utils/redux-store-access';
 import {connect} from 'pwa-helpers/connect-mixin';
-import {LocationObject} from '../../common/types/types';
 import get from 'lodash-es/get';
+import {LocationObject} from '../../common/models/globals.types';
 
 class GroupedLocations {
   adminLevelLocation: LocationObject | null = null;

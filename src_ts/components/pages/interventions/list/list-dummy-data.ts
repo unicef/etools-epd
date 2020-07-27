@@ -1,7 +1,6 @@
 /**
  * TODO: this file provide mock-up data for list page
  */
-import {EtoolsPaginator} from '../../../common/layout/etools-table/pagination/paginator';
 
 const ratings: string[] = ['Low', 'High', 'Medium'];
 const statuses: string[] = ['Assigned', 'Submitted', 'Rejected'];
@@ -32,7 +31,7 @@ while (i < 150) {
   i++;
 }
 
-export const getListDummydata = (paginator: EtoolsPaginator) => {
+export const getListDummydata = (paginator: any) => {
   return new Promise((resolve, reject) => {
     try {
       const sliceStart = (paginator.page - 1) * paginator.page_size;

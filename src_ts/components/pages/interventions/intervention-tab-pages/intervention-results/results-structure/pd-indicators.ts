@@ -5,7 +5,7 @@ import '@polymer/iron-icons';
 import {Indicator} from '../../common/models/intervention.types';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../../utils/redux-store-access';
-import {Disaggregation, DisaggregationValue, LocationObject, Section} from '../../common/types/types';
+import {Disaggregation, DisaggregationValue, LocationObject, Section} from '../../common/models/globals.types';
 
 @customElement('pd-indicators')
 export class PdIndicators extends connect(getStore())(LitElement) {
