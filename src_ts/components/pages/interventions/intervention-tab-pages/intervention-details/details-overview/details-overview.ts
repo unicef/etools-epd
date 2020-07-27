@@ -91,7 +91,7 @@ export class DetailsOverview extends connect(getStore())(LitElement) {
             <div class="flex-1">
               <span>
                 <label class="input-label">
-                  ${this._getText(this.interventionOverview.humanitarian)}
+                  ${this._getText(this.interventionOverview.humanitarian_flag)}
                 </label>
               </span>
             </div>
