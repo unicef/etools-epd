@@ -1,6 +1,6 @@
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {logError, logWarn} from '@unicef-polymer/etools-behaviors/etools-logging.js';
-import {Constructor} from '../types/types';
+import {Constructor} from '../models/globals.types';
 import {LitElement} from 'lit-element';
 
 /**

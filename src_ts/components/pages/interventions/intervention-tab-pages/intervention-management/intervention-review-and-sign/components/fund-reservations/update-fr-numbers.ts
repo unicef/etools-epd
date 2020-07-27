@@ -9,7 +9,6 @@ import '@polymer/paper-icon-button/paper-icon-button';
 
 import '@unicef-polymer/etools-dialog/etools-dialog';
 import RepeatableDataSetsMixin from '../../../../common/mixins/repeatable-data-sets-mixin';
-// @lajos: to review changes
 import {fireEvent} from '../../../../../../../utils/fire-custom-event';
 import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
 import {repeatableDataSetsStyles} from '../../../../common/styles/repeatable-data-sets-styles';

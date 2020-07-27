@@ -1,4 +1,5 @@
 import {LitElement, customElement, html} from 'lit-element';
+import './intervention-review-and-sign/intervention-review-and-sign';
 
 /**
  * @customElement
@@ -11,6 +12,7 @@ export class InterventionManagement extends LitElement {
       <style></style>
 
       Management page
+      <intervention-review-and-sign> </intervention-review-and-sign>
     `;
   }
 }

@@ -15,9 +15,8 @@ import FrNumbersConsistencyMixin from '../../../../common/mixins/fr-numbers-cons
 import {frWarningsStyles} from '../../../../common/styles/fr-warnings-styles';
 import {FrsDetails, Fr, Intervention} from '../../../../common/models/intervention.types';
 import {epdCustomIcons} from '../../../../common/styles/epd-icons';
-// @lajos to be refactored
-import {fireEvent} from '../../../../../../utils/fire-custom-event.js';
-import {logWarn} from '@unicef-polymer/etools-behaviors/etools-logging.js';
+import {fireEvent} from '../../../../utils/fire-custom-event';
+import {logWarn} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {getArraysDiff} from '../../../../utils/utils';
 import {UpdateFrNumbersEl} from './update-fr-numbers';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';

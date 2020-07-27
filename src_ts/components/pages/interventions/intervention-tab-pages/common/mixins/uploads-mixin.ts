@@ -1,9 +1,9 @@
 // @lajos: tobe checked if correct
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 // @lajos: to check the rootState, for uploadStatus
-import {getStore, RootState} from '../../utils/redux-store-access';
+import {getStore} from '../../utils/redux-store-access';
 import {DECREASE_UNSAVED_UPLOADS, INCREASE_UPLOADS_IN_PROGRESS} from '../../utils/upload-status';
-import {Constructor} from '../types/types';
+import {Constructor} from '../models/globals.types';
 import {LitElement, property} from 'lit-element';
 /**
  * @polymer
@@ -21,7 +21,7 @@ function UploadsMixin<T extends Constructor<LitElement>>(baseClass: T) {
     @property({type: Number})
     unsavedUploads!: number;
 
-    uploadsStateChanged(state: RootState) {
+    uploadsStateChanged(state: any) {
       if (state.uploadStatus!.unsavedUploads !== this.unsavedUploads) {
         this.unsavedUploads = state.uploadStatus!.unsavedUploads;
       }

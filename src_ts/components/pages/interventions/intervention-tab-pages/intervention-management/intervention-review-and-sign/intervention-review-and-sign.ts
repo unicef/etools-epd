@@ -12,12 +12,11 @@ import '@unicef-polymer/etools-date-time/datepicker-lite';
 
 import '../../../../layout/etools-form-element-wrapper';
 
-import './components/amendments/pd-amendments.js.js';
-import './components/fund-reservations/fund-reservations.js.js';
+import './components/amendments/pd-amendments';
+import './components/fund-reservations/fund-reservations';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import MissingDropdownOptionsMixin from '../../common/mixins/missing-dropdwn-options-mixin';
 import UploadsMixin from '../../common/mixins/uploads-mixin';
-// @lajos: to review changes
 import {fireEvent} from '../../../../../utils/fire-custom-event';
 import {Intervention, Fr, InterventionPermissionsFields} from '../../common/models/intervention.types';
 import {Agreement} from '../../common/models/agreement.types';
@@ -47,7 +46,7 @@ import {AnyObject} from '../../../../../../types/globals';
  * @appliesMixin UploadsMixin
  */
 @customElement('intervention-review-and-sign')
-class InterventionReviewAndSign extends connect(getStore())(
+export class InterventionReviewAndSign extends connect(getStore())(
   ComponentBaseMixin(UploadsMixin(MissingDropdownOptionsMixin(LitElement)))
 ) {
   static get styles() {
@@ -564,5 +563,3 @@ class InterventionReviewAndSign extends connect(getStore())(
     return new Date();
   }
 }
-
-export default InterventionReviewAndSign;

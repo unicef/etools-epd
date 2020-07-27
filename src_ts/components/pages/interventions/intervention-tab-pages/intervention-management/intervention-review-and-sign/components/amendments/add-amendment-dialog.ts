@@ -6,8 +6,7 @@ import '@unicef-polymer/etools-upload/etools-upload';
 import '@unicef-polymer/etools-date-time/datepicker-lite';
 
 import '../../../../../../layout/etools-warn-message';
-// @lajos -> to be refactored
-import {fireEvent} from '../../../../../../utils/fire-custom-event';
+import {fireEvent} from '../../../../utils/fire-custom-event';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../../../../utils/redux-store-access';
 import '../../../../common/styles/grid-layout-styles-lit'
@@ -32,7 +31,7 @@ import {getEndpoint} from '../../../../utils/endpoint-helper';
  * @mixinFunction
  * @appliesMixin EndpointsMixin
  */
-customElement('add-amendment-dialog')
+customElement('add-amendment-dialog');
 export class AddAmendmentDialog extends connect(getStore())(LitElement) {
   static get style() {
     return [gridLayoutStylesLit, buttonsStyles];

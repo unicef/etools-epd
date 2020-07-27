@@ -1,21 +1,21 @@
-import {PolymerElement, html} from '@polymer/polymer';
-import '@polymer/iron-icons/iron-icons.js';
-import '@polymer/paper-icon-button/paper-icon-button.js';
-import CommonMixin from '../../../../../../mixins/common-mixin.js';
+import {LitElement, html, property, customElement} from 'lit-element';
+import {getStore} from '../../../../utils/redux-store-access';
+import '@polymer/iron-icons/iron-icons';
+import '@polymer/paper-icon-button/paper-icon-button';
+// @lajos temporary fix
+import CommonMixin from '../../../../common/mixins/common-mixin';
 
-import '@unicef-polymer/etools-content-panel/etools-content-panel.js';
-import '@unicef-polymer/etools-data-table/etools-data-table.js';
+import '@unicef-polymer/etools-content-panel/etools-content-panel';
+import '@unicef-polymer/etools-data-table/etools-data-table';
 
-import './add-amendment-dialog.js';
-import {SharedStyles} from '../../../../../../styles/shared-styles.js';
-import {gridLayoutStyles} from '../../../../../../styles/grid-layout-styles.js';
-import {fireEvent} from '../../../../../../utils/fire-custom-event.js';
+import './add-amendment-dialog';
+import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
+import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
+import {fireEvent} from '../../../../utils/fire-custom-event.js';
 import {connect} from 'pwa-helpers/connect-mixin';
-import {store, RootState} from '../../../../../../../store.js';
-import {setInAmendment} from '../../../../../../../actions/page-data.js';
-import {isJsonStrMatch} from '../../../../../../utils/utils.js';
-import {LabelAndValue} from '../../../../../../../typings/globals.types.js';
-import {property} from '@polymer/decorators';
+import {setInAmendment} from '../../../../utils/page-data';
+import {isJsonStrMatch} from '../../../../utils/utils';
+import {LabelAndValue} from '../../../../common/models/globals.types';
 import {AddAmendmentDialog} from './add-amendment-dialog';
 
 /**
@@ -24,10 +24,14 @@ import {AddAmendmentDialog} from './add-amendment-dialog';
  * @mixinFunction
  * @appliesMixin CommonMixin
  */
-class PdAmendments extends connect(store)(CommonMixin(PolymerElement)) {
+customElement('apd-amendments');
+export class PdAmendments extends connect(getStore())(CommonMixin(LitElement)) {
+  static get style() {
+    return [gridLayoutStylesLit];
+  }
   static get template() {
     return html`
-      ${SharedStyles} ${gridLayoutStyles}
+      ${sharedStyles}
       <style include="data-table-styles">
         [hidden] {
           display: none !important;
@@ -56,12 +60,11 @@ class PdAmendments extends connect(store)(CommonMixin(PolymerElement)) {
       <etools-content-panel panel-title="Amendments">
         <template is="dom-if" if="[[editMode]]">
           <div slot="panel-btns">
-            <paper-icon-button icon="add-box" title="Add Amendment" on-tap="_showAddAmendmentDialog">
-            </paper-icon-button>
+            <paper-icon-button icon="add-box" title="Add Amendment" @tap="_showAddAmendmentDialog"></paper-icon-button>
           </div>
         </template>
         <div class="p-relative" id="amendments-wrapper">
-          <etools-data-table-header id="listHeader" no-collapse no-title hidden$="[[_emptyList(amendments.length)]]">
+          <etools-data-table-header id="listHeader" no-collapse no-title hidden="?[[_emptyList(amendments.length)]]">
             <etools-data-table-column class="col-1">
               Ref #
             </etools-data-table-column>
@@ -98,23 +101,23 @@ class PdAmendments extends connect(store)(CommonMixin(PolymerElement)) {
                   <iron-icon icon="attachment" class="attachment"></iron-icon>
                   <span class="break-word file-label">
                     <!-- target="_blank" is there for IE -->
-                    <a href$="[[item.signed_amendment_attachment]]" target="_blank" download>
+                    <a href="?[[item.signed_amendment_attachment]]" target="_blank" download>
                       [[getFileNameFromURL(item.signed_amendment_attachment)]]
                     </a>
                   </span>
                 </span>
                 <span class="col-data flex-c">
-                  <span hidden$="[[item.internal_prc_review]]" class="placeholder-style">&#8212;</span>
-                  <iron-icon icon="attachment" class="attachment" hidden$="[[!item.internal_prc_review]]"></iron-icon>
+                  <span hidden="?[[item.internal_prc_review]]" class="placeholder-style">&#8212;</span>
+                  <iron-icon icon="attachment" class="attachment" hidden="?[[!item.internal_prc_review]]"></iron-icon>
                   <span class="break-word file-label">
                     <!-- target="_blank" is there for IE -->
-                    <a href$="[[item.internal_prc_review]]" target="_blank" download>
+                    <a href="?[[item.internal_prc_review]]" target="_blank" download>
                       [[getFileNameFromURL(item.internal_prc_review)]]
                     </a>
                   </span>
                 </span>
                 <div class="col-data flex-c break-word">
-                  <span hidden$="[[_showOtherInput(item.types, item.types.length, index)]]" class="placeholder-style"
+                  <span hidden="?[[_showOtherInput(item.types, item.types.length, index)]]" class="placeholder-style"
                     >&#8212;</span
                   >
                   <template is="dom-if" if="[[_showOtherInput(item.types, item.types.length, index)]]">
@@ -164,7 +167,7 @@ class PdAmendments extends connect(store)(CommonMixin(PolymerElement)) {
     return ['_dataHasChanged(amendments)'];
   }
 
-  stateChanged(state: RootState) {
+  stateChanged(state: any) {
     if (!isJsonStrMatch(this.amendmentTypes, state.commonData!.interventionAmendmentTypes)) {
       this.amendmentTypes = [...state.commonData!.interventionAmendmentTypes];
     }
@@ -175,6 +178,7 @@ class PdAmendments extends connect(store)(CommonMixin(PolymerElement)) {
   }
 
   ready() {
+    // @lajos -> should this be connected callback?
     super.ready();
     this._createAddAmendmentDialog();
   }
@@ -229,14 +233,16 @@ class PdAmendments extends connect(store)(CommonMixin(PolymerElement)) {
     event.stopImmediatePropagation();
     const data = event.detail;
     this._unlockInterventionDetailsFields();
-    this.push('amendments', data);
-    store.dispatch(setInAmendment(true));
+    // check bellow
+    // this.push('amendments', data);
+    this.amendments.push(data);
+    getStore().dispatch(setInAmendment(true));
     fireEvent(this, 'new-amendment-added');
   }
 
   _dataHasChanged(amendments: any) {
     if (amendments instanceof Array === false) {
-      this.set('amendments', []);
+      this.amendments = [];
     }
   }
 
@@ -259,5 +265,3 @@ class PdAmendments extends connect(store)(CommonMixin(PolymerElement)) {
     return listLength === 0;
   }
 }
-
-window.customElements.define('pd-amendments', PdAmendments);

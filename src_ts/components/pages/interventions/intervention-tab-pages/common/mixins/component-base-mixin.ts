@@ -1,5 +1,5 @@
 import {LitElement, property, html} from 'lit-element';
-import {Constructor, AnyObject} from '../models/globals.types';
+import {AnyObject, Constructor} from '../models/globals.types';
 
 function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
   class ComponentBaseClass extends baseClass {
