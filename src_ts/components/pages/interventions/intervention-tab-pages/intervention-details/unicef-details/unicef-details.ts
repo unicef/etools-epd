@@ -11,7 +11,6 @@ import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
-import {AnyObject} from '../../../../../../types/globals';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {selectPdUnicefDetails, selectPdUnicefDetailsPermissions} from './pdUnicefDetails.selectors';
 import {PdUnicefDetails, PdUnicefDetailsPermissions} from './pdUnicefDetails.models';
@@ -19,6 +18,7 @@ import {Permission} from '../../common/models/intervention.types';
 import {validateRequiredFields} from '../../utils/validation-helper';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../../utils/redux-store-access';
+import {AnyObject} from '../../common/models/globals.types';
 // import {handleItemsNoLongerAssignedToCurrentCountry} from '../../utils/common-methods';
 
 /**
@@ -32,12 +32,14 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
   render() {
     // language=HTML
     if (!this.pdUnicefDetails) {
-      return html` ${sharedStyles}
+      return html`<style>
+          ${sharedStyles}
+        </style>
         <etools-loading loading-text="Loading..." active></etools-loading>`;
     }
     return html`
-    ${sharedStyles}
       <style>
+      ${sharedStyles}
         :host {
           display: block;
           margin-bottom: 24px;

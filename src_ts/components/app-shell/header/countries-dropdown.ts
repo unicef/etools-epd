@@ -7,12 +7,12 @@ import {customElement, LitElement, html, property, query} from 'lit-element';
 
 // import EndpointsMixin from '../../endpoints/endpoints-mixin.js';
 import {fireEvent} from '../../utils/fire-custom-event';
-import {AnyObject} from '../../../types/globals';
 import {EtoolsUserModel} from '../../user/user-model';
 import {countriesDropdownStyles} from './countries-dropdown-styles';
 import {changeCurrentUserCountry} from '../../user/user-actions';
 import {DEFAULT_ROUTE, updateAppLocation} from '../../../routing/routes';
 import {ROOT_PATH} from '../../../config/config';
+import {AnyObject} from '../../../types/globals';
 
 /**
  * @LitElement

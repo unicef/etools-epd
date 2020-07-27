@@ -1,7 +1,6 @@
 /**
  * TODO: this file provide mock-up data for list page
  */
-
 import {InterventionSupplyItem} from '../intervention-tab-pages/common/models/intervention.types';
 
 const ratings: string[] = ['Low', 'High', 'Medium'];
@@ -32,6 +31,23 @@ while (i < 150) {
   data.push(item);
   i++;
 }
+
+export const getListDummydata = (paginator: any) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const sliceStart = (paginator.page - 1) * paginator.page_size;
+      const sliceEnd = paginator.page_size * paginator.page;
+      const pageData = data.slice(sliceStart, sliceEnd);
+      const paginatedData: any = {
+        count: data.length,
+        results: pageData
+      };
+      resolve(paginatedData);
+    } catch (err) {
+      reject(err);
+    }
+  });
+};
 
 export const getGenderEquityRatingsDummy = () => {
   return [

@@ -30,14 +30,15 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
 
   render() {
     if (!this.documentDetails) {
-      return html` ${sharedStyles}
+      return html`<style>
+          ${sharedStyles}
+        </style>
         <etools-loading loading-text="Loading..." active></etools-loading>`;
     }
     // language=HTML
     return html`
-      ${sharedStyles}
       <style>
-        :host {
+        ${sharedStyles} :host {
           display: block;
           margin-bottom: 24px;
         }
@@ -57,6 +58,7 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
             always-float-label
             placeholder="—"
             .value="${this.documentDetails.title}"
+            @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'title')}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.title)}"
             ?required="${this.permissions.required.title}"
           >
@@ -71,6 +73,7 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
             type="text"
             placeholder="—"
             .value="${this.documentDetails.context}"
+            @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'context')}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.context)}"
             ?required="${this.permissions.required.context}"
           >
@@ -84,6 +87,7 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
             always-float-label
             placeholder="—"
             .value="${this.documentDetails.implementation_strategy}"
+            @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'implementation_strategy')}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.implementation_strategy)}"
             ?required="${this.permissions.required.implementation_strategy}"
           >
@@ -92,19 +96,19 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
 
         <div class="row-padding-v">
           <paper-textarea
-            id="ip_progr_contrib"
+            id="ip_program_contribution"
             label="Partner non-financial contribution"
             always-float-label
             placeholder="—"
-            .value="${this.documentDetails.ip_progr_contrib}"
-            ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.ip_progr_contrib)}"
-            ?required="${this.permissions.required.ip_progr_contrib}"
+            .value="${this.documentDetails.ip_program_contribution}"
+            @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'ip_program_contribution')}"
+            ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.ip_program_contribution)}"
+            ?required="${this.permissions.required.ip_program_contribution}"
           >
           </paper-textarea>
         </div>
 
         ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
-   
       </etools-content-panel>
     `;
   }
@@ -159,9 +163,10 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
       return;
     }
     getStore()
-      .dispatch(patchIntervention(this.documentDetails))
+      .dispatch(patchIntervention(this.dataToSave))
       .then(() => {
         this.editMode = false;
+        this.dataToSave = {};
       });
   }
 }
