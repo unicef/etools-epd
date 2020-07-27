@@ -1,3 +1,4 @@
+/* eslint-disable lit/no-legacy-template-syntax */
 import {PolymerElement, html} from '@polymer/polymer/polymer-element';
 import '@polymer/polymer/polymer-element';
 import '@polymer/iron-icons/iron-icons';
@@ -12,7 +13,7 @@ import './qpr/quarterly-reporting-requirements';
 import './hr/humanitarian-reporting-req-unicef';
 import './hr/humanitarian-reporting-req-cluster';
 import './srr/special-reporting-requirements';
-import {gridLayoutStyles} from './styles/grid-layout-styles';
+import {gridLayoutStylesPolymer} from './styles/grid-layout-styles-polymer';
 import {pageCommonStyles} from './styles/page-common-styles';
 // @lajos needs to be checked if OK
 import {connect} from 'pwa-helpers/connect-mixin';
@@ -21,9 +22,9 @@ import {getStore} from '../../utils/redux-store-access';
 import {property} from '@polymer/decorators';
 import {HumanitarianReportingReqUnicefEl} from './hr/humanitarian-reporting-req-unicef';
 import {QuarterlyReportingRequirementsEL} from './qpr/quarterly-reporting-requirements';
-import {AnyObject} from '../../../../../../types/globals';
 import get from 'lodash-es/get';
 import cloneDeep from 'lodash-es/cloneDeep';
+import {AnyObject} from '../../common/models/globals.types';
 
 /**
  * @polymer
@@ -32,7 +33,7 @@ import cloneDeep from 'lodash-es/cloneDeep';
 class PartnerReportingRequirements extends connect(getStore())(PolymerElement) {
   static get template() {
     return html`
-      ${gridLayoutStyles}${pageCommonStyles}
+      ${gridLayoutStylesPolymer()}${pageCommonStyles}
       <style>
         :host {
           display: block;
@@ -99,7 +100,7 @@ class PartnerReportingRequirements extends connect(getStore())(PolymerElement) {
         }
       </style>
 
-      <etools-content-panel class="content-section" panel-title="Partner Reporting Requirements">
+      <etools-content-panel show-expand-btn class="content-section" panel-title="Partner Reporting Requirements">
         <div class="flex-c layout-horizontal">
           <div class="reports-menu nav-menu">
             <iron-selector selected="{{selectedReportType}}" attr-for-selected="name" selectable="paper-item">
@@ -214,6 +215,9 @@ class PartnerReportingRequirements extends connect(getStore())(PolymerElement) {
   intervention!: AnyObject;
 
   stateChanged(state: any) {
+    if (!get(state, 'interventions.current')) {
+      return;
+    }
     // @lajos TO DO: get correct values for bellow
     // this.editMode = state.intervention!.permissions!.edit.reporting_requirements;
     const currentIntervention = get(state, 'interventions.current');

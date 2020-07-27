@@ -1,3 +1,4 @@
+/* eslint-disable lit/no-legacy-template-syntax */
 import {PolymerElement, html} from '@polymer/polymer';
 import '@unicef-polymer/etools-data-table/etools-data-table.js';
 
@@ -6,12 +7,12 @@ import '../mixins/reporting-req-past-dates-check';
 import '../styles/reporting-requirements-lists-styles';
 import CommonMixin from '../mixins/common-mixin';
 import ReportingReqPastDatesCheckMixin from '../mixins/reporting-req-past-dates-check';
-import {gridLayoutStyles} from '../styles/grid-layout-styles';
+import {gridLayoutStylesPolymer} from '../styles/grid-layout-styles-polymer';
 import {reportingRequirementsListStyles} from '../styles/reporting-requirements-lists-styles';
-import {isEmptyObject} from '../../../utils/types';
 import {fireEvent} from '../../../utils/fire-custom-event';
 import {property} from '@polymer/decorators';
 import {IconsActionsEl} from '../../../common/layout/icons-actions';
+import {isEmptyObject} from '../../../utils/utils';
 
 /**
  * @polymer
@@ -22,7 +23,7 @@ import {IconsActionsEl} from '../../../common/layout/icons-actions';
 class QprList extends CommonMixin(ReportingReqPastDatesCheckMixin(PolymerElement)) {
   static get template() {
     return html`
-      ${reportingRequirementsListStyles}${gridLayoutStyles}
+      ${reportingRequirementsListStyles}${gridLayoutStylesPolymer()}
       <style include="data-table-styles"></style>
 
       <etools-data-table-header no-collapse no-title>

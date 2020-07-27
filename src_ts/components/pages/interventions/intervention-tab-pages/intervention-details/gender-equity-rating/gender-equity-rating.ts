@@ -9,7 +9,6 @@ import {buttonsStyles} from '../../common/styles/button-styles';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import cloneDeep from 'lodash-es/cloneDeep';
-import {AnyObject} from '../../../../../../types/globals';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {selectGenderEquityRating, selectGenderEquityRatingPermissions} from './genderEquityRating.selectors';
 import {GenderEquityRating, GenderEquityRatingPermissions} from './genderEquityRating.models';
@@ -17,6 +16,7 @@ import {Permission} from '../../common/models/intervention.types';
 import {validateRequiredFields} from '../../utils/validation-helper';
 import {getStore} from '../../utils/redux-store-access';
 import {connect} from 'pwa-helpers/connect-mixin';
+import {AnyObject} from '../../common/models/globals.types';
 
 /**
  * @customElement
@@ -28,14 +28,15 @@ export class GenderEquityRatingElement extends connect(getStore())(ComponentBase
   }
   render() {
     if (!this.genderEquityRating || !this.ratings) {
-      return html` ${sharedStyles}
+      return html`<style>
+          ${sharedStyles}
+        </style>
         <etools-loading loading-text="Loading..." active></etools-loading>`;
     }
     // language=HTML
     return html`
-      ${sharedStyles}
       <style>
-        :host {
+        ${sharedStyles} :host {
           display: block;
           margin-bottom: 24px;
         }

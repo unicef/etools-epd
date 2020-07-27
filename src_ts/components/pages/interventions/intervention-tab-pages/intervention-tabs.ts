@@ -7,7 +7,6 @@ import '../../../common/layout/etools-tabs';
 import {pageContentHeaderSlottedStyles} from '../../../common/layout/page-content-header/page-content-header-slotted-styles';
 import '../../../common/layout/status/etools-status';
 
-import {AnyObject} from '../../../../types/globals';
 import {updateAppLocation} from '../../../../routing/routes';
 import {customElement, LitElement, html, property} from 'lit-element';
 import {pageLayoutStyles} from '../../../styles/page-layout-styles';
@@ -19,6 +18,7 @@ import {getIntervention} from '../../../../redux/actions/interventions';
 import {setStore, getStore} from './utils/redux-store-access';
 import {currentPage, currentSubpage} from './common/selectors';
 import {elevationStyles} from './common/styles/elevation-styles';
+import {AnyObject} from './common/models/globals.types';
 
 /**
  * @LitElement

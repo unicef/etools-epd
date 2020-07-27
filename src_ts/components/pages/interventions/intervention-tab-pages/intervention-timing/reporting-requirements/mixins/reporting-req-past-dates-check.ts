@@ -1,6 +1,6 @@
-import {Constructor} from '../../../utils/types';
 import {PolymerElement} from '@polymer/polymer';
 import {property} from '@polymer/decorators';
+import {Constructor} from '../../../common/models/globals.types';
 
 declare const moment: any;
 // import { dedupingMixin } from '@polymer/polymer/lib/utils/mixin';

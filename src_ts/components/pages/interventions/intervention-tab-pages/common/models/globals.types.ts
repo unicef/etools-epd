@@ -8,15 +8,54 @@ import {PolymerElement} from '@polymer/polymer';
  */
 export type Constructor<T> = new (...args: any[]) => T;
 
-export type MixinFunction = <T extends Constructor<PolymerElement>>(
-  baseClass: T
-) => T & {
-  new (...args: any[]): any;
-};
-
-export interface GenericObject {
+export interface AnyObject {
   [key: string]: any;
 }
+
+export type GenericObject<T> = {
+  [key: string]: T;
+};
+
+export type LocationObject = {
+  id: string;
+  name: string;
+  p_code: string;
+  parent: string;
+  gateway: {
+    id: number;
+    created: string;
+    modified: string;
+    name: string;
+    admin_level: null;
+  };
+};
+
+export type Section = {
+  id: string;
+  created: string;
+  modified: string;
+  name: string;
+  description: string;
+  alternate_id: null;
+  alternate_name: string;
+  dashboard: boolean;
+  color: string;
+  active: boolean;
+};
+
+export type Disaggregation = {
+  active: boolean;
+  disaggregation_values: DisaggregationValue[];
+  id: number;
+  name: string;
+};
+
+export type DisaggregationValue = {
+  active: boolean;
+  id: number;
+  value: string;
+};
+
 
 export interface Permission<T> {
   edit: T;

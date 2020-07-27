@@ -1,14 +1,14 @@
+/* eslint-disable lit/no-legacy-template-syntax */
 import {PolymerElement, html} from '@polymer/polymer';
 import uniq from 'lodash-es/uniq';
 import '@unicef-polymer/etools-data-table/etools-data-table';
 import CommonMixin from '../mixins/common-mixin';
 import {ResultLinkLowerResult, ExpectedResult} from '../../../common/models/intervention.types';
-import {isEmptyObject} from '../../../utils/types';
-import {gridLayoutStyles} from '../styles/grid-layout-styles';
+import {gridLayoutStylesPolymer} from '../styles/grid-layout-styles-polymer';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {property} from '@polymer/decorators';
-import {fireEvent} from '../../../utils/fire-custom-event';
+import {isEmptyObject} from '../../../utils/utils';
 
 /**
  * @customElement
@@ -20,7 +20,7 @@ import {fireEvent} from '../../../utils/fire-custom-event';
 class HumanitarianReportingReqCluster extends CommonMixin(PolymerElement) {
   static get template() {
     return html`
-      ${gridLayoutStyles}
+      ${gridLayoutStylesPolymer()}
       <style include="data-table-styles">
         :host {
           display: block;
