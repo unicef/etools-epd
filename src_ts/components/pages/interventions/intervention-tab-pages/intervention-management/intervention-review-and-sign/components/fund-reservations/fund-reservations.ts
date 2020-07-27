@@ -1,40 +1,42 @@
-import {PolymerElement, html} from '@polymer/polymer';
+import {LitElement, html, property, customElement} from 'lit-element';
 import {Debouncer} from '@polymer/polymer/lib/utils/debounce';
 import {timeOut} from '@polymer/polymer/lib/utils/async';
 
-import '@polymer/iron-icons/iron-icons.js';
-import '@polymer/iron-flex-layout/iron-flex-layout.js';
-import '@polymer/paper-icon-button/paper-icon-button.js';
-import '@unicef-polymer/etools-content-panel/etools-content-panel.js';
+import '@polymer/iron-icons/iron-icons';
+import '@polymer/iron-flex-layout/iron-flex-layout';
+import '@polymer/paper-icon-button/paper-icon-button';
+import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import {removeDialog, createDynamicDialog} from '@unicef-polymer/etools-dialog/dynamic-dialog';
-import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip.js';
+import '@unicef-polymer/etools-info-tooltip/etools-info-tooltip';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 
 import './update-fr-numbers.js';
-import EndpointsMixin from '../../../../../../endpoints/endpoints-mixin.js';
-import FrNumbersConsistencyMixin from '../../../../mixins/fr-numbers-consistency-mixin.js';
-import {frWarningsStyles} from '../../../../styles/fr-warnings-styles.js';
-import {FrsDetails, Fr, Intervention} from '../../../../../../../typings/intervention.types.js';
-import {pmpCustomIcons} from '../../../../../../styles/custom-iconsets/pmp-icons.js';
+import FrNumbersConsistencyMixin from '../../../../common/mixins/fr-numbers-consistency-mixin';
+import {frWarningsStyles} from '../../../../common/styles/fr-warnings-styles';
+import {FrsDetails, Fr, Intervention} from '../../../../common/models/intervention.types';
+import {epdCustomIcons} from '../../../../common/styles/epd-icons';
+// @lajos to be refactored
 import {fireEvent} from '../../../../../../utils/fire-custom-event.js';
 import {logWarn} from '@unicef-polymer/etools-behaviors/etools-logging.js';
-import {getArraysDiff} from '../../../../../../utils/array-helper.js';
-import {property} from '@polymer/decorators';
+import {getArraysDiff} from '../../../../utils/utils';
 import {UpdateFrNumbersEl} from './update-fr-numbers';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
-import {GenericObject} from '../../../../../../../typings/globals.types';
+import {AnyObject} from '../../../../common/models/globals.types';
 
 /**
  * @polymer
  * @customElement
  * @mixinFunction
- * @appliesMixin EndpointsMixin
  * @appliesMixin FrNumbersConsistencyMixin
  */
-class FundReservations extends FrNumbersConsistencyMixin(EndpointsMixin(PolymerElement)) {
+customElement('fund-reservations');
+export class FundReservations extends FrNumbersConsistencyMixin(LitElement) {
+  static get styles() {
+    return [frWarningsStyles];
+  }
   static get template() {
     return html`
-      ${pmpCustomIcons} ${frWarningsStyles}
+      ${epdCustomIcons}
       <style>
         [hidden] {
           display: none !important;
@@ -72,28 +74,28 @@ class FundReservations extends FrNumbersConsistencyMixin(EndpointsMixin(PolymerE
         <paper-icon-button
           slot="panel-btns"
           icon="add-box"
-          on-click="_openFrsDialog"
-          hidden$="[[!editMode]]"
-          disabled$="[[!editMode]]"
+          @click="_openFrsDialog"
+          hidden="?[[!editMode]]"
+          disabled="?[[!editMode]]"
         ></paper-icon-button>
-        <div id="frs-container" hidden$="[[!thereAreFrs(intervention.frs_details)]]">
+        <div id="frs-container" hidden="?[[!thereAreFrs(intervention.frs_details)]]">
           <etools-info-tooltip
             class="frs-inline-list"
             icon-first
             custom-icon
-            hide-tooltip$="[[!frsConsistencyWarningIsActive(_frsConsistencyWarning)]]"
+            hide-tooltip="?[[!frsConsistencyWarningIsActive(_frsConsistencyWarning)]]"
           >
             <div slot="field">
               <template is="dom-repeat" items="[[intervention.frs_details.frs]]">
                 <span class="fr-number">[[item.fr_number]]</span>
               </template>
             </div>
-            <iron-icon icon="pmp-custom-icons:not-equal" slot="custom-icon"></iron-icon>
+            <iron-icon icon="epd-custom-icons:not-equal" slot="custom-icon"></iron-icon>
             <span slot="message"><span>[[_frsConsistencyWarning]]</span></span>
           </etools-info-tooltip>
         </div>
         <!-- class or slot? -->
-        <div class="warning" hidden$="[[thereAreFrs(intervention.frs_details)]]">
+        <div class="warning" hidden="?[[thereAreFrs(intervention.frs_details)]]">
           [[_getNoFrsWarningText(intervention.id)]]
         </div>
       </etools-content-panel>
@@ -113,7 +115,7 @@ class FundReservations extends FrNumbersConsistencyMixin(EndpointsMixin(PolymerE
   frsConfirmationsDialog!: EtoolsDialog;
 
   @property({type: Object})
-  _frsDetailsRequestEndpoint!: GenericObject;
+  _frsDetailsRequestEndpoint!: AnyObject;
 
   @property({type: Object})
   _lastFrsDetailsReceived!: FrsDetails;
@@ -219,9 +221,8 @@ class FundReservations extends FrNumbersConsistencyMixin(EndpointsMixin(PolymerE
       const frs = currentFrs.map((fr: Fr) => {
         return {fr_number: fr.fr_number};
       });
-
-      this.frsDialogEl.set('dataItems', frs);
-      this.frsDialogEl.set('interventionStatus', this.intervention.status);
+      this.frsDialogEl.dataItems = frs;
+      this.frsDialogEl.interventionStatus = this.intervention.status;
       this.frsDialogEl.openDialog();
     }
   }
@@ -378,5 +379,3 @@ class FundReservations extends FrNumbersConsistencyMixin(EndpointsMixin(PolymerE
     });
   }
 }
-
-window.customElements.define('fund-reservations', FundReservations);

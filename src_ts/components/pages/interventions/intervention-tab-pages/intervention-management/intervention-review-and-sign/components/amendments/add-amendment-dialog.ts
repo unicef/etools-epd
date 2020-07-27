@@ -1,29 +1,30 @@
-import {PolymerElement, html} from '@polymer/polymer';
-import '@polymer/paper-input/paper-input.js';
-import '@unicef-polymer/etools-dialog/etools-dialog.js';
-import '@unicef-polymer/etools-dropdown/etools-dropdown-multi.js';
-import '@unicef-polymer/etools-upload/etools-upload.js';
-import '@unicef-polymer/etools-date-time/datepicker-lite.js';
+import {LitElement, html, property, customElement} from 'lit-element';
+import '@polymer/paper-input/paper-input';
+import '@unicef-polymer/etools-dialog/etools-dialog';
+import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
+import '@unicef-polymer/etools-upload/etools-upload';
+import '@unicef-polymer/etools-date-time/datepicker-lite';
 
 import '../../../../../../layout/etools-warn-message';
-import EndpointsMixin from '../../../../../../endpoints/endpoints-mixin';
+// @lajos -> to be refactored
 import {fireEvent} from '../../../../../../utils/fire-custom-event';
 import {connect} from 'pwa-helpers/connect-mixin';
-import {store, RootState} from '../../../../../../../store';
-import {gridLayoutStyles} from '../../../../../../styles/grid-layout-styles';
-import {buttonsStyles} from '../../../../../../styles/buttons-styles';
-import {SharedStyles} from '../../../../../../styles/shared-styles';
-import {requiredFieldStarredStyles} from '../../../../../../styles/required-field-styles';
-import pmpEndpoints from '../../../../../../endpoints/endpoints';
-import {isJsonStrMatch} from '../../../../../../utils/utils';
-import {LabelAndValue} from '../../../../../../../typings/globals.types';
-import {InterventionAmendment} from '../../../../../../../typings/intervention.types';
+import {getStore} from '../../../../utils/redux-store-access';
+import '../../../../common/styles/grid-layout-styles-lit'
+import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
+import {buttonsStyles} from '../../../../common/styles/button-styles';
+import {sharedStyles} from '../../../../common/styles/shared-styles-lit';
+import {requiredFieldStarredStyles} from '../../../../common/styles/required-field-styles';
+import {interventionEndpoints} from '../../../../utils/intervention-endpoints';
+import {isJsonStrMatch} from '../../../../utils/utils';
+import {LabelAndValue} from '../../../../common/models/globals.types';
+import {InterventionAmendment} from '../../../../common/models/intervention.types';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import CONSTANTS from '../../../../../../../config/app-constants';
-import {property} from '@polymer/decorators';
+import CONSTANTS from '../../../../common/constants';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
 import {EtoolsDropdownMultiEl} from '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
+import {getEndpoint} from '../../../../utils/endpoint-helper';
 
 /**
  * @polymer
@@ -31,10 +32,14 @@ import {EtoolsDropdownMultiEl} from '@unicef-polymer/etools-dropdown/etools-drop
  * @mixinFunction
  * @appliesMixin EndpointsMixin
  */
-class AddAmendmentDialog extends connect(store)(EndpointsMixin(PolymerElement)) {
+customElement('add-amendment-dialog')
+export class AddAmendmentDialog extends connect(getStore())(LitElement) {
+  static get style() {
+    return [gridLayoutStylesLit, buttonsStyles];
+  }
   static get template() {
     return html`
-      ${gridLayoutStyles} ${buttonsStyles} ${SharedStyles} ${requiredFieldStarredStyles}
+      ${sharedStyles} ${requiredFieldStarredStyles}
       <style>
         paper-input#other {
           width: 100%;
@@ -53,10 +58,10 @@ class AddAmendmentDialog extends connect(store)(EndpointsMixin(PolymerElement)) 
         id="add-amendment"
         opened="{{opened}}"
         size="md"
-        hidden$="[[datePickerOpen]]"
+        hidden="?[[datePickerOpen]]"
         ok-btn-text="Save"
         dialog-title="Add Amendment"
-        on-confirm-btn-clicked="_validateAndSaveAmendment"
+        @confirm-btn-clicked="_validateAndSaveAmendment"
         disable-confirm-btn="[[uploadInProgress]]"
         disable-dismiss-btn="[[uploadInProgress]]"
       >
@@ -90,13 +95,13 @@ class AddAmendmentDialog extends connect(store)(EndpointsMixin(PolymerElement)) 
           >
           </etools-dropdown-multi>
         </div>
-        <div class="row-h flex-c" hidden$="[[!newAmendment.types.length]]">
+        <div class="row-h flex-c" hidden="?[[!newAmendment.types.length]]">
           <etools-warn-message
             messages="[[_getSelectedAmendmentTypeWarning(newAmendment.types, newAmendment.types.length)]]"
           >
           </etools-warn-message>
         </div>
-        <div class="row-h" hidden$="[[!_showOtherInput(newAmendment.types, newAmendment.types.length)]]">
+        <div class="row-h" hidden="?[[!_showOtherInput(newAmendment.types, newAmendment.types.length)]]">
           <paper-input
             id="other"
             placeholder="&#8212;"
@@ -117,7 +122,7 @@ class AddAmendmentDialog extends connect(store)(EndpointsMixin(PolymerElement)) 
             accept=".doc,.docx,.pdf,.jpg,.png"
             file-url="[[newAmendment.signed_amendment_attachment]]"
             upload-endpoint="[[uploadEndpoint]]"
-            on-upload-finished="_amendmentUploadFinished"
+            @upload-finished="_amendmentUploadFinished"
             required
             auto-validate
             upload-in-progress="{{amdUploadInProgress}}"
@@ -133,7 +138,7 @@ class AddAmendmentDialog extends connect(store)(EndpointsMixin(PolymerElement)) 
             file-url="[[newAmendment.internal_prc_review]]"
             upload-endpoint="[[uploadEndpoint]]"
             upload-in-progress="{{prcUploadInProgress}}"
-            on-upload-finished="_prcReviewUploadFinished"
+            @upload-finished="_prcReviewUploadFinished"
           >
           </etools-upload>
         </div>
@@ -145,11 +150,12 @@ class AddAmendmentDialog extends connect(store)(EndpointsMixin(PolymerElement)) 
   endpointName = 'interventionAmendmentAdd';
 
   @property({type: Object})
-  toastEventSource!: PolymerElement;
+  toastEventSource!: LitElement;
 
   @property({type: Boolean})
   datePickerOpen = false;
 
+  // @lajso another observer
   @property({type: Boolean, notify: true, observer: '_resetFields'})
   opened = false;
 
@@ -166,8 +172,9 @@ class AddAmendmentDialog extends connect(store)(EndpointsMixin(PolymerElement)) 
   newAmendment!: InterventionAmendment;
 
   @property({type: String})
-  uploadEndpoint: string = pmpEndpoints.attachmentsUpload.url;
+  uploadEndpoint: string = interventionEndpoints.attachmentsUpload.url;
 
+  // @lajso -> computed
   @property({
     type: Boolean,
     computed: 'getUploadInProgress(amdUploadInProgress, prcUploadInProgress)'
@@ -189,7 +196,7 @@ class AddAmendmentDialog extends connect(store)(EndpointsMixin(PolymerElement)) 
     return ['_filterAmendmentTypes(amendmentTypes, interventionDocumentType)'];
   }
 
-  stateChanged(state: RootState) {
+  stateChanged(state: any) {
     if (!isJsonStrMatch(this.amendmentTypes, state.commonData!.interventionAmendmentTypes)) {
       this.amendmentTypes = [...state.commonData!.interventionAmendmentTypes];
     }
@@ -205,7 +212,7 @@ class AddAmendmentDialog extends connect(store)(EndpointsMixin(PolymerElement)) 
   }
 
   resetAmendment() {
-    this.set('newAmendment', new InterventionAmendment());
+    this.newAmendment = new InterventionAmendment();
   }
 
   startSpinner() {
@@ -242,7 +249,7 @@ class AddAmendmentDialog extends connect(store)(EndpointsMixin(PolymerElement)) 
   isValidAmendment() {
     let isValid = true;
     this._validationSelectors.forEach((selector: string) => {
-      const el = this.shadowRoot!.querySelector(selector) as PolymerElement & {
+      const el = this.shadowRoot!.querySelector(selector) as LitElement & {
         validate(): boolean;
       };
       if (selector === '#other' && !this._showOtherInput()) {
@@ -262,9 +269,11 @@ class AddAmendmentDialog extends connect(store)(EndpointsMixin(PolymerElement)) 
 
   _resetAmendmentValidations() {
     this._validationSelectors.forEach((selector: string) => {
-      const el = this.shadowRoot!.querySelector(selector) as PolymerElement;
+      const el = this.shadowRoot!.querySelector(selector) as LitElement;
       if (el) {
-        el.set('invalid', false);
+        // @lajos see bellow... el.invalid not found...only oninvalid
+        // el.set('invalid', false);
+        el.invalid = false;
       }
     });
   }
@@ -319,9 +328,10 @@ class AddAmendmentDialog extends connect(store)(EndpointsMixin(PolymerElement)) 
     if (!newAmendment.internal_prc_review) {
       delete newAmendment.internal_prc_review;
     }
+    // @lajos check getEndpoint
     const options = {
       method: 'POST',
-      endpoint: this.getEndpoint(this.endpointName, {
+      endpoint: getEndpoint(this.endpointName, {
         intervId: this.interventionId
       }),
       body: newAmendment
@@ -339,7 +349,7 @@ class AddAmendmentDialog extends connect(store)(EndpointsMixin(PolymerElement)) 
   }
 
   _handleResponse(response: InterventionAmendment) {
-    this.set('opened', false);
+    this.opened = false;
     fireEvent(this, 'amendment-added', response);
   }
 
@@ -350,14 +360,14 @@ class AddAmendmentDialog extends connect(store)(EndpointsMixin(PolymerElement)) 
   _amendmentUploadFinished(e: CustomEvent) {
     if (e.detail.success) {
       const uploadResponse = e.detail.success;
-      this.set('newAmendment.signed_amendment_attachment', uploadResponse.id);
+      this.newAmendment.signed_amendment_attachment = uploadResponse.id;
     }
   }
 
   _prcReviewUploadFinished(e: CustomEvent) {
     if (e.detail.success) {
       const uploadResponse = e.detail.success;
-      this.set('newAmendment.internal_prc_review', uploadResponse.id);
+      this.newAmendment.internal_prc_review = uploadResponse.id;
     }
   }
 
@@ -365,6 +375,3 @@ class AddAmendmentDialog extends connect(store)(EndpointsMixin(PolymerElement)) 
     return new Date();
   }
 }
-
-window.customElements.define('add-amendment-dialog', AddAmendmentDialog);
-export {AddAmendmentDialog};

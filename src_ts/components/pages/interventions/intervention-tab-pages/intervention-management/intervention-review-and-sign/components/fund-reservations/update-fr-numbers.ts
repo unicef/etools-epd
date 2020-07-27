@@ -1,19 +1,19 @@
 import {customElement, LitElement, html, property} from 'lit-element';
 import {getStore} from '../../../../utils/redux-store-access';
 import {connect} from 'pwa-helpers/connect-mixin';
-import '@polymer/polymer/lib/mixins/gesture-event-listeners.js';
-import '@polymer/iron-icons/iron-icons.js';
-import '@polymer/paper-input/paper-input.js';
-import '@polymer/paper-button/paper-button.js';
-import '@polymer/paper-icon-button/paper-icon-button.js';
+import '@polymer/polymer/lib/mixins/gesture-event-listeners';
+import '@polymer/iron-icons/iron-icons';
+import '@polymer/paper-input/paper-input';
+import '@polymer/paper-button/paper-button';
+import '@polymer/paper-icon-button/paper-icon-button';
 
-import '@unicef-polymer/etools-dialog/etools-dialog.js';
-import RepeatableDataSetsMixin from '../../../../../../mixins/repeatable-data-sets-mixin';
+import '@unicef-polymer/etools-dialog/etools-dialog';
+import RepeatableDataSetsMixin from '../../../../common/mixins/repeatable-data-sets-mixin';
 // @lajos: to review changes
 import {fireEvent} from '../../../../../../../utils/fire-custom-event';
-import {gridLayoutStyles} from '../../../../../../styles/grid-layout-styles';
-import {repeatableDataSetsStyles} from '../../../../../../styles/repeatable-data-sets-styles';
-import {buttonsStyles} from '../../../../../../styles/buttons-styles';
+import {gridLayoutStylesLit} from '../../../../common/styles/grid-layout-styles-lit';
+import {repeatableDataSetsStyles} from '../../../../common/styles/repeatable-data-sets-styles';
+import {buttonsStyles} from '../../../../common/styles/button-styles';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
 import {PaperInputElement} from '@polymer/paper-input/paper-input';
 import {PaperDialogElement} from '@polymer/paper-dialog/paper-dialog';
@@ -25,9 +25,12 @@ import {PaperDialogElement} from '@polymer/paper-dialog/paper-dialog';
  */
 @customElement('update-fr-numbers')
 class UpdateFrNumbers extends connect(getStore())(RepeatableDataSetsMixin(LitElement)) {
+  static get styles() {
+    return [gridLayoutStylesLit, buttonsStyles];
+  }
   static get template() {
     return html`
-      ${gridLayoutStyles} ${repeatableDataSetsStyles} ${buttonsStyles}
+      ${repeatableDataSetsStyles}
       <style>
         [hidden] {
           display: none !important;
@@ -59,7 +62,7 @@ class UpdateFrNumbers extends connect(getStore())(RepeatableDataSetsMixin(LitEle
         dialog-title="Add/Update FR Numbers"
         ok-btn-text="Add/Update"
         disable-confirm-btn="[[disableConfirmBtn]]"
-        on-confirm-btn-clicked="_checkFrNumbers"
+        @confirm-btn-clicked="_checkFrNumbers"
         no-padding
         keep-dialog-open
         spinner-text="Checking FR Numbers updates..."
@@ -70,10 +73,10 @@ class UpdateFrNumbers extends connect(getStore())(RepeatableDataSetsMixin(LitEle
               <div class="actions">
                 <paper-icon-button
                   class="action delete"
-                  on-tap="_openDeleteConfirmation"
-                  data-args$="[[index]]"
+                  @tap="_openDeleteConfirmation"
+                  data-args="?[[index]]"
                   icon="cancel"
-                  disabled$="[[!_showDeleteFrBtn(interventionStatus, dataItems.length)]]"
+                  disabled="?[[!_showDeleteFrBtn(interventionStatus, dataItems.length)]]"
                 >
                 </paper-icon-button>
               </div>
@@ -82,14 +85,14 @@ class UpdateFrNumbers extends connect(getStore())(RepeatableDataSetsMixin(LitEle
               <div class="row-h">
                 <!-- FR Number -->
                 <paper-input
-                  id$="fr-nr-[[index]]"
+                  id="?fr-nr-[[index]]"
                   label="FR Number"
                   value="{{item.fr_number}}"
                   placeholder="&#8212;"
                   allowed-pattern="[0-9]"
                   required
                   error-message="Please fill FR Number or remove the field"
-                  on-value-changed="_frNrValueChanged"
+                  @value-changed="_frNrValueChanged"
                 >
                 </paper-input>
               </div>
@@ -97,12 +100,12 @@ class UpdateFrNumbers extends connect(getStore())(RepeatableDataSetsMixin(LitEle
           </div>
         </template>
 
-        <div class="row-h" hidden$="[[!_emptyList(dataItems.length)]]">
+        <div class="row-h" hidden="?[[!_emptyList(dataItems.length)]]">
           There are no fund reservations numbers added.
         </div>
 
         <div class="row-h">
-          <paper-button class="secondary-btn" on-tap="_addNewFundReservation">
+          <paper-button class="secondary-btn" @tap="_addNewFundReservation">
             <iron-icon icon="add"></iron-icon>
             Add FR Number
           </paper-button>
@@ -131,8 +134,9 @@ class UpdateFrNumbers extends connect(getStore())(RepeatableDataSetsMixin(LitEle
     return ['_itemsLengthChanged(dataItems.length)'];
   }
 
-  ready() {
-    super.ready();
+  connectedCallback() {
+    // this initially was ready not connectedCallback
+    super.connectedCallback();
     this.dataSetModel = {fr_number: null};
   }
 
@@ -168,6 +172,7 @@ class UpdateFrNumbers extends connect(getStore())(RepeatableDataSetsMixin(LitEle
 
   closeDialog() {
     this.stopSpinner();
+    // @lajos => everywhere....how to handle this.$
     (this.$.frsDialog as EtoolsDialog).opened = false;
   }
 
@@ -202,10 +207,12 @@ class UpdateFrNumbers extends connect(getStore())(RepeatableDataSetsMixin(LitEle
   }
 
   _updateScroll() {
+    // @lajos => everywhere....how to handle this.$
     (this.$.frsDialog as EtoolsDialog).scrollDown();
   }
 
   _getPaperDialog() {
+    // @lajos => everywhere....how to handle this.$
     return this.$.frsDialog.shadowRoot!.querySelector('paper-dialog') as PaperDialogElement;
   }
 
@@ -215,10 +222,11 @@ class UpdateFrNumbers extends connect(getStore())(RepeatableDataSetsMixin(LitEle
 
   _frNrValueChanged() {
     if (!this.validate()) {
-      this.set('disableConfirmBtn', true);
+      this.disableConfirmBtn = true;
       return;
     }
-    this.set('disableConfirmBtn', false);
+    // @lajos not sure how to force re-render....
+    this.disableConfirmBtn = false;
   }
 
   _itemsLengthChanged(length: number) {
