@@ -1,9 +1,13 @@
-import {html} from '@polymer/polymer/polymer-element.js';
 import '@polymer/iron-flex-layout/iron-flex-layout.js';
-import {_layoutVertical, _layoutHorizontal, _layoutFlex, _layoutCenterJustified} from '../../../common/styles/flex-layout-styles';
+import {
+  _layoutVertical,
+  _layoutHorizontal,
+  _layoutFlex,
+  _layoutCenterJustified
+} from '../../../common/styles/flex-layout-styles';
 
 // language=HTML
-export const buttonsStyles = html` <style>
+const buttonsStylesPolymerContent = `
   :host > * {
     --primary-button-default: {
       color: var(--primary-shade-of-green, #fff);
@@ -92,4 +96,12 @@ export const buttonsStyles = html` <style>
     }
     font-weight: bold;
   }
-</style>`;
+`;
+
+export const buttonsStylesPolymer = () => {
+  const template = document.createElement('template');
+  template.innerHTML = `<style>
+    ${buttonsStylesPolymerContent}
+   </style>`;
+  return template;
+};

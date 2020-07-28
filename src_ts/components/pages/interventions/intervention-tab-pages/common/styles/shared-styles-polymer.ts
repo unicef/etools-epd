@@ -231,7 +231,7 @@ import {sharedStylesContent} from './shared-styles-lit';
 //   </style>
 // `;
 
-export const SharedStyles = () => {
+export const sharedStylesPolymer = () => {
   const template = document.createElement('template');
   template.innerHTML = `<style>
     ${sharedStylesContent}
