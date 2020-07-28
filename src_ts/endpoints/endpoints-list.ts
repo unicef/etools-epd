@@ -40,7 +40,7 @@ export const etoolsEndpoints: EtoolsEndpoints = {
     url: '/api/v2/partners/'
   },
   sections: {
-    url: '/api/sections/'
+    url: '/api/v2/reports/sections/'
   },
   disaggregations: {
     url: '/api/v2/reports/disaggregations/'

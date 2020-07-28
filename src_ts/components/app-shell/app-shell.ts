@@ -211,6 +211,9 @@ export class AppShell extends connect(store)(LitElement) {
     data.genderEquityRatings = isEmpty(staticData.genderEquityRatings)
       ? getGenderEquityRatingsDummy()
       : staticData.genderEquityRatings;
+    data.interventionAmendmentTypes = isEmpty(staticData.intervention_amendment_types)
+      ? []
+      : staticData.intervention_amendment_types;
     return data;
   }
 

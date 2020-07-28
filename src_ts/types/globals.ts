@@ -68,3 +68,20 @@ export type ListResponse<T> = {
   prev: string | null;
   results: T[];
 };
+
+export interface LabelAndValue {
+  label: string;
+  value: string;
+}
+
+export type InterventionAmendment = {
+  id?: number;
+  intervention?: number;
+  created?: string;
+  amendment_number: string | null;
+  types: string[];
+  other_description: string | null;
+  signed_date: string | null;
+  signed_amendment_attachment: number | string | null;
+  internal_prc_review: number | string | null;
+};
