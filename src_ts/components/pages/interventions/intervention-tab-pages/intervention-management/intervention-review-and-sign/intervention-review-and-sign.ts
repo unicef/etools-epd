@@ -283,32 +283,13 @@ export class InterventionReviewAndSign extends connect(getStore())(
           </template>
         </div>
       </etools-content-panel>
-
-      <template is="dom-if" if="[[!_isDraft(intervention.status)]]">
-        <pd-amendments
-          class="content-section"
-          intervention-document-type="[[intervention.document_type]]"
-          intervention-id="[[intervention.id]]"
-          amendments="{{intervention.amendments}}"
-          edit-mode="[[permissions.edit.amendments]]"
-        >
-        </pd-amendments>
-      </template>
-
-      <fund-reservations
-        class="content-section"
-        intervention="[[intervention]]"
-        edit-mode="[[permissions.edit.frs]]"
-        @frs-update="_handleFrsUpdate"
-      >
-      </fund-reservations>
     `;
   }
 
   @property({type: Object})
   originalIntervention!: Intervention;
 
-  @property({type: Object, notify: true, observer: '_interventionChanged'})
+  @property({type: Object, observer: '_interventionChanged'})
   intervention!: Intervention;
 
   @property({type: Object})
@@ -363,7 +344,9 @@ export class InterventionReviewAndSign extends connect(getStore())(
       loadingSource: 'interv-page'
     });
     // @lajos: review this
-    this.setDropdownMissingOptionsAjaxDetails(this.$.signedByUnicef, 'unicefUsers', {dropdown: true});
+    this.setDropdownMissingOptionsAjaxDetails(this.shadowRoot?.querySelector('#signedByUnicef'), 'unicefUsers', {
+      dropdown: true
+    });
     fireEvent(this, 'tab-content-attached');
   }
 
@@ -386,10 +369,10 @@ export class InterventionReviewAndSign extends connect(getStore())(
     (this.shadowRoot!.querySelector('#reviewDatePrcField')! as DatePickerLite).invalid = false;
   }
 
-  _updateStyles() {
-    // @lajos chek whatabout this function
-    this.updateStyles();
-  }
+  // _updateStyles() {
+  //   // @lajos chek whatabout this function
+  //   this.updateStyles();
+  // }
 
   _isDraft(status: string) {
     return status === CONSTANTS.STATUSES.Draft.toLowerCase() || status === '';
@@ -487,64 +470,64 @@ export class InterventionReviewAndSign extends connect(getStore())(
   }
 
   // update FR Number on intervention
-  _handleFrsUpdate(e: CustomEvent) {
-    e.stopImmediatePropagation();
-    try {
-      this.intervention.frs_details = e.detail.frsDetails;
-      const frIds = e.detail.frsDetails.frs.map((fr: Fr) => fr.id);
-      this.intervention = {...this.intervention, frs: frIds};
-    } catch (err) {
-      logError('[_handleFrsUpdate] An error occurred during FR Numbers update', null, err);
-    }
-  }
+  // _handleFrsUpdate(e: CustomEvent) {
+  //   e.stopImmediatePropagation();
+  //   try {
+  //     this.intervention.frs_details = e.detail.frsDetails;
+  //     const frIds = e.detail.frsDetails.frs.map((fr: Fr) => fr.id);
+  //     this.intervention = {...this.intervention, frs: frIds};
+  //   } catch (err) {
+  //     logError('[_handleFrsUpdate] An error occurred during FR Numbers update', null, err);
+  //   }
+  // }
 
-  /**
-   * If a signed document is selected then all fields required
-   * for the intervention to move in signed status are required; only for draft status.
-   */
-  _signedPdDocHasChanged(signedDocument: any) {
-    if (typeof signedDocument === 'undefined') {
-      return;
-    }
-    // this functionality is available only after pd is saved and in draft status
-    if (this.intervention && this.intervention.status === CONSTANTS.STATUSES.Draft.toLowerCase()) {
-      setTimeout(() => {
-        // delay micro task execution; set to make sure _signedDocChangedForDraft will run on page load
-        if (signedDocument) {
-          // new document uploaded or file url provided
-          fireEvent(this, 'signed-doc-change-for-draft', {docSelected: true});
-        } else {
-          // there is no signedDocument
-          fireEvent(this, 'signed-doc-change-for-draft', {
-            docSelected: false
-          });
-        }
-      }, 0);
-    }
-  }
+  // /**
+  //  * If a signed document is selected then all fields required
+  //  * for the intervention to move in signed status are required; only for draft status.
+  //  */
+  // _signedPdDocHasChanged(signedDocument: any) {
+  //   if (typeof signedDocument === 'undefined') {
+  //     return;
+  //   }
+  //   // this functionality is available only after pd is saved and in draft status
+  //   if (this.intervention && this.intervention.status === CONSTANTS.STATUSES.Draft.toLowerCase()) {
+  //     setTimeout(() => {
+  //       // delay micro task execution; set to make sure _signedDocChangedForDraft will run on page load
+  //       if (signedDocument) {
+  //         // new document uploaded or file url provided
+  //         fireEvent(this, 'signed-doc-change-for-draft', {docSelected: true});
+  //       } else {
+  //         // there is no signedDocument
+  //         fireEvent(this, 'signed-doc-change-for-draft', {
+  //           docSelected: false
+  //         });
+  //       }
+  //     }, 0);
+  //   }
+  // }
 
-  _signedPDUploadFinished(e: CustomEvent) {
-    getStore().dispatch({type: DECREASE_UPLOADS_IN_PROGRESS});
-    if (e.detail.success) {
-      const response = e.detail.success;
-      this.intervention.signed_pd_attachment = response.id;
-      getStore().dispatch({type: INCREASE_UNSAVED_UPLOADS});
-    }
-  }
+  // _signedPDUploadFinished(e: CustomEvent) {
+  //   getStore().dispatch({type: DECREASE_UPLOADS_IN_PROGRESS});
+  //   if (e.detail.success) {
+  //     const response = e.detail.success;
+  //     this.intervention.signed_pd_attachment = response.id;
+  //     getStore().dispatch({type: INCREASE_UNSAVED_UPLOADS});
+  //   }
+  // }
 
-  _signedPDDocDelete(_e: CustomEvent) {
-    this.intervention.signed_pd_attachment = null;
-    getStore().dispatch({type: DECREASE_UNSAVED_UPLOADS});
-  }
+  // _signedPDDocDelete(_e: CustomEvent) {
+  //   this.intervention.signed_pd_attachment = null;
+  //   getStore().dispatch({type: DECREASE_UNSAVED_UPLOADS});
+  // }
 
-  _prcRevDocUploadFinished(e: CustomEvent) {
-    getStore().dispatch({type: DECREASE_UPLOADS_IN_PROGRESS});
-    if (e.detail.success) {
-      const response = e.detail.success;
-      this.intervention.prc_review_attachment = response.id;
-      getStore().dispatch({type: INCREASE_UNSAVED_UPLOADS});
-    }
-  }
+  // _prcRevDocUploadFinished(e: CustomEvent) {
+  //   getStore().dispatch({type: DECREASE_UPLOADS_IN_PROGRESS});
+  //   if (e.detail.success) {
+  //     const response = e.detail.success;
+  //     this.intervention.prc_review_attachment = response.id;
+  //     getStore().dispatch({type: INCREASE_UNSAVED_UPLOADS});
+  //   }
+  // }
 
   _prcRevDocDelete(_e: CustomEvent) {
     this.intervention.prc_review_attachment = null;
