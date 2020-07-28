@@ -14,6 +14,8 @@ import {isJsonStrMatch} from '../../../../../utils/utils';
 import './add-amendment-dialog';
 import {AddAmendmentDialog} from './add-amendment-dialog';
 import {AnyObject, LabelAndValue} from '../../../../../../types/globals';
+import get from 'lodash-es/get';
+import cloneDeep from 'lodash-es/cloneDeep';
 
 /**
  * @customElement
@@ -143,34 +145,25 @@ export class PdAmendments extends connect(getStore())(ComponentBaseMixin(LitElem
   @property({type: Array})
   amendmentTypes!: LabelAndValue[];
 
-  @property({type: String})
-  interventionDocumentType = '';
-
   @property({type: Object})
   addAmendmentDialog!: AddAmendmentDialog;
 
   @property({type: Boolean, reflect: true})
   canEditAmendment = true;
 
-  @property({type: Number})
-  interventionId: number | null = null;
+  @property({type: Object})
+  intervention!: AnyObject;
 
   stateChanged(state: AnyObject) {
-    if (
-      state.commonData.interventionAmendmentTypes &&
-      !isJsonStrMatch(this.amendmentTypes, state.commonData.interventionAmendmentTypes)
-    ) {
+    const amendmentTypes = get(state, 'commonData.interventionAmendmentTypes');
+    if (amendmentTypes && !isJsonStrMatch(this.amendmentTypes, amendmentTypes)) {
       this.amendmentTypes = [...state.commonData!.interventionAmendmentTypes];
     }
-    if (state.interventions.current) {
-      this.amendments = state.interventions.current.amendments;
-      this.interventionDocumentType = state.interventions.current.document_type;
-      this.interventionId = state.interventions.current.id;
+    const currentIntervention = get(state, 'interventions.current');
+    if (currentIntervention) {
+      this.intervention = cloneDeep(currentIntervention);
+      this.amendments = this.intervention.amendments;
     }
-  }
-
-  connectedCallback() {
-    super.connectedCallback();
   }
 
   disconnectedCallback() {
@@ -183,16 +176,12 @@ export class PdAmendments extends connect(getStore())(ComponentBaseMixin(LitElem
       this.addAmendmentDialog = document.createElement('add-amendment-dialog') as AddAmendmentDialog;
       this.addAmendmentDialog.setAttribute('id', 'addAmendmentDialog');
       this.addAmendmentDialog.toastEventSource = this;
-
-      this.newAmendmentAdded = this.newAmendmentAdded.bind(this);
-      this.addAmendmentDialog.addEventListener('amendment-added', this.newAmendmentAdded as any);
       document.querySelector('body')!.appendChild(this.addAmendmentDialog);
     }
   }
 
   _removeAddAmendmentDialog() {
     if (this.addAmendmentDialog) {
-      this.addAmendmentDialog.removeEventListener('amendment-added', this.newAmendmentAdded as any);
       document.querySelector('body')!.removeChild(this.addAmendmentDialog);
     }
   }
@@ -215,16 +204,8 @@ export class PdAmendments extends connect(getStore())(ComponentBaseMixin(LitElem
 
   _showAddAmendmentDialog() {
     this._createAddAmendmentDialog();
-    this.addAmendmentDialog.interventionId = this.interventionId;
-    this.addAmendmentDialog.interventionDocumentType = this.interventionDocumentType;
+    this.addAmendmentDialog.intervention = this.intervention;
     this.addAmendmentDialog.openDialog();
-  }
-
-  newAmendmentAdded(event: CustomEvent) {
-    event.stopImmediatePropagation();
-    const data = event.detail;
-    this.amendments.push(data);
-    this.amendments = [...this.amendments];
   }
 
   _showOtherInput(selectedAmdTypes: string[], _selectedAmdTypesLength: number) {

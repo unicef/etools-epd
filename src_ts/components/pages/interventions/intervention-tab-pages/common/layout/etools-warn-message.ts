@@ -46,25 +46,26 @@ export class EtoolsWarnMessage extends LitElement {
   @property({type: Array})
   set messages(messages: string | string[]) {
     this._messages = messages;
-    this._messagesChanged(messages);
+    this._messagesChanged();
   }
 
   get messages() {
     return this._messages;
   }
 
+  get formatAsArray() {
+    return this.messages instanceof Array && this.messages.length > 0
+      ? this.messages.map((msg: string) => new WarnMessage(msg))
+      : [new WarnMessage(this.messages as string)];
+  }
+
   @property({type: Array})
   _internalMsgs: WarnMessage[] = [];
 
-  _messagesChanged(msgs: string | string[]) {
-    if (!msgs || msgs.length === 0) {
+  _messagesChanged() {
+    if (!this.messages || this.messages.length === 0) {
       return;
     }
-    this._internalMsgs =
-      msgs instanceof Array && msgs.length > 0
-        ? msgs.map((msg: string) => new WarnMessage(msg))
-        : [new WarnMessage(msgs as string)];
-
-    this._internalMsgs = [...this._internalMsgs];
+    this._internalMsgs = this.formatAsArray;
   }
 }

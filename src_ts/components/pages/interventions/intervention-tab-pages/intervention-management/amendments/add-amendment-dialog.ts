@@ -9,13 +9,12 @@ import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../../utils/redux-store-access';
 import '../../common/layout/etools-warn-message';
-import {fireEvent} from '../../../../../utils/fire-custom-event';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {formatDate} from '../../utils/date-utils';
 import {requiredFieldStarredStyles} from '../../common/styles/required-field-styles';
-import {resetRequiredFields} from '../../utils/validation-helper';
+import {validateRequiredFields, resetRequiredFields} from '../../utils/validation-helper';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {isJsonStrMatch} from '../../../../../utils/utils';
@@ -24,6 +23,7 @@ import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import CONSTANTS from '../../../../../../config/app-constants';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
+import {setIntervention} from '../../../../../../redux/actions/interventions';
 
 /**
  * @customElement
@@ -64,7 +64,7 @@ export class AddAmendmentDialog extends connect(getStore())(ComponentBaseMixin(L
           <datepicker-lite
             id="signed-date"
             label="Signed date"
-            .value="${this.dataToSave.signed_date}"
+            .value="${this.originalData.signed_date}"
             max-date="${this.getCurrentDate()}"
             fire-date-has-changed
             @date-has-changed="${(e: CustomEvent) =>
@@ -83,7 +83,7 @@ export class AddAmendmentDialog extends connect(getStore())(ComponentBaseMixin(L
             label="Amendment Types"
             placeholder="&#8212;"
             .options="${this.filteredAmendmentTypes}"
-            .selectedValues="${this.dataToSave.types}"
+            .selectedValues="${this.originalData.types}"
             hide-search
             required
             option-label="label"
@@ -97,7 +97,7 @@ export class AddAmendmentDialog extends connect(getStore())(ComponentBaseMixin(L
           >
           </etools-dropdown-multi>
         </div>
-        <div class="row-h flex-c" ?hidden="${!this.dataToSave.types!.length}">
+        <div class="row-h flex-c" ?hidden="${!this.dataToSave.types || !this.dataToSave.types!.length}">
           <etools-warn-message .messages="${this.warnMessages}"></etools-warn-message>
         </div>
         </div>
@@ -107,10 +107,10 @@ export class AddAmendmentDialog extends connect(getStore())(ComponentBaseMixin(L
             placeholder="&#8212;"
             label="Other"
             invalid
-            required
+            ?required="${this.showOtherInput}"
             auto-validate
             error-message="This is required"
-            .value="${this.dataToSave.other_description}"
+            .value="${this.originalData.other_description}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'other_description')}"
           >
           </paper-input>
@@ -121,7 +121,7 @@ export class AddAmendmentDialog extends connect(getStore())(ComponentBaseMixin(L
             id="signed-agreement-upload"
             label="Signed Amendment"
             accept=".doc,.docx,.pdf,.jpg,.png"
-            .fileUrl="${this.dataToSave.signed_amendment_attachment}"
+            .fileUrl="${this.originalData.signed_amendment_attachment}"
             .uploadEndpoint="${this.uploadEndpoint}"
             @upload-finished="${this._amendmentUploadFinished}"
             required
@@ -136,7 +136,7 @@ export class AddAmendmentDialog extends connect(getStore())(ComponentBaseMixin(L
             id="prc-review-upload"
             label="Internal / PRC Reviews"
             accept=".doc,.docx,.pdf,.jpg,.png"
-            .fileUrl="${this.dataToSave.internal_prc_review}"
+            .fileUrl="${this.originalData.internal_prc_review}"
             .uploadEndpoint="${this.uploadEndpoint}"
             .uploadInProgress="${this.prcUploadInProgress}"
             @upload-finished="${this._prcReviewUploadFinished}"
@@ -153,17 +153,17 @@ export class AddAmendmentDialog extends connect(getStore())(ComponentBaseMixin(L
   @property({type: Object})
   toastEventSource!: LitElement;
 
-  @property({type: Number})
-  interventionId: number | null = null;
-
-  @property({type: String})
-  interventionDocumentType = '';
+  @property({type: Object})
+  intervention!: AnyObject;
 
   @property({type: Array})
   amendmentTypes!: LabelAndValue[];
 
   @property({type: Object})
-  dataToSave: Partial<InterventionAmendment> = {};
+  originalData!: Partial<InterventionAmendment>;
+
+  @property({type: Object})
+  dataToSave!: Partial<InterventionAmendment>;
 
   @property({type: String})
   uploadEndpoint: string | undefined = getEndpoint(interventionEndpoints.attachmentsUpload).url;
@@ -185,8 +185,6 @@ export class AddAmendmentDialog extends connect(getStore())(ComponentBaseMixin(L
 
   @property({type: Array})
   warnMessages: string[] = [];
-
-  private _validationSelectors: string[] = ['#amendment-types', '#signed-date', '#signed-agreement-upload', '#other'];
 
   stateChanged(state: any) {
     if (
@@ -225,7 +223,6 @@ export class AddAmendmentDialog extends connect(getStore())(ComponentBaseMixin(L
   onTypesChanged() {
     this.showOtherInput = this.dataToSave.types ? this.dataToSave.types.indexOf('other') > -1 : false;
     this.warnMessages = this._getSelectedAmendmentTypeWarning(this.dataToSave.types);
-    this.warnMessages = [...this.warnMessages];
   }
 
   _getSelectedAmendmentTypeWarning(types: string[] | undefined) {
@@ -267,24 +264,8 @@ export class AddAmendmentDialog extends connect(getStore())(ComponentBaseMixin(L
     return messages;
   }
 
-  isValidAmendment() {
-    let isValid = true;
-    this._validationSelectors.forEach((selector: string) => {
-      const el = this.shadowRoot!.querySelector(selector) as PolymerElement & {
-        validate(): boolean;
-      };
-      if (selector === '#other' && !this.showOtherInput) {
-        return;
-      }
-      if (el && !el.validate()) {
-        isValid = false;
-      }
-    });
-    return isValid;
-  }
-
   _validateAndSaveAmendment() {
-    if (!this.isValidAmendment()) {
+    if (!validateRequiredFields(this)) {
       return;
     }
     this._saveAmendment(this.dataToSave);
@@ -297,7 +278,7 @@ export class AddAmendmentDialog extends connect(getStore())(ComponentBaseMixin(L
     const options = {
       method: 'POST',
       endpoint: getEndpoint(interventionEndpoints.interventionAmendmentAdd, {
-        intervId: this.interventionId
+        intervId: this.intervention.id
       }),
       body: newAmendment
     };
@@ -314,8 +295,9 @@ export class AddAmendmentDialog extends connect(getStore())(ComponentBaseMixin(L
   }
 
   _handleResponse(response: InterventionAmendment) {
+    this.intervention.amendments.push(response);
+    getStore().dispatch(setIntervention(this.intervention));
     this.handleDialogClose();
-    fireEvent(this, 'amendment-added', response);
   }
 
   _handleErrorResponse(error: any) {
@@ -325,27 +307,30 @@ export class AddAmendmentDialog extends connect(getStore())(ComponentBaseMixin(L
   _amendmentUploadFinished(e: CustomEvent) {
     if (e.detail.success) {
       const uploadResponse = e.detail.success;
+      this.originalData.signed_amendment_attachment = uploadResponse.id;
+      this.originalData = {...this.originalData};
       this.dataToSave.signed_amendment_attachment = uploadResponse.id;
-      this.dataToSave = {...this.dataToSave};
     }
   }
 
   _prcReviewUploadFinished(e: CustomEvent) {
     if (e.detail.success) {
       const uploadResponse = e.detail.success;
+      this.originalData.internal_prc_review = uploadResponse.id;
+      this.originalData = {...this.originalData};
       this.dataToSave.internal_prc_review = uploadResponse.id;
-      this.dataToSave = {...this.dataToSave};
     }
   }
 
   _resetFields() {
-    this.dataToSave = {...{types: []}};
+    this.originalData = {...{types: [], signed_date: null}};
+    this.dataToSave = {...this.originalData};
     resetRequiredFields(this);
   }
 
   public async openDialog() {
     this.dialogOpened = true;
-    this._filterAmendmentTypes(this.amendmentTypes, this.interventionDocumentType);
+    this._filterAmendmentTypes(this.amendmentTypes, this.intervention.document_type);
     this._resetFields();
   }
 
