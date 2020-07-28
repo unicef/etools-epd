@@ -3,6 +3,22 @@ import {getEndpoint} from '../utils/endpoint-helper';
 import {interventionEndpoints} from '../utils/intervention-endpoints';
 import {Intervention} from './models/intervention.types';
 import {SHOW_TOAST} from './actionsConstants';
+import {AnyObject} from './models/globals.types';
+
+export const setIntervention = (intervention: AnyObject) => {
+  return {
+    type: 'UPDATE_CURRENT_INTERVENTION',
+    current: intervention
+  };
+};
+
+export const getIntervention = (interventionId: string) => (dispatch: any) => {
+  return _sendRequest({
+    endpoint: getEndpoint(interventionEndpoints.intervention, {interventionId: interventionId})
+  }).then((intervention: Intervention) => {
+    dispatch(setIntervention(intervention));
+  });
+};
 
 export const showToast = (message: string, showCloseBtn = true) => {
   return {
