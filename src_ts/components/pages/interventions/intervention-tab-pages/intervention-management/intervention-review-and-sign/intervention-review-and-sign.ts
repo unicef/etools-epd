@@ -10,7 +10,8 @@ import '@unicef-polymer/etools-upload/etools-upload';
 
 import '@unicef-polymer/etools-date-time/datepicker-lite';
 
-import '../../../../layout/etools-form-element-wrapper';
+// @lajos...review this....
+import '../../common/layout/etools-form-element-wrapper';
 
 import './components/amendments/pd-amendments';
 import './components/fund-reservations/fund-reservations';
@@ -35,7 +36,7 @@ import {
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {Permission, MinimalUser} from '../../common/models/intervention.types';
 import DatePickerLite from '@unicef-polymer/etools-date-time/datepicker-lite';
-import {AnyObject} from '../../../../../../types/globals';
+import {AnyObject} from '../../common/models/globals.types';
 
 /**
  * @polymer
