@@ -1,5 +1,4 @@
 import {LitElement, html, property, customElement} from 'lit-element';
-import {PolymerElement} from '@polymer/polymer';
 import '@polymer/paper-input/paper-input';
 import '@unicef-polymer/etools-dialog/etools-dialog';
 import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
@@ -323,7 +322,7 @@ export class AddAmendmentDialog extends connect(getStore())(ComponentBaseMixin(L
   }
 
   _resetFields() {
-    this.originalData = {...{types: [], signed_date: null}};
+    this.originalData = {...{types: [], signed_date: ''}};
     this.dataToSave = {...this.originalData};
     resetRequiredFields(this);
   }
@@ -336,6 +335,8 @@ export class AddAmendmentDialog extends connect(getStore())(ComponentBaseMixin(L
 
   public handleDialogClose() {
     this.dialogOpened = false;
+    // clear controls
+    this.originalData = {...{}};
   }
 
   getCurrentDate() {
