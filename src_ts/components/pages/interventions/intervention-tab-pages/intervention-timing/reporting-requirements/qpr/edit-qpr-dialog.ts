@@ -13,7 +13,7 @@ import './qpr-list.js';
 import CONSTANTS from '../../../common/constants';
 import '@unicef-polymer/etools-date-time/calendar-lite.js';
 import {gridLayoutStylesPolymer} from '../../../common/styles/grid-layout-styles-polymer';
-import {buttonsStyles} from '../styles/buttons-styles-polymer';
+import {buttonsStylesPolymer} from '../styles/buttons-styles-polymer';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser.js';
@@ -30,7 +30,7 @@ import {fireEvent} from '../../../utils/fire-custom-event';
 class EditQprDialog extends PolymerElement {
   static get template() {
     return html`
-      ${gridLayoutStylesPolymer()}${buttonsStyles}
+      ${gridLayoutStylesPolymer()}${buttonsStylesPolymer()}
       <style>
         *[hidden] {
           display: none !important;
