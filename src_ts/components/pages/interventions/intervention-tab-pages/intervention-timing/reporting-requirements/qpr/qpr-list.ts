@@ -7,7 +7,7 @@ import '../mixins/reporting-req-past-dates-check';
 import '../styles/reporting-requirements-lists-styles';
 import CommonMixin from '../mixins/common-mixin';
 import ReportingReqPastDatesCheckMixin from '../mixins/reporting-req-past-dates-check';
-import {gridLayoutStylesPolymer} from '../styles/grid-layout-styles-polymer';
+import {gridLayoutStylesPolymer} from '../../../common/styles/grid-layout-styles-polymer';
 import {reportingRequirementsListStyles} from '../styles/reporting-requirements-lists-styles';
 import {fireEvent} from '../../../utils/fire-custom-event';
 import {property} from '@polymer/decorators';

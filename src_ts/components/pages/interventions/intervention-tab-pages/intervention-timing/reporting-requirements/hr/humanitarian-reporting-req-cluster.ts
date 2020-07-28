@@ -4,7 +4,7 @@ import uniq from 'lodash-es/uniq';
 import '@unicef-polymer/etools-data-table/etools-data-table';
 import CommonMixin from '../mixins/common-mixin';
 import {ResultLinkLowerResult, ExpectedResult} from '../../../common/models/intervention.types';
-import {gridLayoutStylesPolymer} from '../styles/grid-layout-styles-polymer';
+import {gridLayoutStylesPolymer} from '../../../common/styles/grid-layout-styles-polymer';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {property} from '@polymer/decorators';

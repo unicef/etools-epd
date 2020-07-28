@@ -13,7 +13,7 @@ import './qpr/quarterly-reporting-requirements';
 import './hr/humanitarian-reporting-req-unicef';
 import './hr/humanitarian-reporting-req-cluster';
 import './srr/special-reporting-requirements';
-import {gridLayoutStylesPolymer} from './styles/grid-layout-styles-polymer';
+import {gridLayoutStylesPolymer} from '../../common/styles/grid-layout-styles-polymer';
 import {pageCommonStyles} from './styles/page-common-styles';
 // @lajos needs to be checked if OK
 import {connect} from 'pwa-helpers/connect-mixin';

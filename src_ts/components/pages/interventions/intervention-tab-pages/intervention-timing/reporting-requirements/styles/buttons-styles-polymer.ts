@@ -1,5 +1,6 @@
 import {html} from '@polymer/polymer/polymer-element.js';
 import '@polymer/iron-flex-layout/iron-flex-layout.js';
+import {_layoutVertical, _layoutHorizontal, _layoutFlex, _layoutCenterJustified} from '../../../common/styles/flex-layout-styles';
 
 // language=HTML
 export const buttonsStyles = html` <style>
@@ -20,10 +21,10 @@ export const buttonsStyles = html` <style>
     padding: 24px;
   }
   .buttons-section.horizontal {
-    @apply --layout-horizontal;
+    ${_layoutHorizontal}
   }
   .buttons-section.vertical {
-    @apply --layout-vertical;
+    ${_layoutVertical}
   }
 
   .buttons-section.vertical .primary-btn:not(:first-of-type) {
@@ -56,9 +57,9 @@ export const buttonsStyles = html` <style>
     }
   }
   paper-button .btn-label {
-    @apply --layout-horizontal;
-    @apply --layout-flex;
-    @apply --layout-center-justified;
+    ${_layoutHorizontal}
+    ${_layoutFlex}
+    ${_layoutCenterJustified}
   }
 
   paper-button.w100 {
@@ -90,9 +91,5 @@ export const buttonsStyles = html` <style>
       color: var(--primary-color);
     }
     font-weight: bold;
-  }
-
-  /* responsive css rules */
-  @media (min-width: 850px) {
   }
 </style>`;

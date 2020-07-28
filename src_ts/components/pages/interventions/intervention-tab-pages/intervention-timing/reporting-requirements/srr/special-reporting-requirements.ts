@@ -8,7 +8,7 @@ import '../../../common/layout/icons-actions';
 import './add-edit-special-rep-req';
 import CommonMixin from '../mixins/common-mixin';
 import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
-import {gridLayoutStylesPolymer} from '../styles/grid-layout-styles-polymer';
+import {gridLayoutStylesPolymer} from '../../../common/styles/grid-layout-styles-polymer';
 import {buttonsStyles} from '../styles/buttons-styles-polymer';
 import {reportingRequirementsListStyles} from '../styles/reporting-requirements-lists-styles';
 import CONSTANTS from '../../../common/constants';
