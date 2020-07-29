@@ -6,15 +6,33 @@ import {getStore} from '../../utils/redux-store-access';
 import {connect} from 'pwa-helpers/connect-mixin';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import '@unicef-polymer/etools-loading';
-import {AnyObject} from '../../../../../../types/globals';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import {getSupplyItems} from '../../../list/list-dummy-data';
 import {EtoolsTableColumn, EtoolsTableColumnType, EtoolsTableChildRow} from '@unicef-polymer/etools-table/etools-table';
 import './supply-agreement-dialog';
 import {SupplyAgreementDialog} from './supply-agreement-dialog';
 import {InterventionSupplyItem} from '../../common/models/intervention.types';
+import {AnyObject} from '../../common/models/globals.types';
+
+const getSupplyItems = () => {
+  const arr = [];
+  let i = 0;
+  while (i < 10) {
+    const supplyItem = new InterventionSupplyItem();
+    supplyItem.id = i;
+    supplyItem.title = `Title ${i}`;
+    supplyItem.result = `CP Output ${i}`;
+    supplyItem.other_mentions = `Other mentions ${i}`;
+    supplyItem.unit_number = i;
+    supplyItem.unit_price = Math.floor(Math.random() * Math.floor(15));
+    supplyItem.total_price = supplyItem.unit_number * supplyItem.unit_price;
+    supplyItem.outputs = ['CP Output Health Related', 'CP Output Health Related', 'CP Output Health Related'];
+    arr.push(supplyItem);
+    i++;
+  }
+  return arr;
+};
 
 const customStyles = html`
   <style>
@@ -75,7 +93,6 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
           .showDelete=${this.canEditSupply}
         >
         </etools-table>
-
       </etools-content-panel>
     `;
   }
