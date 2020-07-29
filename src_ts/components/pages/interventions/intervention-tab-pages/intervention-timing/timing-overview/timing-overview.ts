@@ -47,22 +47,42 @@ export class TimingOverview extends connect(getStore())(LitElement) {
           <div class="layout-horizontal">
             <div class="flex-2">
               <span>
-                <label class="paper-label">Document Type</label>
+                <label class="paper-label">Date Created</label>
               </span>
             </div>
             <div class="flex-1">
               <span>
-                <label class="paper-label">CFEI Number</label>
+                <label class="paper-label">Date first sent to Partner</label>
               </span>
             </div>
             <div class="flex-1">
               <span>
-                <label class="paper-label">Humanitarian</label>
+                <label class="paper-label">Date first draft by Partner</label>
               </span>
             </div>
             <div class="flex-1">
               <span>
-                <label class="paper-label">Contingency</label>
+                <label class="paper-label">PRC Submission Date</label>
+              </span>
+            </div>
+            <div class="flex-1">
+              <span>
+                <label class="paper-label">PRC Review Date</label>
+              </span>
+            </div>
+            <div class="flex-1">
+              <span>
+                <label class="paper-label">Date Partner Signed</label>
+              </span>
+            </div>
+            <div class="flex-1">
+              <span>
+                <label class="paper-label">Date Unicef Signed</label>
+              </span>
+            </div>
+            <div class="flex-1">
+              <span>
+                <label class="paper-label">Date Last Amended</label>
               </span>
             </div>
           </div>
@@ -83,15 +103,43 @@ export class TimingOverview extends connect(getStore())(LitElement) {
             </div>
             <div class="flex-1">
               <span>
-                <label class="input-label">
-                  ${this._getText(this.timingOverview.contingency_pd)}
+                <label class="input-label" ?empty="${!this.timingOverview.cfei_number}">
+                  ${this.timingOverview.cfei_number}
                 </label>
               </span>
             </div>
             <div class="flex-1">
               <span>
-                <label class="input-label">
-                  ${this._getText(this.timingOverview.humanitarian_flag)}
+                <label class="input-label" ?empty="${!this.timingOverview.cfei_number}">
+                  ${this.timingOverview.cfei_number}
+                </label>
+              </span>
+            </div>
+            <div class="flex-1">
+              <span>
+                <label class="input-label" ?empty="${!this.timingOverview.cfei_number}">
+                  ${this.timingOverview.cfei_number}
+                </label>
+              </span>
+            </div>
+            <div class="flex-1">
+              <span>
+                <label class="input-label" ?empty="${!this.timingOverview.cfei_number}">
+                  ${this.timingOverview.cfei_number}
+                </label>
+              </span>
+            </div>
+            <div class="flex-1">
+              <span>
+                <label class="input-label" ?empty="${!this.timingOverview.cfei_number}">
+                  ${this.timingOverview.cfei_number}
+                </label>
+              </span>
+            </div>
+            <div class="flex-1">
+              <span>
+                <label class="input-label" ?empty="${!this.timingOverview.cfei_number}">
+                  ${this.timingOverview.cfei_number}
                 </label>
               </span>
             </div>
@@ -114,14 +162,10 @@ export class TimingOverview extends connect(getStore())(LitElement) {
     }
   }
 
-  private _getText(value: boolean): string {
+  private _dateFormat(value: any): string {
     if (value === undefined) {
       return '-';
     }
-    if (value) {
-      return 'Yes';
-    } else {
-      return 'No';
-    }
+    return value.format('YYYY-MM-DD');
   }
 }
