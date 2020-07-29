@@ -1,23 +1,21 @@
 import '@polymer/paper-button/paper-button';
 
-import {SharedStylesLit} from '../../../styles/shared-styles-lit';
-import '../../../common/layout/page-content-header/page-content-header';
-import '../../../common/layout/etools-tabs';
+import './common/layout/page-content-header/page-content-header';
+import './common/layout/etools-tabs';
 // eslint-disable-next-line max-len
-import {pageContentHeaderSlottedStyles} from '../../../common/layout/page-content-header/page-content-header-slotted-styles';
-import '../../../common/layout/status/etools-status';
+import './common/layout/status/etools-status';
 
-import {customElement, LitElement, html, property} from 'lit-element';
-import {pageLayoutStyles} from '../../../styles/page-layout-styles';
-import {RouteDetails} from '../../../../routing/router';
+import {customElement, LitElement, html, property, css} from 'lit-element';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
-import {isJsonStrMatch} from '../../../utils/utils';
 import {setStore, getStore} from './utils/redux-store-access';
 import {currentPage, currentSubpage} from './common/selectors';
 import {elevationStyles} from './common/styles/elevation-styles';
-import {AnyObject} from './common/models/globals.types';
+import {AnyObject, RouteDetails} from './common/models/globals.types';
 import {getIntervention} from './common/actions';
+import {sharedStyles} from './common/styles/shared-styles-lit';
+import {isJsonStrMatch} from './utils/utils';
+import {pageContentHeaderSlottedStyles} from './common/layout/page-content-header/page-content-header-slotted-styles';
 
 /**
  * @LitElement
@@ -26,16 +24,28 @@ import {getIntervention} from './common/actions';
 @customElement('intervention-tabs')
 export class InterventionTabs extends LitElement {
   static get styles() {
-    return [elevationStyles, pageLayoutStyles, pageContentHeaderSlottedStyles];
+    return [
+      elevationStyles,
+      pageContentHeaderSlottedStyles,
+      css`
+        .page-content {
+          margin: 24px;
+        }
+        @media (max-width: 576px) {
+          .page-content {
+            margin: 5px;
+          }
+        }
+      `
+    ];
   }
 
   render() {
     // main template
     // language=HTML
     return html`
-      ${SharedStylesLit}
       <style>
-        etools-status {
+        ${sharedStyles} etools-status {
           justify-content: center;
         }
       </style>

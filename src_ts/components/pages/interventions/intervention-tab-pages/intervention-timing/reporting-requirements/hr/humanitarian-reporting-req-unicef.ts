@@ -13,7 +13,6 @@ import {buttonsStylesPolymer} from '../styles/buttons-styles-polymer';
 import {property} from '@polymer/decorators';
 import {EditHruDialog} from './edit-hru-dialog.js';
 import {HruListEl} from './hru-list.js';
-// import {sharedStyles} from '../../../common/styles/shared-styles-lit';
 import {sharedStylesPolymer} from '../../../common/styles/shared-styles-polymer';
 
 /**
