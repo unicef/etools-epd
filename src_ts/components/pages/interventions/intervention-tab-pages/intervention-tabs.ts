@@ -7,7 +7,6 @@ import '../../../common/layout/etools-tabs';
 import {pageContentHeaderSlottedStyles} from '../../../common/layout/page-content-header/page-content-header-slotted-styles';
 import '../../../common/layout/status/etools-status';
 
-import {updateAppLocation} from '../../../../routing/routes';
 import {customElement, LitElement, html, property} from 'lit-element';
 import {pageLayoutStyles} from '../../../styles/page-layout-styles';
 import {RouteDetails} from '../../../../routing/router';
@@ -179,11 +178,10 @@ export class InterventionTabs extends LitElement {
     }
     if (newTabName !== oldTabName) {
       const newPath = `interventions/${this.intervention.id}/${newTabName}`;
-      // if (this.routeDetails.path === newPath) {
-      //   return; // Is this needed???
-      // }
-      // go to new tab
-      updateAppLocation(newPath, true);
+      history.pushState(window.history.state, '', newPath);
+      // Don't know why I have to specifically trigger popstate,
+      // history.pushState should do that by default (?)
+      window.dispatchEvent(new CustomEvent('popstate'));
     }
   }
 }
