@@ -55,6 +55,8 @@ import {
 import {EtoolsUserModel} from '../user/user-model';
 import isEmpty from 'lodash-es/isEmpty';
 import {getGenderEquityRatingsDummy} from '../pages/interventions/list/list-dummy-data';
+import {fireEvent} from '../utils/fire-custom-event';
+import get from 'lodash-es/get';
 
 store.addReducers({
   user,
@@ -229,6 +231,12 @@ export class AppShell extends connect(store)(LitElement) {
     this.mainPage = state.app!.routeDetails!.routeName;
     this.subPage = state.app!.routeDetails!.subRouteName;
     this.drawerOpened = state.app!.drawerOpened;
+    if (get(state, 'app.toastNotification.active')) {
+      fireEvent(this, 'toast', {
+        text: state.app!.toastNotification.message,
+        showCloseBtn: state.app!.toastNotification.showCloseBtn
+      });
+    }
   }
 
   // TODO: just for testing...

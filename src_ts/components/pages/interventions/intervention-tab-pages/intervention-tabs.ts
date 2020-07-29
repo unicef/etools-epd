@@ -14,11 +14,11 @@ import {RouteDetails} from '../../../../routing/router';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
 import {isJsonStrMatch} from '../../../utils/utils';
-import {getIntervention} from '../../../../redux/actions/interventions';
 import {setStore, getStore} from './utils/redux-store-access';
 import {currentPage, currentSubpage} from './common/selectors';
 import {elevationStyles} from './common/styles/elevation-styles';
 import {AnyObject} from './common/models/globals.types';
+import {getIntervention} from './common/actions';
 
 /**
  * @LitElement
