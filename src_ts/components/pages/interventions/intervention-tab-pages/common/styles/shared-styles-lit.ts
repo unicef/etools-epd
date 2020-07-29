@@ -220,5 +220,13 @@ export const sharedStylesContent = `
     width: 100%;
   }
 
+  paper-radio-group:focus,
+  paper-textarea[focused] {
+    outline: none;
+  }
+
+  .readonly {
+    pointer-events: none;
+  }
 `;
 export const sharedStyles = html`${unsafeCSS(sharedStylesContent)}`;
