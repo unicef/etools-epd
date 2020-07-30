@@ -22,7 +22,7 @@ import {
 } from './effectiveAndEfficientProgrammeManagement.selectors';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {Permission} from '../../common/models/intervention.types';
-import {ProgrammeManagementActivityPermissions} from './effectiveAndEfficientProgrammeManagement.models';
+import {ProgrammeManagementActivityPermissions, ProgrammeManagement} from './effectiveAndEfficientProgrammeManagement.models';
 
 /**
  * @customElement
@@ -121,7 +121,7 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
   private activityDialog!: ActivityDialog;
 
   @property({type: Number})
-  total_amount: number = 0;
+  total_amount = 0;
 
   @property({type: Object})
   permissions!: Permission<ProgrammeManagementActivityPermissions>;
