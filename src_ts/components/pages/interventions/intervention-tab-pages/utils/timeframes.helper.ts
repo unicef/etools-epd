@@ -6,7 +6,7 @@ export type ActivityTime = {
   end: Date;
   year: number;
   frameDisplay: string;
-  frameName: string;
+  name: string;
   enabled: boolean;
 };
 
@@ -14,25 +14,26 @@ export type ActivityTime = {
 const moment = window.moment;
 
 export function serializeTimeFrameData(data: InterventionActivityTimeframe[]): ActivityTime[] {
-  return (data || []).map((frame: InterventionActivityTimeframe, index: number) => {
-    const start: Date = new Date(frame.start_date);
-    const end: Date = new Date(frame.end_date);
+  return (data || []).map((frame: InterventionActivityTimeframe) => {
+    const start: Date = new Date(frame.start);
+    const end: Date = new Date(frame.end);
     return {
       start,
       end,
       year: start.getFullYear(),
       frameDisplay: `${moment(start).format('DD MMM')} - ${moment(end).format('DD MMM')}`,
-      frameName: `Q${index + 1}`,
-      enabled: frame.enabled
+      name: frame.name,
+      enabled: Boolean(frame.enabled)
     };
   });
 }
 
 export function convertActivityTimeToData(time: ActivityTime[]): InterventionActivityTimeframe[] {
   return time.map((timeData: ActivityTime) => ({
-    start_date: moment(timeData.start).format('YYYY-MM-DD'),
-    end_date: moment(timeData.end).format('YYYY-MM-DD'),
-    enabled: timeData.enabled
+    start: moment(timeData.start).format('YYYY-MM-DD'),
+    end: moment(timeData.end).format('YYYY-MM-DD'),
+    enabled: timeData.enabled,
+    name: timeData.name
   }));
 }
 

@@ -12,10 +12,10 @@ import {getEndpoint} from '../../../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../../../utils/intervention-endpoints';
 import {getDifference} from '../../../../common/mixins/objects-diff';
 import {getStore} from '../../../../utils/redux-store-access';
-import {getIntervention} from '../../../../../../../../redux/actions/interventions';
 import './activity-timeframes';
 import {fireEvent} from '../../../../utils/fire-custom-event';
 import {ActivityItemsTable} from './activity-items-table';
+import {getIntervention} from '../../../../common/actions';
 
 @customElement('activity-data-dialog')
 export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitElement) {
@@ -28,10 +28,10 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
   @property() isEditDialog = true;
   @property() useInputLevel = false;
 
-  set dialogData({activityId, pdOutputId, interventionId}: any) {
+  set dialogData({activityId, pdOutputId, interventionId, quarters}: any) {
     this.interventionId = interventionId;
     if (!activityId) {
-      this.data = {} as InterventionActivity;
+      this.data = {time_frames: quarters} as InterventionActivity;
       this.isEditDialog = false;
       this.endpoint = getEndpoint(interventionEndpoints.pdActivities, {pdOutputId, interventionId});
       return;
@@ -221,8 +221,8 @@ export class ActivityDataDialog extends DataMixin()<InterventionActivity>(LitEle
     this.editedData = {
       ...this.editedData,
       items: this.useInputLevel ? this.editedData.items : [],
-      cso_cash: 0,
-      unicef_cash: 0
+      cso_cash: '0',
+      unicef_cash: '0'
     };
   }
 

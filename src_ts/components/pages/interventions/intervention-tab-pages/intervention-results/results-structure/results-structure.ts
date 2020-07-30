@@ -1,9 +1,18 @@
 import {getStore} from '../../utils/redux-store-access';
 import {css, html, CSSResultArray, customElement, LitElement, property} from 'lit-element';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import {selectInterventionId, selectInterventionResultLinks} from './results-structure.selectors';
+import {
+  selectInterventionId,
+  selectInterventionQuarters,
+  selectInterventionResultLinks,
+} from './results-structure.selectors';
 import {ResultStructureStyles} from './results-structure.styles';
-import {CpOutput, ExpectedResult, ResultLinkLowerResult} from '../../common/models/intervention.types';
+import {
+  CpOutput,
+  ExpectedResult,
+  InterventionQuarter,
+  ResultLinkLowerResult,
+} from '../../common/models/intervention.types';
 import '@unicef-polymer/etools-data-table';
 import '@unicef-polymer/etools-content-panel';
 import './cp-output-level';
@@ -57,6 +66,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
     this._resultLinks = data;
   }
   @property() interventionId!: number | null;
+  quarters: InterventionQuarter[] = [];
 
   @property({type: Boolean}) showCPOLevel = true;
   @property({type: Boolean}) showIndicators = true;
@@ -150,6 +160,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
                         .activities="${pdOutput.activities}"
                         .interventionId="${this.interventionId}"
                         .pdOutputId="${pdOutput.id}"
+                        .quarters="${this.quarters}"
                         ?hidden="${!this.showActivities}"
                       ></pd-activities>
                     </div>
@@ -180,6 +191,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
   stateChanged(state: any) {
     this.resultLinks = selectInterventionResultLinks(state);
     this.interventionId = selectInterventionId(state);
+    this.quarters = selectInterventionQuarters(state);
     this.cpOutputs = (state.commonData && state.commonData.cpOutputs) || [];
   }
 

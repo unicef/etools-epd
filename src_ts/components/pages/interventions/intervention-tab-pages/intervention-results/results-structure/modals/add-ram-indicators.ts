@@ -5,9 +5,9 @@ import '@unicef-polymer/etools-dialog';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {getEndpoint} from '../../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
-import {GenericObject} from '../../../common/types/types';
 import {getStore} from '../../../utils/redux-store-access';
-import {getIntervention} from '../../../../../../../redux/actions/interventions';
+import { GenericObject } from '../../../common/models/globals.types';
+import {getIntervention} from '../../../common/actions';
 
 @customElement('add-ram-indicators')
 export class AddRamIndicators extends LitElement {

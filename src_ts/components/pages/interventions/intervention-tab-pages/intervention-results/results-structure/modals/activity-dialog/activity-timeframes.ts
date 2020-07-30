@@ -89,7 +89,7 @@ export class ActivityTimeFrames extends LitElement {
                       class="time-frame${frame.enabled ? ' selected' : ''}"
                       @click="${() => this.toggleFrame(frame)}"
                     >
-                      <div class="title">${frame.frameName}</div>
+                      <div class="title">${frame.name}</div>
                       <div class="description">${frame.frameDisplay}</div>
                     </div>
                     <div class="frame-divider" ?hidden="${index + 1 === frames.length}"></div>

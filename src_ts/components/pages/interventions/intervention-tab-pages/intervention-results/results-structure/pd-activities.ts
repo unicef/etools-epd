@@ -3,7 +3,7 @@ import {ResultStructureStyles} from './results-structure.styles';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import '@polymer/iron-icons';
 import './modals/activity-dialog/activity-data-dialog';
-import {InterventionActivity} from '../../common/models/intervention.types';
+import {InterventionActivity, InterventionQuarter} from '../../common/models/intervention.types';
 import {openDialog} from '../../utils/dialog';
 
 @customElement('pd-activities')
@@ -30,6 +30,7 @@ export class PdActivities extends LitElement {
   @property({type: Array}) activities: InterventionActivity[] = [];
   interventionId!: number;
   pdOutputId!: number;
+  quarters!: InterventionQuarter[];
 
   protected render(): TemplateResult {
     // language=HTML
@@ -87,11 +88,13 @@ export class PdActivities extends LitElement {
 
               <!--    Total    -->
               <div class="text number-data flex-none">
+                <!--       TODO: use field from backend         -->
                 ${this.formatCurrency(this.getTotal(activity.cso_cash, activity.unicef_cash))}
               </div>
 
               <!--    %Partner    -->
               <div class="text number-data flex-none">
+                <!--       TODO: use field from backend         -->
                 ${this.getPartnerPercent(activity.cso_cash, activity.unicef_cash)}
               </div>
 
@@ -106,7 +109,7 @@ export class PdActivities extends LitElement {
               <div class="details-container">
                 <div class="text details-heading">Time periods</div>
                 <div class="details-text">
-                  <b>Q1, Q2, Q4</b>
+                  <b>${activity.time_frames.map(({name}: InterventionQuarter) => name).join(', ') || '-'}</b>
                 </div>
               </div>
 
@@ -154,7 +157,8 @@ export class PdActivities extends LitElement {
       dialogData: {
         activityId: activity && activity.id,
         interventionId: this.interventionId,
-        pdOutputId: this.pdOutputId
+        pdOutputId: this.pdOutputId,
+        quarters: this.quarters
       }
     });
   }

@@ -8,7 +8,7 @@ import {DataMixin} from '../../../common/mixins/data-mixin';
 import {getDifference} from '../../../common/mixins/objects-diff';
 import '@unicef-polymer/etools-dialog';
 import {getStore} from '../../../utils/redux-store-access';
-import {getIntervention} from '../../../../../../../redux/actions/interventions';
+import {getIntervention} from '../../../common/actions';
 
 @customElement('pd-output-dialog')
 export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElement) {

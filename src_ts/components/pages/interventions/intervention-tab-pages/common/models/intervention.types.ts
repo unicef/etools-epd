@@ -182,7 +182,7 @@ export class InterventionPermissionsFields {
   locations = false;
 
   // attachments
-  attachments = false;  
+  attachments = false;
 }
 
 export interface Permission<T> {
@@ -226,6 +226,7 @@ export class Intervention {
   planned_visits: PlannedVisit[] = [];
   in_amendment = false;
   amendments: InterventionAmendment[] = [];
+  quarters: InterventionQuarter[] = [];
   locations: [] = [];
   // distributions: [];
   activation_letter_attachment: number | string | null = null;
@@ -234,7 +235,7 @@ export class Intervention {
   other_partners_involved = '';
   other_info = '';
   attachments: InterventionAttachment[] = [];
-  permissions?: Permission<InterventionPermissionsFields>;  
+  permissions?: Permission<InterventionPermissionsFields>;
   humanitarian_flag?: boolean;
 }
 
@@ -270,10 +271,14 @@ export type InterventionActivityItem = {
   cso_cash: string;
 };
 
-export type InterventionActivityTimeframe = {
-  start_date: string;
-  end_date: string;
+export type InterventionActivityTimeframe = InterventionQuarter & {
   enabled: boolean;
+};
+
+export type InterventionQuarter = {
+  start: string;
+  end: string;
+  name: string;
 };
 
 export interface ResultIndicator {

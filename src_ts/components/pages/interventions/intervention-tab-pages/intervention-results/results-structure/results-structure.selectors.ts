@@ -9,3 +9,7 @@ export const selectInterventionResultLinks = createSelector(currentIntervention,
 export const selectInterventionId = createSelector(currentIntervention, (intervention: Intervention) => {
   return (intervention && intervention.id) || null;
 });
+
+export const selectInterventionQuarters = createSelector(currentIntervention, (intervention: Intervention) => {
+  return (intervention && intervention.quarters) || [];
+});

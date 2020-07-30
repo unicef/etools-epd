@@ -1,6 +1,6 @@
 import {LitElement, PropertyDeclarations} from 'lit-element';
-import {GenericObject} from '../types/types';
 import {cloneDeep} from '../../utils/utils';
+import {GenericObject} from '../models/globals.types';
 
 type Constructor<T> = new (...args: any[]) => T;
 
