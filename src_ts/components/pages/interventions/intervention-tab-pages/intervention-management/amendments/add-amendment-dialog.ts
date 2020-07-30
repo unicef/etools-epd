@@ -22,7 +22,7 @@ import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import CONSTANTS from '../../../../../../config/app-constants';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
-import {setIntervention} from '../../../../../../redux/actions/interventions';
+import {updateCurrentIntervention} from '../../common/actions';
 
 /**
  * @customElement
@@ -295,7 +295,7 @@ export class AddAmendmentDialog extends connect(getStore())(ComponentBaseMixin(L
 
   _handleResponse(response: InterventionAmendment) {
     this.intervention.amendments.push(response);
-    getStore().dispatch(setIntervention(this.intervention));
+    getStore().dispatch(updateCurrentIntervention(this.intervention));
     this.handleDialogClose();
   }
 

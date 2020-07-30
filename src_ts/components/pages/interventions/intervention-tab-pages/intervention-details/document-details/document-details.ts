@@ -10,7 +10,6 @@ import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {selectDocumentDetails, selectDocumentDetailsPermissions} from './documentDetails.selectors';
 import {Permission} from '../../common/models/intervention.types';
-import {cloneDeep} from '../../../../../utils/utils';
 import {DocumentDetailsPermissions, DocumentDetails} from './documentDetails.models';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {getStore} from '../../utils/redux-store-access';
@@ -18,6 +17,7 @@ import {connect} from 'pwa-helpers/connect-mixin';
 import {validateRequiredFields} from '../../utils/validation-helper';
 import {isJsonStrMatch} from '../../utils/utils';
 import {patchIntervention} from '../../common/actions';
+import cloneDeep from 'lodash-es/cloneDeep';
 
 /**
  * @customElement

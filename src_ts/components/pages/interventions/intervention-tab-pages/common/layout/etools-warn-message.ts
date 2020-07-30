@@ -1,5 +1,5 @@
 import {LitElement, html, property, customElement} from 'lit-element';
-import {AnyObject} from '../../../../../../types/globals';
+import {AnyObject} from '../models/globals.types';
 
 export class WarnMessage {
   public msg = '';
