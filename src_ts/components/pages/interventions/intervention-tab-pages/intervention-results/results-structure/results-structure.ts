@@ -57,6 +57,10 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
     // language=HTML
     return html`
       <style>
+        :host {
+          display: block;
+          margin-bottom: 24px;
+        }
         etools-data-table-row {
           --list-row-collapse-wrapper: {
             padding: 0 !important;

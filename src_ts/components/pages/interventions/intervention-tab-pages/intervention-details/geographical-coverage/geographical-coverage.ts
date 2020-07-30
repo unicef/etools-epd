@@ -7,10 +7,8 @@ import {GroupedLocationsDialog} from './grouped-locations-dialog';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {cloneDeep, isJsonStrMatch} from '../../../../../utils/utils';
 import {getStore} from '../../utils/redux-store-access';
 import {connect} from 'pwa-helpers/connect-mixin';
-import {layoutHorizontal} from '../../common/styles/flex-layout-styles';
 import {LocationsPermissions} from './geographicalCoverage.models';
 import {Permission} from '../../common/models/intervention.types';
 import {selectLocationsPermissions} from './geographicalCoverage.selectors';
@@ -19,6 +17,8 @@ import {validateRequiredFields} from '../../utils/validation-helper';
 import {patchIntervention} from '../../common/actions';
 import isEmpty from 'lodash-es/isEmpty';
 import get from 'lodash-es/get';
+import {isJsonStrMatch} from '../../utils/utils';
+import cloneDeep from 'lodash-es/cloneDeep';
 
 /**
  * @customElement
@@ -31,14 +31,15 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
 
   render() {
     if (!this.originalData) {
-      return html` ${sharedStyles}
+      return html`<style>
+          ${sharedStyles}
+        </style>
         <etools-loading loading-text="Loading..." active></etools-loading>`;
     }
     // language=HTML
     return html`
-      ${sharedStyles}
       <style>
-        :host {
+        ${sharedStyles} :host {
           display: block;
           margin-bottom: 24px;
         }
@@ -65,7 +66,6 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
         #locations {
           max-width: 100%;
         }
-
       </style>
 
       <etools-content-panel show-expand-btn panel-title="Geographical Coverage">

@@ -1,6 +1,9 @@
 import {LitElement, customElement, html} from 'lit-element';
 import './budget-summary/budget-summary';
+import './supply-agreement/supply-agreement';
 import './results-structure/results-structure';
+import './effective-and-efficient-programme-management/effective-and-efficient-programme-management';
+
 /**
  * @customElement
  */
@@ -12,8 +15,9 @@ export class InterventionResults extends LitElement {
       <style></style>
 
       <budget-summary></budget-summary>
-
       <results-structure></results-structure>
+      <effective-and-efficient-programme-management></effective-and-efficient-programme-management>
+      <supply-agreements></supply-agreements>
     `;
   }
 }

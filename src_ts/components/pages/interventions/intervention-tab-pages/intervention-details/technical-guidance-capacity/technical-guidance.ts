@@ -7,12 +7,12 @@ import {buttonsStyles} from '../../common/styles/button-styles';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {Permission} from '../../common/models/intervention.types';
 import {TechnicalDetails, TechnicalDetailsPermissions} from './technicalGuidance.models';
-import {cloneDeep} from '../../../../../utils/utils';
 import {selectTechnicalDetails, selectTechnicalDetailsPermissions} from './technicalGuidance.selectors';
 import {patchIntervention} from '../../common/actions';
 import {validateRequiredFields} from '../../utils/validation-helper';
 import '@polymer/paper-input/paper-textarea';
 import '@unicef-polymer/etools-loading/etools-loading';
+import cloneDeep from 'lodash-es/cloneDeep';
 
 /**
  * @customElement
@@ -25,14 +25,15 @@ export class TechnicalGuidance extends connect(getStore())(ComponentBaseMixin(Li
 
   render() {
     if (!this.originalData) {
-      return html` ${sharedStyles}
+      return html`<style>
+          ${sharedStyles}
+        </style>
         <etools-loading loading-text="Loading..." active></etools-loading>`;
     }
     // language=HTML
     return html`
-      ${sharedStyles}
       <style>
-        :host {
+        ${sharedStyles} :host {
           display: block;
           margin-bottom: 24px;
         }

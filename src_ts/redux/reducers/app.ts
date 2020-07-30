@@ -12,15 +12,26 @@ import {Reducer} from 'redux';
 import {UPDATE_ROUTE_DETAILS, UPDATE_DRAWER_STATE} from '../actions/app';
 import {RootAction} from '../store';
 import {RouteDetails} from '../../routing/router';
+import {SHOW_TOAST, CLOSE_TOAST} from '../actionsContants';
 
 export interface AppState {
   routeDetails: RouteDetails;
   drawerOpened: boolean;
+  toastNotification: {
+    active: boolean;
+    message: string;
+    showCloseBtn: boolean;
+  };
 }
 
 const INITIAL_STATE: AppState = {
   routeDetails: {} as RouteDetails,
-  drawerOpened: false
+  drawerOpened: false,
+  toastNotification: {
+    active: false,
+    message: '',
+    showCloseBtn: true
+  }
 };
 
 const app: Reducer<AppState, RootAction> = (state = INITIAL_STATE, action) => {
@@ -34,6 +45,24 @@ const app: Reducer<AppState, RootAction> = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         drawerOpened: action.opened
+      };
+    case SHOW_TOAST:
+      return {
+        ...state,
+        toastNotification: {
+          active: true,
+          message: action.message,
+          showCloseBtn: action.showCloseBtn
+        }
+      };
+    case CLOSE_TOAST:
+      return {
+        ...state,
+        toastNotification: {
+          active: false,
+          message: '',
+          showCloseBtn: false
+        }
       };
     default:
       return state;

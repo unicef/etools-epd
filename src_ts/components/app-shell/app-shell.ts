@@ -49,12 +49,16 @@ import {
   getLocations,
   getSections,
   getDisaggregations,
+  getOffices,
+  getUnicefUsers,
   getStaticData,
   SET_ALL_STATIC_DATA
 } from '../../redux/actions/common-data';
 import {EtoolsUserModel} from '../user/user-model';
 import isEmpty from 'lodash-es/isEmpty';
 import {getGenderEquityRatingsDummy} from '../pages/interventions/list/list-dummy-data';
+import {fireEvent} from '../utils/fire-custom-event';
+import get from 'lodash-es/get';
 
 store.addReducers({
   user,
@@ -185,14 +189,21 @@ export class AppShell extends connect(store)(LitElement) {
 
     getCurrentUser().then((user: EtoolsUserModel) => {
       if (user) {
-        Promise.allSettled([getPartners(), getLocations(), getSections(), getDisaggregations(), getStaticData()]).then(
-          (response: any[]) => {
-            store.dispatch({
-              type: SET_ALL_STATIC_DATA,
-              staticData: this.formatResponse(response)
-            });
-          }
-        );
+        // @ts-ignore
+        Promise.allSettled([
+          getPartners(),
+          getLocations(),
+          getSections(),
+          getDisaggregations(),
+          getOffices(),
+          getUnicefUsers(),
+          getStaticData()
+        ]).then((response: any[]) => {
+          store.dispatch({
+            type: SET_ALL_STATIC_DATA,
+            staticData: this.formatResponse(response)
+          });
+        });
       }
     });
   }
@@ -203,8 +214,9 @@ export class AppShell extends connect(store)(LitElement) {
     data.locations = this.getValue(response[1]);
     data.sections = this.getValue(response[2]);
     data.disaggregations = this.getValue(response[3]);
-
-    const staticData = this.getValue(response[4], {});
+    data.offices = this.getValue(response[4]);
+    data.unicefUsers = this.getValue(response[5]);
+    const staticData = this.getValue(response[6], {});
     data.locationTypes = isEmpty(staticData.location_types) ? [] : staticData.location_types;
     data.documentTypes = isEmpty(staticData.intervention_doc_type) ? [] : staticData.intervention_doc_type;
     data.genderEquityRatings = isEmpty(staticData.genderEquityRatings)
@@ -228,6 +240,12 @@ export class AppShell extends connect(store)(LitElement) {
     this.mainPage = state.app!.routeDetails!.routeName;
     this.subPage = state.app!.routeDetails!.subRouteName;
     this.drawerOpened = state.app!.drawerOpened;
+    if (get(state, 'app.toastNotification.active')) {
+      fireEvent(this, 'toast', {
+        text: state.app!.toastNotification.message,
+        showCloseBtn: state.app!.toastNotification.showCloseBtn
+      });
+    }
   }
 
   // TODO: just for testing...

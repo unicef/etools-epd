@@ -1,5 +1,5 @@
 import {LitElement, property, html} from 'lit-element';
-import {Constructor, AnyObject} from '../types/types';
+import {Constructor, AnyObject} from '../models/globals.types';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
 import {createDynamicDialog} from '@unicef-polymer/etools-dialog/dynamic-dialog';
 import {fireEvent} from '../../../../../utils/fire-custom-event';
