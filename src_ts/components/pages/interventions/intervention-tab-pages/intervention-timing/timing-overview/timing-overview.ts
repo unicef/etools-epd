@@ -45,7 +45,7 @@ export class TimingOverview extends connect(getStore())(LitElement) {
       <section class="elevation content-wrapper" elevation="1">
         <div class="container-width">
           <div class="layout-horizontal">
-            <div class="flex-2">
+            <div class="flex-1">
               <span>
                 <label class="paper-label">Date Created</label>
               </span>
@@ -87,7 +87,7 @@ export class TimingOverview extends connect(getStore())(LitElement) {
             </div>
           </div>
           <div class="layout-horizontal">
-            <div class="flex-2">
+            <div class="flex-1">
               <span>
                 <label class="input-label" ?empty="${!this.timingOverview.document_type}">
                   ${this.timingOverview.document_type}
