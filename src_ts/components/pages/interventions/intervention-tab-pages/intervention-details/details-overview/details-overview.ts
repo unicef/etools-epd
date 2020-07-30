@@ -1,7 +1,6 @@
 import {LitElement, customElement, html, property} from 'lit-element';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import '../../../../../../redux/actions/interventions';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {elevationStyles} from '../../common/styles/elevation-styles';
 import {InterventionOverview} from './interventionOverview.models';

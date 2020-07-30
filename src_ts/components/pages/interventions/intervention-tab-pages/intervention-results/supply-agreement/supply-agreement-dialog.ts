@@ -2,7 +2,6 @@ import {LitElement, html, property, customElement} from 'lit-element';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {RootState} from '../../../../../../redux/store';
 import {getStore} from '../../utils/redux-store-access';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {InterventionSupplyItem} from '../../common/models/intervention.types';
@@ -95,7 +94,7 @@ export class SupplyAgreementDialog extends connect(getStore())(LitElement) {
   @property({type: String})
   confirmBtnTxt = '';
 
-  stateChanged(_state: RootState) {
+  stateChanged(_state: any) {
     // NOT sure we need this, will see..
   }
 

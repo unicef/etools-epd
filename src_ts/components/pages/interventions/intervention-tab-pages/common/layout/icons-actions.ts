@@ -6,7 +6,7 @@ import '@polymer/paper-icon-button/paper-icon-button';
 
 // @lajos TO DO refactor
 import {property} from '@polymer/decorators';
-import {AnyObject} from '../../common/models/globals.types';
+import {AnyObject} from '../models/globals.types';
 import {_layoutHorizontal, _layoutCenter} from '../styles/flex-layout-styles';
 import {fireEvent} from '../../utils/fire-custom-event';
 
