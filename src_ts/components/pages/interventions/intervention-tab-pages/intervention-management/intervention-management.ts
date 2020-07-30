@@ -1,5 +1,6 @@
 import {LitElement, customElement, html} from 'lit-element';
 import './amendments/pd-amendments';
+import './intervention-review-and-sign/intervention-review-and-sign';
 /**
  * @customElement
  */
@@ -10,6 +11,7 @@ export class InterventionManagement extends LitElement {
     return html`
       <style></style>
       <pd-amendments></pd-amendments>
+      <intervention-review-and-sign></intervention-review-and-sign>
     `;
   }
 }
