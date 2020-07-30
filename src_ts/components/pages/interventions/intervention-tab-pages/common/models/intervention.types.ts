@@ -252,38 +252,28 @@ export class InterventionAmendment {
 }
 
 export type InterventionActivity = {
-  created: string;
-  modified: string;
-  name: string;
+  id: number;
   context_details: string;
-  unicef_cash: number;
-  cso_cash: number;
-  unicef_suppies: number;
-  cso_supplies: number;
-  time_periods: InterventionActivityTimeframe[];
-  intervention: number;
+  cso_cash: string;
+  cso_supplies: string;
   items: InterventionActivityItem[];
+  name: string;
+  time_frames: InterventionActivityTimeframe[];
+  unicef_cash: string;
+  unicef_suppies: number;
 };
 
 export type InterventionActivityItem = {
-  created: string;
-  modified: string;
   name: string;
   other_details: string;
-  unicef_cash: number;
-  cso_cash: number;
-  unicef_suppies: number;
-  cso_supplies: number;
-  total: number;
-  intervention_activity: number;
+  unicef_cash: string;
+  cso_cash: string;
 };
 
 export type InterventionActivityTimeframe = {
-  created: string;
-  modified: string;
   start_date: string;
   end_date: string;
-  intervention: number;
+  enabled: boolean;
 };
 
 export interface ResultIndicator {

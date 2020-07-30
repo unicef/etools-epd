@@ -2,6 +2,9 @@ import {css, unsafeCSS} from 'lit-element';
 import {_layoutHorizontal, _layoutVertical, _layoutFlex, _layoutWrap} from './flex-layout-styles';
 
 export const gridLayoutStylesContent = `
+*[hidden] {
+  display: none;
+}
 .w100 {
   width: 100%;
 }

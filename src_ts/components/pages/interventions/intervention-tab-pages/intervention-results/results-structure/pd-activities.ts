@@ -2,7 +2,7 @@ import {LitElement, html, TemplateResult, CSSResultArray, css, customElement, pr
 import {ResultStructureStyles} from './results-structure.styles';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import '@polymer/iron-icons';
-import './modals/activity-data-dialog';
+import './modals/activity-dialog/activity-data-dialog';
 import {InterventionActivity} from '../../common/models/intervention.types';
 import {openDialog} from '../../utils/dialog';
 
@@ -28,6 +28,8 @@ export class PdActivities extends LitElement {
   }
 
   @property({type: Array}) activities: InterventionActivity[] = [];
+  interventionId!: number;
+  pdOutputId!: number;
 
   protected render(): TemplateResult {
     // language=HTML
@@ -150,7 +152,9 @@ export class PdActivities extends LitElement {
     openDialog<any>({
       dialog: 'activity-data-dialog',
       dialogData: {
-        activity: activity || {}
+        activityId: activity && activity.id,
+        interventionId: this.interventionId,
+        pdOutputId: this.pdOutputId
       }
     });
   }

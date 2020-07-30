@@ -50,8 +50,12 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
       `
     ];
   }
-
-  @property() resultLinks: ExpectedResult[] = [];
+  get resultLinks(): ExpectedResult[] {
+    return this._resultLinks || [];
+  }
+  set resultLinks(data: ExpectedResult[]) {
+    this._resultLinks = data;
+  }
   @property() interventionId!: number | null;
 
   @property({type: Boolean}) showCPOLevel = true;
@@ -59,6 +63,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
   @property({type: Boolean}) showActivities = true;
 
   private cpOutputs: CpOutput[] = [];
+  @property() private _resultLinks: ExpectedResult[] | null = [];
 
   render() {
     // language=HTML
@@ -143,6 +148,8 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
                       ></pd-indicators>
                       <pd-activities
                         .activities="${pdOutput.activities}"
+                        .interventionId="${this.interventionId}"
+                        .pdOutputId="${pdOutput.id}"
                         ?hidden="${!this.showActivities}"
                       ></pd-activities>
                     </div>
