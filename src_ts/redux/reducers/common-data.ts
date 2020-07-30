@@ -1,6 +1,6 @@
 import {Reducer} from 'redux';
 import {
-  SET_UNICEF_USERS_DATA,
+  SET_UNICEF_USERS,
   SET_PARTNERS,
   SET_LOCATIONS,
   SET_LOCATION_TYPES,
@@ -8,6 +8,7 @@ import {
   SET_GENDER_EQUITY_RATINGS,
   SET_SECTIONS,
   SET_DISAGGREGATIONS,
+  SET_OFFICES,
   SET_ALL_STATIC_DATA
 } from '../actions/common-data';
 import {RootAction} from '../store';
@@ -23,6 +24,7 @@ export interface CommonDataState {
   documentTypes: [];
   genderEquityRatings: [];
   interventionAmendmentTypes: LabelAndValue[];
+  offices: [];
 }
 
 const INITIAL_COMMON_DATA: CommonDataState = {
@@ -34,15 +36,16 @@ const INITIAL_COMMON_DATA: CommonDataState = {
   locationTypes: [],
   documentTypes: [],
   genderEquityRatings: [],
-  interventionAmendmentTypes: []
+  interventionAmendmentTypes: [],
+  offices: []
 };
 
 const commonData: Reducer<CommonDataState, RootAction> = (state = INITIAL_COMMON_DATA, action) => {
   switch (action.type) {
-    case SET_UNICEF_USERS_DATA:
+    case SET_UNICEF_USERS:
       return {
         ...state,
-        unicefUsers: action.unicefUsersData
+        unicefUsers: action.unicefUsers
       };
     case SET_PARTNERS:
       return {
@@ -79,9 +82,15 @@ const commonData: Reducer<CommonDataState, RootAction> = (state = INITIAL_COMMON
         ...state,
         genderEquityRatings: action.genderEquityRatings
       };
+    case SET_OFFICES:
+      return {
+        ...state,
+        sections: action.offices
+      };
     case SET_ALL_STATIC_DATA:
       return {
         ...state,
+        unicefUsers: action.staticData.unicefUsers,
         partners: action.staticData.partners,
         locations: action.staticData.locations,
         sections: action.staticData.sections,
@@ -89,7 +98,8 @@ const commonData: Reducer<CommonDataState, RootAction> = (state = INITIAL_COMMON
         locationTypes: action.staticData.locationTypes,
         documentTypes: action.staticData.documentTypes,
         genderEquityRatings: action.staticData.genderEquityRatings,
-        interventionAmendmentTypes: action.staticData.interventionAmendmentTypes
+        interventionAmendmentTypes: action.staticData.interventionAmendmentTypes,
+        offices: action.staticData.offices
       };
     default:
       return state;

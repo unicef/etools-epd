@@ -2,6 +2,7 @@ import {EtoolsToast} from './etools-toast';
 import './etools-toast'; // element loaded (if not, etools-toast will not render)
 import {AnyObject} from '../../../types/globals';
 import {LitElement} from 'lit-element';
+import {store} from '../../../redux/store';
 
 /**
  * Toasts notification messages queue utility class
@@ -26,7 +27,7 @@ export class ToastNotificationHelper {
   public removeToastNotificationListeners() {
     this.appShellEl.removeEventListener('toast', this.queueToast);
     if (this._toast) {
-      this._toast.removeEventListener('toast-confirm', this._toggleToast);
+      this._toast.removeEventListener('toast-confirm', this.closeToast);
       this._toast.removeEventListener('toast-closed', this.dequeueToast);
     }
   }
@@ -52,8 +53,8 @@ export class ToastNotificationHelper {
   public createToastNotificationElement() {
     const toast = document.createElement('etools-toast') as EtoolsToast;
     toast.setAttribute('id', this.TOAST_EL_ID);
-    this._toggleToast = this._toggleToast.bind(this);
-    toast.addEventListener('toast-confirm', this._toggleToast);
+    this.closeToast = this.closeToast.bind(this);
+    toast.addEventListener('toast-confirm', this.closeToast);
     document.querySelector('body')!.appendChild(toast);
     this._toastAfterRenderSetup(toast);
     return toast;
@@ -79,6 +80,13 @@ export class ToastNotificationHelper {
       const toastProperties: AnyObject = this._toast.prepareToastAndGetShowProperties(this._toastQueue[0]);
       this._showToast(toastProperties);
     }
+  }
+
+  closeToast() {
+    store.dispatch({
+      type: 'CLOSE_TOAST'
+    });
+    this._toggleToast();
   }
 
   protected _toggleToast() {

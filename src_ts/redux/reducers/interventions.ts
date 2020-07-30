@@ -1,5 +1,5 @@
-import {Intervention} from '../../components/pages/interventions/intervention-tab-pages/common/models/intervention.types';
 import {UPDATE_CURRENT_INTERVENTION} from '../actionsContants';
+import {Intervention} from '../../components/pages/interventions/intervention-tab-pages/common/models/intervention.types';
 
 export interface InterventionsState {
   current: Intervention | null;
