@@ -5,11 +5,11 @@ import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {AnyObject} from '../../common/types/types';
 import isEmpty from 'lodash-es/isEmpty';
 import {fireEvent} from '../../../../../utils/fire-custom-event';
 import {validateRequiredFields} from '../../utils/validation-helper';
 import {layoutCenterJustified, layoutVertical} from '../../common/styles/flex-layout-styles';
+import {AnyObject} from '../../common/models/globals.types';
 
 /**
  * @customElement
@@ -22,13 +22,13 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(L
 
   render() {
     // if (!this.originalData) {
-    //   return html` ${sharedStyles}
+    //   return html` <style>${sharedStyles}</style>
     //     <etools-loading loading-text="Loading..." active></etools-loading>`;
     // }
     // language=HTML
     return html`
-      ${sharedStyles}
       <style>
+        ${sharedStyles}
         :host {
           display: block;
           margin-bottom: 24px;
@@ -54,7 +54,7 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(L
         }
       </style>
 
-      <etools-content-panel show-expand-btn panel-title="Partner Details">
+      <etools-content-panel show-expand-btn panel-title="Programmatic Visits">
         <etools-loading loading-text="Loading..." .active="${this.showLoading}"></etools-loading>
 
         <div class="row-h extra-top-padd" ?hidden="${!this.editMode}">
