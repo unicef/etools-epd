@@ -8,6 +8,8 @@ import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {AnyObject} from '../../common/types/types';
 import isEmpty from 'lodash-es/isEmpty';
 import {fireEvent} from '../../../../../utils/fire-custom-event';
+import {validateRequiredFields} from '../../utils/validation-helper';
+import {layoutCenterJustified, layoutVertical} from '../../common/styles/flex-layout-styles';
 
 /**
  * @customElement
@@ -32,27 +34,46 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(L
           margin-bottom: 24px;
         }
 
-        
+        div.col-1 {
+          min-width: 85px;
+        }
+
+        div.col-1.yearContainer {
+          min-width: 100px;
+        }
+
+        .error-msg {
+          color: var(--error-color);
+          font-size: 12px;
+          ${layoutVertical}
+          ${layoutCenterJustified}
+        }
+
+        .padd-left-when-items {
+          margin-left: 46px;
+        }
       </style>
 
       <etools-content-panel show-expand-btn panel-title="Partner Details">
         <etools-loading loading-text="Loading..." .active="${this.showLoading}"></etools-loading>
 
         <div class="row-h extra-top-padd" ?hidden="${!this.editMode}">
-          <paper-button class$="secondary-btn [[_getAddBtnPadding(dataItems.length)]]" @tap="_addNewPlannedVisit">
+          <paper-button
+            .class="secondary-btn ${this._getAddBtnPadding(this.dataItems.length)}"
+            @tap="_addNewPlannedVisit"
+          >
             ADD YEAR
           </paper-button>
         </div>
-        
+
         <div ?hidden="${isEmpty(this.dataItems)}" class="pv-container">
-          <template is="dom-repeat" items="{{dataItems}}">
-            ${this.renderStuff(this.dataItems)}
-            
-            
-          </template>
+          ${this.renderVisitTemplate(this.dataItems)}
         </div>
 
-        <div class$="row-h [[_getNoPVMsgPadding(dataItems.length)]]" hidden$="[[!_emptyList(dataItems.length)]]">
+        <div
+          .class="row-h ${this._getNoPVMsgPadding(this.dataItems.length)}"
+          ?hidden="${!this._emptyList(this.dataItems.length)}"
+        >
           <p>There are no planned visits added.</p>
         </div>
       </etools-content-panel>
@@ -82,6 +103,10 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(L
 
   connectedCallback() {
     super.connectedCallback();
+    this._createDeleteConfirmationDialog();
+    // this.dataItems = [
+    //   {id: 17, year: 2017, programmatic_q1: '0', programmatic_q2: '0', programmatic_q3: '0', programmatic_q4: '0'}
+    // ];
   }
 
   stateChanged(state: any) {
@@ -94,20 +119,19 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(L
     if (!Array.isArray(dataItems)) {
       this.dataItems = [];
     }
-    this.set('extraEndpointParams', {intervention_id: this.interventionId});
   }
 
-  renderStuff(dataItems) {
+  renderVisitTemplate(dataItems) {
     return html`
-      ${dataItems.map((item) => html`
+      ${dataItems.map((item, index) => html`
           <div class="row-h item-container">
             <div class="item-actions-container">
               <div class="actions">
                 <paper-icon-button
                   class="action delete"
                   @tap="${this._openDeleteConfirmation}"
-                  data-args="[[index]]"
-                  disabled="[[!_canBeRemoved(index, editMode, item.id)]]"
+                  data-args="${index}"
+                  disabled="${!this._canBeRemoved(index, this.editMode)}"
                   icon="cancel"
                 >
                 </paper-icon-button>
@@ -117,7 +141,7 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(L
               <div class="row-h">
                 <div class="col col-1 yearContainer">
                   <etools-dropdown
-                    id$="year_[[index]]"
+                    .id="year_${index}"
                     class="year"
                     label="Year"
                     placeholder="&#8212;"
@@ -134,7 +158,7 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(L
                 </div>
                 <div class="col col-1">
                   <paper-input
-                    id$="visit_[[index]]_q1"
+                    .id="visit_${index}_q1"
                     label="Quarter 1"
                     .value="${item.programmatic_q1}"
                     type="number"
@@ -150,7 +174,7 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(L
                 </div>
                 <div class="col col-1">
                   <paper-input
-                    id$="visit_[[index]]_q2"
+                    .id="visit_${index}_q2"
                     label="Quarter 2"
                     value="${item.programmatic_q2}"
                     type="number"
@@ -166,7 +190,7 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(L
                 </div>
                 <div class="col col-1">
                   <paper-input
-                    id="visit_[[index]]_q3"
+                    .id="visit_${index}_q3"
                     label="Quarter 3"
                     .value="${item.programmatic_q3}"
                     type="number"
@@ -182,7 +206,7 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(L
                 </div>
                 <div class="col col-1">
                   <paper-input
-                    id$="visit_[[index]]_q4"
+                    .id="visit_${index}_q4"
                     label="Quarter 4"
                     .value="${item.programmatic_q4}"
                     type="number"
@@ -198,14 +222,23 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(L
                 </div>
                 <div class="col col-1">
                   <etools-form-element-wrapper label="TOTAL" class="row-second-bg" no-placeholder>
-                    [[_getTotal(item.programmatic_q1, item.programmatic_q2, item.programmatic_q3,
-                    item.programmatic_q4)]]
+                    ${this._getTotal(
+                      item.programmatic_q1,
+                      item.programmatic_q2,
+                      item.programmatic_q3,
+                      item.programmatic_q4
+                    )}
                   </etools-form-element-wrapper>
                 </div>
                 <div
                   class="col col-4"
-                  hidden$="[[!_showErrorMsg(item.year, item.programmatic_q1, item.programmatic_q2, item.programmatic_q3,
-                               item.programmatic_q4)]]"
+                  ?hidden="${!this._showErrorMsg(
+                    item.year,
+                    item.programmatic_q1,
+                    item.programmatic_q2,
+                    item.programmatic_q3,
+                    item.programmatic_q4
+                  )}"
                 >
                   <div class="error-msg">Total has to be greater than 0</div>
                 </div>
@@ -261,5 +294,38 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(L
 
   _getTotal(q1: string, q2: string, q3: string, q4: string) {
     return (Number(q1) || 0) + (Number(q2) || 0) + (Number(q3) || 0) + (Number(q4) || 0);
+  }
+
+  _showErrorMsg(year: string, q1: string, q2: string, q3: string, q4: string) {
+    if (!year) {
+      return false;
+    }
+    return !this._getTotal(q1, q2, q3, q4);
+  }
+
+  validate() {
+    return validateRequiredFields(this);
+  }
+
+  /**
+   * Validate last added planned visit and if is not empty add a new one
+   */
+  _addNewPlannedVisit() {
+    if (!this.validate()) {
+      fireEvent(this, 'toast', {
+        text: 'Already added planned visit data is not valid yet',
+        showCloseBtn: true
+      });
+      return;
+    }
+    this._addElement();
+  }
+
+  _getAddBtnPadding(itemsLength: number) {
+    return (!itemsLength ? '' : 'padd-left-when-items') + ' planned-visits';
+  }
+
+  _getNoPVMsgPadding(itemsLength: number) {
+    return !itemsLength && this.editMode ? 'no-top-padd' : '';
   }
 }

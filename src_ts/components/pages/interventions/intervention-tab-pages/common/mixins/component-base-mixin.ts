@@ -44,12 +44,6 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
     private _deleteDialog!: EtoolsDialog;
     private elToDeleteIndex!: number;
 
-    public connectedCallback() {
-      super.connectedCallback();
-      // create delete confirmation dialog
-      this._createDeleteConfirmationDialog();
-    }
-
     public _openDeleteConfirmation(event: any) {
       event.stopPropagation();
       if (!this.editMode) {
@@ -202,6 +196,10 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
 
     save() {
       throw new Error('Not implemented');
+    }
+
+    public _emptyList(listLength: number) {
+      return listLength === 0;
     }
 
     renderActions(editMode: boolean, canEditAnyFields: boolean) {
