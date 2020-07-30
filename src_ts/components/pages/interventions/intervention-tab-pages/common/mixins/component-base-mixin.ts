@@ -82,11 +82,11 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
       this.dataToSave[key] = detail.selectedItem?.id;
     }
 
-    selectedItemsChanged(detail: any, key: string) {
+    selectedItemsChanged(detail: any, key: string, optionValue?: string) {
       if (!detail.selectedItems) {
         return;
       }
-      this.dataToSave[key] = detail.selectedItems.map((i: any) => i.id);
+      this.dataToSave[key] = detail.selectedItems.map((i: any) => (optionValue ? i[optionValue] : i.id));
     }
 
     valueChanged(detail: any, key: string) {

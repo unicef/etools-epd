@@ -12,6 +12,8 @@ export interface EtoolsEndpoints {
   specialReportingRequirements: EtoolsEndpoint;
   reportingRequirements: EtoolsEndpoint;
   specialReportingRequirementsUpdate: EtoolsEndpoint;
+  attachmentsUpload: EtoolsEndpoint;
+  interventionAmendmentAdd: EtoolsEndpoint;
 }
 
 export const interventionEndpoints: EtoolsEndpoints = {
@@ -32,5 +34,11 @@ export const interventionEndpoints: EtoolsEndpoints = {
   },
   specialReportingRequirementsUpdate: {
     template: '/api/v2/reports/interventions/special-reporting-requirements/<%=reportId%>/'
+  },
+  attachmentsUpload: {
+    url: '/api/v2/attachments/upload/'
+  },
+  interventionAmendmentAdd: {
+    template: '/api/v2/interventions/<%=intervId%>/amendments/'
   }
 };
