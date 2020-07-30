@@ -53,7 +53,7 @@ export class EtoolsWarnMessage extends LitElement {
     return this._messages;
   }
 
-  get formatAsArray() {
+  formatAsArray() {
     return this.messages instanceof Array && this.messages.length > 0
       ? this.messages.map((msg: string) => new WarnMessage(msg))
       : [new WarnMessage(this.messages as string)];
@@ -66,6 +66,6 @@ export class EtoolsWarnMessage extends LitElement {
     if (!this.messages || this.messages.length === 0) {
       return;
     }
-    this._internalMsgs = this.formatAsArray;
+    this._internalMsgs = this.formatAsArray();
   }
 }
