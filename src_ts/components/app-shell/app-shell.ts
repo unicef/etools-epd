@@ -49,6 +49,8 @@ import {
   getLocations,
   getSections,
   getDisaggregations,
+  getOffices,
+  getUnicefUsers,
   getStaticData,
   SET_ALL_STATIC_DATA
 } from '../../redux/actions/common-data';
@@ -188,14 +190,20 @@ export class AppShell extends connect(store)(LitElement) {
     getCurrentUser().then((user: EtoolsUserModel) => {
       if (user) {
         // @ts-ignore
-        Promise.allSettled([getPartners(), getLocations(), getSections(), getDisaggregations(), getStaticData()]).then(
-          (response: any[]) => {
-            store.dispatch({
-              type: SET_ALL_STATIC_DATA,
-              staticData: this.formatResponse(response)
-            });
-          }
-        );
+        Promise.allSettled([
+          getPartners(),
+          getLocations(),
+          getSections(),
+          getDisaggregations(),
+          getOffices(),
+          getUnicefUsers(),
+          getStaticData()
+        ]).then((response: any[]) => {
+          store.dispatch({
+            type: SET_ALL_STATIC_DATA,
+            staticData: this.formatResponse(response)
+          });
+        });
       }
     });
   }
@@ -206,13 +214,17 @@ export class AppShell extends connect(store)(LitElement) {
     data.locations = this.getValue(response[1]);
     data.sections = this.getValue(response[2]);
     data.disaggregations = this.getValue(response[3]);
-
-    const staticData = this.getValue(response[4], {});
+    data.offices = this.getValue(response[4]);
+    data.unicefUsers = this.getValue(response[5]);
+    const staticData = this.getValue(response[6], {});
     data.locationTypes = isEmpty(staticData.location_types) ? [] : staticData.location_types;
     data.documentTypes = isEmpty(staticData.intervention_doc_type) ? [] : staticData.intervention_doc_type;
     data.genderEquityRatings = isEmpty(staticData.genderEquityRatings)
       ? getGenderEquityRatingsDummy()
       : staticData.genderEquityRatings;
+    data.interventionAmendmentTypes = isEmpty(staticData.intervention_amendment_types)
+      ? []
+      : staticData.intervention_amendment_types;
     return data;
   }
 

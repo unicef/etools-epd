@@ -198,7 +198,10 @@ export class GenderEquityRatingElement extends connect(getStore())(ComponentBase
   _getRatingRadioButtonsTemplate(ratings: AnyObject[], permission: boolean) {
     return ratings.map(
       (r: AnyObject) =>
-        html`<paper-radio-button ?disabled="${this.isReadonly(this.editMode, permission)}" name="${r.value}">
+        html`<paper-radio-button
+          class="${this.isReadonly(this.editMode, permission) ? 'readonly' : ''}"
+          name="${r.value}"
+        >
           ${r.label}</paper-radio-button
         >`
     );

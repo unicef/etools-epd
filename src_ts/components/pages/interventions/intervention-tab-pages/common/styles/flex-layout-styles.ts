@@ -9,7 +9,7 @@ export const layout = css`
 `;
 
 export const _layoutHorizontal = `
-  ${layout}
+  ${_layout}
   -ms-flex-direction: row;
   -webkit-flex-direction: row;
   flex-direction: row;
@@ -20,7 +20,7 @@ export const layoutHorizontal = css`
 `;
 
 export const _layoutVertical = `
-  ${layout}
+  ${_layout}
   -ms-flex-direction: column;
   -webkit-flex-direction: column;
   flex-direction: column;

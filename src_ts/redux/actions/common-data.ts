@@ -7,7 +7,7 @@ import {getGenderEquityRatingsDummy} from '../../components/pages/interventions/
 
 const LOGS_PREFIX = 'Redux common-data actions';
 
-export const SET_UNICEF_USERS_DATA = 'SET_UNICEF_USERS_DATA';
+export const SET_UNICEF_USERS = 'SET_UNICEF_USERS';
 export const SET_PARTNERS = 'SET_PARTNERS';
 export const SET_LOCATIONS = 'SET_LOCATIONS';
 export const SET_SECTIONS = 'SET_SECTIONS';
@@ -15,11 +15,12 @@ export const SET_LOCATION_TYPES = 'SET_LOCATION_TYPES';
 export const SET_DISAGGREGATIONS = 'SET_DISAGGREGATIONS';
 export const SET_DOCUMENT_TYPES = 'SET_DOCUMENT_TYPES';
 export const SET_GENDER_EQUITY_RATINGS = 'SET_GENDER_EQUITY_RATINGS';
+export const SET_OFFICES = 'SET_OFFICES';
 export const SET_STATIC_DATA = 'SET_STATIC_DATA';
 export const SET_ALL_STATIC_DATA = 'SET_ALL_STATIC_DATA';
 
-export interface CommonDataActionSetUnicefUsersData extends Action<'SET_UNICEF_USERS_DATA'> {
-  unicefUsersData: AnyObject[];
+export interface CommonDataActionSetUnicefUsers extends Action<'SET_UNICEF_USERS'> {
+  unicefUsers: AnyObject[];
 }
 
 export interface CommonDataActionSetLocations extends Action<'SET_LOCATIONS'> {
@@ -42,23 +43,28 @@ export interface CommonDataActionSetDocumentTypes extends Action<'SET_DOCUMENT_T
   documentTypes: AnyObject[];
 }
 
-export interface CommonDataActionSetGenderEquityRatings extends Action<'SET_GENDER_EQUITY_RATINGS'> {
+export interface CommonDataActionSetOffices extends Action<'SET_GENDER_EQUITY_RATINGS'> {
   genderEquityRatings: AnyObject[];
 }
 
+export interface CommonDataActionSetGenderEquityRatings extends Action<'SET_OFFICES'> {
+  offices: AnyObject[];
+}
+
 export type CommonDataAction =
-  | CommonDataActionSetUnicefUsersData
+  | CommonDataActionSetUnicefUsers
   | CommonDataActionSetLocations
   | CommonDataActionSetLocationTypes
   | CommonDataActionSetDocumentTypes
   | CommonDataActionSetGenderEquityRatings
   | CommonDataActionSetSections
-  | CommonDataActionSetDisaggregations;
+  | CommonDataActionSetDisaggregations
+  | CommonDataActionSetOffices;
 
-export const setUnicefUsers: ActionCreator<CommonDataActionSetUnicefUsersData> = (unicefUsersData: AnyObject[]) => {
+export const setUnicefUsers: ActionCreator<CommonDataActionSetUnicefUsers> = (unicefUsers: AnyObject[]) => {
   return {
-    type: SET_UNICEF_USERS_DATA,
-    unicefUsersData
+    type: SET_UNICEF_USERS,
+    unicefUsers
   };
 };
 
@@ -87,6 +93,13 @@ export const setDisaggregations = (disaggregations: Disaggregation[]) => {
   return {
     type: SET_DISAGGREGATIONS,
     disaggregations
+  };
+};
+
+export const setOfices = (offices: AnyObject[]) => {
+  return {
+    type: SET_OFFICES,
+    offices
   };
 };
 
@@ -135,6 +148,18 @@ export const loadSections = () => (dispatch: any) => {
 export const getSections = () => {
   return sendRequest({
     endpoint: {url: etoolsEndpoints.sections.url!}
+  });
+};
+
+export const getOffices = () => {
+  return sendRequest({
+    endpoint: {url: etoolsEndpoints.offices.url!}
+  });
+};
+
+export const getUnicefUsers = () => {
+  return sendRequest({
+    endpoint: {url: etoolsEndpoints.unicefUsers.url!}
   });
 };
 

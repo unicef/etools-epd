@@ -7,7 +7,6 @@ import {GroupedLocationsDialog} from './grouped-locations-dialog';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {cloneDeep, isJsonStrMatch} from '../../../../../utils/utils';
 import {getStore} from '../../utils/redux-store-access';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {LocationsPermissions} from './geographicalCoverage.models';
@@ -18,6 +17,8 @@ import {validateRequiredFields} from '../../utils/validation-helper';
 import {patchIntervention} from '../../common/actions';
 import isEmpty from 'lodash-es/isEmpty';
 import get from 'lodash-es/get';
+import {isJsonStrMatch} from '../../utils/utils';
+import cloneDeep from 'lodash-es/cloneDeep';
 
 /**
  * @customElement
@@ -95,7 +96,6 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
           <paper-button
             class="secondary-btn see-locations right-align"
             @tap="${this.openLocationsDialog}"
-            ?hidden="${this.hideActionButtons(this.editMode, this.canEditAtLeastOneField)}"
             ?disabled="${this._isEmpty(this.originalData.flat_locations)}"
             title="See all locations"
           >

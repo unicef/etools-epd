@@ -1,7 +1,7 @@
 import {LitElement, html, property, customElement} from 'lit-element';
 import '@polymer/iron-icons/iron-icons';
 import {completedStatusIcon} from './status-icons';
-import {layoutHorizontal, layoutCenter} from '../../../styles/lit-styles/flex-layout-styles';
+import {layoutHorizontal, layoutCenter} from '../../styles/flex-layout-styles';
 
 export interface EtoolsStatusItem {
   status?: string;
