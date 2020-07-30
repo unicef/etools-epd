@@ -96,7 +96,6 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
           <paper-button
             class="secondary-btn see-locations right-align"
             @tap="${this.openLocationsDialog}"
-            ?hidden="${this.hideActionButtons(this.editMode, this.canEditAtLeastOneField)}"
             ?disabled="${this._isEmpty(this.originalData.flat_locations)}"
             title="See all locations"
           >

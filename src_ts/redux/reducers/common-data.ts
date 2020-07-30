@@ -12,7 +12,7 @@ import {
   SET_ALL_STATIC_DATA
 } from '../actions/common-data';
 import {RootAction} from '../store';
-import {Disaggregation, LocationObject, Section} from '../../types/globals';
+import {Disaggregation, LocationObject, Section, LabelAndValue} from '../../types/globals';
 
 export interface CommonDataState {
   unicefUsers: [];
@@ -23,6 +23,7 @@ export interface CommonDataState {
   locationTypes: [];
   documentTypes: [];
   genderEquityRatings: [];
+  interventionAmendmentTypes: LabelAndValue[];
   offices: [];
 }
 
@@ -35,6 +36,7 @@ const INITIAL_COMMON_DATA: CommonDataState = {
   locationTypes: [],
   documentTypes: [],
   genderEquityRatings: [],
+  interventionAmendmentTypes: [],
   offices: []
 };
 
@@ -96,6 +98,7 @@ const commonData: Reducer<CommonDataState, RootAction> = (state = INITIAL_COMMON
         locationTypes: action.staticData.locationTypes,
         documentTypes: action.staticData.documentTypes,
         genderEquityRatings: action.staticData.genderEquityRatings,
+        interventionAmendmentTypes: action.staticData.interventionAmendmentTypes,
         offices: action.staticData.offices
       };
     default:

@@ -1,6 +1,6 @@
 import {LitElement, customElement, html} from 'lit-element';
 import './programmatic-visits/programmatic-visits';
-
+import './amendments/pd-amendments';
 /**
  * @customElement
  */
@@ -12,6 +12,7 @@ export class InterventionManagement extends LitElement {
       <style></style>
 
       <programmatic-visits></programmatic-visits>
+      <pd-amendments></pd-amendments>
     `;
   }
 }
