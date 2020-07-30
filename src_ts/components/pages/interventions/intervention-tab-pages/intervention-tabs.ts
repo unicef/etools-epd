@@ -1,6 +1,6 @@
 import '@polymer/paper-button/paper-button';
 
-import './common/layout/page-content-header/page-content-header';
+import './common/layout/page-content-header/intervention-page-content-header';
 import './common/layout/etools-tabs';
 // eslint-disable-next-line max-len
 import './common/layout/status/etools-status';
@@ -51,7 +51,7 @@ export class InterventionTabs extends LitElement {
       </style>
       <etools-status></etools-status>
 
-      <page-content-header with-tabs-visible>
+      <intervention-page-content-header with-tabs-visible>
         <h1 slot="page-title">Title here</h1>
 
         <div slot="title-row-actions" class="content-header-actions">
@@ -65,7 +65,7 @@ export class InterventionTabs extends LitElement {
           .activeTab="${this.activeTab}"
           @iron-select="${this.handleTabChange}"
         ></etools-tabs>
-      </page-content-header>
+      </intervention-page-content-header>
 
       <div class="page-content">
         <intervention-details ?hidden="${!this.isActiveTab(this.activeTab, 'details')}"> </intervention-details>
