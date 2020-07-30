@@ -11,8 +11,8 @@ import {
  * @LitElement
  * @customElement
  */
-@customElement('page-content-header')
-export class PageContentHeader extends LitElement {
+@customElement('intervention-page-content-header')
+export class InterventionPageContentHeader extends LitElement {
   render() {
     // language=HTML
     return html`
