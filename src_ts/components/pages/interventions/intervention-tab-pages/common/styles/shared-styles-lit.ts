@@ -228,5 +228,15 @@ export const sharedStylesContent = `
   .readonly {
     pointer-events: none;
   }
+
+  etools-data-table-column, *[slot="row-data"] .col-data {
+    box-sizing: border-box;
+    padding-right: 16px;
+  }
+
+  *[slot="row-data"] {
+    margin-top: 12px;
+    margin-bottom: 12px;
+  }
 `;
 export const sharedStyles = html`${unsafeCSS(sharedStylesContent)}`;
