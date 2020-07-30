@@ -15,6 +15,8 @@ export interface EtoolsEndpoints {
   partners: EtoolsEndpoint;
   sections: EtoolsEndpoint;
   disaggregations: EtoolsEndpoint;
+  offices: EtoolsEndpoint;
+  unicefUsers: EtoolsEndpoint;
 }
 
 export const etoolsEndpoints: EtoolsEndpoints = {
@@ -40,9 +42,15 @@ export const etoolsEndpoints: EtoolsEndpoints = {
     url: '/api/v2/partners/'
   },
   sections: {
-    url: '/api/sections/'
+    url: '/api/v2/reports/sections/'
+  },
+  offices: {
+    url: '/api/offices/'
   },
   disaggregations: {
     url: '/api/v2/reports/disaggregations/'
+  },
+  unicefUsers: {
+    url: '/api/v3/users/?verbosity=minimal'
   }
 };
