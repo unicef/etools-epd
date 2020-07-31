@@ -10,6 +10,9 @@ import {fireEvent} from '../../../../../utils/fire-custom-event';
 import {validateRequiredFields} from '../../utils/validation-helper';
 import {layoutCenterJustified, layoutVertical} from '../../common/styles/flex-layout-styles';
 import {AnyObject} from '../../common/models/globals.types';
+import {PlannedVisit} from '../../common/models/intervention.types';
+import {EtoolsDropdownEl} from '@unicef-polymer/etools-dropdown/etools-dropdown';
+import {PaperInputElement} from '@polymer/paper-input/paper-input';
 
 /**
  * @customElement
@@ -80,6 +83,9 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(L
     `;
   }
 
+  @property({type: Boolean})
+  editMode = true;
+
   @property({type: Object})
   originalData!: any;
 
@@ -101,12 +107,15 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(L
   @property({type: Object})
   dataItems: AnyObject[] = [];
 
+  @property({type: Number})
+  totalV = 0;
+
   connectedCallback() {
     super.connectedCallback();
     this._createDeleteConfirmationDialog();
-    // this.dataItems = [
-    //   {id: 17, year: 2017, programmatic_q1: '0', programmatic_q2: '0', programmatic_q3: '0', programmatic_q4: '0'}
-    // ];
+    this.dataItems = [
+      {id: 17, year: 2017, programmatic_q1: '', programmatic_q2: '', programmatic_q3: '', programmatic_q4: ''}
+    ];
   }
 
   stateChanged(state: any) {
@@ -123,7 +132,8 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(L
 
   renderVisitTemplate(dataItems) {
     return html`
-      ${dataItems.map((item, index) => html`
+      ${dataItems.map(
+        (item, index) => html`
           <div class="row-h item-container">
             <div class="item-actions-container">
               <div class="actions">
@@ -168,6 +178,7 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(L
                     ?required="${item.year}"
                     error-message="Required"
                     auto-validate
+                    @value-changed="${this.inputChanged}"
                     ?readonly="${!this.editMode}"
                   >
                   </paper-input>
@@ -176,7 +187,7 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(L
                   <paper-input
                     .id="visit_${index}_q2"
                     label="Quarter 2"
-                    value="${item.programmatic_q2}"
+                    .value="${item.programmatic_q2}"
                     type="number"
                     min="0"
                     allowed-pattern="[0-9.]"
@@ -184,6 +195,7 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(L
                     ?required="${item.year}"
                     error-message="Required"
                     auto-validate
+                    @value-changed="${this.inputChanged}"
                     ?readonly="${!this.editMode}"
                   >
                   </paper-input>
@@ -200,6 +212,7 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(L
                     ?required="${item.year}"
                     error-message="Required"
                     auto-validate
+                    @value-changed="${this.inputChanged}"
                     ?readonly="${!this.editMode}"
                   >
                   </paper-input>
@@ -216,30 +229,22 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(L
                     ?required="${item.year}"
                     error-message="Required"
                     auto-validate
+                    @value-changed="${this.inputChanged}"
                     ?readonly="${!this.editMode}"
                   >
                   </paper-input>
                 </div>
                 <div class="col col-1">
-                  <etools-form-element-wrapper label="TOTAL" class="row-second-bg" no-placeholder>
-                    ${this._getTotal(
-                      item.programmatic_q1,
-                      item.programmatic_q2,
-                      item.programmatic_q3,
-                      item.programmatic_q4
-                    )}
-                  </etools-form-element-wrapper>
+                  <paper-input
+                    id="totalComp"
+                    label="TOTAL"
+                    readonly
+                    class="row-second-bg"
+                    no-placeholder
+                    .value="${this.totalV}"
+                  ></paper-input>
                 </div>
-                <div
-                  class="col col-4"
-                  ?hidden="${!this._showErrorMsg(
-                    item.year,
-                    item.programmatic_q1,
-                    item.programmatic_q2,
-                    item.programmatic_q3,
-                    item.programmatic_q4
-                  )}"
-                >
+                <div class="col col-4" ?hidden="${this._showErrMsg(item.year, this.totalV)}">
                   <div class="error-msg">Total has to be greater than 0</div>
                 </div>
               </div>
@@ -248,6 +253,16 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(L
         `
       )}
     `;
+  }
+
+  inputChanged(e: CustomEvent) {
+    if (!e.detail) {
+      return;
+    }
+
+    const input = e.currentTarget as PaperInputElement;
+    input.value = e.detail.value;
+    this.validate();
   }
 
   /**
@@ -303,8 +318,51 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(L
     return !this._getTotal(q1, q2, q3, q4);
   }
 
+  _showErrMsg(year: number, total: number) {
+    return year && total > 0;
+  }
+
   validate() {
-    return validateRequiredFields(this);
+    let valid = true;
+    this.dataItems.forEach((item: any, index: number) => {
+      if (!(this._validateYear(index) && this._validateQuarters(item, index))) {
+        valid = false;
+      }
+    });
+
+    return valid;
+  }
+
+  _validateYear(index: number) {
+    let valid = true;
+    const yearEl = this.shadowRoot!.querySelector('#year_' + index) as EtoolsDropdownEl;
+
+    if (yearEl && !yearEl.validate()) {
+      valid = false;
+    }
+    return valid;
+  }
+
+  _validateQuarters(item: any, index: number) {
+    let valid = true;
+    const q1 = this.shadowRoot!.querySelector('#visit_' + index + '_q1') as PaperInputElement;
+    const q2 = this.shadowRoot!.querySelector('#visit_' + index + '_q2') as PaperInputElement;
+    const q3 = this.shadowRoot!.querySelector('#visit_' + index + '_q3') as PaperInputElement;
+    const q4 = this.shadowRoot!.querySelector('#visit_' + index + '_q4') as PaperInputElement;
+    const total = this.shadowRoot!.querySelector('#totalComp') as any;
+
+    [q1, q2, q3, q4].forEach(function (q) {
+      if (q) {
+        if (!q.validate()) {
+          valid = false;
+        }
+      }
+    });
+    if (!this._getTotal(item.programmatic_q1, item.programmatic_q2, item.programmatic_q3, item.programmatic_q4)) {
+      valid = false;
+    }
+    this.totalV = this._getTotal(q1.value, q2.value, q3.value, q4.value);
+    return valid;
   }
 
   /**
