@@ -23,6 +23,7 @@ import {
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {Permission} from '../../common/models/intervention.types';
 import {ProgrammeManagementActivityPermissions, ProgrammeManagement} from './effectiveAndEfficientProgrammeManagement.models';
+import {AnyObject} from '../../../../../../types/globals';
 
 /**
  * @customElement
@@ -68,8 +69,8 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
   @property({type: Boolean})
   showLoading = false;
 
-  @property({type: Object})
-  activities = [
+  @property({type: Array})
+  activities: AnyObject = [
     {
       title: 'Standard activity',
       description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In iaculis metus et neque viverra ',
@@ -140,7 +141,7 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
 
     const newActivities = selectProgrammeManagement(state);
     if (!isJsonStrMatch(this.originalData, newActivities)) {
-      this.activities = newActivities;
+      this.activities = [newActivities];
       this.originalData = newActivities;
     }
 

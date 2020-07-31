@@ -136,7 +136,7 @@ export class FollowUpPage extends connect(getStore())(ComponentBaseMixin(LitElem
   @property({type: Boolean})
   canEditSupply = true;
 
-  async stateChanged(_state: any) {
+  stateChanged(_state: any) {
     this.dataItems = getSupplyItems();
   }
 
