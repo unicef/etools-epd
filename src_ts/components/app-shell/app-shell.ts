@@ -52,6 +52,7 @@ import {
   getOffices,
   getUnicefUsers,
   getStaticData,
+  getCpOutputs,
   SET_ALL_STATIC_DATA
 } from '../../redux/actions/common-data';
 import {EtoolsUserModel} from '../user/user-model';
@@ -197,7 +198,8 @@ export class AppShell extends connect(store)(LitElement) {
           getDisaggregations(),
           getOffices(),
           getUnicefUsers(),
-          getStaticData()
+          getStaticData(),
+          getCpOutputs()
         ]).then((response: any[]) => {
           store.dispatch({
             type: SET_ALL_STATIC_DATA,
@@ -216,12 +218,16 @@ export class AppShell extends connect(store)(LitElement) {
     data.disaggregations = this.getValue(response[3]);
     data.offices = this.getValue(response[4]);
     data.unicefUsers = this.getValue(response[5]);
+    data.cpOutputs = this.getValue(response[7]);
     const staticData = this.getValue(response[6], {});
     data.locationTypes = isEmpty(staticData.location_types) ? [] : staticData.location_types;
     data.documentTypes = isEmpty(staticData.intervention_doc_type) ? [] : staticData.intervention_doc_type;
     data.genderEquityRatings = isEmpty(staticData.genderEquityRatings)
       ? getGenderEquityRatingsDummy()
       : staticData.genderEquityRatings;
+    data.interventionAmendmentTypes = isEmpty(staticData.intervention_amendment_types)
+      ? []
+      : staticData.intervention_amendment_types;
     return data;
   }
 

@@ -39,6 +39,7 @@ documentContainer.innerHTML = `
 
         --info-color: #cebc06;
         --light-info-color: #fff176;
+        --lightest-info-color: #fef9cd;
         --warning-background-color: #fff3cd;
         --warning-color: #856404;
         --warning-border-color: #ffeeba;
@@ -59,6 +60,13 @@ documentContainer.innerHTML = `
           font-size: 18px;
           font-weight: 500;
         }
+
+        --etools-dialog-primary-color: #FFFFFF;
+        --etools-dialog-contrast-text-color: var(--primary-text-color);
+        --etools-dialog-title: {
+          border-bottom: solid 1px var(--dark-divider-color);
+        }
+
         --paper-input-container-label: {
           color: var(--secondary-text-color, #737373);
         }

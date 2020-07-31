@@ -16,6 +16,15 @@ export interface EtoolsEndpoints {
   partnerT2fProgrammaticVisits: EtoolsEndpoint;
   partnerTPMActivities: EtoolsEndpoint;
   interventionTPMActivities: EtoolsEndpoint;
+  resultLinks: EtoolsEndpoint;
+  ramIndicators: EtoolsEndpoint;
+  resultLinkDetails: EtoolsEndpoint;
+  pdDetails: EtoolsEndpoint;
+  createPd: EtoolsEndpoint;
+  pdActivityDetails: EtoolsEndpoint;
+  pdActivities: EtoolsEndpoint;
+  attachmentsUpload: EtoolsEndpoint;
+  interventionAmendmentAdd: EtoolsEndpoint;
 }
 
 export const interventionEndpoints: EtoolsEndpoints = {
@@ -50,5 +59,32 @@ export const interventionEndpoints: EtoolsEndpoints = {
   interventionTPMActivities: {
     template:
       '/api/tpm/activities/?tpm_visit__status=unicef_approved&date__year=<%=year%>&intervention=<%=interventionId%>'
+  },
+  resultLinks: {
+    template: '/api/v2/interventions/<%=id%>/result-links/'
+  },
+  resultLinkDetails: {
+    template: '/api/v2/interventions/result-links/<%=result_link%>/'
+  },
+  ramIndicators: {
+    template: '/api/v2/reports/results/<%=id%>/indicators/'
+  },
+  pdDetails: {
+    template: '/api/pmp/v3/interventions/<%=intervention_id%>/pd-outputs/<%=pd_id%>/'
+  },
+  createPd: {
+    template: '/api/pmp/v3/interventions/<%=intervention_id%>/pd-outputs/'
+  },
+  pdActivities: {
+    template: '/api/pmp/v3/interventions/<%=interventionId%>/pd-outputs/<%=pdOutputId%>/activities/'
+  },
+  pdActivityDetails: {
+    template: '/api/pmp/v3/interventions/<%=interventionId%>/pd-outputs/<%=pdOutputId%>/activities/<%=activityId%>/'
+  },
+  attachmentsUpload: {
+    url: '/api/v2/attachments/upload/'
+  },
+  interventionAmendmentAdd: {
+    template: '/api/v2/interventions/<%=intervId%>/amendments/'
   }
 };
