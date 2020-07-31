@@ -9,13 +9,11 @@ import {frWarningsStyles} from '../../common/styles/fr-warnings-styles';
 import {_layoutVertical, _layoutEnd} from '../../common/styles/flex-layout-styles';
 import {Intervention, FrsDetails} from '../../common/models/intervention.types';
 import {customIcons} from '../../common/styles/custom-icons';
-// import CommonMixin from '../../../../../mixins/common-mixin.js';
 import {prettyDate} from '../../utils/date-utils';
 import '../../common/mixins/fr-numbers-consistency-mixin';
 import FrNumbersConsistencyMixin from '../../common/mixins/fr-numbers-consistency-mixin';
 import {AnyObject} from '../../common/models/globals.types';
 import isEmpty from 'lodash-es/isEmpty';
-// ${pmpCustomIcons}
 
 /**
  * @customElement
@@ -42,9 +40,8 @@ export class FundReservationsDisplay extends EtoolsCurrency(FrNumbersConsistency
           --list-row-no-collapse: {
             background-color: var(--light-theme-background-color);
           }
-          --list-row-wrapper-padding: 0 24px 0 56px;
         }
-        #plannedUnicefCash {
+        #plannedUnicefCash, #totalsRow {
           --list-row-wrapper-padding: 0 24px 0 56px;
         }
         #plannedUnicefCash .unicef-cash-col {
@@ -187,7 +184,7 @@ export class FundReservationsDisplay extends EtoolsCurrency(FrNumbersConsistency
                 ?hideTooltip="${this.allCurrenciesMatch(
                   this.frsDetails.currencies_match,
                   this.frsDetails.frs,
-                  this.intervention.planned_budget.currency
+                  this.intervention.planned_budget.currency!
                 )}"
               >
                 <span slot="field" class="${this.getFrsValueNAClass(this.frsDetails.currencies_match)}">
@@ -208,7 +205,7 @@ export class FundReservationsDisplay extends EtoolsCurrency(FrNumbersConsistency
                 ?hideTooltip="${this.hideFrsAmountTooltip(
                   this.frsDetails.currencies_match,
                   this.frsDetails.frs,
-                  this.intervention.planned_budget.currency,
+                  this.intervention.planned_budget.currency!,
                   this._frsTotalAmountWarning
                 )}"
               >
@@ -226,8 +223,8 @@ export class FundReservationsDisplay extends EtoolsCurrency(FrNumbersConsistency
                 custom-icon
                 hideTooltip="${!this.frsConsistencyWarningIsActive(this.frsDetails.multi_curr_flag)}"
               >
-                <span slot="field" class="${this.getFrsValueNAClass(this.frsDetails.multi_curr_flag, 'true')}">
-                  ${this.getFrsTotal(this.frsDetails.multi_curr_flag, this.frsDetails.total_actual_amt, 'true')}
+                <span slot="field" class="${this.getFrsValueNAClass(this.frsDetails.multi_curr_flag, true)}">
+                  ${this.getFrsTotal(this.frsDetails.multi_curr_flag, String(this.frsDetails.total_actual_amt), true)}
                 </span>
                 <iron-icon icon="pmp-custom-icons:not-equal" slot="custom-icon"></iron-icon>
                 <span slot="message">
@@ -236,7 +233,7 @@ export class FundReservationsDisplay extends EtoolsCurrency(FrNumbersConsistency
               </etools-info-tooltip>
             </span>
             <span class="col-data col-2 right-align ${this.getFrsValueNAClass(this.frsDetails.currencies_match)}">
-              ${this.getFrsTotal(this.frsDetails.currencies_match, this.frsDetails.total_outstanding_amt)}
+              ${this.getFrsTotal(this.frsDetails.currencies_match, String(this.frsDetails.total_outstanding_amt))}
             </span>
           </div>
         </etools-data-table-row>

@@ -180,7 +180,7 @@ export class InterventionPermissionsFields {
   locations = false;
 
   // attachments
-  attachments = false;  
+  attachments = false;
 }
 
 export interface Permission<T> {
@@ -232,8 +232,9 @@ export class Intervention {
   other_partners_involved = '';
   other_info = '';
   attachments: InterventionAttachment[] = [];
-  permissions?: Permission<InterventionPermissionsFields>;  
+  permissions?: Permission<InterventionPermissionsFields>;
   humanitarian_flag?: boolean;
+  partner_id?: string;
 }
 
 export class InterventionAmendment {

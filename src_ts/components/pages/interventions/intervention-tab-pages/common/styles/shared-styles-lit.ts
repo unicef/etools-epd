@@ -237,6 +237,7 @@ export const sharedStylesContent = `
   *[slot="row-data"] {
     margin-top: 12px;
     margin-bottom: 12px;
+    width: 100%;
   }
 `;
 export const sharedStyles = html`${unsafeCSS(sharedStylesContent)}`;
