@@ -17,6 +17,7 @@ export interface EtoolsEndpoints {
   disaggregations: EtoolsEndpoint;
   offices: EtoolsEndpoint;
   unicefUsers: EtoolsEndpoint;
+  dropdownsData: EtoolsEndpoint;
 }
 
 export const etoolsEndpoints: EtoolsEndpoints = {
@@ -52,5 +53,8 @@ export const etoolsEndpoints: EtoolsEndpoints = {
   },
   unicefUsers: {
     url: '/api/v3/users/?verbosity=minimal'
+  },
+  dropdownsData: {
+    url: '/api/v2/dropdowns/pmp/'
   }
 };

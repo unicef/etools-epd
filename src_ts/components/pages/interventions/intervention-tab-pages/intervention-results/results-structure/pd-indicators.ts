@@ -34,18 +34,22 @@ export class PdIndicators extends connect(getStore())(LitElement) {
     // language=HTML
     return html`
       <style>
-        etools-data-table-row {
+        :host etools-data-table-row {
+          --list-bg-color: var(--blue-background);
+          --list-second-bg-color: var(--blue-background);
           --list-row-collapse-wrapper: {
             padding: 0 !important;
             background-color: var(--blue-background-dark);
             border-top: 1px solid var(--main-border-color);
           }
           --list-row-wrapper: {
-            background-color: var(--blue-background) !important;
             min-height: 55px;
             border: 1px solid var(--main-border-color) !important;
             border-bottom: none !important;
           }
+        }
+        .editable-row .hover-block {
+          background-color: var(--blue-background) !important;
         }
       </style>
 
@@ -113,6 +117,15 @@ export class PdIndicators extends connect(getStore())(LitElement) {
           </etools-data-table-row>
         `
       )}
+      ${!this.indicators.length
+        ? html`
+            <div class="layout-horizontal empty-row">
+              <div class="text flex-auto">-</div>
+              <div class="text number-data flex-none">-</div>
+              <div class="text number-data flex-none">-</div>
+            </div>
+          `
+        : ''}
     `;
   }
 
