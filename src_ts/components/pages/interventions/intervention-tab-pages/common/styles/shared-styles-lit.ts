@@ -229,6 +229,11 @@ export const sharedStylesContent = `
     pointer-events: none;
   }
 
+  .readonly {
+    --paper-radio-button-checked-ink-color: transparent !important;
+    --paper-radio-button-unchecked-ink-color: transparent !important;
+  }
+
   etools-data-table-column, *[slot="row-data"] .col-data {
     box-sizing: border-box;
     padding-right: 16px;
