@@ -15,7 +15,7 @@ export class Document extends ModelsBase {
   review_date_prc = '';
   // @lajos bellow is a class
   frs_details: AnyObject[] = [];
-  signed_pd_attachment = false;
+  signed_pd_attachment = '';
   status = '';
   partner_authorized_officer_signatory = '';
   signed_by_partner_date = '';

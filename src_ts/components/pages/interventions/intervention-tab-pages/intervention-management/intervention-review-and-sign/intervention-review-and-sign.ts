@@ -8,12 +8,14 @@ import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import '@unicef-polymer/etools-dropdown/etools-dropdown';
 import '@unicef-polymer/etools-upload/etools-upload';
 
-// import '@unicef-polymer/etools-date-time/datepicker-lite';
+import '@unicef-polymer/etools-date-time/datepicker-lite';
+import DatePickerLite from '@unicef-polymer/etools-date-time/datepicker-lite';
 
 // @lajos...review this....
 import '../../common/layout/etools-form-element-wrapper';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import MissingDropdownOptionsMixin from '../../common/mixins/missing-dropdown-options-mixin';
+import UploadMixin from '../../common/mixins/uploads-mixin';
 import {fireEvent} from '../../../../../utils/fire-custom-event';
 import CONSTANTS from '../../common/constants';
 import {sectionContentStylesPolymer} from '../../common/styles/content-section-styles-polymer';
@@ -40,7 +42,7 @@ import {interventionEndpoints} from '../../utils/intervention-endpoints';
  */
 @customElement('intervention-review-and-sign')
 export class InterventionReviewAndSign extends connect(getStore())(
-  ComponentBaseMixin(MissingDropdownOptionsMixin(LitElement))
+  ComponentBaseMixin(MissingDropdownOptionsMixin(UploadMixin(LitElement)))
 ) {
   static get styles() {
     return [gridLayoutStylesLit];
@@ -110,53 +112,53 @@ export class InterventionReviewAndSign extends connect(getStore())(
             </etools-form-element-wrapper>
           </div>
         </div>
-        <template is="dom-if" if="${this._showSubmittedToPrcFields(this.intervention.submitted_to_prc)}">
-          <div class="layout-horizontal row-padding-v row-second-bg">
-            <div class="col col-3">
-              <!-- Submission Date to PRC -->
-              <datepicker-lite
-                id="submissionDatePrcField"
-                label="Submission Date to PRC"
-                value="${this.intervention.submission_date_prc}"
-                readonly="?${!this.permissions.edit.submission_date_prc}"
-                required="?${this.intervention.prc_review_attachment}"
-                selected-date-display-format="D MMM YYYY"
-                auto-validate
-              >
-              </datepicker-lite>
-            </div>
-            <div class="col col-3">
-              <!-- Review Date by PRC -->
-              <datepicker-lite
-                id="reviewDatePrcField"
-                label="Review Date by PRC"
-                value="${this.intervention.review_date_prc}"
-                readonly="?${!this.permissions.edit.review_date_prc}"
-                required="?${this.intervention.prc_review_attachment}"
-                selected-date-display-format="D MMM YYYY"
-                auto-validate
-              >
-              </datepicker-lite>
-            </div>
-            <div class="col col-6">
-              <!-- PRC Review Document -->
-              <etools-upload
-                id="reviewDocUpload"
-                label="PRC Review Document"
-                accept=".doc,.docx,.pdf,.jpg,.png"
-                file-url="${this.intervention.prc_review_attachment}"
-                upload-endpoint="${this.uploadEndpoint}"
-                @upload-finished="_prcRevDocUploadFinished"
-                readonly="?${!this.permissions.edit.prc_review_attachment}"
-                show-delete-btn="${this.showPrcReviewDeleteBtn(this.intervention.status)}"
-                @delete-file="${this._prcRevDocDelete}"
-                @upload-started="${this._onUploadStarted}"
-                @change-unsaved-file="${this._onChangeUnsavedFile}"
-              >
-              </etools-upload>
-            </div>
-          </div>
-        </template>
+        ${this._showSubmittedToPrcFields(this.intervention.submitted_to_prc)
+          ? html` <div class="layout-horizontal row-padding-v row-second-bg">
+              <div class="col col-3">
+                <!-- Submission Date to PRC -->
+                <datepicker-lite
+                  id="submissionDatePrcField"
+                  label="Submission Date to PRC"
+                  value="${this.intervention.submission_date_prc}"
+                  readonly="?${!this.permissions.edit.submission_date_prc}"
+                  required="?${this.intervention.prc_review_attachment}"
+                  selected-date-display-format="D MMM YYYY"
+                  auto-validate
+                >
+                </datepicker-lite>
+              </div>
+              <div class="col col-3">
+                <!-- Review Date by PRC -->
+                <datepicker-lite
+                  id="reviewDatePrcField"
+                  label="Review Date by PRC"
+                  value="${this.intervention.review_date_prc}"
+                  readonly="?${!this.permissions.edit.review_date_prc}"
+                  required="?${this.intervention.prc_review_attachment}"
+                  selected-date-display-format="D MMM YYYY"
+                  auto-validate
+                >
+                </datepicker-lite>
+              </div>
+              <div class="col col-6">
+                <!-- PRC Review Document -->
+                <etools-upload
+                  id="reviewDocUpload"
+                  label="PRC Review Document"
+                  accept=".doc,.docx,.pdf,.jpg,.png"
+                  file-url="${this.intervention.prc_review_attachment}"
+                  upload-endpoint="${this.uploadEndpoint}"
+                  @upload-finished="_prcRevDocUploadFinished"
+                  readonly="?${!this.permissions.edit.prc_review_attachment}"
+                  show-delete-btn="${this.showPrcReviewDeleteBtn(this.intervention.status)}"
+                  @delete-file="${this._prcRevDocDelete}"
+                  @upload-started="${this._onUploadStarted}"
+                  @change-unsaved-file="${this._onChangeUnsavedFile}"
+                >
+                </etools-upload>
+              </div>
+            </div>`
+          : html``}
         <div class="layout-horizontal row-padding-v">
           <div class="col col-6">
             <!-- Signed By Partner Authorized Officer -->
@@ -180,7 +182,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
               label="Signed by Partner Date"
               value="${this.intervention.signed_by_partner_date}"
               readonly="${!this.permissions.edit.signed_by_partner_date}"
-              required ="?${this.permissions.required.signed_by_partner_date}"
+              required="?${this.permissions.required.signed_by_partner_date}"
               auto-validate
               error-message="Date is required"
               max-date-error-msg="Date can not be in the future"
@@ -253,26 +255,26 @@ export class InterventionReviewAndSign extends connect(getStore())(
             >
             </etools-upload>
           </div>
-          <template is="dom-if" if="${this._showDaysToSignedFields(this.intervention.status)}">
-            <div class="col col-3">
-              <paper-input
-                label="Days from Submission to Signed"
-                value="${this.intervention.days_from_submission_to_signed}"
-                placeholder="&#8212;"
-                readonly
-              >
-              </paper-input>
-            </div>
-            <div class="col col-3">
-              <paper-input
-                label="Days from Review to Signed"
-                value="${this.intervention.days_from_review_to_signed}"
-                placeholder="&#8212;"
-                readonly
-              >
-              </paper-input>
-            </div>
-          </template>
+          ${this._showDaysToSignedFields(this.intervention.status)
+            ? html`<div class="col col-3">
+                  <paper-input
+                    label="Days from Submission to Signed"
+                    value="${this.intervention.days_from_submission_to_signed}"
+                    placeholder="&#8212;"
+                    readonly
+                  >
+                  </paper-input>
+                </div>
+                <div class="col col-3">
+                  <paper-input
+                    label="Days from Review to Signed"
+                    value="${this.intervention.days_from_review_to_signed}"
+                    placeholder="&#8212;"
+                    readonly
+                  >
+                  </paper-input>
+                </div>`
+            : html``}
         </div>
       </etools-content-panel>
     `;
@@ -309,7 +311,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
   unicefDateValidatorErrorMessage!: string;
 
   @property({type: String})
-  uploadEndpoint: string | undefined = getEndpoint(interventionEndpoints.attachmentsUpload).url;
+  uploadEndpoint: string = getEndpoint(interventionEndpoints.attachmentsUpload).url;
 
   // static get observers() {
   //   return [
@@ -368,10 +370,10 @@ export class InterventionReviewAndSign extends connect(getStore())(
   //   }
   // }
 
-  // _resetPrcFieldsValidations() {
-  //   (this.shadowRoot!.querySelector('#submissionDatePrcField')! as DatePickerLite).invalid = false;
-  //   (this.shadowRoot!.querySelector('#reviewDatePrcField')! as DatePickerLite).invalid = false;
-  // }
+  _resetPrcFieldsValidations() {
+    (this.shadowRoot!.querySelector('#submissionDatePrcField')! as DatePickerLite).invalid = false;
+    (this.shadowRoot!.querySelector('#reviewDatePrcField')! as DatePickerLite).invalid = false;
+  }
 
   // _updateStyles() {
   //   // @lajos chek whatabout this function
@@ -395,9 +397,9 @@ export class InterventionReviewAndSign extends connect(getStore())(
   //   }
   // }
 
-  // _hideDeleteBtn(status: string, fileUrl: string) {
-  //   return this._isDraft(status) && fileUrl;
-  // }
+  _hideDeleteBtn(status: string, fileUrl: string) {
+    return this._isDraft(status) && fileUrl;
+  }
 
   // _agreementChanged(agreement: Agreement) {
   //   if (agreement && typeof agreement === 'object' && Object.keys(agreement).length > 0) {
@@ -412,27 +414,27 @@ export class InterventionReviewAndSign extends connect(getStore())(
   //   }
   // }
 
-  // validate() {
-  //   let valid = true;
-  //   const fieldSelectors = [
-  //     '#signedByAuthorizedOfficer',
-  //     '#signedByPartnerDateField',
-  //     '#signedByUnicefDateField',
-  //     '#signedIntervFile',
-  //     '#submissionDateField'
-  //   ];
-  //   if (this.intervention.prc_review_attachment) {
-  //     const dateFields = ['#submissionDatePrcField', '#reviewDatePrcField'];
-  //     fieldSelectors.push(...dateFields);
-  //   }
-  //   fieldSelectors.forEach((selector: string) => {
-  //     const field = this.shadowRoot!.querySelector(selector) as LitElement & {validate(): boolean};
-  //     if (field && !field.validate()) {
-  //       valid = false;
-  //     }
-  //   });
-  //   return valid;
-  // }
+  validate() {
+    let valid = true;
+    const fieldSelectors = [
+      '#signedByAuthorizedOfficer',
+      '#signedByPartnerDateField',
+      '#signedByUnicefDateField',
+      '#signedIntervFile',
+      '#submissionDateField'
+    ];
+    if (this.intervention.prc_review_attachment) {
+      const dateFields = ['#submissionDatePrcField', '#reviewDatePrcField'];
+      fieldSelectors.push(...dateFields);
+    }
+    fieldSelectors.forEach((selector: string) => {
+      const field = this.shadowRoot!.querySelector(selector) as LitElement & {validate(): boolean};
+      if (field && !field.validate()) {
+        valid = false;
+      }
+    });
+    return valid;
+  }
 
   /**
    * intervention.submitted_to_prc is set only on bk if submission_date_prc, review_date_prc are filled in
@@ -440,6 +442,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
    * we make the date fields required
    */
   _showSubmittedToPrcFields(submittedToPrc: boolean) {
+    return true;
     return this._isNotSSFA(this.intervention.document_type) && submittedToPrc;
   }
 
@@ -511,19 +514,20 @@ export class InterventionReviewAndSign extends connect(getStore())(
   //   }
   // }
 
-  // _signedPDUploadFinished(e: CustomEvent) {
-  //   getStore().dispatch({type: DECREASE_UPLOADS_IN_PROGRESS});
-  //   if (e.detail.success) {
-  //     const response = e.detail.success;
-  //     this.intervention.signed_pd_attachment = response.id;
-  //     getStore().dispatch({type: INCREASE_UNSAVED_UPLOADS});
-  //   }
-  // }
+  _signedPDUploadFinished(e: CustomEvent) {
+    getStore().dispatch({type: CONSTANTS.DECREASE_UPLOADS_IN_PROGRESS});
+    if (e.detail.success) {
+      const response = e.detail.success;
+      this.intervention.signed_pd_attachment = response.id;
+      getStore().dispatch({type: CONSTANTS.INCREASE_UNSAVED_UPLOADS});
+    }
+  }
 
-  // _signedPDDocDelete(_e: CustomEvent) {
-  //   this.intervention.signed_pd_attachment = null;
-  //   getStore().dispatch({type: DECREASE_UNSAVED_UPLOADS});
-  // }
+  _signedPDDocDelete(_e: CustomEvent) {
+    // @lajos: originally null
+    this.intervention.signed_pd_attachment = '';
+    getStore().dispatch({type: CONSTANTS.DECREASE_UNSAVED_UPLOADS});
+  }
 
   // _prcRevDocUploadFinished(e: CustomEvent) {
   //   getStore().dispatch({type: DECREASE_UPLOADS_IN_PROGRESS});
@@ -534,11 +538,12 @@ export class InterventionReviewAndSign extends connect(getStore())(
   //   }
   // }
 
-  // _prcRevDocDelete(_e: CustomEvent) {
-  //   this.intervention.prc_review_attachment = undefined;
-  //   getStore().dispatch({type: DECREASE_UNSAVED_UPLOADS});
-  //   this._resetPrcFieldsValidations();
-  // }
+  _prcRevDocDelete(_e: CustomEvent) {
+    // @lajos this initially was set to undefined
+    this.intervention.prc_review_attachment = '';
+    getStore().dispatch({type: CONSTANTS.DECREASE_UNSAVED_UPLOADS});
+    this._resetPrcFieldsValidations();
+  }
 
   showPrcReviewDeleteBtn(status: string) {
     return this._isDraft(status) && !!this.originalIntervention && !this.originalIntervention.prc_review_attachment;
