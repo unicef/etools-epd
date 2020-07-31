@@ -22,7 +22,10 @@ import {
 } from './effectiveAndEfficientProgrammeManagement.selectors';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {Permission} from '../../common/models/intervention.types';
-import {ProgrammeManagementActivityPermissions, ProgrammeManagement} from './effectiveAndEfficientProgrammeManagement.models';
+import {
+  ProgrammeManagementActivityPermissions,
+  ProgrammeManagement
+} from './effectiveAndEfficientProgrammeManagement.models';
 
 /**
  * @customElement
