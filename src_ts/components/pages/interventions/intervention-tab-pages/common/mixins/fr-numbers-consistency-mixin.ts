@@ -222,7 +222,7 @@ function FrNumbersConsistencyMixin<T extends Constructor<LitElement>>(baseClass:
       return frsCurrencyMatch && this._frsAndPlannedBudgetCurrenciesMatch(frs, plannedBudgetCurrency);
     }
 
-    hideFrCurrencyTooltip(frsCurrencyMatch: boolean, frCurrency: string, plannedBudgetCurrency: string) {
+    hideFrCurrencyTooltip(frsCurrencyMatch: boolean, frCurrency: string, plannedBudgetCurrency?: string) {
       return !frsCurrencyMatch ? frCurrency === plannedBudgetCurrency : true;
     }
 

@@ -105,14 +105,14 @@ export class FundReservationsDisplay extends EtoolsCurrency(FrNumbersConsistency
                     class="fr-nr-warn currency-mismatch"
                     icon-first
                     custom-icon
-                    hideTooltip="${this.hideFrCurrencyTooltip(
+                    .hideTooltip="${this.hideFrCurrencyTooltip(
                       this.frsDetails!.currencies_match,
                       fr.currency,
                       this.intervention!.planned_budget.currency
                     )}"
                   >
                     <span slot="field">${fr.currency}</span>
-                    <iron-icon icon="custom-icons:not-equal" slot="custom-icon"></iron-icon>
+                    <iron-icon icon="pmp-custom-icons:not-equal" slot="custom-icon"></iron-icon>
                     <span slot="message">
                       <span>${this.getFrCurrencyTooltipMsg()}</span>
                     </span>
@@ -126,12 +126,12 @@ export class FundReservationsDisplay extends EtoolsCurrency(FrNumbersConsistency
                     class="fr-nr-warn currency-mismatch"
                     icon-first
                     custom-icon
-                    hideTooltip="${!this.frsConsistencyWarningIsActive(fr.multi_curr_flag)}"
+                    .hideTooltip="${!this.frsConsistencyWarningIsActive(fr.multi_curr_flag)}"
                   >
                     <span slot="field" class="${this.getFrsValueNAClass(fr.multi_curr_flag, true)}">
                       ${this.getFrsTotal(fr.multi_curr_flag, fr.actual_amt_local, true)}
                     </span>
-                    <iron-icon icon="custom-icons:not-equal" slot="custom-icon"></iron-icon>
+                    <iron-icon icon="pmp-custom-icons:not-equal" slot="custom-icon"></iron-icon>
                     <span slot="message">
                       <span>${this.getFrsMultiCurrFlagErrTooltipMsg()}</span>
                     </span>
@@ -181,7 +181,7 @@ export class FundReservationsDisplay extends EtoolsCurrency(FrNumbersConsistency
                 class="fr-nr-warn currency-mismatch"
                 icon-first
                 custom-icon
-                ?hideTooltip="${this.allCurrenciesMatch(
+                .hideTooltip="${this.allCurrenciesMatch(
                   this.frsDetails.currencies_match,
                   this.frsDetails.frs,
                   this.intervention.planned_budget.currency!
@@ -202,7 +202,7 @@ export class FundReservationsDisplay extends EtoolsCurrency(FrNumbersConsistency
                 class="fr-nr-warn"
                 custom-icon
                 icon-first
-                ?hideTooltip="${this.hideFrsAmountTooltip(
+                .hideTooltip="${this.hideFrsAmountTooltip(
                   this.frsDetails.currencies_match,
                   this.frsDetails.frs,
                   this.intervention.planned_budget.currency!,
@@ -221,7 +221,7 @@ export class FundReservationsDisplay extends EtoolsCurrency(FrNumbersConsistency
                 class="fr-nr-warn currency-mismatch"
                 icon-first
                 custom-icon
-                hideTooltip="${!this.frsConsistencyWarningIsActive(this.frsDetails.multi_curr_flag)}"
+                .hideTooltip="${!this.frsConsistencyWarningIsActive(this.frsDetails.multi_curr_flag)}"
               >
                 <span slot="field" class="${this.getFrsValueNAClass(this.frsDetails.multi_curr_flag, true)}">
                   ${this.getFrsTotal(this.frsDetails.multi_curr_flag, String(this.frsDetails.total_actual_amt), true)}
@@ -261,36 +261,53 @@ export class FundReservationsDisplay extends EtoolsCurrency(FrNumbersConsistency
     `;
   }
 
-  @property({type: Object})
-  intervention: Intervention | null = null;
+  _intervention!: Intervention | null = null;
+
+  set intervention(intervention: Intervention | null) {
+    this._intervention = intervention;
+    this._checkFrsAmountConsistency();
+  }
 
   @property({type: Object})
-  frsDetails: FrsDetails | null = null;
+  get intervention() {
+    return this._intervention;
+  }
+
+  _frsDetails: FrsDetails | null = null;
+
+  set frsDetails(frsDetails: FrsDetails | null) {
+    this._frsDetails = frsDetails;
+    this._checkFrsAmountConsistency();
+  }
+
+  @property({type: Object})
+  get frsDetails() {
+    return this._frsDetails;
+  }
 
   @property({type: String})
   _frsTotalAmountWarning!: string;
-
-  static get observers() {
-    return ['_checkFrsAmountConsistency(intervention, frsDetails, intervention.status)'];
-  }
 
   _noFrs(frsDetails: FrsDetails) {
     return !frsDetails || !frsDetails.frs || !frsDetails.frs.length;
   }
 
-  _checkFrsAmountConsistency(intervention: Intervention, frsDetails: FrsDetails) {
-    if (this._noFrs(frsDetails) || !intervention || intervention.status === 'closed') {
+  _checkFrsAmountConsistency() {
+    if (!this.intervention || !this.frsDetails) {
+      return;
+    }
+    if (this._noFrs(this.frsDetails) || !this.intervention || this.intervention.status === 'closed') {
       this._frsTotalAmountWarning = '';
       return;
     }
     const warn = this.checkFrsAndUnicefCashAmountsConsistency(
-      intervention.planned_budget!.unicef_cash_local!,
-      frsDetails.total_frs_amt,
-      intervention,
+      this.intervention.planned_budget!.unicef_cash_local!,
+      this.frsDetails.total_frs_amt,
+      this.intervention,
       'interventionDetails',
       true
     );
-    this._frsTotalAmountWarning = warn;
+    this._frsTotalAmountWarning = String(warn);
   }
 
   getValueOrNA(value: any) {

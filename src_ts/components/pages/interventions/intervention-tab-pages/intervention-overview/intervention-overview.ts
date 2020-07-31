@@ -140,7 +140,6 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
         <monitoring-visits-list
           .interventionId="${this.intervention.id}"
           .partnerId="${this.intervention.partner_id}"
-          interventionOverview
           showTpmVisits
         >
         </monitoring-visits-list>
@@ -149,7 +148,7 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
   }
 
   @property({type: Object})
-  intervention = {} as Intervention;
+  intervention!: Intervention;
 
   @property({type: Object})
   interventionAgreement: AnyObject = {}; // Agreement;

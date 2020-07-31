@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import {html} from 'lit-element';
 export const customIcons = html`
-  <iron-iconset-svg name="custom-icons" size="24">
+  <iron-iconset-svg name="pmp-custom-icons" size="24">
     <svg>
       <defs>
         <g id="not-equal">

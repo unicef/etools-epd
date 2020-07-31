@@ -5,7 +5,6 @@ import {prettyDate} from '../../utils/date-utils';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {getEndpoint} from '../../utils/endpoint-helper';
-import {EtoolsEndpoint} from '../../utils/intervention-endpoints';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging.js';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
@@ -68,7 +67,7 @@ export class MonitoringVisitsList extends LitElement {
           ${this.monitoringVisits.map(
             (visit: AnyObject) => html`
               <etools-data-table-row no-collapse>
-                <div slot="row-data">
+                <div slot="row-data" class="layout-horizontal">
                   <span class="col-data col-2">
                     <a
                       class="truncate"
@@ -101,7 +100,7 @@ export class MonitoringVisitsList extends LitElement {
           ${this.tpmActivities.map(
             (visit: AnyObject) => html`
               <etools-data-table-row no-collapse>
-                <div slot="row-data">
+                <div slot="row-data" class="layout-horizontal">
                   <span class="col-data col-2">
                     <a
                       class="truncate"
@@ -181,36 +180,28 @@ export class MonitoringVisitsList extends LitElement {
   }
 
   @property({type: Boolean, reflect: true})
-  showTpmVisits = false;
-
-  @property({type: Boolean, reflect: true})
-  interventionOverview = false;
-
-  // static get observers() {
-  //   return ['showTpmVisitsAndIdChanged(partnerId, showTpmVisits)'];
-  // }
+  showTpmVisits = true;
 
   _interventionIdChanged(intervId: string) {
-    this._getT2fVisits(intervId, interventionEndpoints.monitoringVisits);
+    if (intervId) {
+      this._getT2fVisits(intervId);
+    }
   }
 
   _partnerIdChanged(partnerId: string) {
     if (!partnerId) {
       return;
     }
-
-    if (!this.interventionOverview) {
-      this._getT2fVisits(partnerId, interventionEndpoints.partnerT2fProgrammaticVisits);
-    }
+    this.showTpmVisitsAndIdChanged(partnerId, this.showTpmVisits);
   }
 
-  _getT2fVisits(interventionOrPartnerId: string, endpointName: EtoolsEndpoint) {
+  _getT2fVisits(interventionOrPartnerId: string) {
     if (!interventionOrPartnerId) {
       return;
     }
 
     this.showLoading = true;
-    const monitoringVisitsEndpoint = getEndpoint(endpointName, {
+    const monitoringVisitsEndpoint = getEndpoint(interventionEndpoints.monitoringVisits, {
       id: interventionOrPartnerId,
       year: moment().year()
     });
