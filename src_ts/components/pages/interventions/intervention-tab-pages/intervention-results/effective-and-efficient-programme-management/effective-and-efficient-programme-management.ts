@@ -28,6 +28,31 @@ import {
   ProgrammeManagement
 } from './effectiveAndEfficientProgrammeManagement.models';
 
+const getProgrammeData = () =>{
+  const arr = [
+    {
+      title: 'Standard activity',
+      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In iaculis metus et neque viverra ',
+      unicef_cash: 3685,
+      partner_contribution: 54789
+    },
+    {
+      title: 'Standard activity',
+      description:
+        'There are many variations of passages available, but the majority have suffered alteration in some form',
+      unicef_cash: 125,
+      partner_contribution: 751
+    },
+    {
+      title: 'Standard activity',
+      description: 'It is a long established fact that a reader will be distracted by the readable content',
+      unicef_cash: 652,
+      partner_contribution: 441
+    }
+  ];
+  return arr;
+};
+
 /**
  * @customElement
  */
@@ -112,30 +137,9 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
 
   connectedCallback() {
     super.connectedCallback();
-    this.activities = [
-      {
-        title: 'Standard activity',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In iaculis metus et neque viverra ',
-        unicef_cash: 3685,
-        partner_contribution: 54789
-      },
-      {
-        title: 'Standard activity',
-        description:
-          'There are many variations of passages available, but the majority have suffered alteration in some form',
-        unicef_cash: 125,
-        partner_contribution: 751
-      },
-      {
-        title: 'Standard activity',
-        description: 'It is a long established fact that a reader will be distracted by the readable content',
-        unicef_cash: 652,
-        partner_contribution: 441
-      }
-    ];
   }
 
-  stateChanged(state: any) {
+  async stateChanged(state: any) {
     if (!state.interventions.current) {
       return;
     }
@@ -153,6 +157,8 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
     if (!isJsonStrMatch(this.permissions, newPermissions)) {
       this.permissions = newPermissions;
     }
+
+    this.activities = getProgrammeData();
   }
 
   // private openActivityDialog() {
