@@ -14,6 +14,7 @@ import {isJsonStrMatch} from '../utils/utils';
 import './fund-reservations-display/fund-reservations-display';
 import './monitoring-visits-list/monitoring-visits-list';
 import {AnyObject} from '../../../../../types/globals';
+import {MinimalAgreement} from '../common/models/agreement.types';
 
 /**
  * @customElement
@@ -151,7 +152,7 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
   intervention!: Intervention;
 
   @property({type: Object})
-  interventionAgreement: AnyObject = {}; // Agreement;
+  interventionAgreement!: MinimalAgreement;
 
   @property({type: Array})
   monitoringVisit!: [];
@@ -178,6 +179,12 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
       this.resultLinks = this.intervention.result_links;
     }
 
+    if (this.intervention && get(state, 'agreements.list')) {
+      const agreements: MinimalAgreement[] = get(state, 'agreements.list');
+      this.interventionAgreement =
+        agreements.find((item: MinimalAgreement) => item.id === this.intervention.agreement) ||
+        ({} as MinimalAgreement);
+    }
     if (!isJsonStrMatch(this.cpOutputs, state.commonData!.cpOutputs)) {
       this.cpOutputs = [...state.commonData!.cpOutputs];
     }
