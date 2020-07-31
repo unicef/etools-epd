@@ -10,8 +10,8 @@ export class InterventionManagement extends LitElement {
     // language=HTML
     return html`
       <style></style>
-      <pd-amendments></pd-amendments>
       <intervention-review-and-sign></intervention-review-and-sign>
+      <pd-amendments></pd-amendments>
     `;
   }
 }
