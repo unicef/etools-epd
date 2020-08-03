@@ -18,6 +18,7 @@ export interface EtoolsEndpoints {
   offices: EtoolsEndpoint;
   unicefUsers: EtoolsEndpoint;
   dropdownsData: EtoolsEndpoint;
+  agreements: EtoolsEndpoint;
 }
 
 export const etoolsEndpoints: EtoolsEndpoints = {
@@ -56,5 +57,8 @@ export const etoolsEndpoints: EtoolsEndpoints = {
   },
   dropdownsData: {
     url: '/api/v2/dropdowns/pmp/'
+  },
+  agreements: {
+    url: '/api/v2/agreements/'
   }
 };
