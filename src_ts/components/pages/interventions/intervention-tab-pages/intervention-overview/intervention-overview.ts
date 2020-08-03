@@ -205,29 +205,12 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
       return;
     }
 
-    const ids: AnyObject = {};
-    const uniqueIds: number[] = [];
-    const interventionCpOutputs: string[] = [];
-
-    this.resultLinks.forEach(function (res: ExpectedResult) {
-      ids[res.cp_output] = true;
-    });
-
-    let id;
-    for (id in ids) {
-      if (id) {
-        uniqueIds.push(parseInt(id));
-      }
-    }
+    let interventionCpOutputs: string[] = [];
+    const uniqueIds = [...new Set(this.resultLinks.map((item) => item.cp_output))];
     if (Array.isArray(this.cpOutputs) && this.cpOutputs.length > 0) {
-      this.cpOutputs.forEach(function (cpo) {
-        if (uniqueIds.indexOf(cpo.id) > -1) {
-          interventionCpOutputs.push(cpo.name);
-        }
-      });
-
-      this.interventionCpOutputs = interventionCpOutputs;
+      interventionCpOutputs = this.cpOutputs.filter((cpo) => uniqueIds.includes(cpo.id)).map((cpo) => cpo.name);
     }
+    this.interventionCpOutputs = interventionCpOutputs;
   }
 
   _parseSections(sectionsLength: number, intSectionsLength: number) {
