@@ -69,4 +69,35 @@ export const ResultStructureStyles: CSSResult = css`
   *[hidden] {
     display: none !important;
   }
+  .editable-row {
+    position: relative;
+  }
+  .editable-row.fixed-height {
+    height: 55px;
+    align-items: center;
+  }
+  .editable-row .hover-block {
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    line-height: 48px;
+    background-color: #eeeeee;
+    z-index: 100;
+  }
+
+  .editable-row .hover-block paper-icon-button {
+    color: rgba(0, 0, 0, 0.54);
+    padding-left: 5px;
+  }
+
+  .editable-row:hover > .hover-block {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  .empty-row {
+    padding: 16px 24px 16px 56px;
+  }
 `;

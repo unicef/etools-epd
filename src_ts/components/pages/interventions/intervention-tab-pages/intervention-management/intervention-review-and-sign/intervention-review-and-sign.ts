@@ -21,7 +21,7 @@ import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {getStore} from '../../utils/redux-store-access';
 import {connect} from 'pwa-helpers/connect-mixin';
-import {isJsonStrMatch, copy} from '../../utils/utils';
+import {isJsonStrMatch, cloneDeep} from '../../utils/utils';
 
 import {Permission} from '../../common/models/intervention.types';
 import {MinimalUser, AnyObject} from '../../common/models/globals.types';
@@ -340,7 +340,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
 
   stateChanged(state: any) {
     if (!isJsonStrMatch(this.signedByUnicefUsers, state.commonData!.unicefUsersData)) {
-      this.signedByUnicefUsers = copy(state.commonData!.unicefUsersData);
+      this.signedByUnicefUsers = cloneDeep(state.commonData!.unicefUsersData);
     }
 
     if (state.interventions.current) {

@@ -69,6 +69,13 @@ export type ListResponse<T> = {
   results: T[];
 };
 
+export interface CpOutput {
+  id: number;
+  name: string;
+  wbs: string;
+  country_programme: string;
+}
+
 export interface LabelAndValue {
   label: string;
   value: string;

@@ -12,6 +12,13 @@ export interface EtoolsEndpoints {
   specialReportingRequirements: EtoolsEndpoint;
   reportingRequirements: EtoolsEndpoint;
   specialReportingRequirementsUpdate: EtoolsEndpoint;
+  resultLinks: EtoolsEndpoint;
+  ramIndicators: EtoolsEndpoint;
+  resultLinkDetails: EtoolsEndpoint;
+  pdDetails: EtoolsEndpoint;
+  createPd: EtoolsEndpoint;
+  pdActivityDetails: EtoolsEndpoint;
+  pdActivities: EtoolsEndpoint;
   attachmentsUpload: EtoolsEndpoint;
   interventionAmendmentAdd: EtoolsEndpoint;
 }
@@ -34,6 +41,27 @@ export const interventionEndpoints: EtoolsEndpoints = {
   },
   specialReportingRequirementsUpdate: {
     template: '/api/v2/reports/interventions/special-reporting-requirements/<%=reportId%>/'
+  },
+  resultLinks: {
+    template: '/api/v2/interventions/<%=id%>/result-links/'
+  },
+  resultLinkDetails: {
+    template: '/api/v2/interventions/result-links/<%=result_link%>/'
+  },
+  ramIndicators: {
+    template: '/api/v2/reports/results/<%=id%>/indicators/'
+  },
+  pdDetails: {
+    template: '/api/pmp/v3/interventions/<%=intervention_id%>/pd-outputs/<%=pd_id%>/'
+  },
+  createPd: {
+    template: '/api/pmp/v3/interventions/<%=intervention_id%>/pd-outputs/'
+  },
+  pdActivities: {
+    template: '/api/pmp/v3/interventions/<%=interventionId%>/pd-outputs/<%=pdOutputId%>/activities/'
+  },
+  pdActivityDetails: {
+    template: '/api/pmp/v3/interventions/<%=interventionId%>/pd-outputs/<%=pdOutputId%>/activities/<%=activityId%>/'
   },
   attachmentsUpload: {
     url: '/api/v2/attachments/upload/'

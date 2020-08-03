@@ -21,11 +21,11 @@ export class ToastNotificationHelper {
 
   public addToastNotificationListeners() {
     this.queueToast = this.queueToast.bind(this);
-    this.appShellEl.addEventListener('toast', this.queueToast);
+    document.body.addEventListener('toast', this.queueToast);
   }
 
   public removeToastNotificationListeners() {
-    this.appShellEl.removeEventListener('toast', this.queueToast);
+    document.body.removeEventListener('toast', this.queueToast);
     if (this._toast) {
       this._toast.removeEventListener('toast-confirm', this.closeToast);
       this._toast.removeEventListener('toast-closed', this.dequeueToast);
