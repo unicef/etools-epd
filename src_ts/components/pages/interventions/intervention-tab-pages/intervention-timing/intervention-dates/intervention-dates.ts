@@ -40,6 +40,9 @@ export class InterventionDates extends connect(getStore())(ComponentBaseMixin(Fr
           display: block;
           margin-bottom: 24px;
         }
+        datepicker-lite {
+          min-width: 200px;
+        }
       </style>
 
       <etools-content-panel show-expand-btn panel-title="Programme Document Dates">
@@ -63,8 +66,8 @@ export class InterventionDates extends connect(getStore())(ComponentBaseMixin(Fr
                 id="intStart"
                 label="Start date"
                 .value="${this.interventionDates.start}"
-                ?readonly="${!this.permissions.edit.start}"
-                ?required="${!this.permissions.required.start}"
+                ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.start)}"
+                ?required="${this.permissions.required.start}"
                 error-message="Please select start date"
                 auto-validate
                 selected-date-display-format="D MMM YYYY"
@@ -89,7 +92,7 @@ export class InterventionDates extends connect(getStore())(ComponentBaseMixin(Fr
                 id="intEnd"
                 label="End date"
                 .value="${this.interventionDates.end}"
-                ?readonly="${!this.permissions.edit.end}"
+                ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.end)}"
                 ?required="${this.permissions.required.end}"
                 error-message="Please select end date"
                 auto-validate
@@ -138,16 +141,18 @@ export class InterventionDates extends connect(getStore())(ComponentBaseMixin(Fr
     }
     this.interventionDates = selectInterventionDates(state);
     this.originalInterventionDates = cloneDeep(this.interventionDates);
-    this.sePermissions(state);
+    this.permissions = selectInterventionDatesPermissions(state);
+    this.set_canEditAtLeastOneField(this.permissions.edit);
+    // this.sePermissions(state);
   }
 
-  private sePermissions(state: any) {
-    const newPermissions = selectInterventionDatesPermissions(state);
-    if (!isJsonStrMatch(this.permissions, newPermissions)) {
-      this.permissions = newPermissions;
-      this.set_canEditAtLeastOneField(this.permissions.edit);
-    }
-  }
+  // private sePermissions(state: any) {
+  //   // const newPermissions = selectInterventionDatesPermissions(state);
+  //   if (!isJsonStrMatch(this.permissions, newPermissions)) {
+  //     this.permissions = newPermissions;
+  //
+  //   }
+  // }
 
   validate() {
     return validateRequiredFields(this);
