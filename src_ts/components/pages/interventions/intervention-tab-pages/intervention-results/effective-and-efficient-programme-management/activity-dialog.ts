@@ -7,6 +7,7 @@ import {getStore} from '../../utils/redux-store-access';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
+import {ProgrammeManagementActivityPermissions} from './effectiveAndEfficientProgrammeManagement.models';
 
 /**
  * @customElement
@@ -80,7 +81,7 @@ export class ActivityDialog extends connect(getStore())(ComponentBaseMixin(LitEl
     super.connectedCallback();
   }
 
-  permissionObjChanged(permissions) {
+  permissionObjChanged(permissions: ProgrammeManagementActivityPermissions) {
     if (!permissions) {
       this._permissionObj = {};
       return;
