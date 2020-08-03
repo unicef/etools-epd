@@ -52,6 +52,8 @@ export class InterventionReviewAndSign extends connect(getStore())(
         ${sectionContentStylesPolymer}${sharedStyles}:host {
           @apply --layout-vertical;
           width: 100%;
+          display: block;
+          margin-bottom: 24px;
         }
 
         datepicker-lite[required] {
