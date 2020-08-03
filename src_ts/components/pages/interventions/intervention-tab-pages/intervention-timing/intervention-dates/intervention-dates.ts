@@ -143,16 +143,7 @@ export class InterventionDates extends connect(getStore())(ComponentBaseMixin(Fr
     this.originalInterventionDates = cloneDeep(this.interventionDates);
     this.permissions = selectInterventionDatesPermissions(state);
     this.set_canEditAtLeastOneField(this.permissions.edit);
-    // this.sePermissions(state);
   }
-
-  // private sePermissions(state: any) {
-  //   // const newPermissions = selectInterventionDatesPermissions(state);
-  //   if (!isJsonStrMatch(this.permissions, newPermissions)) {
-  //     this.permissions = newPermissions;
-  //
-  //   }
-  // }
 
   validate() {
     return validateRequiredFields(this);
