@@ -3,7 +3,7 @@ export const sharedStylesContent = `
   :host {
     display: block;
     box-sizing: border-box;
-    font-size: 14px;
+    font-size: 16px;
   }
 
   *[hidden] {

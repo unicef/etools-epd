@@ -8,4 +8,3 @@ export class LocationsPermissions extends ModelsBase {
   }
   flat_locations = true;
 }
-

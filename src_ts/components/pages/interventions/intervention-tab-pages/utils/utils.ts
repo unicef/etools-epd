@@ -15,6 +15,6 @@ export const isEmptyObject = (a: any) => {
   return isObject(a) && Object.keys(a).length === 0;
 };
 
-export const copy = (a: any) => {
-  return JSON.parse(JSON.stringify(a));
+export const cloneDeep = (obj: any) => {
+  return JSON.parse(JSON.stringify(obj));
 };

@@ -56,7 +56,6 @@ export type DisaggregationValue = {
   value: string;
 };
 
-
 export interface Permission<T> {
   edit: T;
   required: T;

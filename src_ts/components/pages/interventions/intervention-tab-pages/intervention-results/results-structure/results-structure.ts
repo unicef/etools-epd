@@ -1,15 +1,26 @@
 import {getStore} from '../../utils/redux-store-access';
 import {css, html, CSSResultArray, customElement, LitElement, property} from 'lit-element';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import {selectInterventionResultLinks} from './results-structure.selectors';
+import {
+  selectInterventionId,
+  selectInterventionQuarters,
+  selectInterventionResultLinks,
+} from './results-structure.selectors';
 import {ResultStructureStyles} from './results-structure.styles';
-import {ExpectedResult, ResultLinkLowerResult} from '../../common/models/intervention.types';
+import {
+  CpOutput,
+  ExpectedResult,
+  InterventionQuarter,
+  ResultLinkLowerResult,
+} from '../../common/models/intervention.types';
 import '@unicef-polymer/etools-data-table';
 import '@unicef-polymer/etools-content-panel';
 import './cp-output-level';
 import './pd-indicators';
 import './pd-activities';
+import './modals/pd-output-dialog';
 import {connect} from 'pwa-helpers/connect-mixin';
+import {openDialog} from '../../utils/dialog';
 
 /**
  * @customElement
@@ -42,16 +53,27 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
         .view-toggle-button[active] {
           background-color: #009688;
         }
+        .no-results {
+          padding: 24px;
+        }
       `
     ];
   }
-
-  @property()
-  resultLinks: ExpectedResult[] = [];
+  get resultLinks(): ExpectedResult[] {
+    return this._resultLinks || [];
+  }
+  set resultLinks(data: ExpectedResult[]) {
+    this._resultLinks = data;
+  }
+  @property() interventionId!: number | null;
+  quarters: InterventionQuarter[] = [];
 
   @property({type: Boolean}) showCPOLevel = true;
   @property({type: Boolean}) showIndicators = true;
   @property({type: Boolean}) showActivities = true;
+
+  private cpOutputs: CpOutput[] = [];
+  @property() private _resultLinks: ExpectedResult[] | null = [];
 
   render() {
     // language=HTML
@@ -62,6 +84,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
           margin-bottom: 24px;
         }
         etools-data-table-row {
+          --list-row-wrapper-padding: 5px 12px 5px 0;
           --list-row-collapse-wrapper: {
             padding: 0 !important;
             border-bottom: 1px solid var(--main-border-color) !important;
@@ -100,11 +123,16 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
         </div>
         ${this.resultLinks.map(
           (result: ExpectedResult) => html`
-            <cp-output-level ?show-cpo-level="${this.showCPOLevel}" .resultLink="${result}">
+            <cp-output-level
+              ?show-cpo-level="${this.showCPOLevel}"
+              .resultLink="${result}"
+              .interventionId="${this.interventionId}"
+              @add-pd="${() => this.openPdOutputDialog({}, result.cp_output, result.cp_output_name)}"
+            >
               ${result.ll_results.map(
                 (pdOutput: ResultLinkLowerResult) => html`
                   <etools-data-table-row>
-                    <div slot="row-data" class="layout-horizontal align-items-center">
+                    <div slot="row-data" class="layout-horizontal align-items-center editable-row">
                       <div class="flex-1 flex-fix">
                         <div class="heading">Program Document output</div>
                         <div class="data bold-data">${pdOutput.name}</div>
@@ -115,7 +143,12 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
                         <div class="data">TTT 1231.144</div>
                       </div>
 
-                      <iron-icon icon="create" class="flex-none" ?hidden="${result.cp_output}"></iron-icon>
+                      <div class="hover-block">
+                        <paper-icon-button
+                          icon="icons:create"
+                          @tap="${() => this.openPdOutputDialog(pdOutput, result.cp_output, result.cp_output_name)}"
+                        ></paper-icon-button>
+                      </div>
                     </div>
 
                     <div slot="row-data-details">
@@ -123,7 +156,13 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
                         ?hidden="${!this.showIndicators}"
                         .indicators="${pdOutput.applied_indicators}"
                       ></pd-indicators>
-                      <pd-activities ?hidden="${!this.showActivities}"></pd-activities>
+                      <pd-activities
+                        .activities="${pdOutput.activities}"
+                        .interventionId="${this.interventionId}"
+                        .pdOutputId="${pdOutput.id}"
+                        .quarters="${this.quarters}"
+                        ?hidden="${!this.showActivities}"
+                      ></pd-activities>
                     </div>
                   </etools-data-table-row>
                 `
@@ -131,11 +170,16 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
             </cp-output-level>
           `
         )}
+        ${!this.resultLinks.length ? html` <div class="no-results">There are no results added.</div> ` : ''}
 
         <!--  If CP Output level is shown - 'Add PD' button will be present inside cp-output-level component  -->
         ${!this.showCPOLevel
           ? html`
-              <div ?hidden="${this.showCPOLevel}" class="add-pd row-h align-items-center">
+              <div
+                ?hidden="${this.showCPOLevel}"
+                class="add-pd row-h align-items-center"
+                @click="${() => this.openPdOutputDialog()}"
+              >
                 <iron-icon icon="add-box"></iron-icon>Add PD Output
               </div>
             `
@@ -146,10 +190,31 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
 
   stateChanged(state: any) {
     this.resultLinks = selectInterventionResultLinks(state);
+    this.interventionId = selectInterventionId(state);
+    this.quarters = selectInterventionQuarters(state);
+    this.cpOutputs = (state.commonData && state.commonData.cpOutputs) || [];
   }
 
   updateTableView(indicators: boolean, activities: boolean): void {
     this.showIndicators = indicators;
     this.showActivities = activities;
+  }
+
+  openPdOutputDialog(): void;
+  openPdOutputDialog(pdOutput: Partial<ResultLinkLowerResult>, cpOutput: number, cpoName: string): void;
+  openPdOutputDialog(pdOutput?: Partial<ResultLinkLowerResult>, cpOutput?: number, cpoName?: string): void {
+    const currentOutputExists = Boolean(this.cpOutputs.find(({id}: CpOutput) => id === cpOutput));
+    const cpOutputs: CpOutput[] = currentOutputExists
+      ? this.cpOutputs
+      : [{id: cpOutput, name: cpoName} as CpOutput, ...this.cpOutputs];
+    openDialog<any>({
+      dialog: 'pd-output-dialog',
+      dialogData: {
+        pdOutput: pdOutput ? {...pdOutput, cp_output: cpOutput} : undefined,
+        cpOutputs,
+        hideCpOutputs: false,
+        interventionId: this.interventionId
+      }
+    });
   }
 }
