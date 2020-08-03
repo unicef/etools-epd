@@ -15,7 +15,9 @@ import {EtoolsDropdownEl} from '@unicef-polymer/etools-dropdown/etools-dropdown'
 import {PaperInputElement} from '@polymer/paper-input/paper-input';
 import {selectPlannedVisits, selectPlannedVisitsPermissions} from './programmaticVisits.selectors';
 import {isJsonStrMatch} from '../../utils/utils';
-import {Permission} from '../../common/models/intervention.types';
+import {Permission, PlannedVisit} from '../../common/models/intervention.types';
+import {selectInterventionDates} from '../../intervention-timing/intervention-dates/interventionDates.selectors';
+import {ProgrammeDocDates} from '../../intervention-timing/intervention-dates/interventionDates.models';
 
 /**
  * @customElement
@@ -60,6 +62,12 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(L
         .padd-left-when-items {
           margin-left: 46px;
         }
+
+        .secondary-btn {
+          --paper-button: {
+            color: #0099ff;
+          }
+        }
       </style>
 
       <etools-content-panel show-expand-btn panel-title="Programmatic Visits">
@@ -67,7 +75,7 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(L
 
         <div class="row-h extra-top-padd" ?hidden="${!this.editMode}">
           <paper-button
-            .class="secondary-btn ${this._getAddBtnPadding(this.planned_visits?.length)}"
+            class="secondary-btn ${this._getAddBtnPadding(this.planned_visits?.length)}"
             @tap="${this._addNewPlannedVisit}"
           >
             ADD YEAR
@@ -95,7 +103,10 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(L
   showLoading = false;
 
   @property({type: Array})
-  years: [] = [];
+  years: AnyObject[] = [];
+
+  @property({type: Object})
+  interventionDates!: ProgrammeDocDates;
 
   @property({type: Number})
   interventionId!: number;
@@ -107,7 +118,7 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(L
   extraEndpointParams!: AnyObject;
 
   @property({type: Object})
-  planned_visits: PlannedVisits = [];
+  planned_visits!: PlannedVisits;
 
   @property({type: Object})
   permissions!: Permission<PlannedVisitsPermissions>;
@@ -131,16 +142,36 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(L
 
   populateVisits(state: any) {
     const newPlannedVisits = selectPlannedVisits(state);
-    if (!isJsonStrMatch(this.originalData, newPlannedVisits)) {
-      this.planned_visits = selectPlannedVisits(state);
-    }
-    this.originalData = newPlannedVisits;
-    // this.planned_visits = state.interventions.current.planned_visits;
+    this.originalData = newPlannedVisits.planned_visits;
+    this.planned_visits = newPlannedVisits.planned_visits;
+    this.interventionDates = selectInterventionDates(state);
+    this._setYears(this.interventionDates.start, this.interventionDates.end);
   }
 
   _plannedVisitsChanged(planned_visits: any) {
     if (!Array.isArray(planned_visits)) {
       this.planned_visits = [];
+    }
+  }
+
+  _setYears(interventionStart: string, interventionEnd: string) {
+    if (interventionStart === null || interventionEnd === null) {
+      return;
+    }
+    if (interventionStart !== '' && interventionEnd !== '') {
+      let start = parseInt(interventionStart.substr(0, 4), 10);
+      const end = parseInt(interventionEnd.substr(0, 4), 10) + 1;
+      const years = [];
+      while (start <= end) {
+        years.push({
+          value: start,
+          label: start
+        });
+        start++;
+      }
+      this.years = years;
+    } else {
+      this.years = [];
     }
   }
 
@@ -393,6 +424,7 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(L
       });
       return;
     }
+    (this.planned_visits as any).push(new PlannedVisit());
     // this._addElement();
   }
 

@@ -1,4 +1,4 @@
-import {InterventionPermissionsFields, Intervention} from '../../common/models/intervention.types';
+import {InterventionPermissionsFields, Intervention, PlannedVisit} from '../../common/models/intervention.types';
 import {ModelsBase} from '../../common/models/models.base';
 
 export class PlannedVisits extends ModelsBase {
@@ -6,7 +6,7 @@ export class PlannedVisits extends ModelsBase {
     super();
     this.setObjProperties(intervention);
   }
-  planned_visits = [];
+  planned_visits: PlannedVisit[] = [];
 }
 
 export class PlannedVisitsPermissions extends ModelsBase {

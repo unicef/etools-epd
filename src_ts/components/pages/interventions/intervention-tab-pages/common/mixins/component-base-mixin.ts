@@ -4,7 +4,7 @@ import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
 import {createDynamicDialog, removeDialog} from '@unicef-polymer/etools-dialog/dynamic-dialog';
 import {fireEvent} from '../../../../../utils/fire-custom-event';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {copy} from '../../utils/utils';
+import {cloneDeep} from '../../utils/utils';
 
 function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
   class ComponentBaseClass extends baseClass {
@@ -148,7 +148,7 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
         this.splice('dataItems', index, 1);
 
         // To mke sure all req. observers are triggered
-        this.dataItems = copy(this.dataItems);
+        this.dataItems = cloneDeep(this.dataItems);
 
         fireEvent(this, 'delete-confirm', {index: this.elToDeleteIndex});
       }
