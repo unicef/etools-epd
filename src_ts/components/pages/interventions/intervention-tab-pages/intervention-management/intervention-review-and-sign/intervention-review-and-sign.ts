@@ -11,8 +11,6 @@ import '@unicef-polymer/etools-upload/etools-upload';
 import '@unicef-polymer/etools-date-time/datepicker-lite';
 import DatePickerLite from '@unicef-polymer/etools-date-time/datepicker-lite';
 
-// @lajos...review this....
-import '../../common/layout/etools-form-element-wrapper';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import MissingDropdownOptionsMixin from '../../common/mixins/missing-dropdown-options-mixin';
 import UploadMixin from '../../common/mixins/uploads-mixin';
@@ -98,18 +96,23 @@ export class InterventionReviewAndSign extends connect(getStore())(
           </div>
           <div class="col col-3">
             <!-- Submitted to PRC? -->
-            <etools-form-element-wrapper no-placeholder>
-              <paper-checkbox
-                checked="${this.intervention.submitted_to_prc}"
-                disabled="?${this._isSubmittedToPrcCheckReadonly(
-                  this.permissions.edit.prc_review_attachment,
-                  this._lockSubmitToPrc
-                )}"
-                hidden="true"
-              >
-                Submitted to PRC?
-              </paper-checkbox>
-            </etools-form-element-wrapper>
+            <paper-input-container dir="null">
+              <slot name="prefix" slot="prefix"></slot>
+              <div slot="input" class="paper-input-input">
+                <span class="input-value">
+                  <paper-checkbox
+                    checked="${this.intervention.submitted_to_prc}"
+                    disabled="?${this._isSubmittedToPrcCheckReadonly(
+                      this.permissions.edit.prc_review_attachment,
+                      this._lockSubmitToPrc
+                    )}"
+                  >
+                    Submitted to PRC?
+                  </paper-checkbox>
+                </span>
+                <slot></slot>
+              </div>
+            </paper-input-container>
           </div>
         </div>
         ${this._showSubmittedToPrcFields(this.intervention.submitted_to_prc)
@@ -195,9 +198,9 @@ export class InterventionReviewAndSign extends connect(getStore())(
         <div class="layout-horizontal row-padding-v">
           <div class="col col-6">
             <!-- Signed by UNICEF Authorized Officer -->
-            <etools-form-element-wrapper no-placeholder>
-              Signed by UNICEF Authorized Officer
-            </etools-form-element-wrapper>
+            <paper-input-container>
+              <label slot="label"> Signed by UNICEF Authorized Officer</label>
+            </paper-input-container>
           </div>
           <div class="col col-3">
             <!-- Signed by UNICEF Date -->
@@ -329,7 +332,6 @@ export class InterventionReviewAndSign extends connect(getStore())(
 
     if (state.interventions.current) {
       this.intervention = state.interventions.current;
-      console.log(this.intervention);
       // @lajos TO DO see how to override!
       this.permissions = selectDocumentPermissions(state);
     }
@@ -455,7 +457,6 @@ export class InterventionReviewAndSign extends connect(getStore())(
   }
 
   _isSubmittedToPrcCheckReadonly(isPrcDocEditable: boolean, lockSubmitToPrc: boolean) {
-    console.log('isPrcDocEditable', isPrcDocEditable, 'lockSubmitToPrc', lockSubmitToPrc);
     return !isPrcDocEditable || lockSubmitToPrc;
   }
 
