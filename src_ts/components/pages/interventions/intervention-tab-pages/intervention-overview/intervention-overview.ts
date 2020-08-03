@@ -33,7 +33,6 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
     return html`
       <style>
         ${sharedStyles} :host {
-          @apply --layout-vertical;
           width: 100%;
           --ecp-content-padding: 0px;
         }

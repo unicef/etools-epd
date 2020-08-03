@@ -23,10 +23,7 @@ export class MonitoringVisitsList extends LitElement {
   }
   render() {
     return html` <style>
-        ${sharedStyles} :host {
-          @apply --layout-flex;
-        }
-        .monitoring-visits-container {
+        ${sharedStyles} .monitoring-visits-container {
           position: relative;
         }
         etools-loading {
