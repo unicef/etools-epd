@@ -29,6 +29,7 @@ import {DocumentPermission, Document} from './managementDocument.model';
 import {selectDocumentPermissions} from './managementDocument.selectors';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {Agreement} from '../../common/models/agreement.types';
 
 /**
  * @polymer
@@ -96,16 +97,17 @@ export class InterventionReviewAndSign extends connect(getStore())(
           </div>
           <div class="col col-3">
             <!-- Submitted to PRC? -->
-            <paper-input-container dir="null">
+            <paper-input-container>
               <slot name="prefix" slot="prefix"></slot>
               <div slot="input" class="paper-input-input">
                 <span class="input-value">
                   <paper-checkbox
                     checked="${this.intervention.submitted_to_prc}"
-                    disabled="?${this._isSubmittedToPrcCheckReadonly(
+                    ?disabled="${this._isSubmittedToPrcCheckReadonly(
                       this.permissions.edit.prc_review_attachment,
                       this._lockSubmitToPrc
                     )}"
+                    ?hidden="${!this._isNotSSFA(this.intervention.document_type)}"
                   >
                     Submitted to PRC?
                   </paper-checkbox>
@@ -171,8 +173,8 @@ export class InterventionReviewAndSign extends connect(getStore())(
               placeholder="&#8212;"
               options="${this.agreementAuthorizedOfficers}"
               selected="${this.intervention.partner_authorized_officer_signatory}"
-              readonly="?${!this.permissions.edit.partner_authorized_officer_signatory}"
-              required="?${this.permissions.required.partner_authorized_officer_signatory}"
+              ?readonly="${!this.permissions.edit.partner_authorized_officer_signatory}"
+              ?required="${this.permissions.required.partner_authorized_officer_signatory}"
               auto-validate
               error-message="Please select Partner Authorized Officer"
             >
@@ -300,6 +302,17 @@ export class InterventionReviewAndSign extends connect(getStore())(
 
   // @property({type: Object, observer: '_agreementChanged'})
   // agreement!: Agreement;
+  // @LAJOS: neeeeeeeeeds review
+  // _agreement!: AnyObject[];
+
+  // set agreement(agreement) {
+  //   this._agreement = this._agreementChanged(agreement);
+  // }
+
+  // @property({type: Array})
+  // get agreement() {
+  //   return this.agreement;
+  // }
 
   @property({type: Object})
   agreementAuthorizedOfficers!: AnyObject;
@@ -403,18 +416,17 @@ export class InterventionReviewAndSign extends connect(getStore())(
     return this._isDraft(status) && fileUrl;
   }
 
-  // _agreementChanged(agreement: Agreement) {
-  //   if (agreement && typeof agreement === 'object' && Object.keys(agreement).length > 0) {
-  //     const authorizedOfficerData = agreement.authorized_officers!.map((officer) => {
-  //       return {
-  //         value: typeof officer.id === 'string' ? parseInt(officer.id, 10) : officer.id,
-  //         label: officer.first_name + ' ' + officer.last_name
-  //       };
-  //     });
-  //     // @lajos: originally this was declared as array...but as per above it is object....
-  //     this.agreementAuthorizedOfficers = authorizedOfficerData;
-  //   }
-  // }
+  _agreementChanged(agreement: Agreement) {
+    if (agreement && typeof agreement === 'object' && Object.keys(agreement).length > 0) {
+      const authorizedOfficerData = agreement.authorized_officers!.map((officer) => {
+        return {
+          value: typeof officer.id === 'string' ? parseInt(officer.id, 10) : officer.id,
+          label: officer.first_name + ' ' + officer.last_name
+        };
+      });
+      this.agreementAuthorizedOfficers = authorizedOfficerData;
+    }
+  }
 
   validate() {
     let valid = true;
