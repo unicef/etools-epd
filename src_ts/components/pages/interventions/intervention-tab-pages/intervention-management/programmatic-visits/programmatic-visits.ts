@@ -10,9 +10,12 @@ import {fireEvent} from '../../../../../utils/fire-custom-event';
 import {validateRequiredFields} from '../../utils/validation-helper';
 import {layoutCenterJustified, layoutVertical} from '../../common/styles/flex-layout-styles';
 import {AnyObject} from '../../common/models/globals.types';
-import {PlannedVisit} from '../../common/models/intervention.types';
+import {PlannedVisits, PlannedVisitsPermissions} from './programmaticVisits.models';
 import {EtoolsDropdownEl} from '@unicef-polymer/etools-dropdown/etools-dropdown';
 import {PaperInputElement} from '@polymer/paper-input/paper-input';
+import {selectPlannedVisits, selectPlannedVisitsPermissions} from './programmaticVisits.selectors';
+import {isJsonStrMatch} from '../../utils/utils';
+import {Permission} from '../../common/models/intervention.types';
 
 /**
  * @customElement
@@ -25,7 +28,9 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(L
 
   render() {
     // if (!this.originalData) {
-    //   return html` <style>${sharedStyles}</style>
+    //   return html` <style>
+    //       ${sharedStyles}
+    //     </style>
     //     <etools-loading loading-text="Loading..." active></etools-loading>`;
     // }
     // language=HTML
@@ -62,29 +67,26 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(L
 
         <div class="row-h extra-top-padd" ?hidden="${!this.editMode}">
           <paper-button
-            .class="secondary-btn ${this._getAddBtnPadding(this.dataItems.length)}"
-            @tap="_addNewPlannedVisit"
+            .class="secondary-btn ${this._getAddBtnPadding(this.planned_visits?.length)}"
+            @tap="${this._addNewPlannedVisit}"
           >
             ADD YEAR
           </paper-button>
         </div>
 
-        <div ?hidden="${isEmpty(this.dataItems)}" class="pv-container">
-          ${this.renderVisitTemplate(this.dataItems)}
+        <div class="pv-container">
+          ${this.renderVisitsTemplate(this.planned_visits)}
         </div>
 
         <div
-          .class="row-h ${this._getNoPVMsgPadding(this.dataItems.length)}"
-          ?hidden="${!this._emptyList(this.dataItems.length)}"
+          .class="row-h ${this._getNoPVMsgPadding(this.planned_visits?.length)}"
+          ?hidden="${!this._emptyList(this.planned_visits?.length)}"
         >
           <p>There are no planned visits added.</p>
         </div>
       </etools-content-panel>
     `;
   }
-
-  @property({type: Boolean})
-  editMode = true;
 
   @property({type: Object})
   originalData!: any;
@@ -105,7 +107,10 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(L
   extraEndpointParams!: AnyObject;
 
   @property({type: Object})
-  dataItems: AnyObject[] = [];
+  planned_visits: PlannedVisits = [];
+
+  @property({type: Object})
+  permissions!: Permission<PlannedVisitsPermissions>;
 
   @property({type: Number})
   totalV = 0;
@@ -113,26 +118,38 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(L
   connectedCallback() {
     super.connectedCallback();
     this._createDeleteConfirmationDialog();
-    this.dataItems = [
-      {id: 17, year: 2017, programmatic_q1: '', programmatic_q2: '', programmatic_q3: '', programmatic_q4: ''}
-    ];
   }
 
   stateChanged(state: any) {
     if (!state.interventions.current) {
       return;
     }
+    this.populateVisits(state);
+    this.permissions = selectPlannedVisitsPermissions(state);
+    this.set_canEditAtLeastOneField(this.permissions.edit);
   }
 
-  _dataItemsChanged(dataItems: any) {
-    if (!Array.isArray(dataItems)) {
-      this.dataItems = [];
+  populateVisits(state: any) {
+    const newPlannedVisits = selectPlannedVisits(state);
+    if (!isJsonStrMatch(this.originalData, newPlannedVisits)) {
+      this.planned_visits = selectPlannedVisits(state);
+    }
+    this.originalData = newPlannedVisits;
+    // this.planned_visits = state.interventions.current.planned_visits;
+  }
+
+  _plannedVisitsChanged(planned_visits: any) {
+    if (!Array.isArray(planned_visits)) {
+      this.planned_visits = [];
     }
   }
 
-  renderVisitTemplate(dataItems) {
+  renderVisitsTemplate(planned_visits: any) {
+    if (isEmpty(planned_visits)) {
+      return html``;
+    }
     return html`
-      ${dataItems.map(
+      ${planned_visits?.map(
         (item, index) => html`
           <div class="row-h item-container">
             <div class="item-actions-container">
@@ -270,10 +287,10 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(L
    * and id assigned(only if is not saved))
    */
   _canBeRemoved(index: number, editMode: boolean) {
-    if (!editMode || !this.dataItems || !this.dataItems.length || !this.dataItems[index]) {
+    if (!editMode || !this.planned_visits || !this.planned_visits.length || !this.planned_visits[index]) {
       return false;
     }
-    const plannedVisit = this.dataItems[index];
+    const plannedVisit = this.planned_visits[index];
     const plannedVisitId = parseInt(plannedVisit.id, 10);
     return this._isDraft() || !(plannedVisitId && isNaN(plannedVisitId) === false && plannedVisitId > 0);
   }
@@ -303,7 +320,7 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(L
       if (yearDropdown) {
         yearDropdown.selected = null;
       }
-      this.set('dataItems.' + event.model.index + '.year', null);
+      this.set('planned_visits.' + event.model.index + '.year', null);
     });
   }
 
@@ -324,7 +341,7 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(L
 
   validate() {
     let valid = true;
-    this.dataItems.forEach((item: any, index: number) => {
+    this.planned_visits?.forEach((item: any, index: number) => {
       if (!(this._validateYear(index) && this._validateQuarters(item, index))) {
         valid = false;
       }
@@ -376,7 +393,7 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(L
       });
       return;
     }
-    this._addElement();
+    // this._addElement();
   }
 
   _getAddBtnPadding(itemsLength: number) {
