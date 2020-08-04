@@ -1,8 +1,8 @@
 import {customElement, LitElement, html, property} from 'lit-element';
 import '@polymer/iron-icons/iron-icons';
 import '@polymer/iron-flex-layout/iron-flex-layout';
-import '@material/mwc-checkbox';
 import '@polymer/paper-input/paper-input';
+import '@polymer/paper-checkbox';
 
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import '@unicef-polymer/etools-dropdown/etools-dropdown';
@@ -46,6 +46,12 @@ export class InterventionReviewAndSign extends connect(getStore())(
     return [gridLayoutStylesLit];
   }
   render() {
+    if (!this.intervention) {
+      return html` <style>
+          ${sharedStyles}
+        </style>
+        <etools-loading loading-text="Loading..." active></etools-loading>`;
+    }
     return html`
       <style>
         ${sectionContentStylesPolymer}${sharedStyles}:host {
@@ -56,17 +62,31 @@ export class InterventionReviewAndSign extends connect(getStore())(
         }
 
         datepicker-lite[required] {
-          --paper-input-container-label-floating_-_max-width: 133%;
+          --paper-input-container-label-floating_-_max-width: 175%;
         }
 
-        --paper-input-container {
+        paper-input-container{
           margin-left: 0px;
-          padding: 0;
         }
 
         paper-input {
           width: 100%;
         }
+
+        paper-checkbox {
+          @apply --layout-horizontal;
+          @apply --layout-center;
+          min-height: 24px;
+          margin-left: 0px;
+        }
+
+        paper-checkbox[disabled] {
+          cursor: not-allowed;
+          --paper-checkbox-unchecked-color: black;
+          --paper-checkbox-label: {
+            color: var(--primary-text-color);
+            opacity: 1;
+          }
       </style>
       <etools-content-panel class="content-section" panel-title="Signatures & Dates">
         <div class="layout-horizontal row-padding-v">
@@ -90,17 +110,16 @@ export class InterventionReviewAndSign extends connect(getStore())(
             <!-- Submitted to PRC? -->
             <paper-input-container>
               <div slot="input" class="paper-input-input">
-                <span class="input-value">
-                  <mwc-checkbox
-                    ?checked="${this.intervention.submitted_to_prc}"
-                    ?disabled=${this._isSubmittedToPrcCheckReadonly(
-                      this.permissions.edit.prc_review_attachment,
-                      this._lockSubmitToPrc
-                    )}
-                    ?hidden="${!this._isNotSSFA(this.intervention.document_type)}"
-                  ></mwc-checkbox
-                  >Submitted to PRC?</span
+                <paper-checkbox
+                  checked="{{intervention.submitted_to_prc}}"
+                  ?disabled="${this._isSubmittedToPrcCheckReadonly(
+                    this.permissions.edit.prc_review_attachment,
+                    this._lockSubmitToPrc
+                  )}"
+                  ?hidden="${!this._isNotSSFA(this.intervention.document_type)}"
                 >
+                  Submitted to PRC?
+                </paper-checkbox>
               </div>
             </paper-input-container>
           </div>
@@ -310,8 +329,8 @@ export class InterventionReviewAndSign extends connect(getStore())(
     if (state.interventions.current) {
       this.intervention = selectIntervention(state);
       this.permissions = selectInterventionPermissions(state);
-      const test = state.agreements.list;
-      test.map((aggr: any) => {
+      const agreementList = state.agreements.list;
+      agreementList.map((aggr: any) => {
         if (aggr.id == this.intervention.agreement) {
           this.agreementAuthorizedOfficers = aggr.authorized_officers;
         }
