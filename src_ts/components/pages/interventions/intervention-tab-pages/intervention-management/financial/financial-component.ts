@@ -5,6 +5,7 @@ import '@polymer/paper-radio-group';
 import '@polymer/paper-checkbox';
 import '@unicef-polymer/etools-loading/etools-loading';
 import '@polymer/paper-input/paper-textarea';
+import '@polymer/paper-slider/paper-slider.js';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
@@ -34,12 +35,6 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
     return [gridLayoutStylesLit, buttonsStyles];
   }
   render() {
-    if (!this.genderEquityRating || !this.ratings) {
-      return html`<style>
-          ${sharedStyles}
-        </style>
-        <etools-loading loading-text="Loading..." active></etools-loading>`;
-    }
     // language=HTML
     return html`
       <style>
@@ -93,9 +88,7 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
             <label class="paper-label">Headquarters contribution (automatic 7% for INGO)</label>
           </div>
           <div class="col col-3">
-            <paper-checkbox checked="{{partnersSelected}}" ?disabled="${!this.editMode}">
-              Direct Cash Transfer
-            </paper-checkbox>
+            <paper-slider value="7" max="7" step="0.1" secondary-progress="200" @change="${this.showValue()}"> </paper-slider>
           </div>
         </div>
 
@@ -104,7 +97,7 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
             <label class="paper-label">Document currency</label>
           </div>
           <div class="col col-3">
-            ${this.intervention.document_type}
+            ${this.documentType}
           </div>
         </div>
       </etools-content-panel>
@@ -141,7 +134,7 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
       this.ratings = state.commonData.genderEquityRatings;
     }
     if (state.interventions.current) {
-      this.documentType = selectGenderEquityRating(state);
+      this.documentType = state.interventions.current.documentType;
       this.permissions = selectGenderEquityRatingPermissions(state);
       this.setCanEditGenderEquityRatings(this.permissions.edit);
       this.originalGenderEquityRating = cloneDeep(this.genderEquityRating);
