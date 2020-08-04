@@ -1,7 +1,7 @@
 import {customElement, LitElement, html, property} from 'lit-element';
 import '@polymer/iron-icons/iron-icons';
 import '@polymer/iron-flex-layout/iron-flex-layout';
-import '@polymer/paper-checkbox/paper-checkbox';
+import '@material/mwc-checkbox';
 import '@polymer/paper-input/paper-input';
 
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
@@ -24,11 +24,12 @@ import {connect} from 'pwa-helpers/connect-mixin';
 import {isJsonStrMatch, cloneDeep} from '../../utils/utils';
 
 import {Permission} from '../../common/models/intervention.types';
-import {MinimalUser, AnyObject} from '../../common/models/globals.types';
+import {MinimalUser} from '../../common/models/globals.types';
 import {DocumentPermission, Document} from './managementDocument.model';
 import {selectDocumentPermissions} from './managementDocument.selectors';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {PartnerStaffMember} from '../../common/models/partner.types';
 import {Agreement} from '../../common/models/agreement.types';
 
 /**
@@ -60,23 +61,13 @@ export class InterventionReviewAndSign extends connect(getStore())(
           --paper-input-container-label-floating_-_max-width: 133%;
         }
 
+        --paper-input-container {
+          margin-left: 0px;
+          padding: 0;
+        }
+
         paper-input {
           width: 100%;
-        }
-
-        paper-checkbox {
-          @apply --layout-horizontal;
-          @apply --layout-center;
-          min-height: 24px;
-        }
-
-        paper-checkbox[disabled] {
-          cursor: not-allowed;
-          --paper-checkbox-unchecked-color: black;
-          --paper-checkbox-label: {
-            color: var(--primary-text-color);
-            opacity: 1;
-          }
         }
       </style>
       <etools-content-panel class="content-section" panel-title="Signatures & Dates">
@@ -97,24 +88,21 @@ export class InterventionReviewAndSign extends connect(getStore())(
             >
             </datepicker-lite>
           </div>
-          <div class="col col-3">
+          <div class="col col-5 styled">
             <!-- Submitted to PRC? -->
             <paper-input-container>
-              <slot name="prefix" slot="prefix"></slot>
               <div slot="input" class="paper-input-input">
                 <span class="input-value">
-                  <paper-checkbox
-                    checked="${this.intervention.submitted_to_prc}"
-                    ?disabled="${this._isSubmittedToPrcCheckReadonly(
+                  <mwc-checkbox
+                    ?checked="${this.intervention.submitted_to_prc}"
+                    ?disabled=${this._isSubmittedToPrcCheckReadonly(
                       this.permissions.edit.prc_review_attachment,
                       this._lockSubmitToPrc
-                    )}"
+                    )}
                     ?hidden="${!this._isNotSSFA(this.intervention.document_type)}"
-                  >
-                    Submitted to PRC?
-                  </paper-checkbox>
-                </span>
-                <slot></slot>
+                  ></mwc-checkbox
+                  >Submitted to PRC?</span
+                >
               </div>
             </paper-input-container>
           </div>
@@ -203,7 +191,9 @@ export class InterventionReviewAndSign extends connect(getStore())(
           <div class="col col-6">
             <!-- Signed by UNICEF Authorized Officer -->
             <paper-input-container>
-              <label slot="label"> Signed by UNICEF Authorized Officer</label>
+              <div slot="input" class="paper-input-input">
+                <span class="input-value"> Signed by UNICEF Authorized Officer</span>
+              </div>
             </paper-input-container>
           </div>
           <div class="col col-3">
@@ -290,34 +280,20 @@ export class InterventionReviewAndSign extends connect(getStore())(
   @property({type: Object})
   originalIntervention!: Document;
 
-  // @lajos: this had observer a function... observer: '_interventionChanged'
-  // we should discuss this...
   @property({type: Object})
   intervention!: Document;
 
   @property({type: Object})
-  // permissions!: Permission<InterventionPermissionsFields>;
   permissions!: Permission<DocumentPermission>;
 
   @property({type: Array})
   signedByUnicefUsers!: MinimalUser[];
 
-  // @property({type: Object, observer: '_agreementChanged'})
-  // agreement!: Agreement;
-  // @LAJOS: neeeeeeeeeds review
-  // _agreement!: AnyObject[];
-
-  // set agreement(agreement) {
-  //   this._agreement = this._agreementChanged(agreement);
-  // }
-
-  // @property({type: Array})
-  // get agreement() {
-  //   return this.agreement;
-  // }
-
   @property({type: Object})
-  agreementAuthorizedOfficers!: AnyObject;
+  agreement!: Agreement;
+
+  @property({type: Array})
+  agreementAuthorizedOfficers!: PartnerStaffMember[];
 
   @property({type: Boolean})
   _lockSubmitToPrc = true;
@@ -418,17 +394,17 @@ export class InterventionReviewAndSign extends connect(getStore())(
     return this._isDraft(status) && fileUrl;
   }
 
-  _agreementChanged(agreement: Agreement) {
-    if (agreement && typeof agreement === 'object' && Object.keys(agreement).length > 0) {
-      const authorizedOfficerData = agreement.authorized_officers!.map((officer) => {
-        return {
-          value: typeof officer.id === 'string' ? parseInt(officer.id, 10) : officer.id,
-          label: officer.first_name + ' ' + officer.last_name
-        };
-      });
-      this.agreementAuthorizedOfficers = authorizedOfficerData;
-    }
-  }
+  // _agreementChanged(agreement: MinimalAgreement) {
+  //   if (agreement && typeof agreement === 'object' && Object.keys(agreement).length > 0) {
+  //     const authorizedOfficerData = agreement.authorized_officers!.map((officer) => {
+  //       return {
+  //         value: typeof officer.id === 'string' ? parseInt(officer.id, 10) : officer.id,
+  //         label: officer.first_name + ' ' + officer.last_name
+  //       };
+  //     });
+  //     this.agreementAuthorizedOfficers = authorizedOfficerData;
+  //   }
+  // }
 
   validate() {
     let valid = true;
