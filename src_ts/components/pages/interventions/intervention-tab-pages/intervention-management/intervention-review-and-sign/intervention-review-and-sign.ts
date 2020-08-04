@@ -32,6 +32,7 @@ import {
 } from './managementDocument.selectors';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {isEmpty} from 'lodash-es';
 
 /**
  * @customElement
@@ -179,8 +180,8 @@ export class InterventionReviewAndSign extends connect(getStore())(
               id="signedByAuthorizedOfficer"
               label="Signed By Partner Authorized Officer"
               placeholder="&#8212;"
-              options="${this.getAgreementOficerList()}"
-              selected="${this.intervention.partner_authorized_officer_signatory}"
+              .options="${this.agreementAuthorizedOfficers}"
+              .selected="${this.intervention.partner_authorized_officer_signatory}"
               ?readonly="${!this.permissions.edit.partner_authorized_officer_signatory}"
               ?required="${this.permissions.required.partner_authorized_officer_signatory}"
               auto-validate
@@ -193,9 +194,9 @@ export class InterventionReviewAndSign extends connect(getStore())(
             <datepicker-lite
               id="signedByPartnerDateField"
               label="Signed by Partner Date"
-              value="${this.intervention.signed_by_partner_date}"
+              .value="${this.intervention.signed_by_partner_date}"
               readonly="${!this.permissions.edit.signed_by_partner_date}"
-              required="?${this.permissions.required.signed_by_partner_date}"
+              ?required="${this.permissions.required.signed_by_partner_date}"
               auto-validate
               error-message="Date is required"
               max-date-error-msg="Date can not be in the future"
@@ -330,18 +331,18 @@ export class InterventionReviewAndSign extends connect(getStore())(
     if (state.interventions.current) {
       this.intervention = selectManagementDocumentIntervention(state);
       this.permissions = selectManagementDocumentInterventionPermissions(state);
-      const agreementList = state.agreements.list;
-      agreementList.map((aggr: any) => {
-        if (aggr.id == this.intervention.agreement) {
-          this.agreementAuthorizedOfficers = aggr.authorized_officers;
-        }
-      });
-      console.log(this.agreementAuthorizedOfficers);
-
       // setting agreement
+    }
+    const agreements = get(state, 'agreements.list');
+    if (!isEmpty(agreements)) {
+      this.agreement = this.filterAgreementsById(agreements, this.intervention.agreement!);
     }
     // this will need review...currently only we show data..not change
     // this.uploadsStateChanged(state);
+  }
+
+  filterAgreementsById(agreements: MinimalAgreement[], agreementId: number) {
+    return agreements.filter((a: any) => String(a.id) === String(agreementId));
   }
 
   connectedCallback() {
