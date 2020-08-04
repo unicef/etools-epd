@@ -35,6 +35,7 @@ export class PdAmendments extends connect(getStore())(ComponentBaseMixin(LitElem
           -moz-box-sizing: border-box;
           box-sizing: border-box;
           --ecp-content-padding: 0;
+          margin-bottom: 24px;
         }
         .attachment {
           color: var(--dark-icon-color);

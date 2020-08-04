@@ -25,6 +25,7 @@ export interface EtoolsEndpoints {
   pdActivities: EtoolsEndpoint;
   attachmentsUpload: EtoolsEndpoint;
   interventionAmendmentAdd: EtoolsEndpoint;
+  frNumbersDetails: EtoolsEndpoint;
 }
 
 export const interventionEndpoints: EtoolsEndpoints = {
@@ -86,5 +87,8 @@ export const interventionEndpoints: EtoolsEndpoints = {
   },
   interventionAmendmentAdd: {
     template: '/api/v2/interventions/<%=intervId%>/amendments/'
+  },
+  frNumbersDetails: {
+    url: '/api/v2/funds/frs'
   }
 };
