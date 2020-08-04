@@ -19,12 +19,15 @@ import {Permission, PlannedVisit, PlannedBudget} from '../../common/models/inter
 import {selectInterventionDates} from '../../intervention-timing/intervention-dates/interventionDates.selectors';
 import {ProgrammeDocDates} from '../../intervention-timing/intervention-dates/interventionDates.models';
 import cloneDeep from 'lodash-es/cloneDeep';
+import {patchIntervention} from '../../common/actions';
+import RepeatableDataSetsMixin from '../../common/mixins/repeatable-data-sets-mixin';
+
 
 /**
  * @customElement
  */
 @customElement('programmatic-visits')
-export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(LitElement)) {
+export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(RepeatableDataSetsMixin(LitElement))) {
   static get styles() {
     return [buttonsStyles, gridLayoutStylesLit];
   }
@@ -97,6 +100,8 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(L
         >
           <p>There are no planned visits added.</p>
         </div>
+
+        ${this.renderActions(this.editMode, this.canEditAtLeastOneField)}
       </etools-content-panel>
     `;
   }
@@ -227,8 +232,8 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(L
                     ?required="${item.year}"
                     error-message="Required"
                     auto-validate
-                    @value-changed="${(e: CustomEvent) => this.inputChanged(e, index, 'q1')}"
-                    ?readonly="${!this.editMode}"
+                    @value-changed="${(e: CustomEvent) => this.inputChanged(e, index, 'q1')}"         
+                    ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.planned_visits)}"
                   >
                   </paper-input>
                 </div>
@@ -245,7 +250,7 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(L
                     error-message="Required"
                     auto-validate
                     @value-changed="${(e: CustomEvent) => this.inputChanged(e, index, 'q2')}"
-                    ?readonly="${!this.editMode}"
+                    ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.planned_visits)}"
                   >
                   </paper-input>
                 </div>
@@ -262,7 +267,7 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(L
                     error-message="Required"
                     auto-validate
                     @value-changed="${(e: CustomEvent) => this.inputChanged(e, index, 'q3')}"
-                    ?readonly="${!this.editMode}"
+                    ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.planned_visits)}"
                   >
                   </paper-input>
                 </div>
@@ -279,7 +284,7 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(L
                     error-message="Required"
                     auto-validate
                     @value-changed="${(e: CustomEvent) => this.inputChanged(e, index, 'q4')}"
-                    ?readonly="${!this.editMode}"
+                    ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.planned_visits)}"
                   >
                   </paper-input>
                 </div>
@@ -449,5 +454,22 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(L
 
   _getNoPVMsgPadding(itemsLength: number) {
     return !itemsLength && this.editMode ? 'no-top-padd' : '';
+  }
+
+  cancel() {
+    this.originalData = cloneDeep(this.originalData);
+    this.editMode = false;
+  }
+
+  save() {
+    if (!this.validate()) {
+      return;
+    }
+    getStore()
+      .dispatch(patchIntervention(this.dataToSave))
+      .then(() => {
+        this.editMode = false;
+        this.dataToSave = {};
+      });
   }
 }
