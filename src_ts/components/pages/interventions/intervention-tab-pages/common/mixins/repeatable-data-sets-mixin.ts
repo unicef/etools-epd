@@ -150,6 +150,10 @@ function RepeatableDataSetsMixin<T extends Constructor<LitElement>>(baseClass: T
       });
       return duplicateItems && duplicateItems.length;
     }
+
+    public _emptyList(listLength: number) {
+      return listLength === 0;
+    }
   }
   return RepeatableDataSetsClass;
 }

@@ -20,12 +20,13 @@ import {selectInterventionDates} from '../../intervention-timing/intervention-da
 import {ProgrammeDocDates} from '../../intervention-timing/intervention-dates/interventionDates.models';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {patchIntervention} from '../../common/actions';
+import RepeatableDataSetsMixin from '../../common/mixins/repeatable-data-sets-mixin';
 
 /**
  * @customElement
  */
 @customElement('programmatic-visits')
-export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(LitElement)) {
+export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(RepeatableDataSetsMixin(LitElement))) {
   static get styles() {
     return [buttonsStyles, gridLayoutStylesLit];
   }
