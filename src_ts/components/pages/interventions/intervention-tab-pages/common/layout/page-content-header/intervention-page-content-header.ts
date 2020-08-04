@@ -59,7 +59,6 @@ export class InterventionPageContentHeader extends LitElement {
 
         .title-row h1 {
           @apply --page-title;
-          display:flex;
         }
 
         .tabs {
