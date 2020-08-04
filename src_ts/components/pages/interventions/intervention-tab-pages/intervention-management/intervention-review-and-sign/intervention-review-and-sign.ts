@@ -26,14 +26,15 @@ import {isJsonStrMatch, cloneDeep} from '../../utils/utils';
 import {Permission} from '../../common/models/intervention.types';
 import {MinimalUser} from '../../common/models/globals.types';
 import {DocumentPermission, Document} from './managementDocument.model';
-import {selectInterventionPermissions, selectIntervention} from './managementDocument.selectors';
+import {
+  selectManagementDocumentInterventionPermissions,
+  selectManagementDocumentIntervention
+} from './managementDocument.selectors';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 
 /**
- * @polymer
  * @customElement
- * @mixinFunction
  * @appliesMixin CommonMixin
  * @appliesMixin MissingDropdownOptionsMixin
  * @appliesMixin UploadsMixin
@@ -178,7 +179,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
               id="signedByAuthorizedOfficer"
               label="Signed By Partner Authorized Officer"
               placeholder="&#8212;"
-              options="${this.agreementAuthorizedOfficers}"
+              options="${this.getAgreementOficerList()}"
               selected="${this.intervention.partner_authorized_officer_signatory}"
               ?readonly="${!this.permissions.edit.partner_authorized_officer_signatory}"
               ?required="${this.permissions.required.partner_authorized_officer_signatory}"
@@ -327,8 +328,8 @@ export class InterventionReviewAndSign extends connect(getStore())(
     }
 
     if (state.interventions.current) {
-      this.intervention = selectIntervention(state);
-      this.permissions = selectInterventionPermissions(state);
+      this.intervention = selectManagementDocumentIntervention(state);
+      this.permissions = selectManagementDocumentInterventionPermissions(state);
       const agreementList = state.agreements.list;
       agreementList.map((aggr: any) => {
         if (aggr.id == this.intervention.agreement) {
@@ -559,5 +560,9 @@ export class InterventionReviewAndSign extends connect(getStore())(
 
   getCurrentDate() {
     return new Date();
+  }
+
+  getAgreementOficerList() {
+    console.log(this.agreementAuthorizedOfficers);
   }
 }
