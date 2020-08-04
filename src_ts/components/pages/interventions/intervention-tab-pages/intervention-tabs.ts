@@ -1,4 +1,5 @@
 import '@polymer/paper-button/paper-button';
+import '@polymer/paper-toggle-button';
 
 import './common/layout/page-content-header/intervention-page-content-header';
 import './common/layout/etools-tabs';
@@ -48,11 +49,25 @@ export class InterventionTabs extends LitElement {
         ${sharedStyles} etools-status {
           justify-content: center;
         }
+        .flag {
+          color: #ffffff;
+          background-color: #75c8ff;
+          width: 200px;
+          border-radius: 50%;
+        }
       </style>
       <etools-status></etools-status>
 
       <intervention-page-content-header with-tabs-visible>
-        <h1 slot="page-title">Title here</h1>
+        <h1 slot="page-title">${this.intervention.number}</h1>
+
+        <div slot="mode">
+          <paper-toggle-button id="messageMode" ?checked="${this.messageMode}">Message Mode</paper-toggle-button>
+        </div>
+
+        <div slot="statusFlag">
+          <span class="icon flag">Accepted</span>
+        </div>
 
         <div slot="title-row-actions" class="content-header-actions">
           <paper-button raised>Action 1</paper-button>
@@ -119,6 +134,9 @@ export class InterventionTabs extends LitElement {
 
   @property({type: Object})
   intervention!: AnyObject;
+
+  @property({type: Boolean})
+  messageMode = false;
 
   _storeUnsubscribe!: () => void;
   _store!: AnyObject;

@@ -39,6 +39,9 @@ export class InterventionPageContentHeader extends LitElement {
             line-height: 1.3;
             min-height: 31px;
           }
+          --status-flag: {
+          min-width: 200px;
+          }
         }
 
         :host([with-tabs-visible]) {
@@ -92,6 +95,8 @@ export class InterventionPageContentHeader extends LitElement {
         <h1>
           <slot name="page-title"></slot>
         </h1>
+        <slot name="mode"></slot>
+        <slot name="statusFlag"></slot>
         <slot name="title-row-actions"></slot>
       </div>
 
