@@ -27,6 +27,10 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import {patchIntervention} from '../../common/actions';
+import {isJsonStrMatch} from '../../utils/utils';
+import {FundReservationsPermissions} from './fund-reservations.models';
+import {Permission} from '../../common/models/intervention.types';
+import {selectFundReservationPermissions} from './fund-reservations.selectors';
 
 /**
  * @customElement
@@ -79,7 +83,7 @@ export class FundReservations extends connect(getStore())(FrNumbersConsistencyMi
           slot="panel-btns"
           icon="add"
           @tap="${() => this._openFrsDialog()}"
-          ?hidden="${!this.canEditFund}"
+          ?hidden="${!this.permissions.edit.frs}"
         ></paper-icon-button>
         <div id="frs-container" ?hidden="${!this.thereAreFrs(this.intervention.frs_details)}">
           <etools-info-tooltip
@@ -104,8 +108,8 @@ export class FundReservations extends connect(getStore())(FrNumbersConsistencyMi
     `;
   }
 
-  @property({type: Boolean, reflect: true})
-  canEditFund = true;
+  @property({type: Object})
+  permissions!: Permission<FundReservationsPermissions>;
 
   @property({type: Object})
   intervention!: Intervention;
@@ -122,9 +126,6 @@ export class FundReservations extends connect(getStore())(FrNumbersConsistencyMi
   @property({type: String})
   _frsConsistencyWarning!: string | boolean;
 
-  @property({type: String})
-  _frsNrsLoadingMsgSource = 'fr-nrs-check';
-
   private _frsConfirmationsDialogMessage!: HTMLSpanElement;
 
   stateChanged(state: AnyObject) {
@@ -132,9 +133,17 @@ export class FundReservations extends connect(getStore())(FrNumbersConsistencyMi
       return;
     }
     const currentIntervention = get(state, 'interventions.current');
-    if (currentIntervention) {
+    if (currentIntervention && !isJsonStrMatch(this.intervention, currentIntervention)) {
       this.intervention = cloneDeep(currentIntervention);
       this._frsDetailsChanged(this.intervention.frs_details);
+    }
+    this.sePermissions(state);
+  }
+
+  private sePermissions(state: any) {
+    const newPermissions = selectFundReservationPermissions(state);
+    if (!isJsonStrMatch(this.permissions, newPermissions)) {
+      this.permissions = newPermissions;
     }
   }
 
