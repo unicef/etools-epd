@@ -12,6 +12,10 @@ export interface EtoolsEndpoints {
   specialReportingRequirements: EtoolsEndpoint;
   reportingRequirements: EtoolsEndpoint;
   specialReportingRequirementsUpdate: EtoolsEndpoint;
+  monitoringVisits: EtoolsEndpoint;
+  partnerT2fProgrammaticVisits: EtoolsEndpoint;
+  partnerTPMActivities: EtoolsEndpoint;
+  interventionTPMActivities: EtoolsEndpoint;
   resultLinks: EtoolsEndpoint;
   ramIndicators: EtoolsEndpoint;
   resultLinkDetails: EtoolsEndpoint;
@@ -41,6 +45,20 @@ export const interventionEndpoints: EtoolsEndpoints = {
   },
   specialReportingRequirementsUpdate: {
     template: '/api/v2/reports/interventions/special-reporting-requirements/<%=reportId%>/'
+  },
+  monitoringVisits: {
+    template: '/api/t2f/travels/activities/partnership/<%=id%>/?year=<%=year%>'
+  },
+  partnerT2fProgrammaticVisits: {
+    template: '/api/t2f/travels/activities/<%=id%>/?year=<%=year%>&status=completed'
+  },
+  partnerTPMActivities: {
+    template:
+      '/api/tpm/activities/?tpm_visit__status=unicef_approved&is_pv=true&date__year=<%=year%>&partner=<%=partnerId%>'
+  },
+  interventionTPMActivities: {
+    template:
+      '/api/tpm/activities/?tpm_visit__status=unicef_approved&date__year=<%=year%>&intervention=<%=interventionId%>'
   },
   resultLinks: {
     template: '/api/v2/interventions/<%=id%>/result-links/'
