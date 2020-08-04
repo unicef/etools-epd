@@ -75,7 +75,7 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(L
 
         <div class="row-h extra-top-padd" ?hidden="${!this.editMode}">
           <paper-button
-            class="secondary-btn ${this._getAddBtnPadding(this.planned_visits?.length)}"
+            class="secondary-btn ${this._getAddBtnPadding(this.plannedVisits?.length)}"
             @tap="${this._addNewPlannedVisit}"
           >
             ADD YEAR
@@ -83,12 +83,12 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(L
         </div>
 
         <div class="pv-container">
-          ${this.renderVisitsTemplate(this.planned_visits)}
+          ${this.renderVisitsTemplate(this.plannedVisits)}
         </div>
 
         <div
-          .class="row-h ${this._getNoPVMsgPadding(this.planned_visits?.length)}"
-          ?hidden="${!this._emptyList(this.planned_visits?.length)}"
+          .class="row-h ${this._getNoPVMsgPadding(this.plannedVisits?.length)}"
+          ?hidden="${!this._emptyList(this.plannedVisits?.length)}"
         >
           <p>There are no planned visits added.</p>
         </div>
@@ -118,7 +118,7 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(L
   extraEndpointParams!: AnyObject;
 
   @property({type: Object})
-  planned_visits!: PlannedVisits;
+  plannedVisits!: PlannedVisit[];
 
   @property({type: Object})
   permissions!: Permission<PlannedVisitsPermissions>;
@@ -143,14 +143,14 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(L
   populateVisits(state: any) {
     const newPlannedVisits = selectPlannedVisits(state);
     this.originalData = newPlannedVisits.planned_visits;
-    this.planned_visits = newPlannedVisits.planned_visits;
+    this.plannedVisits = newPlannedVisits.planned_visits;
     this.interventionDates = selectInterventionDates(state);
     this._setYears(this.interventionDates.start, this.interventionDates.end);
   }
 
   _plannedVisitsChanged(planned_visits: any) {
     if (!Array.isArray(planned_visits)) {
-      this.planned_visits = [];
+      this.plannedVisits = [];
     }
   }
 
@@ -318,10 +318,10 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(L
    * and id assigned(only if is not saved))
    */
   _canBeRemoved(index: number, editMode: boolean) {
-    if (!editMode || !this.planned_visits || !this.planned_visits.length || !this.planned_visits[index]) {
+    if (!editMode || !this.plannedVisits || !this.plannedVisits.length || !this.plannedVisits[index]) {
       return false;
     }
-    const plannedVisit = this.planned_visits[index];
+    const plannedVisit = this.plannedVisits[index];
     const plannedVisitId = parseInt(plannedVisit.id, 10);
     return this._isDraft() || !(plannedVisitId && isNaN(plannedVisitId) === false && plannedVisitId > 0);
   }
@@ -372,7 +372,7 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(L
 
   validate() {
     let valid = true;
-    this.planned_visits?.forEach((item: any, index: number) => {
+    this.plannedVisits?.forEach((item: any, index: number) => {
       if (!(this._validateYear(index) && this._validateQuarters(item, index))) {
         valid = false;
       }
@@ -424,7 +424,7 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(L
       });
       return;
     }
-    (this.planned_visits as any).push(new PlannedVisit());
+    (this.plannedVisits as any).push(new PlannedVisit());
     // this._addElement();
   }
 
