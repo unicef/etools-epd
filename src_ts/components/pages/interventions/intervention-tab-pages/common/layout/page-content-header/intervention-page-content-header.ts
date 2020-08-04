@@ -39,7 +39,6 @@ export class InterventionPageContentHeader extends LitElement {
             font-size: 24px;
             line-height: 1.3;
             min-height: 31px;
-            max-width: 300px;
           }
         }
 
@@ -59,8 +58,8 @@ export class InterventionPageContentHeader extends LitElement {
         }
 
         .title-row h1 {
-          ${layoutFlex}
           @apply --page-title;
+          display:flex;
         }
 
         .tabs {
@@ -100,23 +99,37 @@ export class InterventionPageContentHeader extends LitElement {
         }
         .vb {
           border-left: 2px solid gray;
-          height: 50px;
           padding: 0 20px;
+        }
+        .test {
+          ${layoutHorizontal}
+          justify-content: space-between;
+          ${layoutFlex}
+        }
+        .l-h {
+          ${layoutHorizontal}
         }
       </style>
 
       <div class="content-header-row title-row">
-        <h1>
-          <slot name="page-title"></slot>
-        </h1>
-        <div class="vb"></div>
-        <div class="modeContainer">
-          <slot name="mode"></slot>
+        <div class="test">
+          <div class="l-h">
+            <h1>
+              <slot name="page-title"></slot>
+            </h1>
+            <div class="vb"></div>
+            <div class="modeContainer">
+              <slot name="mode"></slot>
+            </div>
+            <div class="statusContainer">
+              <slot name="statusFlag"></slot>
+            </div>
+          </div>
+
+          <div>
+            <slot name="title-row-actions"></slot>
+          </div>
         </div>
-        <div class="statusContainer">
-          <slot name="statusFlag"></slot>
-        </div>
-        <slot name="title-row-actions"></slot>
       </div>
 
       <div class="content-header-row tabs" ?hidden="${this.withTabsVisible}">
