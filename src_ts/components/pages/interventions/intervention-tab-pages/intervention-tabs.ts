@@ -17,6 +17,7 @@ import {getIntervention} from './common/actions';
 import {sharedStyles} from './common/styles/shared-styles-lit';
 import {isJsonStrMatch} from './utils/utils';
 import {pageContentHeaderSlottedStyles} from './common/layout/page-content-header/page-content-header-slotted-styles';
+import {layoutEnd, layoutFlex} from './common/styles/flex-layout-styles';
 
 /**
  * @LitElement
@@ -52,8 +53,9 @@ export class InterventionTabs extends LitElement {
         .flag {
           color: #ffffff;
           background-color: #75c8ff;
-          width: 200px;
-          border-radius: 50%;
+          padding: 5px 20px;
+          width: 100%;
+          border-radius: 7%;
         }
       </style>
       <etools-status></etools-status>
@@ -62,7 +64,7 @@ export class InterventionTabs extends LitElement {
         <h1 slot="page-title">${this.intervention.number}</h1>
 
         <div slot="mode">
-          <paper-toggle-button id="messageMode" ?checked="${this.messageMode}">Message Mode</paper-toggle-button>
+          <paper-toggle-button id="commentMode" ?checked="${this.commentMode}">Comment Mode</paper-toggle-button>
         </div>
 
         <div slot="statusFlag">
@@ -136,7 +138,7 @@ export class InterventionTabs extends LitElement {
   intervention!: AnyObject;
 
   @property({type: Boolean})
-  messageMode = false;
+  commentMode = false;
 
   _storeUnsubscribe!: () => void;
   _store!: AnyObject;

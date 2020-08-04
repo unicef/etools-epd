@@ -4,7 +4,8 @@ import {
   layoutStartJustified,
   layoutFlex,
   layoutHorizontal,
-  layoutCenter
+  layoutCenter,
+  _layoutStart
 } from '../../styles/flex-layout-styles';
 
 /**
@@ -38,9 +39,7 @@ export class InterventionPageContentHeader extends LitElement {
             font-size: 24px;
             line-height: 1.3;
             min-height: 31px;
-          }
-          --status-flag: {
-          min-width: 200px;
+            max-width: 300px;
           }
         }
 
@@ -89,14 +88,34 @@ export class InterventionPageContentHeader extends LitElement {
             padding: 0 5px 5px 5px;
           }
         }
+        .modeContainer {
+          ${layoutHorizontal}
+          ${layoutStartJustified}
+          /*min-width: 200px;*/
+        }
+        .statusContainer {
+          ${layoutHorizontal}
+          ${layoutStartJustified}
+          /*min-width: 200px;*/
+        }
+        .vb {
+          border-left: 2px solid gray;
+          height: 50px;
+          padding: 0 20px;
+        }
       </style>
 
       <div class="content-header-row title-row">
         <h1>
           <slot name="page-title"></slot>
         </h1>
-        <slot name="mode"></slot>
-        <slot name="statusFlag"></slot>
+        <div class="vb"></div>
+        <div class="modeContainer">
+          <slot name="mode"></slot>
+        </div>
+        <div class="statusContainer">
+          <slot name="statusFlag"></slot>
+        </div>
         <slot name="title-row-actions"></slot>
       </div>
 
