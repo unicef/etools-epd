@@ -10,6 +10,8 @@ export type ActivityTime = {
   enabled: boolean;
 };
 
+export type GroupedActivityTime = [string, ActivityTime[]];
+
 // @ts-ignore
 const moment = window.moment;
 
