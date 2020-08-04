@@ -26,11 +26,9 @@ import {isJsonStrMatch, cloneDeep} from '../../utils/utils';
 import {Permission} from '../../common/models/intervention.types';
 import {MinimalUser} from '../../common/models/globals.types';
 import {DocumentPermission, Document} from './managementDocument.model';
-import {selectDocumentPermissions} from './managementDocument.selectors';
+import {selectInterventionPermissions, selectIntervention} from './managementDocument.selectors';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {PartnerStaffMember} from '../../common/models/partner.types';
-import {Agreement} from '../../common/models/agreement.types';
 
 /**
  * @polymer
@@ -289,11 +287,8 @@ export class InterventionReviewAndSign extends connect(getStore())(
   @property({type: Array})
   signedByUnicefUsers!: MinimalUser[];
 
-  @property({type: Object})
-  agreement!: Agreement;
-
   @property({type: Array})
-  agreementAuthorizedOfficers!: PartnerStaffMember[];
+  agreementAuthorizedOfficers!: [];
 
   @property({type: Boolean})
   _lockSubmitToPrc = true;
@@ -307,26 +302,25 @@ export class InterventionReviewAndSign extends connect(getStore())(
   @property({type: String})
   uploadEndpoint: string = getEndpoint(interventionEndpoints.attachmentsUpload).url;
 
-  // static get observers() {
-  //   return [
-  //     '_interventionDocTypeChanged(intervention.document_type)',
-  //     '_signedPdDocHasChanged(intervention.signed_pd_attachment)',
-  //     '_updateStyles(permissions.edit.prc_review_attachment, _lockSubmitToPrc)',
-  //     '_resetFieldsAndValidations(intervention.submitted_to_prc)'
-  //   ];
-  // }
-
   stateChanged(state: any) {
     if (!isJsonStrMatch(this.signedByUnicefUsers, state.commonData!.unicefUsersData)) {
       this.signedByUnicefUsers = cloneDeep(state.commonData!.unicefUsersData);
     }
 
     if (state.interventions.current) {
-      this.intervention = state.interventions.current;
-      // @lajos TO DO see how to override!
-      this.permissions = selectDocumentPermissions(state);
+      this.intervention = selectIntervention(state);
+      this.permissions = selectInterventionPermissions(state);
+      const test = state.agreements.list;
+      test.map((aggr: any) => {
+        if (aggr.id == this.intervention.agreement) {
+          this.agreementAuthorizedOfficers = aggr.authorized_officers;
+        }
+      });
+      console.log(this.agreementAuthorizedOfficers);
+
+      // setting agreement
     }
-    // this will need review...currently only we shoe data..not change
+    // this will need review...currently only we show data..not change
     // this.uploadsStateChanged(state);
   }
 

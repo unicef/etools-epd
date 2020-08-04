@@ -8,6 +8,7 @@ export class Document extends ModelsBase {
     this.setObjProperties(intervention);
   }
   document_type = '';
+  agreement = '';
   prc_review_attachment = '';
   submission_date_prc = '';
   submission_date = '';
