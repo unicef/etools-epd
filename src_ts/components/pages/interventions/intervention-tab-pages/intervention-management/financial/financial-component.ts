@@ -2,6 +2,7 @@ import {LitElement, html, property, customElement} from 'lit-element';
 import '@polymer/paper-button/paper-button';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@polymer/paper-radio-group';
+import '@polymer/paper-checkbox';
 import '@unicef-polymer/etools-loading/etools-loading';
 import '@polymer/paper-input/paper-textarea';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
@@ -54,7 +55,7 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
         }
       </style>
 
-      <etools-content-panel show-expand-btn panel-title="Gender, Equity & Sustainability">
+      <etools-content-panel show-expand-btn panel-title="Financial">
         <etools-loading loading-text="Loading..." .active="${this.showLoading}"></etools-loading>
 
         <div slot="panel-btns">
@@ -70,94 +71,41 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
           <div class="w100">
             <label class="paper-label">Cash Transfer modality(ies)</label>
           </div>
-          <paper-radio-group
-            selected="${this.genderEquityRating.gender_rating}"
-            @selected-changed="${({detail}: CustomEvent) =>
-              this.genderEquityRating!.setObjProperty('gender_rating', detail.value)}"
-          >
-            ${this._getRatingRadioButtonsTemplate(this.ratings, this.permissions.edit.gender)}
-          </paper-radio-group>
-          <div class="col col-6 pl-none">
-            <paper-textarea
-              label="Gender Narrative"
-              always-float-label
-              class="w100"
-              placeholder="&#8212;"
-              max-rows="4"
-              .value="${this.genderEquityRating.gender_narrative}"
-              ?required="${this.permissions.required.gender}"
-              @value-changed="${({detail}: CustomEvent) =>
-                this.genderEquityRating!.setObjProperty('gender_narrative', detail.value)}"
-              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.gender)}"
-            >
-            </paper-textarea>
+          <div class="col col-3">
+            <paper-checkbox checked="{{partnersSelected}}" ?disabled="${!this.editMode}">
+              Direct Cash Transfer
+            </paper-checkbox>
           </div>
-        </div>
-        <div class="row-padding-v pb-20">
-          <div class="w100">
-            <label class="paper-label">Sustainability Rating</label>
+          <div class="col col-3">
+            <paper-checkbox ?disabled="${!this.editMode}">
+              Direct Payment
+            </paper-checkbox>
           </div>
-          <paper-radio-group
-            .selected="${this.genderEquityRating.sustainability_rating}"
-            @selected-changed="${({detail}: CustomEvent) =>
-              this.genderEquityRating!.setObjProperty('sustainability_rating', detail.value)}"
-          >
-            ${this._getRatingRadioButtonsTemplate(this.ratings, this.permissions.edit.sustainability)}
-          </paper-radio-group>
-          <div class="col col-6 pl-none">
-            <paper-textarea
-              label="Sustainability Narrative"
-              always-float-label
-              class="w100"
-              placeholder="&#8212;"
-              max-rows="4"
-              .value="${this.genderEquityRating.sustainability_narrative}"
-              ?required="${this.permissions.required.sustainability}"
-              @value-changed="${({detail}: CustomEvent) =>
-                this.genderEquityRating!.setObjProperty('sustainability_narrative', detail.value)}"
-              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.sustainability)}"
-            >
-            </paper-textarea>
-          </div>
-        </div>
-        <div class="row-padding-v pb-20">
-          <div class="w100">
-            <label class="paper-label">Equity Rating</label>
-          </div>
-          <paper-radio-group
-            .selected="${this.genderEquityRating.equity_rating}"
-            @selected-changed="${({detail}: CustomEvent) =>
-              this.genderEquityRating!.setObjProperty('equity_rating', detail.value)}"
-          >
-            ${this._getRatingRadioButtonsTemplate(this.ratings, this.permissions.edit.equity)}
-          </paper-radio-group>
-          <div class="col col-6 pl-none">
-            <paper-textarea
-              label="Equity Narrative"
-              always-float-label
-              class="w100"
-              placeholder="&#8212;"
-              max-rows="4"
-              .value="${this.genderEquityRating.equity_narrative}"
-              ?required="${this.permissions.required.equity}"
-              @value-changed="${({detail}: CustomEvent) =>
-                this.genderEquityRating!.setObjProperty('equity_narrative', detail.value)}"
-              ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.equity)}"
-            >
-            </paper-textarea>
+          <div class="col col-3">
+            <paper-checkbox ?disabled="${!this.editMode}">
+              Reimbrsement
+            </paper-checkbox>
           </div>
         </div>
 
-        <div
-          class="layout-horizontal right-align row-padding-v"
-          ?hidden="${this.hideActionButtons(this.editMode, this.canEditGenderEquity)}"
-        >
-          <paper-button class="default" @tap="${this.cancelGenderEquity}">
-            Cancel
-          </paper-button>
-          <paper-button class="primary" @tap="${this.saveGenderEquity}">
-            Save
-          </paper-button>
+        <div class="row-padding-v pb-20">
+          <div class="w100">
+            <label class="paper-label">Headquarters contribution (automatic 7% for INGO)</label>
+          </div>
+          <div class="col col-3">
+            <paper-checkbox checked="{{partnersSelected}}" ?disabled="${!this.editMode}">
+              Direct Cash Transfer
+            </paper-checkbox>
+          </div>
+        </div>
+
+        <div class="row-padding-v pb-20">
+          <div class="w100">
+            <label class="paper-label">Document currency</label>
+          </div>
+          <div class="col col-3">
+            ${this.intervention.document_type}
+          </div>
         </div>
       </etools-content-panel>
     `;
@@ -181,6 +129,9 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
   @property({type: Array})
   ratings!: AnyObject[];
 
+  @property({type: String})
+  documentType!: string;
+
   connectedCallback() {
     super.connectedCallback();
   }
@@ -190,7 +141,7 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
       this.ratings = state.commonData.genderEquityRatings;
     }
     if (state.interventions.current) {
-      this.genderEquityRating = selectGenderEquityRating(state);
+      this.documentType = selectGenderEquityRating(state);
       this.permissions = selectGenderEquityRatingPermissions(state);
       this.setCanEditGenderEquityRatings(this.permissions.edit);
       this.originalGenderEquityRating = cloneDeep(this.genderEquityRating);
