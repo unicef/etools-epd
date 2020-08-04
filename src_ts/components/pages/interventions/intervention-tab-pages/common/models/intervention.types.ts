@@ -237,6 +237,7 @@ export class Intervention {
   attachments: InterventionAttachment[] = [];
   permissions?: Permission<InterventionPermissionsFields>;
   humanitarian_flag?: boolean;
+  partner_id?: string;
 }
 
 export class InterventionAmendment {

@@ -6,7 +6,7 @@ import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {getEndpoint} from '../../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import {getStore} from '../../../utils/redux-store-access';
-import { GenericObject } from '../../../common/models/globals.types';
+import {GenericObject} from '../../../common/models/globals.types';
 import {getIntervention} from '../../../common/actions';
 
 @customElement('add-ram-indicators')

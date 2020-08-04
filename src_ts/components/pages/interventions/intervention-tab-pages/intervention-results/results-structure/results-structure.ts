@@ -4,14 +4,14 @@ import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {
   selectInterventionId,
   selectInterventionQuarters,
-  selectInterventionResultLinks,
+  selectInterventionResultLinks
 } from './results-structure.selectors';
 import {ResultStructureStyles} from './results-structure.styles';
 import {
   CpOutput,
   ExpectedResult,
   InterventionQuarter,
-  ResultLinkLowerResult,
+  ResultLinkLowerResult
 } from '../../common/models/intervention.types';
 import '@unicef-polymer/etools-data-table';
 import '@unicef-polymer/etools-content-panel';

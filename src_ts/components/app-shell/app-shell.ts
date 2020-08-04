@@ -55,6 +55,7 @@ import {
   getCpOutputs,
   SET_ALL_STATIC_DATA
 } from '../../redux/actions/common-data';
+import {getAgreements, SET_AGREEMENTS} from '../../redux/actions/agreements';
 import {EtoolsUserModel} from '../user/user-model';
 import isEmpty from 'lodash-es/isEmpty';
 import {getGenderEquityRatingsDummy} from '../pages/interventions/list/list-dummy-data';
@@ -199,11 +200,16 @@ export class AppShell extends connect(store)(LitElement) {
           getOffices(),
           getUnicefUsers(),
           getStaticData(),
-          getCpOutputs()
+          getCpOutputs(),
+          getAgreements()
         ]).then((response: any[]) => {
           store.dispatch({
             type: SET_ALL_STATIC_DATA,
             staticData: this.formatResponse(response)
+          });
+          store.dispatch({
+            type: SET_AGREEMENTS,
+            list: this.getValue(response[response.length - 1])
           });
         });
       }
