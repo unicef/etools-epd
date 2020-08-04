@@ -143,7 +143,7 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
   originalData!: PartnerDetails;
 
   @property({type: Object})
-  dataToSave: Partial<PartnerDetails> = {};
+  editedItem: Partial<PartnerDetails> = {};
 
   @property({type: Object})
   permissions!: Permission<PartnerDetailsPermissions>;
@@ -180,27 +180,22 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
 
   async setPartnerDetailsAndPopulateDropdowns(state: any) {
     const newPartnerDetails = selectPartnerDetails(state);
+
+    const agreements = get(state, 'agreements.list');
+    if (!isEmpty(agreements)) {
+      this.partnerAgreements = this.filterAgreementsByPartner(agreements, newPartnerDetails.partner_id!);
+    }
+
     if (!isJsonStrMatch(this.originalData, newPartnerDetails)) {
       if (this.partnerIdHasChanged(newPartnerDetails)) {
-        await this.populateDropdowns(newPartnerDetails.partner_id!);
+        this.partnerStaffMembers = await this.getAllPartnerStaffMembers(newPartnerDetails.partner_id!);
       }
       this.originalData = newPartnerDetails;
     }
   }
 
-  async populateDropdowns(partnerId: number) {
-    this.partnerStaffMembers = await this.getAllPartnerStaffMembers(partnerId!);
-
-    // Uncomment when we can login with partner users
-    // if (isUnicefUSer(state)) {
-    //   this.filterAgreementsByPartner(get(state, 'agreements.list'), partnerId);
-    // } else {
-    this.partnerAgreements = await this.getPartnerAgreements(partnerId!);
-    // }
-  }
-
   filterAgreementsByPartner(agreements: MinimalAgreement[], partnerId: number) {
-    this.partnerAgreements = agreements.filter((a: any) => a.partner === partnerId);
+    return agreements.filter((a: any) => String(a.partner) === String(partnerId));
   }
 
   partnerIdHasChanged(newPartnerDetails: PartnerDetails) {
@@ -214,14 +209,6 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
       resp.forEach((staff: PartnerStaffMember) => {
         staff.name = staff.first_name + ' ' + staff.last_name;
       });
-      return resp;
-    });
-  }
-
-  getPartnerAgreements(partnerId: number) {
-    return sendRequest({
-      endpoint: getEndpoint(interventionEndpoints.partnerAgreements, {id: partnerId})
-    }).then((resp) => {
       return resp;
     });
   }
@@ -273,10 +260,10 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
       return;
     }
     getStore()
-      .dispatch(patchIntervention(this.dataToSave))
+      .dispatch(patchIntervention(this.editedItem))
       .then(() => {
         this.editMode = false;
-        this.dataToSave = {};
+        this.editedItem = {};
       });
   }
 }

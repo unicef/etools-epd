@@ -96,7 +96,7 @@ export class AddAmendmentDialog extends connect(getStore())(ComponentBaseMixin(L
           >
           </etools-dropdown-multi>
         </div>
-        <div class="row-h flex-c" ?hidden="${!this.dataToSave.types || !this.dataToSave.types!.length}">
+        <div class="row-h flex-c" ?hidden="${!this.editedItem.types || !this.editedItem.types!.length}">
           <etools-warn-message .messages="${this.warnMessages}"></etools-warn-message>
         </div>
         </div>
@@ -162,7 +162,7 @@ export class AddAmendmentDialog extends connect(getStore())(ComponentBaseMixin(L
   originalData!: Partial<InterventionAmendment>;
 
   @property({type: Object})
-  dataToSave!: Partial<InterventionAmendment>;
+  editedItem!: Partial<InterventionAmendment>;
 
   @property({type: String})
   uploadEndpoint: string | undefined = getEndpoint(interventionEndpoints.attachmentsUpload).url;
@@ -220,8 +220,8 @@ export class AddAmendmentDialog extends connect(getStore())(ComponentBaseMixin(L
   }
 
   onTypesChanged() {
-    this.showOtherInput = this.dataToSave.types ? this.dataToSave.types.indexOf('other') > -1 : false;
-    this.warnMessages = this._getSelectedAmendmentTypeWarning(this.dataToSave.types);
+    this.showOtherInput = this.editedItem.types ? this.editedItem.types.indexOf('other') > -1 : false;
+    this.warnMessages = this._getSelectedAmendmentTypeWarning(this.editedItem.types);
   }
 
   _getSelectedAmendmentTypeWarning(types: string[] | undefined) {
@@ -267,7 +267,7 @@ export class AddAmendmentDialog extends connect(getStore())(ComponentBaseMixin(L
     if (!validateRequiredFields(this)) {
       return;
     }
-    this._saveAmendment(this.dataToSave);
+    this._saveAmendment(this.editedItem);
   }
 
   _saveAmendment(newAmendment: Partial<InterventionAmendment>) {
@@ -308,7 +308,7 @@ export class AddAmendmentDialog extends connect(getStore())(ComponentBaseMixin(L
       const uploadResponse = e.detail.success;
       this.originalData.signed_amendment_attachment = uploadResponse.id;
       this.originalData = {...this.originalData};
-      this.dataToSave.signed_amendment_attachment = uploadResponse.id;
+      this.editedItem.signed_amendment_attachment = uploadResponse.id;
     }
   }
 
@@ -317,13 +317,13 @@ export class AddAmendmentDialog extends connect(getStore())(ComponentBaseMixin(L
       const uploadResponse = e.detail.success;
       this.originalData.internal_prc_review = uploadResponse.id;
       this.originalData = {...this.originalData};
-      this.dataToSave.internal_prc_review = uploadResponse.id;
+      this.editedItem.internal_prc_review = uploadResponse.id;
     }
   }
 
   _resetFields() {
     this.originalData = {...{types: [], signed_date: ''}};
-    this.dataToSave = {...this.originalData};
+    this.editedItem = {...this.originalData};
     resetRequiredFields(this);
   }
 

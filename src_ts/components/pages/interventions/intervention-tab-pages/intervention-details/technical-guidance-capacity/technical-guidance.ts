@@ -146,7 +146,7 @@ export class TechnicalGuidance extends connect(getStore())(ComponentBaseMixin(Li
       return;
     }
     getStore()
-      .dispatch(patchIntervention(this.dataToSave))
+      .dispatch(patchIntervention(this.editedData))
       .then(() => {
         this.editMode = false;
       });
