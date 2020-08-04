@@ -25,6 +25,7 @@ import {AnyObject} from '../../common/models/globals.types';
 import get from 'lodash-es/get';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {fireEvent} from '../../utils/fire-custom-event';
+import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import {patchIntervention} from '../../common/actions';
 
 /**
@@ -127,6 +128,9 @@ export class FundReservations extends connect(getStore())(FrNumbersConsistencyMi
   private _frsConfirmationsDialogMessage!: HTMLSpanElement;
 
   stateChanged(state: AnyObject) {
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'management')) {
+      return;
+    }
     const currentIntervention = get(state, 'interventions.current');
     if (currentIntervention) {
       this.intervention = cloneDeep(currentIntervention);
