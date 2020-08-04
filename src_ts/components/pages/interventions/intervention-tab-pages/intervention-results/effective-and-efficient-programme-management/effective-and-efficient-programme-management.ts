@@ -15,7 +15,6 @@ import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {elevationStyles} from '../../common/styles/elevation-styles';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 import get from 'lodash-es/get';
-import {AnyObject} from '../../../../../../types/globals';
 import {isJsonStrMatch} from '../../utils/utils';
 import {
   selectProgrammeManagement,
@@ -23,12 +22,10 @@ import {
 } from './effectiveAndEfficientProgrammeManagement.selectors';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {Permission} from '../../common/models/intervention.types';
-import {
-  ProgrammeManagementActivityPermissions,
-  ProgrammeManagement
-} from './effectiveAndEfficientProgrammeManagement.models';
+import {ProgrammeManagementActivityPermissions} from './effectiveAndEfficientProgrammeManagement.models';
+import {AnyObject} from '../../common/models/globals.types';
 
-const getProgrammeData = () =>{
+const getProgrammeData = () => {
   const arr = [
     {
       title: 'Standard activity',
@@ -52,7 +49,6 @@ const getProgrammeData = () =>{
   ];
   return arr;
 };
-
 
 /**
  * @customElement
@@ -140,7 +136,7 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
     super.connectedCallback();
   }
 
-  async stateChanged(state: any) {
+  stateChanged(state: any) {
     if (!state.interventions.current) {
       return;
     }
@@ -150,7 +146,7 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
 
     const newActivities = selectProgrammeManagement(state);
     if (!isJsonStrMatch(this.originalData, newActivities)) {
-      this.activities = newActivities;
+      this.activities = [newActivities];
       this.originalData = newActivities;
     }
 
