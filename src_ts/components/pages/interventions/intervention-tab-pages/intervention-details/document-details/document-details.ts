@@ -163,10 +163,10 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
       return;
     }
     getStore()
-      .dispatch(patchIntervention(this.dataToSave))
+      .dispatch(patchIntervention(this.data))
       .then(() => {
         this.editMode = false;
-        this.dataToSave = {};
+        this.data = {};
       });
   }
 }
