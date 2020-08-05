@@ -83,7 +83,7 @@ export class GenderEquityRatingElement extends connect(getStore())(ComponentBase
               max-rows="4"
               .value="${this.data.gender_narrative}"
               ?required="${this.permissions.required.gender}"
-              @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'gender_narrative',)}"
+              @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'gender_narrative')}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.gender)}"
             >
             </paper-textarea>
