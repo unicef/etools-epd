@@ -15,6 +15,6 @@ export class InterventionDatesPermissions extends ModelsBase {
     super();
     this.setObjProperties(permissions);
   }
-  start = true;
-  end = true;
+  start = false;
+  end = false;
 }
