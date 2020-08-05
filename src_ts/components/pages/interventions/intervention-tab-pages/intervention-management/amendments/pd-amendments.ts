@@ -8,14 +8,13 @@ import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../../utils/redux-store-access';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import {getFileNameFromURL} from '../../../../../utils/utils';
-import {prettyDate} from '../../../../../utils/date-utility';
-import {isJsonStrMatch} from '../../../../../utils/utils';
 import './add-amendment-dialog';
 import {AddAmendmentDialog} from './add-amendment-dialog';
-import {AnyObject, LabelAndValue} from '../../../../../../types/globals';
 import get from 'lodash-es/get';
 import cloneDeep from 'lodash-es/cloneDeep';
+import {AnyObject, LabelAndValue} from '../../common/models/globals.types';
+import {prettyDate} from '../../utils/date-utils';
+import {getFileNameFromURL, isJsonStrMatch} from '../../utils/utils';
 
 /**
  * @customElement
