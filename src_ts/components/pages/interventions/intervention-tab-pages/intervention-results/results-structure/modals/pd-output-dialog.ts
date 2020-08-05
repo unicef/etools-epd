@@ -1,5 +1,4 @@
 import {LitElement, html, TemplateResult, property, customElement} from 'lit-element';
-import {fireEvent} from '../../../../../../utils/fire-custom-event';
 import {CpOutput, ResultLinkLowerResult} from '../../../common/models/intervention.types';
 import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import {getEndpoint} from '../../../utils/endpoint-helper';
@@ -9,6 +8,7 @@ import {getDifference} from '../../../common/mixins/objects-diff';
 import '@unicef-polymer/etools-dialog';
 import {getStore} from '../../../utils/redux-store-access';
 import {getIntervention} from '../../../common/actions';
+import {fireEvent} from '../../../utils/fire-custom-event';
 
 @customElement('pd-output-dialog')
 export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElement) {

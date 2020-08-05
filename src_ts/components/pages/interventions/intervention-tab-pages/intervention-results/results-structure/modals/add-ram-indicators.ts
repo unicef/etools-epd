@@ -1,5 +1,4 @@
 import {LitElement, html, TemplateResult, property, customElement} from 'lit-element';
-import {fireEvent} from '../../../../../../utils/fire-custom-event';
 import {ResultIndicator} from '../../../common/models/intervention.types';
 import '@unicef-polymer/etools-dialog';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
@@ -8,6 +7,7 @@ import {interventionEndpoints} from '../../../utils/intervention-endpoints';
 import {getStore} from '../../../utils/redux-store-access';
 import {GenericObject} from '../../../common/models/globals.types';
 import {getIntervention} from '../../../common/actions';
+import {fireEvent} from '../../../utils/fire-custom-event';
 
 @customElement('add-ram-indicators')
 export class AddRamIndicators extends LitElement {

@@ -16,13 +16,13 @@ import {requiredFieldStarredStyles} from '../../common/styles/required-field-sty
 import {validateRequiredFields, resetRequiredFields} from '../../utils/validation-helper';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {isJsonStrMatch} from '../../../../../utils/utils';
-import {AnyObject, LabelAndValue, InterventionAmendment} from '../../../../../../types/globals';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import CONSTANTS from '../../../../../../config/app-constants';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
 import {updateCurrentIntervention} from '../../common/actions';
+import {InterventionAmendment} from '../../common/models/intervention.types';
+import {LabelAndValue, AnyObject} from '../../common/models/globals.types';
+import {isJsonStrMatch} from '../../utils/utils';
 
 /**
  * @customElement
@@ -96,7 +96,7 @@ export class AddAmendmentDialog extends connect(getStore())(ComponentBaseMixin(L
           >
           </etools-dropdown-multi>
         </div>
-        <div class="row-h flex-c" ?hidden="${!this.dataToSave.types || !this.dataToSave.types!.length}">
+        <div class="row-h flex-c" ?hidden="${!this.data.types || !this.data.types!.length}">
           <etools-warn-message .messages="${this.warnMessages}"></etools-warn-message>
         </div>
         </div>
@@ -162,7 +162,7 @@ export class AddAmendmentDialog extends connect(getStore())(ComponentBaseMixin(L
   originalData!: Partial<InterventionAmendment>;
 
   @property({type: Object})
-  dataToSave!: Partial<InterventionAmendment>;
+  data!: Partial<InterventionAmendment>;
 
   @property({type: String})
   uploadEndpoint: string | undefined = getEndpoint(interventionEndpoints.attachmentsUpload).url;
@@ -220,8 +220,8 @@ export class AddAmendmentDialog extends connect(getStore())(ComponentBaseMixin(L
   }
 
   onTypesChanged() {
-    this.showOtherInput = this.dataToSave.types ? this.dataToSave.types.indexOf('other') > -1 : false;
-    this.warnMessages = this._getSelectedAmendmentTypeWarning(this.dataToSave.types);
+    this.showOtherInput = this.data.types ? this.data.types.indexOf('other') > -1 : false;
+    this.warnMessages = this._getSelectedAmendmentTypeWarning(this.data.types);
   }
 
   _getSelectedAmendmentTypeWarning(types: string[] | undefined) {
@@ -267,7 +267,7 @@ export class AddAmendmentDialog extends connect(getStore())(ComponentBaseMixin(L
     if (!validateRequiredFields(this)) {
       return;
     }
-    this._saveAmendment(this.dataToSave);
+    this._saveAmendment(this.data);
   }
 
   _saveAmendment(newAmendment: Partial<InterventionAmendment>) {
@@ -308,7 +308,7 @@ export class AddAmendmentDialog extends connect(getStore())(ComponentBaseMixin(L
       const uploadResponse = e.detail.success;
       this.originalData.signed_amendment_attachment = uploadResponse.id;
       this.originalData = {...this.originalData};
-      this.dataToSave.signed_amendment_attachment = uploadResponse.id;
+      this.data.signed_amendment_attachment = uploadResponse.id;
     }
   }
 
@@ -317,13 +317,13 @@ export class AddAmendmentDialog extends connect(getStore())(ComponentBaseMixin(L
       const uploadResponse = e.detail.success;
       this.originalData.internal_prc_review = uploadResponse.id;
       this.originalData = {...this.originalData};
-      this.dataToSave.internal_prc_review = uploadResponse.id;
+      this.data.internal_prc_review = uploadResponse.id;
     }
   }
 
   _resetFields() {
     this.originalData = {...{types: [], signed_date: ''}};
-    this.dataToSave = {...this.originalData};
+    this.data = {...this.originalData};
     resetRequiredFields(this);
   }
 
