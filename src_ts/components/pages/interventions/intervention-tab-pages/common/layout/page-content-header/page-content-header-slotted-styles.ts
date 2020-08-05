@@ -1,5 +1,5 @@
 import {css} from 'lit-element';
-import {layoutHorizontal, layoutEnd, layoutEndJustified} from '../../styles/flex-layout-styles';
+import {layoutHorizontal, layoutEndJustified} from '../../styles/flex-layout-styles';
 
 /**
  * Used to style page content header title row actions child elements
