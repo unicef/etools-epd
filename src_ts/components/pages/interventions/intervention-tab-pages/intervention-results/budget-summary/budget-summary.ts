@@ -98,29 +98,29 @@ export class BudgetSummaryEl extends connect(getStore())(LitElement) {
           </div>
           <div class="col col-1">
             <span>
-              <label class="input-label" ?empty="${!this.budgetSummary?.total_cso}">
-                ${this.budgetSummary?.total_cso}
+              <label class="input-label" ?empty="${!this.budgetSummary?.partner_contribution_local}">
+                ${this.budgetSummary?.partner_contribution_local}
               </label>
             </span>
           </div>
           <div class="col col-1">
             <span>
-              <label class="input-label" ?empty="${!this.budgetSummary?.total_unicef}">
-                ${this.budgetSummary?.total_unicef}
+              <label class="input-label" ?empty="${!this.budgetSummary?.unicef_cash_local}">
+                ${this.budgetSummary?.unicef_cash_local}
               </label>
             </span>
           </div>
           <div class="col col-1">
             <span>
-              <label class="input-label" ?empty="${!this.budgetSummary?.total_supply}">
-                ${this.budgetSummary?.total_supply}
+              <label class="input-label" ?empty="${this.totalSupply(this.budgetSummary)}">
+                ${this.totalSupply(this.budgetSummary)}
               </label>
             </span>
           </div>
           <div class="col col-1">
             <span>
-              <label class="input-label" ?empty="${!this.budgetSummary?.partner_contrib}">
-                ${this.budgetSummary?.partner_contrib}
+              <label class="input-label" ?empty="${!this.budgetSummary?.total_cash}">
+                ${this.budgetSummary?.total_cash}
               </label>
             </span>
           </div>
@@ -157,5 +157,9 @@ export class BudgetSummaryEl extends connect(getStore())(LitElement) {
     if (state.interventions.current) {
       this.budgetSummary = selectBudgetSummary(state);
     }
+  }
+
+  public totalSupply(budget: BudgetSummary) {
+    return parseFloat(budget.unicef_cash_local) + parseFloat(budget.partner_contribution_local);
   }
 }
