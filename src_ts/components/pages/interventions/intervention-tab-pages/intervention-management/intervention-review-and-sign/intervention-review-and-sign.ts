@@ -21,7 +21,7 @@ import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {getStore} from '../../utils/redux-store-access';
 import {connect} from 'pwa-helpers/connect-mixin';
-import {isJsonStrMatch, cloneDeep} from '../../utils/utils';
+import {isJsonStrMatch} from '../../utils/utils';
 
 import {Permission} from '../../common/models/intervention.types';
 import {MinimalUser} from '../../common/models/globals.types';
@@ -32,7 +32,7 @@ import {
 } from './managementDocument.selectors';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {isEmpty} from 'lodash-es';
+import {isEmpty, cloneDeep} from 'lodash-es';
 import {MinimalAgreement} from '../../common/models/agreement.types';
 
 /**
@@ -231,6 +231,23 @@ export class InterventionReviewAndSign extends connect(getStore())(
               selected-date-display-format="D MMM YYYY"
             >
             </datepicker-lite>
+          </div>
+        </div>
+        <div class="layout-horizontal row-padding-v">
+          <div class="col col-6">
+            <!-- Signed by UNICEF -->
+            <etools-dropdown
+              id="signedByAuthorizedOfficer"
+              label="Signed By UNICEF"
+              placeholder="&#8212;"
+              .options="${this.agreementAuthorizedOfficers[0].authorized_officers}"
+              .selected="${this.intervention.partner_authorized_officer_signatory}"
+              ?readonly="${this.permissions.edit.partner_authorized_officer_signatory}"
+              ?required="${this.permissions.required.partner_authorized_officer_signatory}"
+              auto-validate
+              error-message="Please select UNICEF User"
+            >
+            </etools-dropdown>
           </div>
         </div>
         <div class="layout-horizontal row-padding-v">
