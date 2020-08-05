@@ -31,7 +31,7 @@ export class GenderEquityRatingElement extends connect(getStore())(ComponentBase
     return [gridLayoutStylesLit, buttonsStyles];
   }
   render() {
-    if (!this.originalData || !this.ratings) {
+    if (!this.data || !this.ratings) {
       return html`<style>
           ${sharedStyles}
         </style>
@@ -69,7 +69,7 @@ export class GenderEquityRatingElement extends connect(getStore())(ComponentBase
             <label class="paper-label">Gender Rating</label>
           </div>
           <paper-radio-group
-            selected="${this.originalData.gender_rating}"
+            selected="${this.data.gender_rating}"
             @selected-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'gender_rating')}"
           >
             ${this._getRatingRadioButtonsTemplate(this.ratings, this.permissions.edit.gender)}
@@ -81,7 +81,7 @@ export class GenderEquityRatingElement extends connect(getStore())(ComponentBase
               class="w100"
               placeholder="&#8212;"
               max-rows="4"
-              .value="${this.originalData.gender_narrative}"
+              .value="${this.data.gender_narrative}"
               ?required="${this.permissions.required.gender}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'gender_narrative',)}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.gender)}"
@@ -94,7 +94,7 @@ export class GenderEquityRatingElement extends connect(getStore())(ComponentBase
             <label class="paper-label">Sustainability Rating</label>
           </div>
           <paper-radio-group
-            .selected="${this.originalData.sustainability_rating}"
+            .selected="${this.data.sustainability_rating}"
             @selected-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'sustainability_rating')}"
           >
             ${this._getRatingRadioButtonsTemplate(this.ratings, this.permissions.edit.sustainability)}
@@ -106,7 +106,7 @@ export class GenderEquityRatingElement extends connect(getStore())(ComponentBase
               class="w100"
               placeholder="&#8212;"
               max-rows="4"
-              .value="${this.originalData.sustainability_narrative}"
+              .value="${this.data.sustainability_narrative}"
               ?required="${this.permissions.required.sustainability}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'sustainability_narrative')}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.sustainability)}"
@@ -119,7 +119,7 @@ export class GenderEquityRatingElement extends connect(getStore())(ComponentBase
             <label class="paper-label">Equity Rating</label>
           </div>
           <paper-radio-group
-            .selected="${this.originalData.equity_rating}"
+            .selected="${this.data.equity_rating}"
             @selected-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'equity_rating')}"
           >
             ${this._getRatingRadioButtonsTemplate(this.ratings, this.permissions.edit.equity)}
@@ -131,7 +131,7 @@ export class GenderEquityRatingElement extends connect(getStore())(ComponentBase
               class="w100"
               placeholder="&#8212;"
               max-rows="4"
-              .value="${this.originalData.equity_narrative}"
+              .value="${this.data.equity_narrative}"
               ?required="${this.permissions.required.equity}"
               @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'equity_narrative')}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.equity)}"
@@ -175,6 +175,7 @@ export class GenderEquityRatingElement extends connect(getStore())(ComponentBase
     if (state.interventions.current) {
       const genderEquityRating = selectGenderEquityRating(state);
       if (!isJsonStrMatch(this.originalData, genderEquityRating)) {
+        this.data = cloneDeep(genderEquityRating);
         this.originalData = cloneDeep(genderEquityRating);
       }
     }
@@ -201,17 +202,6 @@ export class GenderEquityRatingElement extends connect(getStore())(ComponentBase
     );
   }
 
-  cancel() {
-    // @@dci section data it's not updated unless I set the genderEquityRating to undefined first
-    // TODO: investigate this
-    const originalData = cloneDeep(this.originalData);
-    this.originalData = undefined;
-    setTimeout(() => {
-      this.originalData = originalData;
-      this.editMode = false;
-    }, 100);
-  }
-
   validate() {
     return validateRequiredFields(this);
   }
@@ -221,7 +211,7 @@ export class GenderEquityRatingElement extends connect(getStore())(ComponentBase
       return;
     }
     getStore()
-      .dispatch(patchIntervention(this.dataToSave))
+      .dispatch(patchIntervention(this.data))
       .then(() => {
         this.editMode = false;
       });

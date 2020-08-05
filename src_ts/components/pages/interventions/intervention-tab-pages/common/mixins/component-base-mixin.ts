@@ -46,6 +46,7 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
     cancel() {
       this.data = cloneDeep(this.originalData);
       this.editMode = false;
+      this.requestUpdate();
     }
 
     save() {
