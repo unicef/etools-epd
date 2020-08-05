@@ -8,12 +8,20 @@ export class BudgetSummary extends ModelsBase {
     super();
     this.setObjProperties(plannedBudget);
   }
+  // budget currency
   currency = '';
+  // budget hq rate..not found....
   hq_rate = '';
+  // prgm effectivenes...not found
   prgm_effectiveness = '';
-  total_cso = '';
-  unicef_cash_local = '';
+  // total cso contribution... did not found CSO would this be
   partner_contribution_local = '';
+  // total unicef contrib, assumed bellow
+  unicef_cash_local = '';
+  // total supply partner_contribution_local + unicef_cash_local
+  // % partner contrib... calculated based on total supply?
+  // total cash amt
   total_cash = '';
+  // bellow will be updated when all data available
   total_amt = '';
 }
