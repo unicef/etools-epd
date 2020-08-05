@@ -1,5 +1,5 @@
 import {css} from 'lit-element';
-import {layoutHorizontal, layoutEnd} from '../../styles/flex-layout-styles';
+import {layoutHorizontal, layoutEndJustified} from '../../styles/flex-layout-styles';
 
 /**
  * Used to style page content header title row actions child elements
@@ -10,7 +10,7 @@ import {layoutHorizontal, layoutEnd} from '../../styles/flex-layout-styles';
 export const pageContentHeaderSlottedStyles = css`
   .content-header-actions {
     ${layoutHorizontal}
-    ${layoutEnd}
+    ${layoutEndJustified}
   }
   @media (max-width: 576px) {
     .content-header-actions {
