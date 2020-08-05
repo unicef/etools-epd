@@ -62,7 +62,6 @@ export class InterventionTabs extends LitElement {
 
       <intervention-page-content-header with-tabs-visible>
         <h1 slot="page-title">${this.intervention.number}</h1>
-
         <div slot="mode">
           <paper-toggle-button id="commentMode" ?checked="${this.commentMode}">Comment Mode</paper-toggle-button>
         </div>
