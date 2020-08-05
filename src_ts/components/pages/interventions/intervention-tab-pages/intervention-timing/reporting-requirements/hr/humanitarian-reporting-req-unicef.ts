@@ -8,13 +8,12 @@ import './hru-list.js';
 import ReportingRequirementsCommonMixin from '../mixins/reporting-requirements-common-mixin';
 import FrontendPaginationMixin from '../mixins/frontend-pagination-mixin';
 import {ExpectedResult} from '../../../common/models/intervention.types';
-import {gridLayoutStylesPolymer} from '../styles/grid-layout-styles-polymer';
-import {buttonsStyles} from '../styles/buttons-styles-polymer';
+import {gridLayoutStylesPolymer} from '../../../common/styles/grid-layout-styles-polymer';
+import {buttonsStylesPolymer} from '../styles/buttons-styles-polymer';
 import {property} from '@polymer/decorators';
 import {EditHruDialog} from './edit-hru-dialog.js';
 import {HruListEl} from './hru-list.js';
-// import {sharedStyles} from '../../../common/styles/shared-styles-lit';
-import {SharedStyles} from '../styles/shared-styles-polymer';
+import {sharedStylesPolymer} from '../../../common/styles/shared-styles-polymer';
 
 /**
  * @customElement
@@ -26,7 +25,7 @@ import {SharedStyles} from '../styles/shared-styles-polymer';
 class HumanitarianReportingReqUnicef extends FrontendPaginationMixin(ReportingRequirementsCommonMixin(PolymerElement)) {
   static get template() {
     return html`
-      ${gridLayoutStylesPolymer()}${SharedStyles()}${buttonsStyles}
+      ${gridLayoutStylesPolymer()}${sharedStylesPolymer()}${buttonsStylesPolymer()}
       <style>
         :host {
           display: block;

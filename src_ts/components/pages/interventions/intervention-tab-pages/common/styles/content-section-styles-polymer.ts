@@ -1,7 +1,7 @@
 import {html} from '@polymer/polymer/polymer-element.js';
 
 // language=HTML
-export const pageCommonStyles = html` <style>
+export const sectionContentStylesPolymer = html` <style>
   .content-section + .content-section,
   .content-section + * + .content-section,
   .content-section:not(:first-of-type) {

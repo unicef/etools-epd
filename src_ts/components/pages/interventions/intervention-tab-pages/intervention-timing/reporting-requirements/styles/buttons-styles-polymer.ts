@@ -1,8 +1,13 @@
-import {html} from '@polymer/polymer/polymer-element.js';
 import '@polymer/iron-flex-layout/iron-flex-layout.js';
+import {
+  _layoutVertical,
+  _layoutHorizontal,
+  _layoutFlex,
+  _layoutCenterJustified
+} from '../../../common/styles/flex-layout-styles';
 
 // language=HTML
-export const buttonsStyles = html` <style>
+const buttonsStylesPolymerContent = `
   :host > * {
     --primary-button-default: {
       color: var(--primary-shade-of-green, #fff);
@@ -20,10 +25,10 @@ export const buttonsStyles = html` <style>
     padding: 24px;
   }
   .buttons-section.horizontal {
-    @apply --layout-horizontal;
+    ${_layoutHorizontal}
   }
   .buttons-section.vertical {
-    @apply --layout-vertical;
+    ${_layoutVertical}
   }
 
   .buttons-section.vertical .primary-btn:not(:first-of-type) {
@@ -56,9 +61,9 @@ export const buttonsStyles = html` <style>
     }
   }
   paper-button .btn-label {
-    @apply --layout-horizontal;
-    @apply --layout-flex;
-    @apply --layout-center-justified;
+    ${_layoutHorizontal}
+    ${_layoutFlex}
+    ${_layoutCenterJustified}
   }
 
   paper-button.w100 {
@@ -91,8 +96,12 @@ export const buttonsStyles = html` <style>
     }
     font-weight: bold;
   }
+`;
 
-  /* responsive css rules */
-  @media (min-width: 850px) {
-  }
-</style>`;
+export const buttonsStylesPolymer = () => {
+  const template = document.createElement('template');
+  template.innerHTML = `<style>
+    ${buttonsStylesPolymerContent}
+   </style>`;
+  return template;
+};

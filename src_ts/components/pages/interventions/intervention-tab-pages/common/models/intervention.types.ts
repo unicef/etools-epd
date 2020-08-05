@@ -13,10 +13,12 @@ export interface ResultLinkLowerResult {
   id: number;
   name: string;
   applied_indicators: Indicator[];
+  activities: InterventionActivity[];
 
   code?: string;
   created?: string;
   result_link?: number;
+  cp_output: number | null;
 }
 
 export class IndicatorIndicator {
@@ -181,7 +183,6 @@ export class InterventionPermissionsFields {
 
   // attachments
   attachments = false;
-  [x: string]: boolean;
 }
 
 export interface Permission<T> {
@@ -225,6 +226,7 @@ export class Intervention {
   planned_visits: PlannedVisit[] = [];
   in_amendment = false;
   amendments: InterventionAmendment[] = [];
+  quarters: InterventionQuarter[] = [];
   locations: [] = [];
   // distributions: [];
   activation_letter_attachment: number | string | null = null;
@@ -234,7 +236,8 @@ export class Intervention {
   other_info = '';
   attachments: InterventionAttachment[] = [];
   permissions?: Permission<InterventionPermissionsFields>;
-  [key: string]: any;
+  humanitarian_flag?: boolean;
+  partner_id?: string;
 }
 
 export class InterventionAmendment {
@@ -251,36 +254,41 @@ export class InterventionAmendment {
 }
 
 export type InterventionActivity = {
-  created: string;
-  modified: string;
-  activity_name: string;
+  id: number;
   context_details: string;
-  unicef_cash: number;
-  cso_cash: number;
-  unicef_suppies: number;
-  cso_supplies: number;
-  time_periods: InterventionActivityTimeframe[];
-  intervention: number;
+  cso_cash: string;
+  cso_supplies: string;
   items: InterventionActivityItem[];
+  name: string;
+  time_frames: InterventionActivityTimeframe[];
+  unicef_cash: string;
+  unicef_suppies: number;
 };
 
 export type InterventionActivityItem = {
-  created: string;
-  modified: string;
   name: string;
   other_details: string;
-  unicef_cash: number;
-  cso_cash: number;
-  unicef_suppies: number;
-  cso_supplies: number;
-  total: number;
-  intervention_activity: number;
+  unicef_cash: string;
+  cso_cash: string;
 };
 
-export type InterventionActivityTimeframe = {
-  created: string;
-  modified: string;
-  start_date: string;
-  end_date: string;
-  intervention: number;
+export type InterventionActivityTimeframe = InterventionQuarter & {
+  enabled: boolean;
 };
+
+export type InterventionQuarter = {
+  start: string;
+  end: string;
+  name: string;
+};
+
+export interface ResultIndicator {
+  current: number;
+  id: number;
+  name: string;
+  result: number;
+  sector_current: null | number;
+  sector_total: null | number;
+  total: null | number;
+  unit: null | number;
+}

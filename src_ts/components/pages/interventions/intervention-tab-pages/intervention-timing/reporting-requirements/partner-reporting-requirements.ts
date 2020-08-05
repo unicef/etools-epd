@@ -13,8 +13,8 @@ import './qpr/quarterly-reporting-requirements';
 import './hr/humanitarian-reporting-req-unicef';
 import './hr/humanitarian-reporting-req-cluster';
 import './srr/special-reporting-requirements';
-import {gridLayoutStylesPolymer} from './styles/grid-layout-styles-polymer';
-import {pageCommonStyles} from './styles/page-common-styles';
+import {gridLayoutStylesPolymer} from '../../common/styles/grid-layout-styles-polymer';
+import {sectionContentStylesPolymer} from '../../common/styles/content-section-styles-polymer';
 // @lajos needs to be checked if OK
 import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../../utils/redux-store-access';
@@ -33,7 +33,7 @@ import {AnyObject} from '../../common/models/globals.types';
 class PartnerReportingRequirements extends connect(getStore())(PolymerElement) {
   static get template() {
     return html`
-      ${gridLayoutStylesPolymer()}${pageCommonStyles}
+      ${gridLayoutStylesPolymer()}${sectionContentStylesPolymer}
       <style>
         :host {
           display: block;
@@ -86,8 +86,6 @@ class PartnerReportingRequirements extends connect(getStore())(PolymerElement) {
         }
 
         /* ------------------------------- */
-
-
 
         .edit-rep-req {
           color: var(--medium-icon-color);

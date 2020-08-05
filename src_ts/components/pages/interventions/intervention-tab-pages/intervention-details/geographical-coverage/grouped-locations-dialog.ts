@@ -1,13 +1,12 @@
 import {LitElement, html, property, customElement, query} from 'lit-element';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
-import {isJsonStrMatch} from '../../../../../utils/utils';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '../../common/styles/button-styles';
-import {RootState} from '../../../../../../redux/store';
 import {getStore} from '../../utils/redux-store-access';
 import {connect} from 'pwa-helpers/connect-mixin';
 import get from 'lodash-es/get';
 import {LocationObject} from '../../common/models/globals.types';
+import {isJsonStrMatch} from '../../utils/utils';
 
 class GroupedLocations {
   adminLevelLocation: LocationObject | null = null;
@@ -145,7 +144,7 @@ export class GroupedLocationsDialog extends connect(getStore())(LitElement) {
   @query('#groupedLocDialog')
   groupedLocDialog!: EtoolsDialog;
 
-  stateChanged(state: RootState) {
+  stateChanged(state: any) {
     if (!isJsonStrMatch(this.allLocations, state.commonData!.locations)) {
       this.allLocations = [...state.commonData!.locations];
     }

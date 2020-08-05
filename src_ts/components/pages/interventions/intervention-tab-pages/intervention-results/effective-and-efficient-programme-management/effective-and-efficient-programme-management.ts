@@ -6,7 +6,7 @@ import '@unicef-polymer/etools-table/etools-table';
 import {EtoolsTableChildRow, EtoolsTableColumn, EtoolsTableColumnType} from '@unicef-polymer/etools-table/etools-table';
 import '@unicef-polymer/etools-currency-amount-input';
 import './activity-dialog';
-import {ActivityDialog} from './activity-dialog';
+// import {ActivityDialog} from './activity-dialog';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../../utils/redux-store-access';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
@@ -23,6 +23,32 @@ import {
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {Permission} from '../../common/models/intervention.types';
 import {ProgrammeManagementActivityPermissions} from './effectiveAndEfficientProgrammeManagement.models';
+import {AnyObject} from '../../common/models/globals.types';
+
+const getProgrammeData = () => {
+  const arr = [
+    {
+      title: 'Standard activity',
+      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In iaculis metus et neque viverra ',
+      unicef_cash: 3685,
+      partner_contribution: 54789
+    },
+    {
+      title: 'Standard activity',
+      description:
+        'There are many variations of passages available, but the majority have suffered alteration in some form',
+      unicef_cash: 125,
+      partner_contribution: 751
+    },
+    {
+      title: 'Standard activity',
+      description: 'It is a long established fact that a reader will be distracted by the readable content',
+      unicef_cash: 652,
+      partner_contribution: 441
+    }
+  ];
+  return arr;
+};
 
 /**
  * @customElement
@@ -69,27 +95,7 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
   showLoading = false;
 
   @property({type: Object})
-  activities = [
-    {
-      title: 'Standard activity',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In iaculis metus et neque viverra ',
-      unicef_cash: 3685,
-      partner_contribution: 54789
-    },
-    {
-      title: 'Standard activity',
-      description:
-        'There are many variations of passages available, but the majority have suffered alteration in some form',
-      unicef_cash: 125,
-      partner_contribution: 751
-    },
-    {
-      title: 'Standard activity',
-      description: 'It is a long established fact that a reader will be distracted by the readable content',
-      unicef_cash: 652,
-      partner_contribution: 441
-    }
-  ];
+  activities: AnyObject[] = [];
 
   @property({type: Array})
   columns: EtoolsTableColumn[] = [
@@ -101,12 +107,12 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
     {
       label: 'Unicef Cash',
       name: 'unicef_cash',
-      type: EtoolsTableColumnType.Text
+      type: EtoolsTableColumnType.Number
     },
     {
       label: 'Partner Contribution',
       name: 'partner_contribution',
-      type: EtoolsTableColumnType.Text
+      type: EtoolsTableColumnType.Number
     },
     {
       label: 'Total',
@@ -117,11 +123,11 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
       }
     }
   ];
-
-  private activityDialog!: ActivityDialog;
+  //  the dialog is commented until further specifications
+  // private activityDialog!: ActivityDialog;
 
   @property({type: Number})
-  total_amount: number = 0;
+  total_amount = 0;
 
   @property({type: Object})
   permissions!: Permission<ProgrammeManagementActivityPermissions>;
@@ -134,13 +140,13 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
     if (!state.interventions.current) {
       return;
     }
-    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'details')) {
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'results')) {
       return;
     }
 
     const newActivities = selectProgrammeManagement(state);
     if (!isJsonStrMatch(this.originalData, newActivities)) {
-      this.activities = newActivities;
+      this.activities = [newActivities];
       this.originalData = newActivities;
     }
 
@@ -148,20 +154,22 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
     if (!isJsonStrMatch(this.permissions, newPermissions)) {
       this.permissions = newPermissions;
     }
+
+    this.activities = getProgrammeData();
   }
 
-  private openActivityDialog() {
-    this.createDialog();
-    this.activityDialog.permissions = this.permissions;
-    (this.activityDialog as ActivityDialog).openDialog();
-  }
+  // private openActivityDialog() {
+  //   this.createDialog();
+  //   this.activityDialog.permissions = this.permissions;
+  //   (this.activityDialog as ActivityDialog).openDialog();
+  // }
 
-  createDialog() {
-    this.activityDialog = document.createElement('activity-dialog') as ActivityDialog;
-    this.activityDialog.setAttribute('id', 'activityDialog');
-    this.activityDialog.toastEventSource = this;
-    document.querySelector('body')!.appendChild(this.activityDialog);
-  }
+  // createDialog() {
+  //   this.activityDialog = document.createElement('activity-dialog') as ActivityDialog;
+  //   this.activityDialog.setAttribute('id', 'activityDialog');
+  //   this.activityDialog.toastEventSource = this;
+  //   document.querySelector('body')!.appendChild(this.activityDialog);
+  // }
 
   getChildRowTemplate(item: any): EtoolsTableChildRow {
     const childRow = {} as EtoolsTableChildRow;

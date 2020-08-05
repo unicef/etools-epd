@@ -204,37 +204,39 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
 
   populateDropdownOptions(state: any) {
     // @@dci need to refactor this when things got clear
-    if (!this.isUnicefUser && this.pdUnicefDetails) {
-      // if user is not Unicef user, this is opened in read-only mode and we just display already saved
-      this.focal_point_list = [...this.pdUnicefDetails.unicef_focal_points];
-      this.section_list = [...this.pdUnicefDetails.sections];
-      this.cluster_list = [...this.pdUnicefDetails.cluster_names];
-      this.office_list = [...this.pdUnicefDetails.offices];
-      this.budget_owner_list = [...this.pdUnicefDetails.unicef_budget_owner];
+    if (!this.isUnicefUser) {
+      if (this.pdUnicefDetails) {
+        // if user is not Unicef user, this is opened in read-only mode and we just display already saved
+        this.focal_point_list = [...this.pdUnicefDetails.unicef_focal_points];
+        this.section_list = [...this.pdUnicefDetails.sections];
+        this.cluster_list = [...this.pdUnicefDetails.cluster_names];
+        this.office_list = [...this.pdUnicefDetails.offices];
+        this.budget_owner_list = [...this.pdUnicefDetails.unicef_budget_owner];
+      }
     } else {
       if (get(state, 'commonData.unicefUsers.length')) {
         this.focal_point_list = [...state.commonData!.unicefUsers];
       }
-      if (get(state, 'commonData.section_list.length')) {
-        this.section_list = [...state.commonData!.section_list];
+      if (get(state, 'commonData.sections.length')) {
+        this.section_list = [...state.commonData!.sections];
       }
-      if (get(state, 'commonData.cluster_list.length')) {
-        this.cluster_list = [...state.commonData!.cluster_list];
+      if (get(state, 'commonData.clusters.length')) {
+        this.cluster_list = [...state.commonData!.clusters];
       }
-      if (get(state, 'commonData.office_list.length')) {
-        this.office_list = [...state.commonData!.office_list];
+      if (get(state, 'commonData.offices.length')) {
+        this.office_list = [...state.commonData!.offices];
       }
-      if (get(state, 'commonData.budget_owner_list.length')) {
-        this.budget_owner_list = [...state.commonData!.budget_owner_list];
-        // TO DO
-        // check if already saved records exists on loaded data, if not they will be added
-        // (they might be missing if changed country)
-        // handleItemsNoLongerAssignedToCurrentCountry(
-        //   this.focal_point_list,
-        //   this.pdUnicefDetails.details.unicef_focal_points
-        // );
-        // this.focal_point_list = [...this.focal_point_list];
+      if (get(state, 'commonData.budget_owner.length')) {
+        this.budget_owner_list = [...state.commonData!.budget_owner];
       }
+      // TO DO
+      // check if already saved records exists on loaded data, if not they will be added
+      // (they might be missing if changed country)
+      // handleItemsNoLongerAssignedToCurrentCountry(
+      //   this.focal_point_list,
+      //   this.pdUnicefDetails.details.unicef_focal_points
+      // );
+      // this.focal_point_list = [...this.focal_point_list];
     }
   }
 

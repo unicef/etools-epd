@@ -1,24 +1,21 @@
 import '@polymer/paper-button/paper-button';
 
-import {SharedStylesLit} from '../../../styles/shared-styles-lit';
-import '../../../common/layout/page-content-header/page-content-header';
-import '../../../common/layout/etools-tabs';
+import './common/layout/page-content-header/intervention-page-content-header';
+import './common/layout/etools-tabs';
 // eslint-disable-next-line max-len
-import {pageContentHeaderSlottedStyles} from '../../../common/layout/page-content-header/page-content-header-slotted-styles';
-import '../../../common/layout/status/etools-status';
+import './common/layout/status/etools-status';
 
-import {updateAppLocation} from '../../../../routing/routes';
-import {customElement, LitElement, html, property} from 'lit-element';
-import {pageLayoutStyles} from '../../../styles/page-layout-styles';
-import {RouteDetails} from '../../../../routing/router';
+import {customElement, LitElement, html, property, css} from 'lit-element';
 import cloneDeep from 'lodash-es/cloneDeep';
 import get from 'lodash-es/get';
-import {isJsonStrMatch} from '../../../utils/utils';
-import {getIntervention} from '../../../../redux/actions/interventions';
 import {setStore, getStore} from './utils/redux-store-access';
 import {currentPage, currentSubpage} from './common/selectors';
 import {elevationStyles} from './common/styles/elevation-styles';
-import {AnyObject} from './common/models/globals.types';
+import {AnyObject, RouteDetails} from './common/models/globals.types';
+import {getIntervention} from './common/actions';
+import {sharedStyles} from './common/styles/shared-styles-lit';
+import {isJsonStrMatch} from './utils/utils';
+import {pageContentHeaderSlottedStyles} from './common/layout/page-content-header/page-content-header-slotted-styles';
 
 /**
  * @LitElement
@@ -27,22 +24,34 @@ import {AnyObject} from './common/models/globals.types';
 @customElement('intervention-tabs')
 export class InterventionTabs extends LitElement {
   static get styles() {
-    return [elevationStyles, pageLayoutStyles, pageContentHeaderSlottedStyles];
+    return [
+      elevationStyles,
+      pageContentHeaderSlottedStyles,
+      css`
+        .page-content {
+          margin: 24px;
+        }
+        @media (max-width: 576px) {
+          .page-content {
+            margin: 5px;
+          }
+        }
+      `
+    ];
   }
 
   render() {
     // main template
     // language=HTML
     return html`
-      ${SharedStylesLit}
       <style>
-        etools-status {
+        ${sharedStyles} etools-status {
           justify-content: center;
         }
       </style>
       <etools-status></etools-status>
 
-      <page-content-header with-tabs-visible>
+      <intervention-page-content-header with-tabs-visible>
         <h1 slot="page-title">Title here</h1>
 
         <div slot="title-row-actions" class="content-header-actions">
@@ -56,7 +65,7 @@ export class InterventionTabs extends LitElement {
           .activeTab="${this.activeTab}"
           @iron-select="${this.handleTabChange}"
         ></etools-tabs>
-      </page-content-header>
+      </intervention-page-content-header>
 
       <div class="page-content">
         <intervention-details ?hidden="${!this.isActiveTab(this.activeTab, 'details')}"> </intervention-details>
@@ -179,11 +188,10 @@ export class InterventionTabs extends LitElement {
     }
     if (newTabName !== oldTabName) {
       const newPath = `interventions/${this.intervention.id}/${newTabName}`;
-      // if (this.routeDetails.path === newPath) {
-      //   return; // Is this needed???
-      // }
-      // go to new tab
-      updateAppLocation(newPath, true);
+      history.pushState(window.history.state, '', newPath);
+      // Don't know why I have to specifically trigger popstate,
+      // history.pushState should do that by default (?)
+      window.dispatchEvent(new CustomEvent('popstate'));
     }
   }
 }

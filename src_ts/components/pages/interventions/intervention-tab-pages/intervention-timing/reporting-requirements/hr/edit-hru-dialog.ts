@@ -10,8 +10,8 @@ import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import './hru-list.js';
 import CONSTANTS from '../../../common/constants';
 import {fireEvent} from '../../../utils/fire-custom-event';
-import {gridLayoutStylesPolymer} from '../styles/grid-layout-styles-polymer';
-import {buttonsStyles} from '../styles/buttons-styles-polymer';
+import {gridLayoutStylesPolymer} from '../../../common/styles/grid-layout-styles-polymer';
+import {buttonsStylesPolymer} from '../styles/buttons-styles-polymer';
 import {requiredFieldStarredStyles} from '../../../common/styles/required-field-styles';
 import {prepareDatepickerDate, convertDate} from '../../../utils/date-utils';
 // this was refactored
@@ -35,7 +35,7 @@ import {getStore} from '../../../utils/redux-store-access.js';
 class EditHruDialog extends connect(getStore())(PolymerElement) {
   static get template() {
     return html`
-      ${requiredFieldStarredStyles}${gridLayoutStylesPolymer()}${buttonsStyles}
+      ${requiredFieldStarredStyles}${gridLayoutStylesPolymer()}${buttonsStylesPolymer()}
       <style include="data-table-styles">
         *[hidden] {
           display: none !important;

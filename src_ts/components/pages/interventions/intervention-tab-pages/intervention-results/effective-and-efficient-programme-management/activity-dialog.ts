@@ -1,4 +1,4 @@
-import {LitElement, html, property, customElement, query} from 'lit-element';
+import {LitElement, html, property, customElement} from 'lit-element';
 import '@polymer/paper-input/paper-input';
 import '@polymer/paper-input/paper-textarea';
 import '@unicef-polymer/etools-currency-amount-input';
@@ -7,6 +7,7 @@ import {getStore} from '../../utils/redux-store-access';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
+import {ProgrammeManagementActivityPermissions} from './effectiveAndEfficientProgrammeManagement.models';
 
 /**
  * @customElement
@@ -42,21 +43,11 @@ export class ActivityDialog extends connect(getStore())(ComponentBaseMixin(LitEl
         @close="${() => this.closeDialog()}"
       >
         <div class="row-padding-v">
-          <paper-input
-            id="title"
-            label="Title"
-            always-float-label
-            placeholder="—">
-          </paper-input>
+          <paper-input id="title" label="Title" always-float-label placeholder="—"> </paper-input>
         </div>
 
         <div class="row-padding-v">
-          <paper-textarea
-            id="description"
-            label="Description"
-            always-float-label
-            placeholder="—"
-          ></paper-textarea>
+          <paper-textarea id="description" label="Description" always-float-label placeholder="—"></paper-textarea>
         </div>
 
         <div class="layout-horizontal">
@@ -90,7 +81,7 @@ export class ActivityDialog extends connect(getStore())(ComponentBaseMixin(LitEl
     super.connectedCallback();
   }
 
-  permissionObjChanged(permissions) {
+  permissionObjChanged(permissions: ProgrammeManagementActivityPermissions) {
     if (!permissions) {
       this._permissionObj = {};
       return;
@@ -105,6 +96,4 @@ export class ActivityDialog extends connect(getStore())(ComponentBaseMixin(LitEl
   public closeDialog() {
     this.dialogOpened = false;
   }
-
-
 }

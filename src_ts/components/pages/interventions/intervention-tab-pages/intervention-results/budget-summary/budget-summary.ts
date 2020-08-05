@@ -1,6 +1,5 @@
 import {LitElement, customElement, html, property} from 'lit-element';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import '../../../../../../redux/actions/interventions';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {elevationStyles} from '../../common/styles/elevation-styles';
 import {BudgetSummary} from './budgetSummary.models';

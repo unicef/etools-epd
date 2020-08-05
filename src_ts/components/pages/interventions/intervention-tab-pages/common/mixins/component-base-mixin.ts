@@ -1,5 +1,6 @@
 import {LitElement, property, html} from 'lit-element';
 import {Constructor, AnyObject} from '../models/globals.types';
+import cloneDeep from 'lodash-es/cloneDeep';
 
 function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
   class ComponentBaseClass extends baseClass {
@@ -13,7 +14,7 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
     originalData!: any;
 
     @property({type: Object})
-    dataToSave: any = {};
+    data: any = {};
 
     @property({type: Object})
     permissions!: any;
@@ -43,7 +44,8 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
     }
 
     cancel() {
-      throw new Error('Not implemented');
+      this.data = cloneDeep(this.originalData);
+      this.editMode = false;
     }
 
     save() {
@@ -79,18 +81,18 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
       if (!detail.selectedItem) {
         return;
       }
-      this.dataToSave[key] = detail.selectedItem?.id;
+      this.data[key] = detail.selectedItem?.id;
     }
 
-    selectedItemsChanged(detail: any, key: string) {
+    selectedItemsChanged(detail: any, key: string, optionValue?: string) {
       if (!detail.selectedItems) {
         return;
       }
-      this.dataToSave[key] = detail.selectedItems.map((i: any) => i.id);
+      this.data[key] = detail.selectedItems.map((i: any) => (optionValue ? i[optionValue] : i.id));
     }
 
     valueChanged(detail: any, key: string) {
-      this.dataToSave[key] = detail.value;
+      this.data[key] = detail.value;
     }
   }
   return ComponentBaseClass;

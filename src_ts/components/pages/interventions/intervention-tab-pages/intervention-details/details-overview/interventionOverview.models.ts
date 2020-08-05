@@ -12,5 +12,5 @@ export class InterventionOverview extends ModelsBase {
   document_type = '';
   cfei_number = '';
   contingency_pd = false;
-  humanitarian = false;
+  humanitarian_flag = false;
 }

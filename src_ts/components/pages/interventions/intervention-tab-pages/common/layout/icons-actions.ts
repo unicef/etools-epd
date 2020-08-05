@@ -6,8 +6,7 @@ import '@polymer/paper-icon-button/paper-icon-button';
 
 // @lajos TO DO refactor
 import {property} from '@polymer/decorators';
-import {AnyObject} from '../../common/models/globals.types';
-import {_layoutHorizontal, _layoutCenter} from '../styles/flex-layout-styles';
+import {AnyObject} from '../models/globals.types';
 import {fireEvent} from '../../utils/fire-custom-event';
 
 /**
@@ -23,8 +22,12 @@ class IconsActions extends PolymerElement {
         }
 
         :host {
-          ${_layoutHorizontal}
-          ${_layoutCenter}
+          display: -ms-flexbox;
+          display: -webkit-flex;
+          display: flex;
+          -ms-flex-direction: row;
+          -webkit-flex-direction: row;
+          flex-direction: row;
           background-color: var(--list-second-bg-color);
           position: absolute;
           top: 1px;

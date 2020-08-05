@@ -3,7 +3,7 @@ export const sharedStylesContent = `
   :host {
     display: block;
     box-sizing: border-box;
-    font-size: 14px;
+    font-size: 16px;
   }
 
   *[hidden] {
@@ -220,5 +220,29 @@ export const sharedStylesContent = `
     width: 100%;
   }
 
+  paper-radio-group:focus,
+  paper-textarea[focused] {
+    outline: none;
+  }
+
+  .readonly {
+    pointer-events: none;
+  }
+
+  .readonly {
+    --paper-radio-button-checked-ink-color: transparent !important;
+    --paper-radio-button-unchecked-ink-color: transparent !important;
+  }
+
+  etools-data-table-column, *[slot="row-data"] .col-data {
+    box-sizing: border-box;
+    padding-right: 16px;
+  }
+
+  *[slot="row-data"] {
+    margin-top: 12px;
+    margin-bottom: 12px;
+    width: 100%;
+  }
 `;
 export const sharedStyles = html`${unsafeCSS(sharedStylesContent)}`;

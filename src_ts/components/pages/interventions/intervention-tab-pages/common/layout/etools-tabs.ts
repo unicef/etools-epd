@@ -1,8 +1,8 @@
 import {LitElement, html, property, customElement} from 'lit-element';
 import '@polymer/paper-tabs/paper-tabs';
 import '@polymer/paper-tabs/paper-tab';
-import {AnyObject} from '../../../types/globals';
-import {layoutHorizontal, layoutStartJustified} from '../../styles/lit-styles/flex-layout-styles';
+import {layoutHorizontal, layoutStartJustified} from '../styles/flex-layout-styles';
+import {AnyObject} from '../models/globals.types';
 
 /**
  * @LitElement

@@ -1,6 +1,4 @@
-import {html} from '@polymer/polymer/polymer-element.js';
-import {sharedStylesContent} from '../../../common/styles/shared-styles-lit';
-import {unsafeHTML} from 'lit-html/directives/unsafe-html.js';
+import {sharedStylesContent} from './shared-styles-lit';
 // export const SharedStyles = html`
 //   <style>
 //     *[hidden] {
@@ -233,7 +231,7 @@ import {unsafeHTML} from 'lit-html/directives/unsafe-html.js';
 //   </style>
 // `;
 
-export const SharedStyles = () => {
+export const sharedStylesPolymer = () => {
   const template = document.createElement('template');
   template.innerHTML = `<style>
     ${sharedStylesContent}
