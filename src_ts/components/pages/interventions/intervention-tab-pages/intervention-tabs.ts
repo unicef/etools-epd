@@ -1,4 +1,5 @@
 import '@polymer/paper-button/paper-button';
+import '@polymer/paper-toggle-button';
 
 import './common/layout/page-content-header/intervention-page-content-header';
 import './common/layout/etools-tabs';
@@ -16,6 +17,7 @@ import {getIntervention} from './common/actions';
 import {sharedStyles} from './common/styles/shared-styles-lit';
 import {isJsonStrMatch} from './utils/utils';
 import {pageContentHeaderSlottedStyles} from './common/layout/page-content-header/page-content-header-slotted-styles';
+import {layoutEnd, layoutFlex} from './common/styles/flex-layout-styles';
 
 /**
  * @LitElement
@@ -48,11 +50,25 @@ export class InterventionTabs extends LitElement {
         ${sharedStyles} etools-status {
           justify-content: center;
         }
+        .flag {
+          color: #ffffff;
+          background-color: #75c8ff;
+          padding: 5px 20px;
+          width: 100%;
+          border-radius: 7%;
+        }
       </style>
       <etools-status></etools-status>
 
       <intervention-page-content-header with-tabs-visible>
-        <h1 slot="page-title">Title here</h1>
+        <h1 slot="page-title">${this.intervention.number}</h1>
+        <div slot="mode">
+          <paper-toggle-button id="commentMode" ?checked="${this.commentMode}">Comment Mode</paper-toggle-button>
+        </div>
+
+        <div slot="statusFlag" ?hidden="${!this.intervention.accepted}">
+          <span class="icon flag">Accepted</span>
+        </div>
 
         <div slot="title-row-actions" class="content-header-actions">
           <paper-button raised>Action 1</paper-button>
@@ -119,6 +135,9 @@ export class InterventionTabs extends LitElement {
 
   @property({type: Object})
   intervention!: AnyObject;
+
+  @property({type: Boolean})
+  commentMode = false;
 
   _storeUnsubscribe!: () => void;
   _store!: AnyObject;

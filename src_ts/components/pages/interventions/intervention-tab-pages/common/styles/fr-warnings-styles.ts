@@ -8,11 +8,10 @@ etools-info-tooltip.currency-mismatch iron-icon {
   color: var(--primary-color);
 }
 
-etools-info-tooltip.frs-inline-list {
-  --etools-tooltip-trigger-icon: {
-    color: var(--error-color);
-    margin-left: 24px !important;
-  }
+etools-info-tooltip.frs-inline-list iron-icon {
+  --iron-icon-fill-color: var(--error-color);
+  color: var(--error-color);
+  margin-left: 24px !important;
 }
 
 .fr-val-not-available {
