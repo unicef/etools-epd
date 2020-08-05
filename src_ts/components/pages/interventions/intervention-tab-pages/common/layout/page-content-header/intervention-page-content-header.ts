@@ -4,8 +4,7 @@ import {
   layoutStartJustified,
   layoutFlex,
   layoutHorizontal,
-  layoutCenter,
-  _layoutStart
+  layoutCenter
 } from '../../styles/flex-layout-styles';
 
 /**
@@ -86,24 +85,21 @@ export class InterventionPageContentHeader extends LitElement {
             padding: 0 5px 5px 5px;
           }
         }
-        .modeContainer {
-          ${layoutHorizontal}
-          ${layoutStartJustified}
-          /*min-width: 200px;*/
-        }
         .statusContainer {
-          ${layoutHorizontal}
-          ${layoutStartJustified}
-          /*min-width: 200px;*/
+        padding-left: 20px;
         }
         .vb {
-          border-left: 2px solid gray;
+          border-left: 2px solid var(--light-divider-color);
           padding: 0 20px;
         }
-        .test {
+        .title {
+          padding-right: 20px;
+        }
+        .cont {
           ${layoutHorizontal}
           justify-content: space-between;
           ${layoutFlex}
+          ${layoutCenter}
         }
         .l-h {
           ${layoutHorizontal}
@@ -111,11 +107,13 @@ export class InterventionPageContentHeader extends LitElement {
       </style>
 
       <div class="content-header-row title-row">
-        <div class="test">
+        <div class="cont">
           <div class="l-h">
-            <h1>
-              <slot name="page-title"></slot>
-            </h1>
+            <div class="title">
+              <h1>
+                <slot name="page-title"></slot>
+              </h1>
+            </div>
             <div class="vb"></div>
             <div class="modeContainer">
               <slot name="mode"></slot>
@@ -124,7 +122,6 @@ export class InterventionPageContentHeader extends LitElement {
               <slot name="statusFlag"></slot>
             </div>
           </div>
-
           <div>
             <slot name="title-row-actions"></slot>
           </div>

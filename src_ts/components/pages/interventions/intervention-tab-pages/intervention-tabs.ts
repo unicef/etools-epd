@@ -66,7 +66,7 @@ export class InterventionTabs extends LitElement {
           <paper-toggle-button id="commentMode" ?checked="${this.commentMode}">Comment Mode</paper-toggle-button>
         </div>
 
-        <div slot="statusFlag">
+        <div slot="statusFlag" ?hidden="${!this.intervention.accepted}">
           <span class="icon flag">Accepted</span>
         </div>
 
