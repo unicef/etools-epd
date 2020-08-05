@@ -57,7 +57,6 @@ export class InterventionPageContentHeader extends LitElement {
         }
 
         .title-row h1 {
-          ${layoutFlex}
           @apply --page-title;
         }
 
@@ -86,13 +85,47 @@ export class InterventionPageContentHeader extends LitElement {
             padding: 0 5px 5px 5px;
           }
         }
+        .statusContainer {
+        padding-left: 20px;
+        }
+        .vb {
+          border-left: 2px solid var(--light-divider-color);
+          padding: 0 20px;
+        }
+        .title {
+          padding-right: 20px;
+        }
+        .cont {
+          ${layoutHorizontal}
+          justify-content: space-between;
+          ${layoutFlex}
+          ${layoutCenter}
+        }
+        .l-h {
+          ${layoutHorizontal}
+        }
       </style>
 
       <div class="content-header-row title-row">
-        <h1>
-          <slot name="page-title"></slot>
-        </h1>
-        <slot name="title-row-actions"></slot>
+        <div class="cont">
+          <div class="l-h">
+            <div class="title">
+              <h1>
+                <slot name="page-title"></slot>
+              </h1>
+            </div>
+            <div class="vb"></div>
+            <div class="modeContainer">
+              <slot name="mode"></slot>
+            </div>
+            <div class="statusContainer">
+              <slot name="statusFlag"></slot>
+            </div>
+          </div>
+          <div>
+            <slot name="title-row-actions"></slot>
+          </div>
+        </div>
       </div>
 
       <div class="content-header-row tabs" ?hidden="${this.withTabsVisible}">
