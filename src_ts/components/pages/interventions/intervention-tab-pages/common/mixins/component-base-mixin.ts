@@ -13,7 +13,7 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
     originalData!: any;
 
     @property({type: Object})
-    editedData: any = {};
+    data: any = {};
 
     @property({type: Object})
     permissions!: any;
@@ -79,18 +79,18 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
       if (!detail.selectedItem) {
         return;
       }
-      this.editedData[key] = detail.selectedItem?.id;
+      this.data[key] = detail.selectedItem?.id;
     }
 
     selectedItemsChanged(detail: any, key: string, optionValue?: string) {
       if (!detail.selectedItems) {
         return;
       }
-      this.editedData[key] = detail.selectedItems.map((i: any) => (optionValue ? i[optionValue] : i.id));
+      this.data[key] = detail.selectedItems.map((i: any) => (optionValue ? i[optionValue] : i.id));
     }
 
     valueChanged(detail: any, key: string) {
-      this.editedData[key] = detail.value;
+      this.data[key] = detail.value;
     }
   }
   return ComponentBaseClass;

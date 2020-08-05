@@ -177,7 +177,7 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
       return;
     }
     getStore()
-      .dispatch(patchIntervention(this.editedData))
+      .dispatch(patchIntervention(this.data))
       .then(() => {
         this.editMode = false;
       });
