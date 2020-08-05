@@ -244,5 +244,9 @@ export const sharedStylesContent = `
     margin-bottom: 12px;
     width: 100%;
   }
+
+  .hidden {
+    display: none !important;
+  }
 `;
 export const sharedStyles = html`${unsafeCSS(sharedStylesContent)}`;

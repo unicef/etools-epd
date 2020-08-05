@@ -93,6 +93,10 @@ documentContainer.innerHTML = `
           font-size: 14px;
           font-weight: bold;
         };
+
+        --paper-item: {
+          cursor: pointer;
+        };
       }
     </style>
   </custom-style>`;
