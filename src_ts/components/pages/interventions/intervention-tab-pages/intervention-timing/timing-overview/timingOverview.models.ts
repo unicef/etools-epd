@@ -9,8 +9,20 @@ export class TimingOverviewData extends ModelsBase {
     super();
     this.setObjProperties(intervention);
   }
-  document_type = '';
-  cfei_number = '';
-  contingency_pd = false;
-  humanitarian_flag = false;
+  // assumed date created
+  created = '';
+  // date first sent to partner?
+  date_sent_to_partner = '';
+  // @lajos: NOT FOUND date first draft by partnerr
+  // date_draft_partner?
+  // prc submission date
+  submission_date_prc = '';
+  // PRC review date
+  review_date_prc = '';
+  // date signed by partner
+  signed_by_partner_date = '';
+  // date UNICEF signed
+  signed_by_unicef_date = '';
+  // date last amended
+  // @lajos: NOT FOUND -> date_amended?
 }
