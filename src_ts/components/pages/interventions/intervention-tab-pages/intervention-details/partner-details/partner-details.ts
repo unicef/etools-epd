@@ -38,7 +38,7 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
     return [buttonsStyles, gridLayoutStylesLit];
   }
   render() {
-    if (!this.originalData) {
+    if (!this.data) {
       return html`<style>
           ${sharedStyles}
         </style>
@@ -65,7 +65,7 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
             <paper-input
               class="w100"
               label="Partner Organization"
-              .value="${this.originalData.partner}"
+              .value="${this.data.partner}"
               required
               readonly
               always-float-label
@@ -77,7 +77,7 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
               id="agreements"
               label="Agreements"
               .options="${this.partnerAgreements}"
-              .selected="${this.originalData.agreement}"
+              .selected="${this.data.agreement}"
               option-value="id"
               option-label="agreement_number_status"
               trigger-value-change-event
@@ -94,7 +94,7 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
             <paper-input
               class="w100"
               label="Partner Vendor Number"
-              .value="${this.originalData.partner_vendor}"
+              .value="${this.data.partner_vendor}"
               required
               readonly
               always-float-label
@@ -112,7 +112,7 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
           <div class="col col-7 layout-vertical">
             <etools-dropdown-multi
               label="Partner Focal Points"
-              .selectedValues="${cloneDeep(this.originalData.partner_focal_points)}"
+              .selectedValues="${cloneDeep(this.data.partner_focal_points)}"
               .options="${this.partnerStaffMembers}"
               option-label="name"
               option-value="id"
@@ -125,10 +125,7 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
             ${this.isReadonly(this.editMode, this.permissions.edit.partner_focal_points)
               ? html`<label for="focalPointsDetails" class="paper-label">Partner Focal Points</label>
                   <div id="focalPointsDetails">
-                    ${this.renderReadonlyPartnerFocalPoints(
-                      this.partnerStaffMembers,
-                      this.originalData.partner_focal_points
-                    )}
+                    ${this.renderReadonlyPartnerFocalPoints(this.partnerStaffMembers, this.data.partner_focal_points!)}
                   </div>`
               : html``}
           </div>
@@ -143,7 +140,7 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
   originalData!: PartnerDetails;
 
   @property({type: Object})
-  dataToSave: Partial<PartnerDetails> = {};
+  data!: PartnerDetails;
 
   @property({type: Object})
   permissions!: Permission<PartnerDetailsPermissions>;
@@ -180,31 +177,27 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
 
   async setPartnerDetailsAndPopulateDropdowns(state: any) {
     const newPartnerDetails = selectPartnerDetails(state);
+
+    const agreements = get(state, 'agreements.list');
+    if (!isEmpty(agreements)) {
+      this.partnerAgreements = this.filterAgreementsByPartner(agreements, newPartnerDetails.partner_id!);
+    }
+
     if (!isJsonStrMatch(this.originalData, newPartnerDetails)) {
       if (this.partnerIdHasChanged(newPartnerDetails)) {
-        await this.populateDropdowns(newPartnerDetails.partner_id!);
+        this.partnerStaffMembers = await this.getAllPartnerStaffMembers(newPartnerDetails.partner_id!);
       }
-      this.originalData = newPartnerDetails;
+      this.data = newPartnerDetails;
+      this.originalData = cloneDeep(this.data);
     }
   }
 
-  async populateDropdowns(partnerId: number) {
-    this.partnerStaffMembers = await this.getAllPartnerStaffMembers(partnerId!);
-
-    // Uncomment when we can login with partner users
-    // if (isUnicefUSer(state)) {
-    //   this.filterAgreementsByPartner(get(state, 'agreements.list'), partnerId);
-    // } else {
-    this.partnerAgreements = await this.getPartnerAgreements(partnerId!);
-    // }
-  }
-
   filterAgreementsByPartner(agreements: MinimalAgreement[], partnerId: number) {
-    this.partnerAgreements = agreements.filter((a: any) => a.partner === partnerId);
+    return agreements.filter((a: any) => String(a.partner) === String(partnerId));
   }
 
   partnerIdHasChanged(newPartnerDetails: PartnerDetails) {
-    return get(this.originalData, 'partner_id') !== newPartnerDetails.partner_id;
+    return get(this.data, 'partner_id') !== newPartnerDetails.partner_id;
   }
 
   getAllPartnerStaffMembers(partnerId: number) {
@@ -214,14 +207,6 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
       resp.forEach((staff: PartnerStaffMember) => {
         staff.name = staff.first_name + ' ' + staff.last_name;
       });
-      return resp;
-    });
-  }
-
-  getPartnerAgreements(partnerId: number) {
-    return sendRequest({
-      endpoint: getEndpoint(interventionEndpoints.partnerAgreements, {id: partnerId})
-    }).then((resp) => {
       return resp;
     });
   }
@@ -259,11 +244,6 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
     }
   }
 
-  cancel() {
-    this.originalData = cloneDeep(this.originalData);
-    this.editMode = false;
-  }
-
   validate() {
     return validateRequiredFields(this);
   }
@@ -273,10 +253,9 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
       return;
     }
     getStore()
-      .dispatch(patchIntervention(this.dataToSave))
+      .dispatch(patchIntervention(this.data))
       .then(() => {
         this.editMode = false;
-        this.dataToSave = {};
       });
   }
 }
