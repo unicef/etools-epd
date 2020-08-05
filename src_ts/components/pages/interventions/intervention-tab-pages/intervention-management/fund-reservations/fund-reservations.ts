@@ -375,6 +375,5 @@ export class FundReservations extends connect(getStore())(FrNumbersConsistencyMi
     setTimeout(() => {
       this._frsConsistencyWarning = this.checkFrsConsistency(frsDetails, this.intervention);
     }, 100);
-    };
   }
 }
