@@ -3,7 +3,6 @@ import {Intervention, Permission, InterventionPermissionsFields} from '../../com
 import {TechnicalDetails, TechnicalDetailsPermissions} from './technicalGuidance.models';
 import {currentInterventionPermissions, currentIntervention} from '../../common/selectors';
 
-
 export const selectTechnicalDetails = createSelector(currentIntervention, (intervention: Intervention) => {
   return new TechnicalDetails(intervention);
 });

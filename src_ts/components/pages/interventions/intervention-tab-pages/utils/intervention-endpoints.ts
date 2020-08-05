@@ -12,6 +12,17 @@ export interface EtoolsEndpoints {
   specialReportingRequirements: EtoolsEndpoint;
   reportingRequirements: EtoolsEndpoint;
   specialReportingRequirementsUpdate: EtoolsEndpoint;
+  monitoringVisits: EtoolsEndpoint;
+  partnerT2fProgrammaticVisits: EtoolsEndpoint;
+  partnerTPMActivities: EtoolsEndpoint;
+  interventionTPMActivities: EtoolsEndpoint;
+  resultLinks: EtoolsEndpoint;
+  ramIndicators: EtoolsEndpoint;
+  resultLinkDetails: EtoolsEndpoint;
+  pdDetails: EtoolsEndpoint;
+  createPd: EtoolsEndpoint;
+  pdActivityDetails: EtoolsEndpoint;
+  pdActivities: EtoolsEndpoint;
   attachmentsUpload: EtoolsEndpoint;
   interventionAmendmentAdd: EtoolsEndpoint;
 }
@@ -34,6 +45,41 @@ export const interventionEndpoints: EtoolsEndpoints = {
   },
   specialReportingRequirementsUpdate: {
     template: '/api/v2/reports/interventions/special-reporting-requirements/<%=reportId%>/'
+  },
+  monitoringVisits: {
+    template: '/api/t2f/travels/activities/partnership/<%=id%>/?year=<%=year%>'
+  },
+  partnerT2fProgrammaticVisits: {
+    template: '/api/t2f/travels/activities/<%=id%>/?year=<%=year%>&status=completed'
+  },
+  partnerTPMActivities: {
+    template:
+      '/api/tpm/activities/?tpm_visit__status=unicef_approved&is_pv=true&date__year=<%=year%>&partner=<%=partnerId%>'
+  },
+  interventionTPMActivities: {
+    template:
+      '/api/tpm/activities/?tpm_visit__status=unicef_approved&date__year=<%=year%>&intervention=<%=interventionId%>'
+  },
+  resultLinks: {
+    template: '/api/v2/interventions/<%=id%>/result-links/'
+  },
+  resultLinkDetails: {
+    template: '/api/v2/interventions/result-links/<%=result_link%>/'
+  },
+  ramIndicators: {
+    template: '/api/v2/reports/results/<%=id%>/indicators/'
+  },
+  pdDetails: {
+    template: '/api/pmp/v3/interventions/<%=intervention_id%>/pd-outputs/<%=pd_id%>/'
+  },
+  createPd: {
+    template: '/api/pmp/v3/interventions/<%=intervention_id%>/pd-outputs/'
+  },
+  pdActivities: {
+    template: '/api/pmp/v3/interventions/<%=interventionId%>/pd-outputs/<%=pdOutputId%>/activities/'
+  },
+  pdActivityDetails: {
+    template: '/api/pmp/v3/interventions/<%=interventionId%>/pd-outputs/<%=pdOutputId%>/activities/<%=activityId%>/'
   },
   attachmentsUpload: {
     url: '/api/v2/attachments/upload/'

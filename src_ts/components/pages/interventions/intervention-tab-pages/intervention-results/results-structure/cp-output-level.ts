@@ -4,6 +4,9 @@ import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {ExpectedResult} from '../../common/models/intervention.types';
 import '@unicef-polymer/etools-data-table';
 import '@polymer/iron-icons';
+import {openDialog} from '../../utils/dialog';
+import './modals/add-ram-indicators';
+import {fireEvent} from '../../utils/fire-custom-event';
 
 @customElement('cp-output-level')
 export class CpOutputLevel extends LitElement {
@@ -30,6 +33,7 @@ export class CpOutputLevel extends LitElement {
     ];
   }
 
+  @property() interventionId!: number;
   @property() resultLink!: ExpectedResult;
   @property({type: Boolean, reflect: true, attribute: 'show-cpo-level'}) showCPOLevel = false;
 
@@ -38,24 +42,23 @@ export class CpOutputLevel extends LitElement {
       <style>
         etools-data-table-row {
           overflow: hidden;
+          --list-second-bg-color: var(--secondary-background-color) !important;
+          --list-row-wrapper-padding: 5px 12px 5px 0;
           --list-row-collapse-wrapper: {
             padding: 0 !important;
             margin-bottom: 10px;
-            background-color: transparent !important;
             border: 1px solid var(--main-border-color) !important;
             border-bottom: 1px solid var(--main-border-color) !important;
           }
           --list-row-wrapper: {
-            background-color: var(--primary-background-color) !important;
             border-bottom: none !important;
-            padding: 5px 4px;
           }
         }
       </style>
       ${this.showCPOLevel && this.resultLink
         ? html`
-            <etools-data-table-row>
-              <div slot="row-data" class="layout-horizontal">
+            <etools-data-table-row secondary-bg-on-hover>
+              <div slot="row-data" class="layout-horizontal editable-row">
                 <!--      If PD is associated with CP Output      -->
                 ${this.resultLink.cp_output
                   ? html`
@@ -77,6 +80,10 @@ export class CpOutputLevel extends LitElement {
                         <div class="heading">Total Cache budget</div>
                         <div class="data">TTT 1231.144</div>
                       </div>
+
+                      <div class="hover-block">
+                        <paper-icon-button icon="icons:create" @tap="${() => this.openPopup()}"></paper-icon-button>
+                      </div>
                     `
                   : html`
                       <!--      If PD is unassociated with CP Output      -->
@@ -90,12 +97,28 @@ export class CpOutputLevel extends LitElement {
                 <slot></slot>
 
                 <div class="add-pd row-h align-items-center" ?hidden="${!this.resultLink.cp_output}">
-                  <iron-icon icon="add-box"></iron-icon>Add PD Output
+                  <iron-icon icon="add-box" @click="${() => this.addPD()}"></iron-icon>Add PD Output
                 </div>
               </div>
             </etools-data-table-row>
           `
         : html`<slot></slot>`}
     `;
+  }
+
+  openPopup(): void {
+    openDialog({
+      dialog: 'add-ram-indicators',
+      dialogData: {
+        cpOutputId: this.resultLink.cp_output,
+        cpOutputName: this.resultLink.cp_output_name,
+        resultLinkId: this.resultLink.id,
+        selectedIndicators: this.resultLink.ram_indicators,
+        interventionId: this.interventionId
+      }
+    });
+  }
+  addPD(): void {
+    fireEvent(this, 'add-pd');
   }
 }

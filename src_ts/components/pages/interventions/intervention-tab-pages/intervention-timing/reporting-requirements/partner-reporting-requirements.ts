@@ -87,8 +87,6 @@ class PartnerReportingRequirements extends connect(getStore())(PolymerElement) {
 
         /* ------------------------------- */
 
-
-
         .edit-rep-req {
           color: var(--medium-icon-color);
           margin-left: 16px;
