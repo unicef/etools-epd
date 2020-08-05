@@ -33,6 +33,7 @@ import {
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {isEmpty} from 'lodash-es';
+import {MinimalAgreement} from '../../common/models/agreement.types';
 
 /**
  * @customElement
@@ -163,7 +164,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
                   file-url="${this.intervention.prc_review_attachment}"
                   upload-endpoint="${this.uploadEndpoint}"
                   @upload-finished="_prcRevDocUploadFinished"
-                  readonly="?${!this.permissions.edit.prc_review_attachment}"
+                  ?readonly="${!this.permissions.edit.prc_review_attachment}"
                   show-delete-btn="${this.showPrcReviewDeleteBtn(this.intervention.status)}"
                   @delete-file="${this._prcRevDocDelete}"
                   @upload-started="${this._onUploadStarted}"
@@ -180,9 +181,9 @@ export class InterventionReviewAndSign extends connect(getStore())(
               id="signedByAuthorizedOfficer"
               label="Signed By Partner Authorized Officer"
               placeholder="&#8212;"
-              .options="${this.agreementAuthorizedOfficers}"
+              .options="${this.agreementAuthorizedOfficers[0].authorized_officers}"
               .selected="${this.intervention.partner_authorized_officer_signatory}"
-              ?readonly="${!this.permissions.edit.partner_authorized_officer_signatory}"
+              ?readonly="${this.permissions.edit.partner_authorized_officer_signatory}"
               ?required="${this.permissions.required.partner_authorized_officer_signatory}"
               auto-validate
               error-message="Please select Partner Authorized Officer"
@@ -239,7 +240,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
               id="signedByUnicef"
               label="Signed by UNICEF"
               placeholder="&#8212;"
-              options="${this.getCleanEsmmOptions(this.signedByUnicefUsers)}"
+              .options="${this.getCleanEsmmOptions(this.signedByUnicefUsers)}"
               option-value="id"
               option-label="name"
               selected="${this.intervention.unicef_signatory}"
@@ -308,8 +309,8 @@ export class InterventionReviewAndSign extends connect(getStore())(
   @property({type: Array})
   signedByUnicefUsers!: MinimalUser[];
 
-  @property({type: Array})
-  agreementAuthorizedOfficers!: [];
+  @property({type: Object})
+  agreementAuthorizedOfficers!: MinimalAgreement[];
 
   @property({type: Boolean})
   _lockSubmitToPrc = true;
@@ -333,15 +334,18 @@ export class InterventionReviewAndSign extends connect(getStore())(
       this.permissions = selectManagementDocumentInterventionPermissions(state);
       // setting agreement
     }
-    const agreements = get(state, 'agreements.list');
-    if (!isEmpty(agreements)) {
-      this.agreement = this.filterAgreementsById(agreements, this.intervention.agreement!);
+    const agreements = state.agreements.list;
+    if (!isEmpty(agreements) && !isEmpty(state.interventions.current)) {
+      const agreementData = this.filterAgreementsById(agreements, this.intervention.agreement);
+      this.agreementAuthorizedOfficers = agreementData;
+      console.log(this.agreementAuthorizedOfficers);
+      console.log(this.agreementAuthorizedOfficers[0].authorized_officers);
     }
     // this will need review...currently only we show data..not change
     // this.uploadsStateChanged(state);
   }
 
-  filterAgreementsById(agreements: MinimalAgreement[], agreementId: number) {
+  filterAgreementsById(agreements: MinimalAgreement[], agreementId: string) {
     return agreements.filter((a: any) => String(a.id) === String(agreementId));
   }
 
