@@ -16,13 +16,13 @@ import {requiredFieldStarredStyles} from '../../common/styles/required-field-sty
 import {validateRequiredFields, resetRequiredFields} from '../../utils/validation-helper';
 import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {isJsonStrMatch} from '../../../../../utils/utils';
-import {AnyObject, LabelAndValue, InterventionAmendment} from '../../../../../../types/globals';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import CONSTANTS from '../../../../../../config/app-constants';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
 import {updateCurrentIntervention} from '../../common/actions';
+import {InterventionAmendment} from '../../common/models/intervention.types';
+import {LabelAndValue, AnyObject} from '../../common/models/globals.types';
+import {isJsonStrMatch} from '../../utils/utils';
 
 /**
  * @customElement
