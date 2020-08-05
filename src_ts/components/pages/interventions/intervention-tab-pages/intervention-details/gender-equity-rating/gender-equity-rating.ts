@@ -174,7 +174,7 @@ export class GenderEquityRatingElement extends connect(getStore())(ComponentBase
     }
     if (state.interventions.current) {
       const genderEquityRating = selectGenderEquityRating(state);
-      if (!isJsonStrMatch(this.originalData, genderEquityRating)) {
+      if (!isJsonStrMatch(this.data, genderEquityRating)) {
         this.data = cloneDeep(genderEquityRating);
         this.originalData = cloneDeep(genderEquityRating);
       }
