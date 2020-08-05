@@ -15,12 +15,13 @@ import {EtoolsDropdownEl} from '@unicef-polymer/etools-dropdown/etools-dropdown'
 import {PaperInputElement} from '@polymer/paper-input/paper-input';
 import {selectPlannedVisits, selectPlannedVisitsPermissions} from './programmaticVisits.selectors';
 import {isJsonStrMatch} from '../../utils/utils';
-import {Permission, PlannedVisit} from '../../common/models/intervention.types';
+import {Permission, PlannedVisit, PlannedBudget} from '../../common/models/intervention.types';
 import {selectInterventionDates} from '../../intervention-timing/intervention-dates/interventionDates.selectors';
 import {ProgrammeDocDates} from '../../intervention-timing/intervention-dates/interventionDates.models';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {patchIntervention} from '../../common/actions';
 import RepeatableDataSetsMixin from '../../common/mixins/repeatable-data-sets-mixin';
+
 
 /**
  * @customElement
@@ -82,7 +83,7 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(R
 
         <div class="row-h extra-top-padd" ?hidden="${!this.editMode}">
           <paper-button
-            class="secondary-btn ${this._getAddBtnPadding(this.plannedVisits?.length)}"
+            class="secondary-btn ${this._getAddBtnPadding(this.dataItems?.length)}"
             @tap="${this._addNewPlannedVisit}"
           >
             ADD YEAR
@@ -90,12 +91,12 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(R
         </div>
 
         <div class="pv-container">
-          ${this.renderVisitsTemplate(this.plannedVisits)}
+          ${this.renderVisitsTemplate(this.dataItems)}
         </div>
 
         <div
-          .class="row-h ${this._getNoPVMsgPadding(this.plannedVisits?.length)}"
-          ?hidden="${!this._emptyList(this.plannedVisits?.length)}"
+          .class="row-h ${this._getNoPVMsgPadding(this.dataItems?.length)}"
+          ?hidden="${!this._emptyList(this.dataItems?.length)}"
         >
           <p>There are no planned visits added.</p>
         </div>
@@ -114,9 +115,6 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(R
   @property({type: Array})
   years: AnyObject[] = [];
 
-  @property({type: Object})
-  interventionDates!: ProgrammeDocDates;
-
   @property({type: Number})
   interventionId!: number;
 
@@ -127,13 +125,13 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(R
   extraEndpointParams!: AnyObject;
 
   @property({type: Object})
-  plannedVisits!: PlannedVisit[];
-
-  @property({type: Object})
   permissions!: Permission<PlannedVisitsPermissions>;
 
   @property({type: Number})
   totalV = 0;
+
+  @property({type: Array})
+  dataItems!: PlannedVisit[];
 
   connectedCallback() {
     super.connectedCallback();
@@ -150,16 +148,15 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(R
   }
 
   populateVisits(state: any) {
-    const newPlannedVisits = selectPlannedVisits(state);
-    this.originalData = newPlannedVisits.planned_visits;
-    this.plannedVisits = newPlannedVisits.planned_visits;
-    this.interventionDates = selectInterventionDates(state);
-    this._setYears(this.interventionDates.start, this.interventionDates.end);
+    this.dataItems = selectPlannedVisits(state).planned_visits;
+    this.originalData = cloneDeep(this.dataItems);
+    const interventionDates = selectInterventionDates(state);
+    this._setYears(interventionDates.start, interventionDates.end);
   }
 
   _plannedVisitsChanged(planned_visits: any) {
     if (!Array.isArray(planned_visits)) {
-      this.plannedVisits = [];
+      this.dataItems = [];
     }
   }
 
@@ -190,7 +187,7 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(R
     }
     return html`
       ${planned_visits?.map(
-        (item, index) => html`
+        (item: PlannedVisit, index: number) => html`
           <div class="row-h item-container">
             <div class="item-actions-container">
               <div class="actions">
@@ -217,7 +214,7 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(R
                     required
                     error-message="Required"
                     trigger-value-change-event
-                    @on-etools-selected-item-changed="${this._yearChanged}"
+                    @etools-selected-item-changed="${(e: CustomEvent) => this._yearChanged(e, index)}"
                     ?readonly="${!this.editMode}"
                     auto-validate
                   >
@@ -235,7 +232,7 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(R
                     ?required="${item.year}"
                     error-message="Required"
                     auto-validate
-                    @value-changed="${this.inputChanged}"
+                    @value-changed="${(e: CustomEvent) => this.inputChanged(e, index, 'q1')}"         
                     ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.planned_visits)}"
                   >
                   </paper-input>
@@ -252,7 +249,7 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(R
                     ?required="${item.year}"
                     error-message="Required"
                     auto-validate
-                    @value-changed="${this.inputChanged}"
+                    @value-changed="${(e: CustomEvent) => this.inputChanged(e, index, 'q2')}"
                     ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.planned_visits)}"
                   >
                   </paper-input>
@@ -269,7 +266,7 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(R
                     ?required="${item.year}"
                     error-message="Required"
                     auto-validate
-                    @value-changed="${this.inputChanged}"
+                    @value-changed="${(e: CustomEvent) => this.inputChanged(e, index, 'q3')}"
                     ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.planned_visits)}"
                   >
                   </paper-input>
@@ -286,7 +283,7 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(R
                     ?required="${item.year}"
                     error-message="Required"
                     auto-validate
-                    @value-changed="${this.inputChanged}"
+                    @value-changed="${(e: CustomEvent) => this.inputChanged(e, index, 'q4')}"
                     ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.planned_visits)}"
                   >
                   </paper-input>
@@ -298,10 +295,24 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(R
                     readonly
                     class="row-second-bg"
                     no-placeholder
-                    .value="${this.totalV}"
+                    .value="${this._getTotal(
+                      item.programmatic_q1,
+                      item.programmatic_q2,
+                      item.programmatic_q3,
+                      item.programmatic_q4
+                    )}"
                   ></paper-input>
                 </div>
-                <div class="col col-4" ?hidden="${this._showErrMsg(item.year, this.totalV)}">
+                <div
+                  class="col col-4"
+                  ?hidden="${this._showErrMsg(
+                    item.year!,
+                    item.programmatic_q1,
+                    item.programmatic_q2,
+                    item.programmatic_q3,
+                    item.programmatic_q4
+                  )}"
+                >
                   <div class="error-msg">Total has to be greater than 0</div>
                 </div>
               </div>
@@ -312,14 +323,13 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(R
     `;
   }
 
-  inputChanged(e: CustomEvent) {
+  inputChanged(e: CustomEvent, index: number, qIndex: string) {
     if (!e.detail) {
       return;
     }
 
-    const input = e.currentTarget as PaperInputElement;
-    input.value = e.detail.value;
-    this.validate();
+    this.dataItems[index]['programmatic_' + qIndex] = e.detail.value;
+    this.dataItems = [...this.dataItems];
   }
 
   /**
@@ -327,10 +337,10 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(R
    * and id assigned(only if is not saved))
    */
   _canBeRemoved(index: number, editMode: boolean) {
-    if (!editMode || !this.plannedVisits || !this.plannedVisits.length || !this.plannedVisits[index]) {
+    if (!editMode || !this.dataItems || !this.dataItems.length || !this.dataItems[index]) {
       return false;
     }
-    const plannedVisit = this.plannedVisits[index];
+    const plannedVisit = this.dataItems[index];
     const plannedVisitId = parseInt(plannedVisit.id, 10);
     return this._isDraft() || !(plannedVisitId && isNaN(plannedVisitId) === false && plannedVisitId > 0);
   }
@@ -339,29 +349,31 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(R
     return this.interventionStatus === '' || this.interventionStatus === 'draft';
   }
 
-  _yearChanged(event: CustomEvent) {
-    const yearSelected = event.detail.selectedItem ? event.detail.selectedItem.value : null;
-    const yearDropdown = this.shadowRoot!.querySelector('#year_' + event.model.index);
+  _yearChanged(event: CustomEvent, index: number) {
+    const selectedItem = event.detail.selectedItem ? event.detail.selectedItem : null;
+    if (!selectedItem) {
+      return;
+    }
+    const yearSelected = selectedItem.value;
 
-    if (this.isAlreadySelected(yearSelected, event.model.index, 'year')) {
+    if (this.isAlreadySelected(yearSelected, index, 'year')) {
       fireEvent(this, 'toast', {
         text: 'Year already selected on other planned visit item.',
         showCloseBtn: true
       });
-      this._clearSelectedYear(yearDropdown, event);
+      this._clearSelectedYear(index);
     }
   }
 
   /**
    * Timeout because yearDropdown.selected is set after the execution of _yearChanged method
    */
-  _clearSelectedYear(yearDropdown: any, event: CustomEvent) {
-    setTimeout(() => {
-      if (yearDropdown) {
-        yearDropdown.selected = null;
-      }
-      this.set('planned_visits.' + event.model.index + '.year', null);
-    });
+  _clearSelectedYear(index: number) {
+    this.dataItems[index].year = null;
+    this.dataItems = [...this.dataItems];
+    // backup reset because the above doesn't seem to work
+    this.shadowRoot!.querySelector<EtoolsDropdownEl>('#year_' + index)!.selected = null;
+
   }
 
   _getTotal(q1: string, q2: string, q3: string, q4: string) {
@@ -375,13 +387,13 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(R
     return !this._getTotal(q1, q2, q3, q4);
   }
 
-  _showErrMsg(year: number, total: number) {
-    return year && total > 0;
+  _showErrMsg(year: string, q1: string, q2: string, q3: string, q4: string) {
+    return year && this._getTotal(q1, q2, q3, q4) > 0;
   }
 
   validate() {
     let valid = true;
-    this.plannedVisits?.forEach((item: any, index: number) => {
+    this.dataItems?.forEach((item: any, index: number) => {
       if (!(this._validateYear(index) && this._validateQuarters(item, index))) {
         valid = false;
       }
@@ -406,7 +418,6 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(R
     const q2 = this.shadowRoot!.querySelector('#visit_' + index + '_q2') as PaperInputElement;
     const q3 = this.shadowRoot!.querySelector('#visit_' + index + '_q3') as PaperInputElement;
     const q4 = this.shadowRoot!.querySelector('#visit_' + index + '_q4') as PaperInputElement;
-    const total = this.shadowRoot!.querySelector('#totalComp') as any;
 
     [q1, q2, q3, q4].forEach(function (q) {
       if (q) {
@@ -418,7 +429,7 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(R
     if (!this._getTotal(item.programmatic_q1, item.programmatic_q2, item.programmatic_q3, item.programmatic_q4)) {
       valid = false;
     }
-    this.totalV = this._getTotal(q1.value, q2.value, q3.value, q4.value);
+
     return valid;
   }
 
@@ -433,7 +444,7 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(R
       });
       return;
     }
-    (this.plannedVisits as any).push(new PlannedVisit());
+    this.dataItems = [...this.dataItems, new PlannedVisit()];
     // this._addElement();
   }
 
