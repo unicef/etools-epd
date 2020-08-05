@@ -244,11 +244,6 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
     }
   }
 
-  cancel() {
-    this.data = cloneDeep(this.originalData);
-    this.editMode = false;
-  }
-
   validate() {
     return validateRequiredFields(this);
   }

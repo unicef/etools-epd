@@ -1,5 +1,6 @@
 import {LitElement, property, html} from 'lit-element';
 import {Constructor, AnyObject} from '../models/globals.types';
+import cloneDeep from 'lodash-es/cloneDeep';
 
 function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
   class ComponentBaseClass extends baseClass {
@@ -43,7 +44,8 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
     }
 
     cancel() {
-      throw new Error('Not implemented');
+      this.data = cloneDeep(this.originalData);
+      this.editMode = false;
     }
 
     save() {

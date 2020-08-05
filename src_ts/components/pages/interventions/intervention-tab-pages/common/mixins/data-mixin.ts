@@ -8,13 +8,13 @@ type Constructor<T> = new (...args: any[]) => T;
 export const DataMixin = <B extends Constructor<LitElement>>() => <T>(superclass: B) =>
   class extends superclass {
     /* eslint-enable @typescript-eslint/typedef,@typescript-eslint/explicit-function-return-type */
-    editedData: Partial<T> = {}; //* To be renamed to _data
+    editedData: Partial<T> = {};
     originalData!: T | null;
     errors: GenericObject<any> = {};
 
     static get properties(): PropertyDeclarations {
       // @ts-ignore
-      const superProps: PropertyDeclarations = super.properties; //* Why not property descriptors?
+      const superProps: PropertyDeclarations = super.properties;
       return {
         ...superProps,
         errors: {type: Object},
