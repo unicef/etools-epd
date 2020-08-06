@@ -5,10 +5,14 @@ import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
+import {repeatableDataSetsStyles} from '../../common/styles/repeatable-data-sets-styles';
 import isEmpty from 'lodash-es/isEmpty';
 import {fireEvent} from '../../../../../utils/fire-custom-event';
 import {validateRequiredFields} from '../../utils/validation-helper';
-import {layoutCenterJustified, layoutVertical} from '../../common/styles/flex-layout-styles';
+import {
+  layoutCenterJustified,
+  layoutVertical
+} from '../../common/styles/flex-layout-styles';
 import {AnyObject} from '../../common/models/globals.types';
 import {PlannedVisits, PlannedVisitsPermissions} from './programmaticVisits.models';
 import {EtoolsDropdownEl} from '@unicef-polymer/etools-dropdown/etools-dropdown';
@@ -21,7 +25,6 @@ import {ProgrammeDocDates} from '../../intervention-timing/intervention-dates/in
 import cloneDeep from 'lodash-es/cloneDeep';
 import {patchIntervention} from '../../common/actions';
 import RepeatableDataSetsMixin from '../../common/mixins/repeatable-data-sets-mixin';
-
 
 /**
  * @customElement
@@ -42,7 +45,7 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(R
     // language=HTML
     return html`
       <style>
-        ${sharedStyles}
+        ${sharedStyles} ${repeatableDataSetsStyles}
         :host {
           display: block;
           margin-bottom: 24px;
@@ -71,6 +74,9 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(R
           --paper-button: {
             color: #0099ff;
           }
+        }
+        .totalContainer {
+          text-align: center;
         }
       </style>
 
@@ -193,9 +199,9 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(R
               <div class="actions">
                 <paper-icon-button
                   class="action delete"
-                  @tap="${this._openDeleteConfirmation}"
+                  @tap="${this._openDeleteConfirmation(index)}"
                   data-args="${index}"
-                  disabled="${!this._canBeRemoved(index, this.editMode)}"
+                  ?disabled="${!this._canBeRemoved(index, this.editMode)}"
                   icon="cancel"
                 >
                 </paper-icon-button>
@@ -232,7 +238,7 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(R
                     ?required="${item.year}"
                     error-message="Required"
                     auto-validate
-                    @value-changed="${(e: CustomEvent) => this.inputChanged(e, index, 'q1')}"         
+                    @value-changed="${(e: CustomEvent) => this.inputChanged(e, index, 'q1')}"
                     ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.planned_visits)}"
                   >
                   </paper-input>
@@ -288,7 +294,7 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(R
                   >
                   </paper-input>
                 </div>
-                <div class="col col-1">
+                <div class="col col-1 totalContainer">
                   <paper-input
                     id="totalComp"
                     label="TOTAL"
@@ -373,7 +379,6 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(R
     this.dataItems = [...this.dataItems];
     // backup reset because the above doesn't seem to work
     this.shadowRoot!.querySelector<EtoolsDropdownEl>('#year_' + index)!.selected = null;
-
   }
 
   _getTotal(q1: string, q2: string, q3: string, q4: string) {

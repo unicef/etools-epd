@@ -29,12 +29,11 @@ function RepeatableDataSetsMixin<T extends Constructor<LitElement>>(baseClass: T
     private _deleteDialog!: EtoolsDialog;
     private elToDeleteIndex!: number;
 
-    public _openDeleteConfirmation(event: any) {
-      event.stopPropagation();
+    public _openDeleteConfirmation(index: number) {
       if (!this.editMode) {
         return;
       }
-      this.elToDeleteIndex = parseInt(event.target.getAttribute('data-args'), 10);
+      this.elToDeleteIndex = index;
       this._deleteDialog.opened = true;
     }
 

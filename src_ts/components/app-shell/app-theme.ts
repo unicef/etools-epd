@@ -10,6 +10,7 @@ documentContainer.innerHTML = `
         --primary-background-color: #FFFFFF;
         --secondary-background-color: #eeeeee;
         --medium-theme-background-color: #eeeeee;
+        --light-theme-background-color: var(--paper-grey-50);
 
         --primary-text-color: rgba(0, 0, 0, 0.87);
         --secondary-text-color: rgba(0, 0, 0, 0.54);
