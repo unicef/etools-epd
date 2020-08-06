@@ -1,6 +1,8 @@
 import {LitElement, customElement, html} from 'lit-element';
 import './amendments/pd-amendments';
 import './financial/financial-component';
+import './fund-reservations/fund-reservations';
+
 /**
  * @customElement
  */
@@ -12,6 +14,7 @@ export class InterventionManagement extends LitElement {
       <style></style>
       <pd-amendments></pd-amendments>
       <financial-component></financial-component>
+      <fund-reservations></fund-reservations>
     `;
   }
 }

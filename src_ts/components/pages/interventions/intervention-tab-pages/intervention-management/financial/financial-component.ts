@@ -12,19 +12,15 @@ import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import cloneDeep from 'lodash-es/cloneDeep';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
-import {
-  selectGenderEquityRating,
-  selectGenderEquityRatingPermissions
-} from '../../intervention-details/gender-equity-rating/genderEquityRating.selectors';
-import {
-  GenderEquityRating,
-  GenderEquityRatingPermissions
-} from '../../intervention-details/gender-equity-rating/genderEquityRating.models';
 import {Permission} from '../../common/models/intervention.types';
 import {validateRequiredFields} from '../../utils/validation-helper';
 import {getStore} from '../../utils/redux-store-access';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {AnyObject} from '../../common/models/globals.types';
+import './financialComponent.models';
+import './financialComponent.selectors';
+import {FinancialComponentData, FinancialComponentPermissions} from './financialComponent.selectors';
+import {selectFinancialComponentPermissions, selectFinancialComponent} from './financialComponent.models';
 
 /**
  * @customElement
@@ -55,114 +51,149 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
 
         <div slot="panel-btns">
           <paper-icon-button
-            ?hidden="${this.hideEditIcon(this.editMode, this.canEditGenderEquity)}"
+            ?hidden="${this.hideEditIcon(this.editMode, this.canEditFinancialComponent)}"
             @tap="${this.allowEdit}"
             icon="create"
           >
           </paper-icon-button>
         </div>
 
-        <div class="row-padding-v pb-20">
+        <div class="layout-horizontal row-padding-v">
           <div class="w100">
             <label class="paper-label">Cash Transfer modality(ies)</label>
           </div>
+        </div>
+        <div class="layout-horizontal row-padding-v">
           <div class="col col-3">
-            <paper-checkbox checked="{{partnersSelected}}" ?disabled="${!this.editMode}">
+            <paper-checkbox
+              ?checked="${this.financialData.headquarters_contribution_direct_cash}"
+              ?disabled="${!this.editMode}"
+            >
               Direct Cash Transfer
             </paper-checkbox>
           </div>
           <div class="col col-3">
-            <paper-checkbox ?disabled="${!this.editMode}">
+            <paper-checkbox
+              ?checked="${this.financialData.headquarters_contribution_direct_payment}"
+              ?disabled="${!this.editMode}"
+            >
               Direct Payment
             </paper-checkbox>
           </div>
           <div class="col col-3">
-            <paper-checkbox ?disabled="${!this.editMode}">
+            <paper-checkbox
+              ?checked="${this.financialData.headquarters_contribution_reimbursement}"
+              ?disabled="${!this.editMode}"
+            >
               Reimbrsement
             </paper-checkbox>
           </div>
         </div>
-
-        <div class="row-padding-v pb-20">
+        <div class="layout-horizontal row-padding-v">
           <div class="w100">
             <label class="paper-label">Headquarters contribution (automatic 7% for INGO)</label>
           </div>
+        </div>
+        <div class="layout-horizontal row-padding-v">
           <div class="col col-3">
-            <paper-slider value="7" max="7" step="0.1" secondary-progress="200" @change="${this.showValue()}"> </paper-slider>
+            <paper-slider
+              value="${this.prop}"
+              max="7"
+              step="0.1"
+              @value-change="${this.changeValue()}"
+              ?disabled="${!this.editMode}"
+            ></paper-slider
+            >${this.prop}
           </div>
         </div>
 
-        <div class="row-padding-v pb-20">
+        <div class="layout-horizontal row-padding-v">
           <div class="w100">
             <label class="paper-label">Document currency</label>
           </div>
+        </div>
+        <div class="layout-horizontal row-padding-v">
           <div class="col col-3">
-            ${this.documentType}
+            ${this.financialData?.document_type}
           </div>
+        </div>
+        <p>prop: ${this.prop}</p>
+        <button
+          @click="${() => {
+            this.prop = Math.random() * 10;
+          }}"
+        >
+          change prop
+        </button>
+        <div
+          class="layout-horizontal right-align row-padding-v"
+          ?hidden="${this.hideActionButtons(this.editMode, this.canEditFinancialComponent)}"
+        >
+          <paper-button class="default" @tap="${this.cancelFinancialChanges}">
+            Cancel
+          </paper-button>
+          <paper-button class="primary" @tap="${this.saveFinancialChanges}">
+            Save
+          </paper-button>
         </div>
       </etools-content-panel>
     `;
   }
 
   @property({type: Boolean})
-  canEditGenderEquity!: boolean;
+  canEditFinancialComponent!: boolean;
 
   @property({type: Object})
-  originalGenderEquityRating!: GenderEquityRating;
+  originalFinancialData!: FinancialComponentData;
 
   @property({type: Object})
-  genderEquityRating!: GenderEquityRating | undefined;
+  financialData!: FinancialComponentData | undefined;
 
   @property({type: Object})
-  permissions!: Permission<GenderEquityRatingPermissions>;
+  permissions!: Permission<FinancialComponentPermissions>;
 
   @property({type: Boolean})
   showLoading = false;
 
-  @property({type: Array})
-  ratings!: AnyObject[];
+  @property({type: Number})
+  _prop!: number;
 
-  @property({type: String})
-  documentType!: string;
+  set prop(val) {
+    this._prop = Math.floor(val);
+  }
+
+  get prop() {
+    return this._prop;
+  }
 
   connectedCallback() {
     super.connectedCallback();
   }
 
   stateChanged(state: any) {
-    if (state.commonData.genderEquityRatings) {
-      this.ratings = state.commonData.genderEquityRatings;
+    if (!state.interventions.current) {
+      return;
     }
     if (state.interventions.current) {
-      this.documentType = state.interventions.current.documentType;
-      this.permissions = selectGenderEquityRatingPermissions(state);
-      this.setCanEditGenderEquityRatings(this.permissions.edit);
-      this.originalGenderEquityRating = cloneDeep(this.genderEquityRating);
+      this.financialData = selectFinancialComponent(state);
+      this.permissions = selectFinancialComponentPermissions(state);
+      this.setCanEditFinancialData(this.permissions.edit);
+      this.originalFinancialData = cloneDeep(this.financialData);
+      this._prop = 0;
     }
   }
 
-  setCanEditGenderEquityRatings(editPermissions: GenderEquityRatingPermissions) {
-    this.canEditGenderEquity = editPermissions.gender || editPermissions.equity || editPermissions.sustainability;
+  setCanEditFinancialData(editPermissions: FinancialComponentPermissions) {
+    this.canEditFinancialComponent =
+      editPermissions.cash_transfer_modalities || editPermissions.headquarters_contribution;
   }
 
-  _getRatingRadioButtonsTemplate(ratings: AnyObject[], permission: boolean) {
-    return ratings.map(
-      (r: AnyObject) =>
-        html`<paper-radio-button
-          class="${this.isReadonly(this.editMode, permission) ? 'readonly' : ''}"
-          name="${r.value}"
-        >
-          ${r.label}</paper-radio-button
-        >`
-    );
-  }
-
-  cancelGenderEquity() {
+  cancelFinancialChanges() {
     // @@dci section data it's not updated unless I set the genderEquityRating to undefined first
     // TODO: investigate this
-    this.genderEquityRating = undefined;
+    this.financialData = undefined;
     setTimeout(() => {
-      this.genderEquityRating = cloneDeep(this.originalGenderEquityRating);
+      this.financialData = cloneDeep(this.originalFinancialData);
       this.editMode = false;
     }, 200);
   }
@@ -171,11 +202,15 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
     return validateRequiredFields(this);
   }
 
-  saveGenderEquity() {
+  saveFinancialChanges() {
     if (!this.validate()) {
       return;
     }
     // this.showLoading = true;
     this.editMode = false;
+  }
+
+  changeValue() {
+    console.log(Math.random() * 10);
   }
 }

@@ -183,6 +183,11 @@ export class InterventionPermissionsFields {
 
   // attachments
   attachments = false;
+
+  // financial component
+  // @lajos: THESE NEED TO BE CHECKED as they where not set
+  cash_transfer_modalities = false;
+  headquarters_contribution = false;
 }
 
 export interface Permission<T> {
@@ -238,6 +243,11 @@ export class Intervention {
   permissions?: Permission<InterventionPermissionsFields>;
   humanitarian_flag?: boolean;
   partner_id?: string;
+  // @lajos: these need to eb checked for financial component
+  headquarters_contribution_direct_cash = false;
+  headquarters_contribution_direct_payment = false;
+  headquarters_contribution_reimbursement = false;
+  cash_transfer_modalities?: string;
 }
 
 export class InterventionAmendment {

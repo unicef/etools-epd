@@ -25,6 +25,9 @@ import {QuarterlyReportingRequirementsEL} from './qpr/quarterly-reporting-requir
 import get from 'lodash-es/get';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {AnyObject} from '../../common/models/globals.types';
+import {ReportingRequirementsPermissions} from './reportingRequirementsPermissions.models';
+import {Permission} from '../../common/models/intervention.types';
+import {selectReportingRequirementsPermissions} from './reportingRequirementsPermissions.selectors';
 
 /**
  * @polymer
@@ -206,8 +209,8 @@ class PartnerReportingRequirements extends connect(getStore())(PolymerElement) {
   @property({type: Number})
   specialRequirementsCount = 0;
 
-  @property({type: Boolean})
-  editMode!: boolean;
+  @property({type: Object})
+  editMode!: Permission<ReportingRequirementsPermissions>;
 
   @property({type: Object})
   intervention!: AnyObject;
@@ -217,14 +220,14 @@ class PartnerReportingRequirements extends connect(getStore())(PolymerElement) {
       return;
     }
     // @lajos TO DO: get correct values for bellow
-    // this.editMode = state.intervention!.permissions!.edit.reporting_requirements;
+    this.editMode = selectReportingRequirementsPermissions(state);
+    console.log(this.editMode);
     const currentIntervention = get(state, 'interventions.current');
     this.intervention = cloneDeep(currentIntervention);
     this.interventionId = this.intervention.id;
     this.interventionStart = this.intervention.start;
     this.interventionEnd = this.intervention.end;
     this.expectedResults = this.intervention.result_links;
-    this.editMode = false;
   }
 
   _openQprEditDialog() {

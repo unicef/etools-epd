@@ -1,4 +1,4 @@
-import {LitElement, html, TemplateResult, customElement, CSSResultArray} from 'lit-element';
+import {LitElement, html, TemplateResult, customElement, CSSResultArray, property} from 'lit-element';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../../utils/redux-store-access';
@@ -14,6 +14,8 @@ import {GenericObject} from '../../common/models/globals.types';
 import {ActivityTime, groupByYear, GroupedActivityTime, serializeTimeFrameData} from '../../utils/timeframes.helper';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {ActivityTimeframesStyles} from './activity-timeframes.styles';
+import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import {get} from 'lodash-es';
 
 @customElement('activity-timeframes')
 export class ActivityTimeframes extends connect(getStore())(LitElement) {
@@ -22,18 +24,19 @@ export class ActivityTimeframes extends connect(getStore())(LitElement) {
     return [gridLayoutStylesLit, ActivityTimeframesStyles];
   }
 
-  private timeFrames: GroupedActivityTime[] = [];
-  private mappedActivities: GenericObject<InterventionActivity[]> = {};
-  private loadingInProcess = true;
+  @property() intervention: Intervention | null = null;
 
   protected render(): TemplateResult {
-    if (this.loadingInProcess) {
+    if (!this.intervention) {
       return html``;
     }
+
+    const timeFrames: GroupedActivityTime[] = this.getTimeFrames();
+    const mappedActivities: GenericObject<InterventionActivity[]> = this.getActivities();
     return html`
       <etools-content-panel panel-title="Activity Timeframes">
         <div class="layout-vertical align-items-center">
-          ${this.timeFrames.map(
+          ${timeFrames.map(
             ([year, frames]: GroupedActivityTime, index: number) => html`
               <div class="layout-horizontal align-items-center time-frames">
                 <!--      Year title        -->
@@ -49,8 +52,8 @@ export class ActivityTimeframes extends connect(getStore())(LitElement) {
                       </div>
 
                       <div class="activities-container ${index === frames.length - 1 ? 'hide-border' : ''}">
-                        <div class="no-activities" ?hidden="${this.mappedActivities[name].length}">- No Activities</div>
-                        ${this.mappedActivities[name].map(
+                        <div class="no-activities" ?hidden="${mappedActivities[name].length}">- No Activities</div>
+                        ${mappedActivities[name].map(
                           ({name: activityName}: InterventionActivity) => html`
                             <div class="activity-name">Activity ${activityName}</div>
                           `
@@ -60,7 +63,7 @@ export class ActivityTimeframes extends connect(getStore())(LitElement) {
                   )}
                 </div>
               </div>
-              <div class="year-divider" ?hidden="${index === this.timeFrames.length - 1}"></div>
+              <div class="year-divider" ?hidden="${index === timeFrames.length - 1}"></div>
             `
           )}
         </div>
@@ -69,17 +72,29 @@ export class ActivityTimeframes extends connect(getStore())(LitElement) {
   }
 
   stateChanged(state: any): void {
-    const intervention: Intervention = state.interventions.current;
-    if (!intervention) {
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'timing')) {
       return;
     }
+    this.intervention = state.interventions.current;
+  }
+
+  private getTimeFrames(): GroupedActivityTime[] {
+    if (!this.intervention) {
+      return [];
+    }
     // process time frames
-    const quarters: InterventionQuarter[] = intervention.quarters || [];
+    const quarters: InterventionQuarter[] = this.intervention.quarters || [];
     const serialisedFrames: ActivityTime[] = serializeTimeFrameData(quarters as InterventionActivityTimeframe[]);
-    this.timeFrames = groupByYear(serialisedFrames);
+    return groupByYear(serialisedFrames);
+  }
+
+  private getActivities(): GenericObject<InterventionActivity[]> {
+    if (!this.intervention) {
+      return {};
+    }
 
     // get activities array
-    const pdOutputs: ResultLinkLowerResult[] = intervention.result_links
+    const pdOutputs: ResultLinkLowerResult[] = this.intervention.result_links
       .map(({ll_results}: ExpectedResult) => ll_results)
       .flat();
     const activities: InterventionActivity[] = pdOutputs
@@ -87,7 +102,7 @@ export class ActivityTimeframes extends connect(getStore())(LitElement) {
       .flat();
 
     // map activities to time frames
-    const mappedActivities: GenericObject<InterventionActivity[]> = quarters.reduce(
+    const mappedActivities: GenericObject<InterventionActivity[]> = this.intervention.quarters.reduce(
       (data: GenericObject<InterventionActivity[]>, quarter: InterventionQuarter) => ({
         ...data,
         [quarter.name]: []
@@ -99,9 +114,6 @@ export class ActivityTimeframes extends connect(getStore())(LitElement) {
         mappedActivities[name].push(activity);
       });
     });
-    this.mappedActivities = mappedActivities;
-
-    this.loadingInProcess = false;
-    this.performUpdate();
+    return mappedActivities;
   }
 }

@@ -168,3 +168,12 @@ export function formatDate(date: Date, format: string) {
   }
   return moment(date).format(format);
 }
+
+export function formatDateShortMonth(date: string) {
+  if (!date || date === '') {
+    return null;
+  }
+  const months = getShortStrMonths();
+  const newDate = new Date(date);
+  return newDate.getDate() + ' ' + months[newDate.getMonth()] + ' ' + newDate.getFullYear();
+}
