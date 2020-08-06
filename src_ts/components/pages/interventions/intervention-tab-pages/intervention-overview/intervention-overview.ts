@@ -15,6 +15,7 @@ import {isJsonStrMatch} from '../utils/utils';
 import './fund-reservations-display/fund-reservations-display';
 import './monitoring-visits-list/monitoring-visits-list';
 import {MinimalAgreement} from '../common/models/agreement.types';
+import {pageIsNotCurrentlyActive} from '../utils/common-methods';
 import {AnyObject} from '../common/models/globals.types';
 
 /**
@@ -256,6 +257,10 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
   isUnicefUser = false;
 
   stateChanged(state: any) {
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'overview')) {
+      return;
+    }
+
     if (get(state, 'interventions.current')) {
       const currentIntervention = get(state, 'interventions.current');
       this.intervention = cloneDeep(currentIntervention);
