@@ -68,8 +68,7 @@ export class ActivityItemsTable extends LitElement {
     } else {
       this.activityItems.splice(index, 1, item);
     }
-    this.performUpdate();
-    fireEvent(this, 'activity-items-changed', this.activityItems);
+    fireEvent(this, 'activity-items-changed', [...this.activityItems]);
   }
 
   validate(): boolean {

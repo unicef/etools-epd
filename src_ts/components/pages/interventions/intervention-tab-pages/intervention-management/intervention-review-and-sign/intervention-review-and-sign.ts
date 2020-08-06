@@ -34,6 +34,8 @@ import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {isEmpty, cloneDeep} from 'lodash-es';
 import {MinimalAgreement} from '../../common/models/agreement.types';
+import {PartnerStaffMember} from '../../common/models/partner.types';
+import {AnyObject} from '../../../../../../types/globals';
 
 /**
  * @customElement
@@ -114,7 +116,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
             <paper-input-container>
               <div slot="input" class="paper-input-input">
                 <paper-checkbox
-                  checked="{{intervention.submitted_to_prc}}"
+                  checked="${this.intervention.submitted_to_prc}"
                   ?disabled="${this._isSubmittedToPrcCheckReadonly(
                     this.permissions.edit.prc_review_attachment,
                     this._lockSubmitToPrc
@@ -127,53 +129,55 @@ export class InterventionReviewAndSign extends connect(getStore())(
             </paper-input-container>
           </div>
         </div>
-        ${this._showSubmittedToPrcFields(this.intervention.submitted_to_prc)
-          ? html` <div class="layout-horizontal row-padding-v row-second-bg">
-              <div class="col col-3">
-                <!-- Submission Date to PRC -->
-                <datepicker-lite
-                  id="submissionDatePrcField"
-                  label="Submission Date to PRC"
-                  value="${this.intervention.submission_date_prc}"
-                  readonly="?${!this.permissions.edit.submission_date_prc}"
-                  required="?${this.intervention.prc_review_attachment}"
-                  selected-date-display-format="D MMM YYYY"
-                  auto-validate
-                >
-                </datepicker-lite>
-              </div>
-              <div class="col col-3">
-                <!-- Review Date by PRC -->
-                <datepicker-lite
-                  id="reviewDatePrcField"
-                  label="Review Date by PRC"
-                  value="${this.intervention.review_date_prc}"
-                  readonly="?${!this.permissions.edit.review_date_prc}"
-                  required="?${this.intervention.prc_review_attachment}"
-                  selected-date-display-format="D MMM YYYY"
-                  auto-validate
-                >
-                </datepicker-lite>
-              </div>
-              <div class="col col-6">
-                <!-- PRC Review Document -->
-                <etools-upload
-                  id="reviewDocUpload"
-                  label="PRC Review Document"
-                  accept=".doc,.docx,.pdf,.jpg,.png"
-                  file-url="${this.intervention.prc_review_attachment}"
-                  upload-endpoint="${this.uploadEndpoint}"
-                  @upload-finished="_prcRevDocUploadFinished"
-                  ?readonly="${!this.permissions.edit.prc_review_attachment}"
-                  show-delete-btn="${this.showPrcReviewDeleteBtn(this.intervention.status)}"
-                  @delete-file="${this._prcRevDocDelete}"
-                  @upload-started="${this._onUploadStarted}"
-                  @change-unsaved-file="${this._onChangeUnsavedFile}"
-                >
-                </etools-upload>
-              </div>
-            </div>`
-          : html``}
+        ${
+          this._showSubmittedToPrcFields(this.intervention.submitted_to_prc)
+            ? html` <div class="layout-horizontal row-padding-v row-second-bg">
+                <div class="col col-3">
+                  <!-- Submission Date to PRC -->
+                  <datepicker-lite
+                    id="submissionDatePrcField"
+                    label="Submission Date to PRC"
+                    value="${this.intervention.submission_date_prc}"
+                    readonly="?${!this.permissions.edit.submission_date_prc}"
+                    required="?${this.intervention.prc_review_attachment}"
+                    selected-date-display-format="D MMM YYYY"
+                    auto-validate
+                  >
+                  </datepicker-lite>
+                </div>
+                <div class="col col-3">
+                  <!-- Review Date by PRC -->
+                  <datepicker-lite
+                    id="reviewDatePrcField"
+                    label="Review Date by PRC"
+                    value="${this.intervention.review_date_prc}"
+                    readonly="?${!this.permissions.edit.review_date_prc}"
+                    required="?${this.intervention.prc_review_attachment}"
+                    selected-date-display-format="D MMM YYYY"
+                    auto-validate
+                  >
+                  </datepicker-lite>
+                </div>
+                <div class="col col-6">
+                  <!-- PRC Review Document -->
+                  <etools-upload
+                    id="reviewDocUpload"
+                    label="PRC Review Document"
+                    accept=".doc,.docx,.pdf,.jpg,.png"
+                    file-url="${this.intervention.prc_review_attachment}"
+                    upload-endpoint="${this.uploadEndpoint}"
+                    @upload-finished="_prcRevDocUploadFinished"
+                    ?readonly="${!this.permissions.edit.prc_review_attachment}"
+                    show-delete-btn="${this.showPrcReviewDeleteBtn(this.intervention.status)}"
+                    @delete-file="${this._prcRevDocDelete}"
+                    @upload-started="${this._onUploadStarted}"
+                    @change-unsaved-file="${this._onChangeUnsavedFile}"
+                  >
+                  </etools-upload>
+                </div>
+              </div>`
+            : html``
+        }
         <div class="layout-horizontal row-padding-v">
           <div class="col col-6">
             <!-- Signed By Partner Authorized Officer -->
@@ -181,7 +185,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
               id="signedByAuthorizedOfficer"
               label="Signed By Partner Authorized Officer"
               placeholder="&#8212;"
-              .options="${this.agreementAuthorizedOfficers[0].authorized_officers}"
+              .options="${this.getCleanEsmmOptions(this.agreementAuthorizedOfficers)}"
               .selected="${this.intervention.partner_authorized_officer_signatory}"
               ?readonly="${this.permissions.edit.partner_authorized_officer_signatory}"
               ?required="${this.permissions.required.partner_authorized_officer_signatory}"
@@ -233,22 +237,6 @@ export class InterventionReviewAndSign extends connect(getStore())(
             </datepicker-lite>
           </div>
         </div>
-        <div class="layout-horizontal row-padding-v">
-          <div class="col col-6">
-            <!-- Signed by UNICEF -->
-            <etools-dropdown
-              id="signedByAuthorizedOfficer"
-              label="Signed By UNICEF"
-              placeholder="&#8212;"
-              .options="${this.agreementAuthorizedOfficers[0].authorized_officers}"
-              .selected="${this.intervention.partner_authorized_officer_signatory}"
-              ?readonly="${this.permissions.edit.partner_authorized_officer_signatory}"
-              ?required="${this.permissions.required.partner_authorized_officer_signatory}"
-              auto-validate
-              error-message="Please select UNICEF User"
-            >
-            </etools-dropdown>
-          </div>
         </div>
         <div class="layout-horizontal row-padding-v">
           <div class="col col-6">
@@ -289,26 +277,28 @@ export class InterventionReviewAndSign extends connect(getStore())(
             >
             </etools-upload>
           </div>
-          ${this._showDaysToSignedFields(this.intervention.status)
-            ? html`<div class="col col-3">
-                  <paper-input
-                    label="Days from Submission to Signed"
-                    value="${this.intervention.days_from_submission_to_signed}"
-                    placeholder="&#8212;"
-                    readonly
-                  >
-                  </paper-input>
-                </div>
-                <div class="col col-3">
-                  <paper-input
-                    label="Days from Review to Signed"
-                    value="${this.intervention.days_from_review_to_signed}"
-                    placeholder="&#8212;"
-                    readonly
-                  >
-                  </paper-input>
-                </div>`
-            : html``}
+          ${
+            this._showDaysToSignedFields(this.intervention.status)
+              ? html`<div class="col col-3">
+                    <paper-input
+                      label="Days from Submission to Signed"
+                      value="${this.intervention.days_from_submission_to_signed}"
+                      placeholder="&#8212;"
+                      readonly
+                    >
+                    </paper-input>
+                  </div>
+                  <div class="col col-3">
+                    <paper-input
+                      label="Days from Review to Signed"
+                      value="${this.intervention.days_from_review_to_signed}"
+                      placeholder="&#8212;"
+                      readonly
+                    >
+                    </paper-input>
+                  </div>`
+              : html``
+          }
         </div>
       </etools-content-panel>
     `;
@@ -326,11 +316,11 @@ export class InterventionReviewAndSign extends connect(getStore())(
   @property({type: Array})
   signedByUnicefUsers!: MinimalUser[];
 
-  @property({type: Object})
-  agreementAuthorizedOfficers!: MinimalAgreement[];
+  @property({type: Array})
+  agreementAuthorizedOfficers!: any;
 
   @property({type: Boolean})
-  _lockSubmitToPrc = true;
+  _lockSubmitToPrc = false;
 
   @property({type: String})
   partnerDateValidatorErrorMessage!: string;
@@ -345,25 +335,36 @@ export class InterventionReviewAndSign extends connect(getStore())(
     if (!isJsonStrMatch(this.signedByUnicefUsers, state.commonData!.unicefUsersData)) {
       this.signedByUnicefUsers = cloneDeep(state.commonData!.unicefUsersData);
     }
-
     if (state.interventions.current) {
       this.intervention = selectManagementDocumentIntervention(state);
       this.permissions = selectManagementDocumentInterventionPermissions(state);
-      // setting agreement
+      if (this.intervention.submitted_to_prc) {
+        this._lockSubmitToPrc = true;
+      } else {
+        this._lockSubmitToPrc = false;
+      }
     }
     const agreements = state.agreements.list;
     if (!isEmpty(agreements) && !isEmpty(state.interventions.current)) {
       const agreementData = this.filterAgreementsById(agreements, this.intervention.agreement);
-      this.agreementAuthorizedOfficers = agreementData;
-      console.log(this.agreementAuthorizedOfficers);
-      console.log(this.agreementAuthorizedOfficers[0].authorized_officers);
+      this.agreementAuthorizedOfficers = this.getAuthorizedOfficersList(agreementData);
     }
-    // this will need review...currently only we show data..not change
-    // this.uploadsStateChanged(state);
+  }
+
+  getAuthorizedOfficersList(agreementData: any) {
+    if (!agreementData) {
+      return null;
+    }
+    return agreementData.authorized_officers!.map((officer: any) => {
+      return {
+        value: typeof officer.id === 'string' ? parseInt(officer.id, 10) : officer.id,
+        label: officer.first_name + ' ' + officer.last_name
+      };
+    });
   }
 
   filterAgreementsById(agreements: MinimalAgreement[], agreementId: string) {
-    return agreements.filter((a: any) => String(a.id) === String(agreementId));
+    return agreements.filter((a: any) => String(a.id) === String(agreementId))[0];
   }
 
   connectedCallback() {
@@ -470,7 +471,6 @@ export class InterventionReviewAndSign extends connect(getStore())(
    * we make the date fields required
    */
   _showSubmittedToPrcFields(submittedToPrc: boolean) {
-    return true;
     return this._isNotSSFA(this.intervention.document_type) && submittedToPrc;
   }
 
@@ -582,9 +582,5 @@ export class InterventionReviewAndSign extends connect(getStore())(
 
   getCurrentDate() {
     return new Date();
-  }
-
-  getAgreementOficerList() {
-    console.log(this.agreementAuthorizedOfficers);
   }
 }

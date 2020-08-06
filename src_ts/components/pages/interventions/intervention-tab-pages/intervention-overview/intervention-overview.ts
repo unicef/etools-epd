@@ -13,8 +13,8 @@ import {prettyDate} from '../utils/date-utils';
 import {isJsonStrMatch} from '../utils/utils';
 import './fund-reservations-display/fund-reservations-display';
 import './monitoring-visits-list/monitoring-visits-list';
-import {AnyObject} from '../../../../../types/globals';
 import {MinimalAgreement} from '../common/models/agreement.types';
+import {AnyObject} from '../common/models/globals.types';
 
 /**
  * @customElement

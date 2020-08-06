@@ -31,13 +31,13 @@ export class DocumentPermission extends ModelsBase {
     super();
     this.setObjProperties(permissions);
   }
-  submission_date = true;
-  prc_review_attachment = true;
-  submission_date_prc = true;
-  review_date_prc = true;
-  partner_authorized_officer_signatory = true;
-  signed_by_partner_date = true;
-  signed_by_unicef_date = true;
-  unicef_signatory = true;
-  signed_pd_attachment = true;
+  submission_date = false;
+  prc_review_attachment = false;
+  submission_date_prc = false;
+  review_date_prc = false;
+  partner_authorized_officer_signatory = false;
+  signed_by_partner_date = false;
+  signed_by_unicef_date = false;
+  unicef_signatory = false;
+  signed_pd_attachment = false;
 }

@@ -6,7 +6,7 @@ import '@unicef-polymer/etools-data-table';
 import '@polymer/iron-icons';
 import {openDialog} from '../../utils/dialog';
 import './modals/add-ram-indicators';
-import {fireEvent} from '../../../../../utils/fire-custom-event';
+import {fireEvent} from '../../utils/fire-custom-event';
 
 @customElement('cp-output-level')
 export class CpOutputLevel extends LitElement {
