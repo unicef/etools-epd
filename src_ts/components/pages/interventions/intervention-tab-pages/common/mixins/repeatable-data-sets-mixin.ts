@@ -1,7 +1,7 @@
 import {LitElement, property} from 'lit-element';
 import {Constructor} from '../models/globals.types';
 import EtoolsDialog from '@unicef-polymer/etools-dialog/etools-dialog';
-import {createDynamicDialog} from '@unicef-polymer/etools-dialog/dynamic-dialog';
+import {createDynamicDialog, removeDialog} from '@unicef-polymer/etools-dialog/dynamic-dialog';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {cloneDeep} from '../../utils/utils';
@@ -28,6 +28,19 @@ function RepeatableDataSetsMixin<T extends Constructor<LitElement>>(baseClass: T
 
     private _deleteDialog!: EtoolsDialog;
     private elToDeleteIndex!: number;
+
+    public connectedCallback() {
+      super.connectedCallback();
+      // create delete confirmation dialog
+      this._createDeleteConfirmationDialog();
+    }
+
+    public disconnectedCallback() {
+      super.disconnectedCallback();
+      // remove delete confirmation dialog when the element is detached
+      this._deleteDialog.removeEventListener('close', this._onDeleteConfirmation);
+      removeDialog(this._deleteDialog);
+    }
 
     public _openDeleteConfirmation(index: number) {
       if (!this.editMode) {
@@ -127,10 +140,9 @@ function RepeatableDataSetsMixin<T extends Constructor<LitElement>>(baseClass: T
       if (!this.editMode) {
         return;
       }
-      const index = this.elToDeleteIndex;
-      if (index !== null && typeof index !== 'undefined' && index !== -1) {
-        this.splice('dataItems', index, 1);
-
+      const index = Number(this.elToDeleteIndex);
+      if (index >= 0) {
+        this.dataItems.splice(index, 1);
         // To mke sure all req. observers are triggered
         this.dataItems = cloneDeep(this.dataItems);
 
