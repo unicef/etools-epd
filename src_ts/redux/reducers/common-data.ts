@@ -46,7 +46,7 @@ const commonData: Reducer<CommonDataState, RootAction> = (state = INITIAL_COMMON
         cpOutputs: action.staticData.cpOutputs,
         interventionAmendmentTypes: action.staticData.interventionAmendmentTypes,
         offices: action.staticData.offices,
-        unicefUsersData: action.staticData.unicefUsers
+        unicefUsersData: action.staticData.unicefUsersData
       };
     default:
       return state;
