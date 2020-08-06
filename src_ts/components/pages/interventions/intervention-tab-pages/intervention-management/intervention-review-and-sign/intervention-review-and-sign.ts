@@ -34,8 +34,6 @@ import {getEndpoint} from '../../utils/endpoint-helper';
 import {interventionEndpoints} from '../../utils/intervention-endpoints';
 import {isEmpty, cloneDeep} from 'lodash-es';
 import {MinimalAgreement} from '../../common/models/agreement.types';
-import {PartnerStaffMember} from '../../common/models/partner.types';
-import {AnyObject} from '../../../../../../types/globals';
 
 /**
  * @customElement
@@ -122,6 +120,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
                     this._lockSubmitToPrc
                   )}"
                   ?hidden="${!this._isNotSSFA(this.intervention.document_type)}"
+                  @checked-changed="${({detail}: CustomEvent) => this.logSomething(detail, 'technical_guidance')}"
                 >
                   Submitted to PRC?
                 </paper-checkbox>
@@ -582,5 +581,11 @@ export class InterventionReviewAndSign extends connect(getStore())(
 
   getCurrentDate() {
     return new Date();
+  }
+
+  logSomething(detail: any, key: string) {
+    console.log('whatever');
+    console.log('detail', detail);
+    console.log('key', key);
   }
 }
