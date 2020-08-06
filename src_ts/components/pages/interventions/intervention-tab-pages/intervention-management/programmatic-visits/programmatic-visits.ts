@@ -8,20 +8,14 @@ import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {repeatableDataSetsStyles} from '../../common/styles/repeatable-data-sets-styles';
 import isEmpty from 'lodash-es/isEmpty';
 import {fireEvent} from '../../../../../utils/fire-custom-event';
-import {validateRequiredFields} from '../../utils/validation-helper';
-import {
-  layoutCenterJustified,
-  layoutVertical
-} from '../../common/styles/flex-layout-styles';
+import {layoutCenterJustified, layoutVertical} from '../../common/styles/flex-layout-styles';
 import {AnyObject} from '../../common/models/globals.types';
 import {PlannedVisits, PlannedVisitsPermissions} from './programmaticVisits.models';
 import {EtoolsDropdownEl} from '@unicef-polymer/etools-dropdown/etools-dropdown';
 import {PaperInputElement} from '@polymer/paper-input/paper-input';
 import {selectPlannedVisits, selectPlannedVisitsPermissions} from './programmaticVisits.selectors';
-import {isJsonStrMatch} from '../../utils/utils';
 import {Permission, PlannedVisit, PlannedBudget} from '../../common/models/intervention.types';
 import {selectInterventionDates} from '../../intervention-timing/intervention-dates/interventionDates.selectors';
-import {ProgrammeDocDates} from '../../intervention-timing/intervention-dates/interventionDates.models';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {patchIntervention} from '../../common/actions';
 import RepeatableDataSetsMixin from '../../common/mixins/repeatable-data-sets-mixin';
@@ -121,20 +115,11 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(R
   @property({type: Array})
   years: AnyObject[] = [];
 
-  @property({type: Number})
-  interventionId!: number;
-
   @property({type: String})
   interventionStatus!: string;
 
   @property({type: Object})
-  extraEndpointParams!: AnyObject;
-
-  @property({type: Object})
   permissions!: Permission<PlannedVisitsPermissions>;
-
-  @property({type: Number})
-  totalV = 0;
 
   @property({type: Array})
   data!: PlannedVisit[];
@@ -385,13 +370,6 @@ export class ProgrammaticVisits extends connect(getStore())(ComponentBaseMixin(R
 
   _getTotal(q1: string, q2: string, q3: string, q4: string) {
     return (Number(q1) || 0) + (Number(q2) || 0) + (Number(q3) || 0) + (Number(q4) || 0);
-  }
-
-  _showErrorMsg(year: string, q1: string, q2: string, q3: string, q4: string) {
-    if (!year) {
-      return false;
-    }
-    return !this._getTotal(q1, q2, q3, q4);
   }
 
   _showErrMsg(year: string, q1: string, q2: string, q3: string, q4: string) {

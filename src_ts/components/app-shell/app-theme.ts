@@ -33,6 +33,9 @@ documentContainer.innerHTML = `
 
         --success-color: #72c300;
         --error-color: #ea4022;
+        
+        --add-button-color: var(--success-color);
+        --icon-delete-color: var(--error-color);
 
         --primary-shade-of-green: #1A9251;
         --primary-shade-of-red: #E32526;
