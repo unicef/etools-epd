@@ -68,7 +68,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
   @property() interventionId!: number | null;
   quarters: InterventionQuarter[] = [];
 
-  @property({type: Boolean}) showCPOLevel = true;
+  @property({type: Boolean}) isUnicefUser = true;
   @property({type: Boolean}) showIndicators = true;
   @property({type: Boolean}) showActivities = true;
 
@@ -124,9 +124,11 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
         ${this.resultLinks.map(
           (result: ExpectedResult) => html`
             <cp-output-level
-              ?show-cpo-level="${this.showCPOLevel}"
+              ?show-cpo-level="${this.isUnicefUser}"
               .resultLink="${result}"
               .interventionId="${this.interventionId}"
+              .showIndicators="${this.showIndicators}"
+              .showActivities="${this.showActivities}"
               @add-pd="${() => this.openPdOutputDialog({}, result.cp_output, result.cp_output_name)}"
             >
               ${result.ll_results.map(
@@ -138,7 +140,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
                         <div class="data bold-data">${pdOutput.name}</div>
                       </div>
 
-                      <div class="flex-none">
+                      <div class="flex-none" ?hidden="${!this.showActivities}">
                         <div class="heading">Total Cache budget</div>
                         <div class="data">TTT 1231.144</div>
                       </div>
@@ -172,18 +174,13 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
         )}
         ${!this.resultLinks.length ? html` <div class="no-results">There are no results added.</div> ` : ''}
 
-        <!--  If CP Output level is shown - 'Add PD' button will be present inside cp-output-level component  -->
-        ${!this.showCPOLevel
-          ? html`
-              <div
-                ?hidden="${this.showCPOLevel}"
-                class="add-pd row-h align-items-center"
-                @click="${() => this.openPdOutputDialog()}"
-              >
-                <iron-icon icon="add-box"></iron-icon>Add PD Output
-              </div>
-            `
-          : ''}
+        <div
+          ?hidden="${false}"
+          class="add-pd white row-h align-items-center"
+          @click="${() => this.openPdOutputDialog()}"
+        >
+          <iron-icon icon="add-box"></iron-icon>Add PD Output
+        </div>
       </etools-content-panel>
     `;
   }
@@ -212,7 +209,7 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
       dialogData: {
         pdOutput: pdOutput ? {...pdOutput, cp_output: cpOutput} : undefined,
         cpOutputs,
-        hideCpOutputs: false,
+        hideCpOutputs: !this.isUnicefUser,
         interventionId: this.interventionId
       }
     });
