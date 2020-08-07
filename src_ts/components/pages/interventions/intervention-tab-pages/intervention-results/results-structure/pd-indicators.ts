@@ -6,6 +6,8 @@ import {Indicator} from '../../common/models/intervention.types';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../../utils/redux-store-access';
 import {Disaggregation, DisaggregationValue, LocationObject, Section} from '../../common/models/globals.types';
+import {openDialog} from '../../utils/dialog';
+import './modals/indicators-dialog/indicator-dialog';
 
 @customElement('pd-indicators')
 export class PdIndicators extends connect(getStore())(LitElement) {
@@ -56,7 +58,7 @@ export class PdIndicators extends connect(getStore())(LitElement) {
       <div class="row-h align-items-center header">
         <div class="heading flex-auto">
           PD Indicators
-          <iron-icon icon="add-box"></iron-icon>
+          <iron-icon icon="add-box" @click="${() => this.openDialog()}"></iron-icon>
         </div>
         <div class="heading number-data flex-none">Baseline</div>
         <div class="heading number-data flex-none">Target</div>
@@ -162,5 +164,16 @@ export class PdIndicators extends connect(getStore())(LitElement) {
         .filter((name: string | null) => Boolean(name))
         .join(' / ') || '-'
     );
+  }
+
+  openDialog(indicator?: Indicator): void {
+    openDialog<any>({
+      dialog: 'indicator-dialog',
+      dialogData: {
+        indicator
+        // interventionId: this.interventionId,
+        // pdOutputId: this.pdOutputId
+      }
+    });
   }
 }
