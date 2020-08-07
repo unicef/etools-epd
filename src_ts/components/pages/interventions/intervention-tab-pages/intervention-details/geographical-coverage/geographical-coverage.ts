@@ -18,7 +18,6 @@ import {patchIntervention} from '../../common/actions';
 import isEmpty from 'lodash-es/isEmpty';
 import get from 'lodash-es/get';
 import {isJsonStrMatch} from '../../utils/utils';
-import cloneDeep from 'lodash-es/cloneDeep';
 
 /**
  * @customElement
@@ -30,7 +29,7 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
   }
 
   render() {
-    if (!this.originalData) {
+    if (!this.data) {
       return html`<style>
           ${sharedStyles}
         </style>
@@ -80,7 +79,7 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
             id="locations"
             label="Location(s)"
             placeholder="&#8212;"
-            .options="${this.allLocations}"
+            .options="${this.data}"
             .selectedValues="${this.originalData.flat_locations}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.flat_locations)}"
             ?required="${this.permissions.required.flat_locations}"
@@ -112,7 +111,7 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
   private locationsDialog!: GroupedLocationsDialog;
 
   @property({type: Array})
-  allLocations!: any[];
+  data!: any[];
 
   @property({type: Boolean})
   showLoading = false;
@@ -128,8 +127,8 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
     if (!state.interventions.current) {
       return;
     }
-    if (!isJsonStrMatch(this.allLocations, state.commonData!.locations)) {
-      this.allLocations = [...state.commonData!.locations];
+    if (!isJsonStrMatch(this.data, state.commonData!.locations)) {
+      this.data = [...state.commonData!.locations];
     }
     if (!isJsonStrMatch(get(this.originalData, 'flat_locations'), get(state, 'interventions.current.flat_locations'))) {
       this.originalData = {flat_locations: get(state, 'interventions.current.flat_locations')};
@@ -165,11 +164,6 @@ export class GeographicalCoverage extends connect(getStore())(ComponentBaseMixin
 
   validate() {
     return validateRequiredFields(this);
-  }
-
-  cancel() {
-    this.originalData = cloneDeep(this.originalData);
-    this.editMode = false;
   }
 
   save() {
