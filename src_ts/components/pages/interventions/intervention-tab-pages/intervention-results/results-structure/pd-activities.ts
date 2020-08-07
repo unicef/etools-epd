@@ -128,6 +128,8 @@ export class PdActivities extends LitElement {
               <div class="text flex-auto">-</div>
               <div class="text number-data flex-none">-</div>
               <div class="text number-data flex-none">-</div>
+              <div class="text number-data flex-none">-</div>
+              <div class="text number-data flex-none">-</div>
             </div>
           `
         : ''}
