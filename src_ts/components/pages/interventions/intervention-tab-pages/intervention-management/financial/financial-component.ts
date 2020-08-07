@@ -16,7 +16,6 @@ import {Permission} from '../../common/models/intervention.types';
 import {validateRequiredFields} from '../../utils/validation-helper';
 import {getStore} from '../../utils/redux-store-access';
 import {connect} from 'pwa-helpers/connect-mixin';
-import {AnyObject} from '../../common/models/globals.types';
 import './financialComponent.models';
 import './financialComponent.selectors';
 import {FinancialComponentData, FinancialComponentPermissions} from './financialComponent.selectors';
@@ -65,16 +64,13 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
         </div>
         <div class="layout-horizontal row-padding-v">
           <div class="col col-3">
-            <paper-checkbox
-              ?checked="${this.financialData.headquarters_contribution_direct_cash}"
-              ?disabled="${!this.editMode}"
-            >
+            <paper-checkbox ?checked="${this.data.headquarters_contribution_direct_cash}" ?disabled="${!this.editMode}">
               Direct Cash Transfer
             </paper-checkbox>
           </div>
           <div class="col col-3">
             <paper-checkbox
-              ?checked="${this.financialData.headquarters_contribution_direct_payment}"
+              ?checked="${this.data.headquarters_contribution_direct_payment}"
               ?disabled="${!this.editMode}"
             >
               Direct Payment
@@ -82,7 +78,7 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
           </div>
           <div class="col col-3">
             <paper-checkbox
-              ?checked="${this.financialData.headquarters_contribution_reimbursement}"
+              ?checked="${this.data.headquarters_contribution_reimbursement}"
               ?disabled="${!this.editMode}"
             >
               Reimbrsement
@@ -96,14 +92,8 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
         </div>
         <div class="layout-horizontal row-padding-v">
           <div class="col col-3">
-            <paper-slider
-              value="${this.prop}"
-              max="7"
-              step="0.1"
-              @value-change="${this.changeValue()}"
-              ?disabled="${!this.editMode}"
-            ></paper-slider
-            >${this.prop}
+            <paper-slider value="${this.prop}" max="7" step="0.1" ?disabled="${!this.editMode}"></paper-slider>
+            ${this.prop}
           </div>
         </div>
 
@@ -114,22 +104,14 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
         </div>
         <div class="layout-horizontal row-padding-v">
           <div class="col col-3">
-            ${this.financialData?.document_type}
+            ${this.data?.document_type}
           </div>
         </div>
-        <p>prop: ${this.prop}</p>
-        <button
-          @click="${() => {
-            this.prop = Math.random() * 10;
-          }}"
-        >
-          change prop
-        </button>
         <div
           class="layout-horizontal right-align row-padding-v"
           ?hidden="${this.hideActionButtons(this.editMode, this.canEditFinancialComponent)}"
         >
-          <paper-button class="default" @tap="${this.cancelFinancialChanges}">
+          <paper-button class="default" @tap="${this.cancel}">
             Cancel
           </paper-button>
           <paper-button class="primary" @tap="${this.saveFinancialChanges}">
@@ -144,7 +126,7 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
   canEditFinancialComponent!: boolean;
 
   @property({type: Object})
-  originalFinancialData!: FinancialComponentData;
+  originalData!: FinancialComponentData;
 
   @property({type: Object})
   financialData!: FinancialComponentData | undefined;
@@ -175,10 +157,10 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
       return;
     }
     if (state.interventions.current) {
-      this.financialData = selectFinancialComponent(state);
+      this.data = selectFinancialComponent(state);
       this.permissions = selectFinancialComponentPermissions(state);
       this.setCanEditFinancialData(this.permissions.edit);
-      this.originalFinancialData = cloneDeep(this.financialData);
+      this.originalData = cloneDeep(this.data);
       this._prop = 0;
     }
   }
@@ -186,16 +168,6 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
   setCanEditFinancialData(editPermissions: FinancialComponentPermissions) {
     this.canEditFinancialComponent =
       editPermissions.cash_transfer_modalities || editPermissions.headquarters_contribution;
-  }
-
-  cancelFinancialChanges() {
-    // @@dci section data it's not updated unless I set the genderEquityRating to undefined first
-    // TODO: investigate this
-    this.financialData = undefined;
-    setTimeout(() => {
-      this.financialData = cloneDeep(this.originalFinancialData);
-      this.editMode = false;
-    }, 200);
   }
 
   validate() {
@@ -208,9 +180,5 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
     }
     // this.showLoading = true;
     this.editMode = false;
-  }
-
-  changeValue() {
-    console.log(Math.random() * 10);
   }
 }
