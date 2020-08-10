@@ -36,6 +36,8 @@ export class CpOutputLevel extends LitElement {
   @property() interventionId!: number;
   @property() resultLink!: ExpectedResult;
   @property({type: Boolean, reflect: true, attribute: 'show-cpo-level'}) showCPOLevel = false;
+  @property({type: Boolean}) showIndicators: boolean = true;
+  @property({type: Boolean}) showActivities: boolean = true;
 
   protected render(): TemplateResult {
     return html`
@@ -67,16 +69,18 @@ export class CpOutputLevel extends LitElement {
                         <div class="data">${this.resultLink.cp_output_name}</div>
                       </div>
 
-                      <div class="flex-1 flex-fix">
+                      <div class="flex-1 flex-fix" ?hidden="${!this.showIndicators}">
                         <div class="heading">Ram Indicators</div>
                         <div class="data">
-                          ${this.resultLink.ram_indicator_names.map(
-                            (name: string) => html`<div class="truncate">${name}</div>`
-                          )}
+                          ${this.resultLink.ram_indicator_names.length
+                            ? this.resultLink.ram_indicator_names.map(
+                                (name: string) => html`<div class="truncate">${name}</div>`
+                              )
+                            : '-'}
                         </div>
                       </div>
 
-                      <div class="flex-none">
+                      <div class="flex-none" ?hidden="${!this.showActivities}">
                         <div class="heading">Total Cache budget</div>
                         <div class="data">TTT 1231.144</div>
                       </div>

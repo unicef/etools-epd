@@ -36,6 +36,7 @@ export const ResultStructureStyles: CSSResult = css`
   .header {
     border: 1px solid var(--main-border-color);
     padding-left: 56px !important;
+    padding-right: 12px !important;
   }
   div[slot='row-data'] {
     width: 100%;
@@ -53,6 +54,10 @@ export const ResultStructureStyles: CSSResult = css`
     font-size: 12px;
     color: var(--secondary-text-color);
     box-sizing: border-box;
+  }
+  .add-pd.white {
+    border-top: 1px solid var(--main-border-color);
+    background-color: var(--primary-background-color);
   }
   .number-data {
     width: 100px;
@@ -98,6 +103,6 @@ export const ResultStructureStyles: CSSResult = css`
     cursor: pointer;
   }
   .empty-row {
-    padding: 16px 24px 16px 56px;
+    padding: 16px 12px 16px 56px;
   }
 `;
