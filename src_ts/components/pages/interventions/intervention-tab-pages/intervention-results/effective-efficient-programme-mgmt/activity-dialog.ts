@@ -7,7 +7,7 @@ import {getStore} from '../../utils/redux-store-access';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
-import {ProgrammeManagementActivityPermissions} from './effectiveAndEfficientProgrammeManagement.models';
+import {ProgrammeManagementActivityPermissions} from './effectiveEfficientProgrammeMgmt.models';
 
 /**
  * @customElement

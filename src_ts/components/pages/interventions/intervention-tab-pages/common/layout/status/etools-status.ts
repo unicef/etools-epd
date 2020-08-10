@@ -18,7 +18,7 @@ export interface EtoolsStatusModel extends EtoolsStatusItem {
  * @customElement
  */
 
-@customElement('etools-status')
+@customElement('etools-status-lit')
 export class EtoolsStatus extends LitElement {
   public render() {
     // language=HTML

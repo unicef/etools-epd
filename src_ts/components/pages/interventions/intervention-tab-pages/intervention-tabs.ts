@@ -17,7 +17,6 @@ import {getIntervention} from './common/actions';
 import {sharedStyles} from './common/styles/shared-styles-lit';
 import {isJsonStrMatch} from './utils/utils';
 import {pageContentHeaderSlottedStyles} from './common/layout/page-content-header/page-content-header-slotted-styles';
-import {layoutEnd, layoutFlex} from './common/styles/flex-layout-styles';
 
 /**
  * @LitElement
@@ -58,7 +57,7 @@ export class InterventionTabs extends LitElement {
           border-radius: 7%;
         }
       </style>
-      <etools-status></etools-status>
+      <etools-status-lit></etools-status-lit>
 
       <intervention-page-content-header with-tabs-visible>
         <h1 slot="page-title">${this.intervention.number}</h1>
@@ -75,12 +74,12 @@ export class InterventionTabs extends LitElement {
           <paper-button raised>Action 2</paper-button>
         </div>
 
-        <etools-tabs
+        <etools-tabs-lit
           slot="tabs"
           .tabs="${this.pageTabs}"
           .activeTab="${this.activeTab}"
           @iron-select="${this.handleTabChange}"
-        ></etools-tabs>
+        ></etools-tabs-lit>
       </intervention-page-content-header>
 
       <div class="page-content">
