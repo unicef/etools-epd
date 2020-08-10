@@ -19,10 +19,10 @@ import {isJsonStrMatch} from '../../utils/utils';
 import {
   selectProgrammeManagement,
   selectProgrammeManagementActivityPermissions
-} from './effectiveAndEfficientProgrammeManagement.selectors';
+} from './effectiveEfficientProgrammeMgmt.selectors';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {Permission} from '../../common/models/intervention.types';
-import {ProgrammeManagementActivityPermissions} from './effectiveAndEfficientProgrammeManagement.models';
+import {ProgrammeManagementActivityPermissions} from './effectiveEfficientProgrammeMgmt.models';
 import {AnyObject} from '../../common/models/globals.types';
 
 const getProgrammeData = () => {
