@@ -10,6 +10,7 @@ documentContainer.innerHTML = `
         --primary-background-color: #FFFFFF;
         --secondary-background-color: #eeeeee;
         --medium-theme-background-color: #eeeeee;
+        --light-theme-background-color: var(--paper-grey-50);
 
         --primary-text-color: rgba(0, 0, 0, 0.87);
         --secondary-text-color: rgba(0, 0, 0, 0.54);
@@ -32,6 +33,9 @@ documentContainer.innerHTML = `
 
         --success-color: #72c300;
         --error-color: #ea4022;
+        
+        --add-button-color: var(--success-color);
+        --icon-delete-color: var(--error-color);
 
         --primary-shade-of-green: #1A9251;
         --primary-shade-of-red: #E32526;
