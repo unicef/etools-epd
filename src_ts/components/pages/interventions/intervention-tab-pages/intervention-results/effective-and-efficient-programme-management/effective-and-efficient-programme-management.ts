@@ -60,6 +60,12 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
   }
 
   render() {
+    if (!this.data) {
+      return html`<style>
+          ${sharedStyles}
+        </style>
+        <etools-loading loading-text="Loading..." active></etools-loading>`;
+    }
     // language=HTML
     return html`
       <style>
@@ -81,7 +87,7 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
         </div>
 
         <etools-table
-          .items="${this.activities}"
+          .items="${this.data}"
           .columns="${this.columns}"
           .extraCSS="${sharedStyles}"
           .getChildRowTemplateMethod="${this.getChildRowTemplate.bind(this)}"
@@ -95,7 +101,7 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
   showLoading = false;
 
   @property({type: Object})
-  activities: AnyObject[] = [];
+  data: AnyObject[] = [];
 
   @property({type: Array})
   columns: EtoolsTableColumn[] = [
@@ -146,7 +152,7 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
 
     const newActivities = selectProgrammeManagement(state);
     if (!isJsonStrMatch(this.originalData, newActivities)) {
-      this.activities = [newActivities];
+      this.data = [newActivities];
       this.originalData = newActivities;
     }
 
@@ -155,7 +161,7 @@ export class EffectiveAndEfficientProgrammeManagement extends connect(getStore()
       this.permissions = newPermissions;
     }
 
-    this.activities = getProgrammeData();
+    this.data = getProgrammeData();
   }
 
   // private openActivityDialog() {

@@ -24,7 +24,7 @@ function RepeatableDataSetsMixin<T extends Constructor<LitElement>>(baseClass: T
     deleteActionDefaultErrMsg = 'Deleting items from server action has failed!';
 
     @property({type: Array})
-    dataItems!: any[];
+    data!: any[];
 
     private _deleteDialog!: EtoolsDialog;
     private elToDeleteIndex!: number;
@@ -42,7 +42,8 @@ function RepeatableDataSetsMixin<T extends Constructor<LitElement>>(baseClass: T
       removeDialog(this._deleteDialog);
     }
 
-    public _openDeleteConfirmation(index: number) {
+    public _openDeleteConfirmation(event: CustomEvent, index: number) {
+      event.stopPropagation();
       if (!this.editMode) {
         return;
       }
@@ -68,7 +69,7 @@ function RepeatableDataSetsMixin<T extends Constructor<LitElement>>(baseClass: T
     public _onDeleteConfirmation(event: any) {
       this._deleteDialog.opened = false;
       if (event.detail.confirmed === true) {
-        const id = this.dataItems[this.elToDeleteIndex] ? this.dataItems[this.elToDeleteIndex].id : null;
+        const id = this.data[this.elToDeleteIndex] ? this.data[this.elToDeleteIndex].id : null;
 
         if (id) {
           // @ts-ignore
@@ -142,9 +143,9 @@ function RepeatableDataSetsMixin<T extends Constructor<LitElement>>(baseClass: T
       }
       const index = Number(this.elToDeleteIndex);
       if (index >= 0) {
-        this.dataItems.splice(index, 1);
+        this.data.splice(index, 1);
         // To mke sure all req. observers are triggered
-        this.dataItems = cloneDeep(this.dataItems);
+        this.data = cloneDeep(this.data);
 
         fireEvent(this, 'delete-confirm', {index: this.elToDeleteIndex});
       }
@@ -156,10 +157,14 @@ function RepeatableDataSetsMixin<T extends Constructor<LitElement>>(baseClass: T
      * itemValueName - the name of property to compare selValue against
      */
     public isAlreadySelected(selValue: any, selIndex: any, itemValueName: any) {
-      const duplicateItems = this.dataItems.filter(function (item, index) {
+      const duplicateItems = this.data.filter((item, index) => {
         return parseInt(item[itemValueName]) === parseInt(selValue) && parseInt(String(index)) !== parseInt(selIndex);
       });
       return duplicateItems && duplicateItems.length;
+    }
+
+    public _emptyList(listLength: number) {
+      return listLength === 0;
     }
   }
   return RepeatableDataSetsClass;

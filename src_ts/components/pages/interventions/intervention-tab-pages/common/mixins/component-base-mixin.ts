@@ -82,17 +82,20 @@ function ComponentBaseMixin<T extends Constructor<LitElement>>(baseClass: T) {
         return;
       }
       this.data[key] = detail.selectedItem?.id;
+      this.requestUpdate();
     }
 
-    selectedItemsChanged(detail: any, key: string, optionValue?: string) {
+    selectedItemsChanged(detail: any, key: string, optionValue = 'id') {
       if (!detail.selectedItems) {
         return;
       }
-      this.data[key] = detail.selectedItems.map((i: any) => (optionValue ? i[optionValue] : i.id));
+      this.data[key] = detail.selectedItems.map((i: any) => i[optionValue]);
+      this.requestUpdate();
     }
 
     valueChanged(detail: any, key: string) {
       this.data[key] = detail.value;
+      this.requestUpdate();
     }
   }
   return ComponentBaseClass;

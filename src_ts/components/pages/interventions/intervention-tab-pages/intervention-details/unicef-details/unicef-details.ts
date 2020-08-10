@@ -9,16 +9,19 @@ import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import {buttonsStyles} from '../../common/styles/button-styles';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
-import cloneDeep from 'lodash-es/cloneDeep';
-import get from 'lodash-es/get';
 import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {selectPdUnicefDetails, selectPdUnicefDetailsPermissions} from './pdUnicefDetails.selectors';
-import {PdUnicefDetails, PdUnicefDetailsPermissions} from './pdUnicefDetails.models';
+import {PdUnicefDetailsPermissions} from './pdUnicefDetails.models';
 import {Permission} from '../../common/models/intervention.types';
 import {validateRequiredFields} from '../../utils/validation-helper';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../../utils/redux-store-access';
+import {patchIntervention} from '../../common/actions';
 import {AnyObject} from '../../common/models/globals.types';
+import {isJsonStrMatch} from '../../utils/utils';
+import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
+import cloneDeep from 'lodash-es/cloneDeep';
+import get from 'lodash-es/get';
 // import {handleItemsNoLongerAssignedToCurrentCountry} from '../../utils/common-methods';
 
 /**
@@ -31,7 +34,7 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
   }
   render() {
     // language=HTML
-    if (!this.pdUnicefDetails) {
+    if (!this.data) {
       return html`<style>
           ${sharedStyles}
         </style>
@@ -51,7 +54,7 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
 
         <div slot="panel-btns">
           <paper-icon-button
-            ?hidden="${this.hideEditIcon(this.editMode, this.canEditPdUnicefDetails)}"
+            ?hidden="${this.hideEditIcon(this.editMode, this.canEditAtLeastOneField)}"
             @tap="${this.allowEdit}"
             icon="create">
           </paper-icon-button>
@@ -61,7 +64,7 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
           <div class="col col-4">
             <paper-input
               label="Document Type"
-              .value="${this.pdUnicefDetails.document_type}"
+              .value="${this.data.document_type}"
               class="row-padding-v"
               readonly>
             </paper-input>
@@ -76,9 +79,11 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
               .options="${this.office_list}"
               option-label="name"
               option-value="id"
-              .selectedValues="${this.pdUnicefDetails.offices}"
+              .selectedValues="${this.data.offices}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.unicef_office)}"
               ?required="${this.permissions.required.unicef_office}"
+              @etools-selected-items-changed="${({detail}: CustomEvent) =>
+                this.selectedItemsChanged(detail, 'offices')}"
               trigger-value-change-event>
             </etools-dropdown-multi>
           </div>
@@ -90,9 +95,11 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
               .options="${this.section_list}"
               option-label="name"
               option-value="id"
-              .selectedValues="${this.pdUnicefDetails.sections}"
+              .selectedValues="${this.data.sections}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.sections)}"
               ?required="${this.permissions.required.sections}"
+              @etools-selected-items-changed="${({detail}: CustomEvent) =>
+                this.selectedItemsChanged(detail, 'sections')}"
               trigger-value-change-event>
             </etools-dropdown-multi>
           </div>
@@ -103,9 +110,8 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
               .options="${this.cluster_list}"
               option-label="name"
               option-value="id"
-              .selectedValues="${this.pdUnicefDetails.cluster_names}"
-              readonly
-              trigger-value-change-event>
+              .selectedValues="${this.data.cluster_names}"
+              readonly>
           </div>
         </div>
         <div class="layout-horizontal row-padding-v">
@@ -114,12 +120,14 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
               id="focalPointInput"
               label="Unicef Focal Points"
               class="row-padding-v"
-              .options="${this.focal_point_list}"
+              .options="${this.users_list}"
               option-label="name"
               option-value="id"
-              .selectedValues="${this.pdUnicefDetails.unicef_focal_points}"
+              .selectedValues="${this.data.unicef_focal_points}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.focal_points)}"
               ?required="${this.permissions.required.focal_points}"
+              @etools-selected-items-changed="${({detail}: CustomEvent) =>
+                this.selectedItemsChanged(detail, 'unicef_focal_points')}"
               trigger-value-change-event>
             </etools-dropdown-multi>
           </div>
@@ -131,17 +139,19 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
               class="row-padding-v"
               option-label="name"
               option-value="id"
-              .selected="${this.pdUnicefDetails.unicef_budget_owner}"
+              .selected="${this.data.budget_owner}"
               ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.budget_owner)}"
               ?required="${this.permissions.required.budget_owner}"
+              @etools-selected-item-changed="${({detail}: CustomEvent) =>
+                this.selectedItemChanged(detail, 'budget_owner')}"
               trigger-value-change-event>
             </etools-dropdown>
           </div>
         </div>
 
         <div class="layout-horizontal right-align row-padding-v"
-          ?hidden="${this.hideActionButtons(this.editMode, this.canEditPdUnicefDetails)}">
-          <paper-button class="default" @tap="${this.cancelPdDetails}">
+          ?hidden="${this.hideActionButtons(this.editMode, this.canEditAtLeastOneField)}">
+          <paper-button class="default" @tap="${this.cancel}">
             Cancel
           </paper-button>
           <paper-button class="primary" @tap="${this.savePdDetails}">
@@ -151,15 +161,6 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
       </etools-content-panel>
     `;
   }
-
-  @property({type: Boolean})
-  canEditPdUnicefDetails!: boolean;
-
-  @property({type: Object})
-  originalPdUnicefDetails!: PdUnicefDetails;
-
-  @property({type: Object})
-  pdUnicefDetails!: PdUnicefDetails;
 
   @property({type: Object})
   permissions!: Permission<PdUnicefDetailsPermissions>;
@@ -171,7 +172,10 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
   showLoading = false;
 
   @property({type: Array})
-  focal_point_list!: AnyObject[];
+  users_list!: AnyObject[];
+
+  @property({type: Array})
+  budget_owner_list!: AnyObject[];
 
   @property({type: Array})
   office_list!: AnyObject[];
@@ -182,40 +186,47 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
   @property({type: Array})
   cluster_list!: AnyObject[];
 
-  @property({type: Array})
-  budget_owner_list!: AnyObject[];
-
-  connectedCallback() {
-    super.connectedCallback();
-  }
-
   stateChanged(state: any) {
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'details')) {
+      return;
+    }
+
     if (state.user && state.user.data) {
       this.isUnicefUser = state.user.data.is_unicef_user;
     }
     if (state.interventions.current) {
-      this.pdUnicefDetails = selectPdUnicefDetails(state);
-      this.permissions = selectPdUnicefDetailsPermissions(state);
-      this.setCanEditPdUnicefDetails(this.permissions.edit);
-      this.originalPdUnicefDetails = cloneDeep(this.pdUnicefDetails);
+      const pdUnicefDetails = selectPdUnicefDetails(state);
+      if (!isJsonStrMatch(this.data, pdUnicefDetails)) {
+        this.data = cloneDeep(pdUnicefDetails);
+        this.originalData = cloneDeep(pdUnicefDetails);
+      }
     }
+    this.setPermissions(state);
     this.populateDropdownOptions(state);
   }
 
+  private setPermissions(state: any) {
+    const permissions = selectPdUnicefDetailsPermissions(state);
+    if (!isJsonStrMatch(this.permissions, permissions)) {
+      this.permissions = permissions;
+      this.set_canEditAtLeastOneField(this.permissions.edit);
+    }
+  }
+
   populateDropdownOptions(state: any) {
-    // @@dci need to refactor this when things got clear
     if (!this.isUnicefUser) {
-      if (this.pdUnicefDetails) {
+      if (this.data) {
         // if user is not Unicef user, this is opened in read-only mode and we just display already saved
-        this.focal_point_list = [...this.pdUnicefDetails.unicef_focal_points];
-        this.section_list = [...this.pdUnicefDetails.sections];
-        this.cluster_list = [...this.pdUnicefDetails.cluster_names];
-        this.office_list = [...this.pdUnicefDetails.offices];
-        this.budget_owner_list = [...this.pdUnicefDetails.unicef_budget_owner];
+        this.users_list = [...this.data.unicef_focal_points];
+        this.section_list = [...this.data.sections];
+        this.cluster_list = [...this.data.cluster_names];
+        this.office_list = [...this.data.offices];
+        this.budget_owner_list = [...this.data.budget_owner];
       }
     } else {
-      if (get(state, 'commonData.unicefUsers.length')) {
-        this.focal_point_list = [...state.commonData!.unicefUsers];
+      if (get(state, 'commonData.unicefUsersData.length')) {
+        this.users_list = [...state.commonData!.unicefUsersData];
+        this.budget_owner_list = this.users_list;
       }
       if (get(state, 'commonData.sections.length')) {
         this.section_list = [...state.commonData!.sections];
@@ -225,9 +236,6 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
       }
       if (get(state, 'commonData.offices.length')) {
         this.office_list = [...state.commonData!.offices];
-      }
-      if (get(state, 'commonData.budget_owner.length')) {
-        this.budget_owner_list = [...state.commonData!.budget_owner];
       }
       // TO DO
       // check if already saved records exists on loaded data, if not they will be added
@@ -240,19 +248,6 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
     }
   }
 
-  setCanEditPdUnicefDetails(editPermissions: PdUnicefDetailsPermissions) {
-    this.canEditPdUnicefDetails =
-      editPermissions.budget_owner ||
-      editPermissions.focal_points ||
-      editPermissions.sections ||
-      editPermissions.unicef_office;
-  }
-
-  cancelPdDetails() {
-    this.pdUnicefDetails = cloneDeep(this.originalPdUnicefDetails);
-    this.editMode = false;
-  }
-
   validate() {
     return validateRequiredFields(this);
   }
@@ -261,8 +256,10 @@ export class UnicefDetailsElement extends connect(getStore())(ComponentBaseMixin
     if (!this.validate()) {
       return;
     }
-    // this.showLoading = true;
-
-    this.editMode = false;
+    getStore()
+      .dispatch(patchIntervention(this.data))
+      .then(() => {
+        this.editMode = false;
+      });
   }
 }

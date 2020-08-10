@@ -1,6 +1,7 @@
 import {LitElement, customElement, html, property} from 'lit-element';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import '@polymer/iron-label/iron-label';
+import '@unicef-polymer/etools-currency-amount-input/etools-currency-amount-input';
 import {elevationStyles} from '../common/styles/elevation-styles';
 import {gridLayoutStylesLit} from '../common/styles/grid-layout-styles-lit';
 import {sharedStyles} from '../common/styles/shared-styles-lit';
@@ -14,6 +15,7 @@ import {isJsonStrMatch} from '../utils/utils';
 import './fund-reservations-display/fund-reservations-display';
 import './monitoring-visits-list/monitoring-visits-list';
 import {MinimalAgreement} from '../common/models/agreement.types';
+import {pageIsNotCurrentlyActive} from '../utils/common-methods';
 import {AnyObject} from '../common/models/globals.types';
 
 /**
@@ -35,6 +37,10 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
         ${sharedStyles} :host {
           width: 100%;
           --ecp-content-padding: 0px;
+          --paper-input-container-underline-disabled: {
+            display: none;
+            width: 140px;
+          }
         }
         .block {
           display: block !important;
@@ -72,6 +78,10 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
           padding: 15px 20px;
           background-color: var(--primary-background-color);
         }
+        etools-currency-amount-input {
+          width: 140px;
+          text-align: right;
+        }
       </style>
 
       <div class="page-content elevation" elevation="1" id="top-container">
@@ -108,7 +118,7 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
         </div>
 
         <div class="row-h flex-c">
-          <div class="col col-6 block">
+          <div class="col col-4 block">
             <iron-label for="interventions_timeline">
               Timeline
             </iron-label>
@@ -117,7 +127,7 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
               ${prettyDate(this.intervention.start)} - ${prettyDate(this.intervention.end)}
             </div>
           </div>
-          <div class="col col-6 block">
+          <div class="col col-4 block">
             <iron-label for="intervention-sections">
               Sections
             </iron-label>
@@ -127,23 +137,92 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
             </div>
           </div>
         </div>
+
+        <div class="row-h flex-c">
+          <div class="col col-4 block">
+              <label class="paper-label">Unicef Cash Contribution</label>
+              </br>
+              <etools-currency-amount-input
+              .value="${this.intervention.planned_budget.unicef_cash_local}"
+              type="number"
+              placeholder="&#8212;"
+              no-label-float
+              disabled
+            >
+            </etools-currency-amount-input>
+          </div>
+          <div class="col col-4 block">
+            <label class="paper-label">Unicef Supply Contribution</label>
+            </br>
+            <etools-currency-amount-input
+              .value="${this.intervention.planned_budget.in_kind_amount_local}"
+              type="number"
+              placeholder="&#8212;"
+              no-label-float
+              disabled
+            >
+            </etools-currency-amount-input>
+          </div>
+          <div class="col col-4 block">
+            <label class="paper-label">Total Unicef Contribution</label>
+            </br>
+            <etools-currency-amount-input
+              .value="${this._getTotalUnicef()}"
+              type="number"
+              placeholder="&#8212;"
+              no-label-float
+              disabled
+            >
+            </etools-currency-amount-input>
+          </div>
+        </div>
+      <div class="row-h flex-c">
+         <div class="col col-4 block">
+          <label class="paper-label">Partner HACT Risk Rating</label>
+          <br />
+          <div class="content">
+            ${this.interventionPartner.rating || 'N\\A'}
+          </div>
+        </div>
+        <div class="col col-4 block">
+          <label class="paper-label">Partner PSEA Risk Rating</label>
+          <br />
+          <div class="content">
+            ${this.interventionPartner.sea_risk_rating_name || 'N\\A'}
+          </div>
+        </div>
+       </div>
       </div>
 
-      <etools-content-panel id="fund-reservation-display" class="content-section" panel-title="Implementation Status">
-        <fund-reservations-display
-          .intervention="${this.intervention}"
-          .frsDetails="${this.intervention.frs_details}"
-        ></fund-reservations-display>
-      </etools-content-panel>
+      ${
+        this.isUnicefUser
+          ? html`
+              <etools-content-panel
+                id="fund-reservation-display"
+                class="content-section"
+                panel-title="Implementation Status"
+              >
+                <fund-reservations-display
+                  .intervention="${this.intervention}"
+                  .frsDetails="${this.intervention.frs_details}"
+                ></fund-reservations-display>
+              </etools-content-panel>
 
-      <etools-content-panel id="monitoring-visits-panel" class="content-section" panel-title="Monitoring Activities">
-        <monitoring-visits-list
-          .interventionId="${this.intervention.id}"
-          .partnerId="${this.intervention.partner_id}"
-          showTpmVisits
-        >
-        </monitoring-visits-list>
-      </etools-content-panel>
+              <etools-content-panel
+                id="monitoring-visits-panel"
+                class="content-section"
+                panel-title="Monitoring Activities"
+              >
+                <monitoring-visits-list
+                  .interventionId="${this.intervention.id}"
+                  .partnerId="${this.intervention.partner_id}"
+                  showTpmVisits
+                >
+                </monitoring-visits-list>
+              </etools-content-panel>
+            `
+          : html``
+      }
     `;
   }
 
@@ -165,13 +244,23 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
   @property({type: Array})
   sections!: AnyObject[];
 
-  @property({type: Array})
-  inteventionSections!: [];
+  @property({type: String})
+  inteventionSections = '';
 
   @property({type: Array})
   resultLinks!: ExpectedResult[];
 
+  @property({type: Array})
+  interventionPartner!: AnyObject;
+
+  @property({type: Boolean})
+  isUnicefUser = false;
+
   stateChanged(state: any) {
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'overview')) {
+      return;
+    }
+
     if (get(state, 'interventions.current')) {
       const currentIntervention = get(state, 'interventions.current');
       this.intervention = cloneDeep(currentIntervention);
@@ -190,12 +279,19 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
     if (!isJsonStrMatch(this.sections, state.commonData!.sections)) {
       this.sections = [...state.commonData!.sections];
     }
-
+    if (this.intervention && get(state, 'commonData.partners')) {
+      const partners = [...state.commonData!.partners];
+      const interventionPartner = partners.find((partner) => partner.name === this.intervention.partner);
+      this.interventionPartner = interventionPartner || {};
+    }
     if (this.sections && this.intervention) {
       this._parseSections(this.sections.length, this.intervention.sections.length);
     }
     if (this.cpOutputs && this.resultLinks) {
       this._parseCpOutputs(this.cpOutputs.length, this.resultLinks.length);
+    }
+    if (state.user && state.user.data) {
+      this.isUnicefUser = state.user.data.is_unicef_user;
     }
   }
 
@@ -215,7 +311,7 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
 
   _parseSections(sectionsLength: number, intSectionsLength: number) {
     if (!sectionsLength || !intSectionsLength) {
-      this.inteventionSections = [];
+      this.inteventionSections = '';
       return;
     }
 
@@ -232,6 +328,23 @@ export class InterventionOverview extends connect(getStore())(LitElement) {
       }
     });
 
-    return sectionNames;
+    return sectionNames.join(', ');
+  }
+
+  _getTotalUnicef() {
+    let total = 0;
+    if (this.intervention.planned_budget.unicef_cash_local) {
+      const val = parseFloat(this.intervention.planned_budget.unicef_cash_local);
+      if (!isNaN(val)) {
+        total += val;
+      }
+    }
+    if (this.intervention.planned_budget.in_kind_amount_local) {
+      const val = parseFloat(this.intervention.planned_budget.in_kind_amount_local);
+      if (!isNaN(val)) {
+        total += val;
+      }
+    }
+    return total;
   }
 }
