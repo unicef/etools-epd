@@ -29,7 +29,7 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
   }
 
   render() {
-    if (!this.documentDetails) {
+    if (!this.data) {
       return html`<style>
           ${sharedStyles}
         </style>
@@ -57,7 +57,7 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
             label="Title"
             always-float-label
             placeholder="—"
-            .value="${this.documentDetails.title}"
+            .value="${this.data.title}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'title')}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.title)}"
             ?required="${this.permissions.required.title}"
@@ -72,7 +72,7 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
             always-float-label
             type="text"
             placeholder="—"
-            .value="${this.documentDetails.context}"
+            .value="${this.data.context}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'context')}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.context)}"
             ?required="${this.permissions.required.context}"
@@ -86,7 +86,7 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
             label="Implementation Strategy"
             always-float-label
             placeholder="—"
-            .value="${this.documentDetails.implementation_strategy}"
+            .value="${this.data.implementation_strategy}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'implementation_strategy')}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.implementation_strategy)}"
             ?required="${this.permissions.required.implementation_strategy}"
@@ -100,7 +100,7 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
             label="Partner non-financial contribution"
             always-float-label
             placeholder="—"
-            .value="${this.documentDetails.ip_program_contribution}"
+            .value="${this.data.ip_program_contribution}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'ip_program_contribution')}"
             ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.ip_program_contribution)}"
             ?required="${this.permissions.required.ip_program_contribution}"
@@ -113,13 +113,13 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
     `;
   }
   @property({type: Object})
-  documentDetails!: DocumentDetails;
+  data!: DocumentDetails;
 
   @property({type: Object})
   permissions!: Permission<DocumentDetailsPermissions>;
 
   @property({type: Object})
-  originalDocumentDetails = {};
+  originalData = {};
 
   @property({type: Boolean})
   showLoading = false;
@@ -135,8 +135,8 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
     if (!state.interventions.current) {
       return;
     }
-    this.documentDetails = selectDocumentDetails(state);
-    this.originalDocumentDetails = cloneDeep(this.documentDetails);
+    this.data = selectDocumentDetails(state);
+    this.originalData = cloneDeep(this.data);
     this.sePermissions(state);
   }
 
@@ -146,12 +146,6 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
       this.permissions = newPermissions;
       this.set_canEditAtLeastOneField(this.permissions.edit);
     }
-  }
-
-  cancel() {
-    Object.assign(this.documentDetails, this.originalDocumentDetails);
-    this.documentDetails = cloneDeep(this.originalDocumentDetails);
-    this.editMode = false;
   }
 
   validate() {
@@ -166,7 +160,6 @@ export class PartnerDetailsElement extends connect(getStore())(ComponentBaseMixi
       .dispatch(patchIntervention(this.data))
       .then(() => {
         this.editMode = false;
-        this.data = {};
       });
   }
 }
