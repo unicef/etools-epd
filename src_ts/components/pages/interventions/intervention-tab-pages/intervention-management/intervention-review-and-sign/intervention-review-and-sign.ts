@@ -98,7 +98,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
             <datepicker-lite
               id="submissionDateField"
               label="Document Submission Date"
-              value="${this.intervention.submission_date}"
+              value="${this.data.submission_date}"
               readonly="?${!this.permissions.edit.submission_date}"
               selected-date-display-format="D MMM YYYY"
               required="?${this.permissions.required.submission_date}"
@@ -114,12 +114,12 @@ export class InterventionReviewAndSign extends connect(getStore())(
             <paper-input-container>
               <div slot="input" class="paper-input-input">
                 <paper-checkbox
-                  checked="${this.intervention.submitted_to_prc}"
+                  checked="${this.data.submitted_to_prc}"
                   ?disabled="${this._isSubmittedToPrcCheckReadonly(
                     this.permissions.edit.prc_review_attachment,
                     this._lockSubmitToPrc
                   )}"
-                  ?hidden="${!this._isNotSSFA(this.intervention.document_type)}"
+                  ?hidden="${!this._isNotSSFA(this.data.document_type)}"
                   @checked-changed="${({detail}: CustomEvent) => this.logSomething(detail, 'technical_guidance')}"
                 >
                   Submitted to PRC?
@@ -129,16 +129,16 @@ export class InterventionReviewAndSign extends connect(getStore())(
           </div>
         </div>
         ${
-          this._showSubmittedToPrcFields(this.intervention.submitted_to_prc)
+          this._showSubmittedToPrcFields(this.data.submitted_to_prc)
             ? html` <div class="layout-horizontal row-padding-v row-second-bg">
                 <div class="col col-3">
                   <!-- Submission Date to PRC -->
                   <datepicker-lite
                     id="submissionDatePrcField"
                     label="Submission Date to PRC"
-                    value="${this.intervention.submission_date_prc}"
+                    value="${this.data.submission_date_prc}"
                     readonly="?${!this.permissions.edit.submission_date_prc}"
-                    required="?${this.intervention.prc_review_attachment}"
+                    required="?${this.data.prc_review_attachment}"
                     selected-date-display-format="D MMM YYYY"
                     auto-validate
                   >
@@ -149,9 +149,9 @@ export class InterventionReviewAndSign extends connect(getStore())(
                   <datepicker-lite
                     id="reviewDatePrcField"
                     label="Review Date by PRC"
-                    value="${this.intervention.review_date_prc}"
+                    value="${this.data.review_date_prc}"
                     readonly="?${!this.permissions.edit.review_date_prc}"
-                    required="?${this.intervention.prc_review_attachment}"
+                    required="?${this.data.prc_review_attachment}"
                     selected-date-display-format="D MMM YYYY"
                     auto-validate
                   >
@@ -163,11 +163,11 @@ export class InterventionReviewAndSign extends connect(getStore())(
                     id="reviewDocUpload"
                     label="PRC Review Document"
                     accept=".doc,.docx,.pdf,.jpg,.png"
-                    file-url="${this.intervention.prc_review_attachment}"
+                    file-url="${this.data.prc_review_attachment}"
                     upload-endpoint="${this.uploadEndpoint}"
                     @upload-finished="_prcRevDocUploadFinished"
                     ?readonly="${!this.permissions.edit.prc_review_attachment}"
-                    show-delete-btn="${this.showPrcReviewDeleteBtn(this.intervention.status)}"
+                    show-delete-btn="${this.showPrcReviewDeleteBtn(this.data.status)}"
                     @delete-file="${this._prcRevDocDelete}"
                     @upload-started="${this._onUploadStarted}"
                     @change-unsaved-file="${this._onChangeUnsavedFile}"
@@ -185,7 +185,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
               label="Signed By Partner Authorized Officer"
               placeholder="&#8212;"
               .options="${this.getCleanEsmmOptions(this.agreementAuthorizedOfficers)}"
-              .selected="${this.intervention.partner_authorized_officer_signatory}"
+              .selected="${this.data.partner_authorized_officer_signatory}"
               ?readonly="${this.permissions.edit.partner_authorized_officer_signatory}"
               ?required="${this.permissions.required.partner_authorized_officer_signatory}"
               auto-validate
@@ -198,7 +198,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
             <datepicker-lite
               id="signedByPartnerDateField"
               label="Signed by Partner Date"
-              .value="${this.intervention.signed_by_partner_date}"
+              .value="${this.data.signed_by_partner_date}"
               readonly="${!this.permissions.edit.signed_by_partner_date}"
               ?required="${this.permissions.required.signed_by_partner_date}"
               auto-validate
@@ -224,7 +224,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
             <datepicker-lite
               id="signedByUnicefDateField"
               label="Signed by UNICEF Date"
-              value="${this.intervention.signed_by_unicef_date}"
+              value="${this.data.signed_by_unicef_date}"
               readonly="${!this.permissions.edit.signed_by_unicef_date}"
               required="?${this.permissions.required.signed_by_unicef_date}"
               auto-validate
@@ -247,7 +247,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
               .options="${this.getCleanEsmmOptions(this.signedByUnicefUsers)}"
               option-value="id"
               option-label="name"
-              selected="${this.intervention.unicef_signatory}"
+              selected="${this.data.unicef_signatory}"
               readonly="?${!this.permissions.edit.unicef_signatory}"
               auto-validate
               error-message="Please select UNICEF user"
@@ -262,10 +262,10 @@ export class InterventionReviewAndSign extends connect(getStore())(
               id="signedIntervFile"
               label="Signed PD/SSFA"
               accept=".doc,.docx,.pdf,.jpg,.png"
-              file-url="${this.intervention.signed_pd_attachment}"
+              file-url="${this.data.signed_pd_attachment}"
               upload-endpoint="${this.uploadEndpoint}"
               @upload-finished="${this._signedPDUploadFinished}"
-              show-delete-btn="${this.showSignedPDDeleteBtn(this.intervention.status)}"
+              show-delete-btn="${this.showSignedPDDeleteBtn(this.data.status)}"
               @delete-file="${this._signedPDDocDelete}"
               auto-validate
               readonly="?${!this.permissions.edit.signed_pd_attachment}"
@@ -277,11 +277,11 @@ export class InterventionReviewAndSign extends connect(getStore())(
             </etools-upload>
           </div>
           ${
-            this._showDaysToSignedFields(this.intervention.status)
+            this._showDaysToSignedFields(this.data.status)
               ? html`<div class="col col-3">
                     <paper-input
                       label="Days from Submission to Signed"
-                      value="${this.intervention.days_from_submission_to_signed}"
+                      value="${this.data.days_from_submission_to_signed}"
                       placeholder="&#8212;"
                       readonly
                     >
@@ -290,7 +290,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
                   <div class="col col-3">
                     <paper-input
                       label="Days from Review to Signed"
-                      value="${this.intervention.days_from_review_to_signed}"
+                      value="${this.data.days_from_review_to_signed}"
                       placeholder="&#8212;"
                       readonly
                     >
@@ -304,10 +304,10 @@ export class InterventionReviewAndSign extends connect(getStore())(
   }
 
   @property({type: Object})
-  originalIntervention!: Document;
+  originalData!: Document;
 
   @property({type: Object})
-  intervention!: Document;
+  data!: Document;
 
   @property({type: Object})
   permissions!: Permission<DocumentPermission>;
@@ -335,17 +335,17 @@ export class InterventionReviewAndSign extends connect(getStore())(
       this.signedByUnicefUsers = cloneDeep(state.commonData!.unicefUsersData);
     }
     if (state.interventions.current) {
-      this.intervention = selectManagementDocumentIntervention(state);
+      this.data = selectManagementDocumentIntervention(state);
       this.permissions = selectManagementDocumentInterventionPermissions(state);
-      if (this.intervention.submitted_to_prc) {
+      if (this.data.submitted_to_prc) {
         this._lockSubmitToPrc = true;
       } else {
         this._lockSubmitToPrc = false;
       }
     }
     const agreements = state.agreements.list;
-    if (!isEmpty(agreements) && !isEmpty(state.interventions.current)) {
-      const agreementData = this.filterAgreementsById(agreements, this.intervention.agreement);
+    if (!isEmpty(agreements) && !isEmpty(state.data.current)) {
+      const agreementData = this.filterAgreementsById(agreements, this.data.agreement);
       this.agreementAuthorizedOfficers = this.getAuthorizedOfficersList(agreementData);
     }
   }
@@ -451,7 +451,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
       '#signedIntervFile',
       '#submissionDateField'
     ];
-    if (this.intervention.prc_review_attachment) {
+    if (this.data.prc_review_attachment) {
       const dateFields = ['#submissionDatePrcField', '#reviewDatePrcField'];
       fieldSelectors.push(...dateFields);
     }
@@ -470,7 +470,7 @@ export class InterventionReviewAndSign extends connect(getStore())(
    * we make the date fields required
    */
   _showSubmittedToPrcFields(submittedToPrc: boolean) {
-    return this._isNotSSFA(this.intervention.document_type) && submittedToPrc;
+    return this._isNotSSFA(this.data.document_type) && submittedToPrc;
   }
 
   _isNotSSFA(documentType: string) {
@@ -490,17 +490,17 @@ export class InterventionReviewAndSign extends connect(getStore())(
       return;
     }
 
-    const submittedToPrc = this._showSubmittedToPrcFields(this.intervention.submitted_to_prc);
+    const submittedToPrc = this._showSubmittedToPrcFields(this.data.submitted_to_prc);
     if (!submittedToPrc) {
-      this.intervention.submitted_to_prc = false;
+      this.data.submitted_to_prc = false;
       this._resetPrcFields();
     }
   }
 
   _resetPrcFields() {
-    this.intervention.submission_date_prc = '';
-    this.intervention.review_date_prc = '';
-    this.intervention.prc_review_attachment = '';
+    this.data.submission_date_prc = '';
+    this.data.review_date_prc = '';
+    this.data.prc_review_attachment = '';
   }
 
   // update FR Number on intervention
@@ -544,14 +544,14 @@ export class InterventionReviewAndSign extends connect(getStore())(
     getStore().dispatch({type: CONSTANTS.DECREASE_UPLOADS_IN_PROGRESS});
     if (e.detail.success) {
       const response = e.detail.success;
-      this.intervention.signed_pd_attachment = response.id;
+      this.data.signed_pd_attachment = response.id;
       getStore().dispatch({type: CONSTANTS.INCREASE_UNSAVED_UPLOADS});
     }
   }
 
   _signedPDDocDelete(_e: CustomEvent) {
     // @lajos: originally null
-    this.intervention.signed_pd_attachment = '';
+    this.data.signed_pd_attachment = '';
     getStore().dispatch({type: CONSTANTS.DECREASE_UNSAVED_UPLOADS});
   }
 
@@ -566,17 +566,17 @@ export class InterventionReviewAndSign extends connect(getStore())(
 
   _prcRevDocDelete(_e: CustomEvent) {
     // @lajos this initially was set to undefined
-    this.intervention.prc_review_attachment = '';
+    this.data.prc_review_attachment = '';
     getStore().dispatch({type: CONSTANTS.DECREASE_UNSAVED_UPLOADS});
     this._resetPrcFieldsValidations();
   }
 
   showPrcReviewDeleteBtn(status: string) {
-    return this._isDraft(status) && !!this.originalIntervention && !this.originalIntervention.prc_review_attachment;
+    return this._isDraft(status) && !!this.originalData && !this.originalData.prc_review_attachment;
   }
 
   showSignedPDDeleteBtn(status: string) {
-    return this._isDraft(status) && !!this.originalIntervention && !this.originalIntervention.signed_pd_attachment;
+    return this._isDraft(status) && !!this.originalData && !this.originalData.signed_pd_attachment;
   }
 
   getCurrentDate() {
