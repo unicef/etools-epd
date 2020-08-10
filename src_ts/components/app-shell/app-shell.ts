@@ -223,7 +223,7 @@ export class AppShell extends connect(store)(LitElement) {
     data.sections = this.getValue(response[2]);
     data.disaggregations = this.getValue(response[3]);
     data.offices = this.getValue(response[4]);
-    data.unicefUsers = this.getValue(response[5]);
+    data.unicefUsersData = this.getValue(response[5]);
     data.cpOutputs = this.getValue(response[7]);
     const staticData = this.getValue(response[6], {});
     data.locationTypes = isEmpty(staticData.location_types) ? [] : staticData.location_types;

@@ -343,9 +343,9 @@ export class FundReservations extends connect(getStore())(FrNumbersConsistencyMi
 
   // trigger FR Numbers update on main intervention
   _triggerPdFrsUpdate(newFrsDetails: FrsDetails) {
-    const frsIDs = (newFrsDetails.frs || []).map(fr => fr.id);
+    const frsIDs = (newFrsDetails.frs || []).map((fr) => fr.id);
     this.frsDialogEl.closeDialog();
-    getStore().dispatch(patchIntervention({frs: frsIDs}))
+    getStore().dispatch(patchIntervention({frs: frsIDs}));
   }
 
   thereAreFrs(_frsDetails: any) {

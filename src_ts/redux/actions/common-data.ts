@@ -3,17 +3,13 @@ import {AnyObject} from '../../types/globals';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {etoolsEndpoints} from '../../endpoints/endpoints-list';
 
-export const SET_UNICEF_USERS = 'SET_UNICEF_USERS';
 export const SET_ALL_STATIC_DATA = 'SET_ALL_STATIC_DATA';
 
-export interface CommonDataActionSetUnicefUsers extends Action<'SET_UNICEF_USERS'> {
-  unicefUsers: AnyObject[];
-}
 export interface CommonDataActionSetAllStaticData extends Action<'SET_ALL_STATIC_DATA'> {
   genderEquityRatings: AnyObject[];
 }
 
-export type CommonDataAction = CommonDataActionSetUnicefUsers | CommonDataActionSetAllStaticData;
+export type CommonDataAction = CommonDataActionSetAllStaticData;
 
 export const getPartners = () => {
   return sendRequest({
