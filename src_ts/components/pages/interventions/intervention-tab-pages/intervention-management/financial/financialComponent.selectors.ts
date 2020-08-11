@@ -6,11 +6,8 @@ export class FinancialComponentData extends ModelsBase {
     super();
     this.setObjProperties(intervention);
   }
-  document_type = '';
-  headquarters_contribution_direct_cash = false;
-  headquarters_contribution_direct_payment = false;
-  headquarters_contribution_reimbursement = false;
-  cash_transfer_modalities = '';
+  cash_tranfer_modalities = '';
+  hq_support_cost = '';
 }
 
 export class FinancialComponentPermissions extends ModelsBase {
@@ -19,5 +16,5 @@ export class FinancialComponentPermissions extends ModelsBase {
     this.setObjProperties(permissions);
   }
   cash_transfer_modalities = true;
-  headquarters_contribution = true;
+  hq_support_cost = true;
 }

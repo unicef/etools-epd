@@ -64,22 +64,25 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
         </div>
         <div class="layout-horizontal row-padding-v">
           <div class="col col-3">
-            <paper-checkbox ?checked="${this.data.headquarters_contribution_direct_cash}" ?disabled="${!this.editMode}">
+            <paper-checkbox
+              ?checked="${this.checkCashTransferModality('Direct Cash Transfer')}"
+              ?disabled="${!this.canEditCashTransfer}"
+            >
               Direct Cash Transfer
             </paper-checkbox>
           </div>
           <div class="col col-3">
             <paper-checkbox
-              ?checked="${this.data.headquarters_contribution_direct_payment}"
-              ?disabled="${!this.editMode}"
+              ?checked="${this.checkCashTransferModality('Direct Payment')}"
+              ?disabled="${!this.canEditCashTransfer}"
             >
               Direct Payment
             </paper-checkbox>
           </div>
           <div class="col col-3">
             <paper-checkbox
-              ?checked="${this.data.headquarters_contribution_reimbursement}"
-              ?disabled="${!this.editMode}"
+              ?checked="${this.checkCashTransferModality('Reimbrsement')}"
+              ?disabled="${!this.canEditCashTransfer}"
             >
               Reimbrsement
             </paper-checkbox>
@@ -92,7 +95,13 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
         </div>
         <div class="layout-horizontal row-padding-v">
           <div class="col col-3">
-            <paper-slider value="${this.prop}" max="7" step="0.1" ?disabled="${!this.editMode}"></paper-slider>
+            <paper-slider
+              .value="${this.prop}"
+              max="7"
+              step="0.1"
+              ?disabled="${!this._canEditHQ}"
+              @value-changed="${(e: CustomEvent) => this.updateSlider(e)}"
+            ></paper-slider>
             ${this.prop}
           </div>
         </div>
@@ -104,7 +113,7 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
         </div>
         <div class="layout-horizontal row-padding-v">
           <div class="col col-3">
-            ${this.data?.document_type}
+            ${this.currency}
           </div>
         </div>
         <div
@@ -125,11 +134,20 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
   @property({type: Boolean})
   canEditFinancialComponent!: boolean;
 
+  @property({type: Boolean})
+  canEditHQOriginal!: boolean;
+
+  @property({type: Boolean})
+  canEditCashTransferOriginal!: boolean;
+
   @property({type: Object})
   originalData!: FinancialComponentData;
 
   @property({type: Object})
-  financialData!: FinancialComponentData | undefined;
+  data!: FinancialComponentData;
+
+  @property({type: String})
+  currency!: string;
 
   @property({type: Object})
   permissions!: Permission<FinancialComponentPermissions>;
@@ -137,11 +155,33 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
   @property({type: Boolean})
   showLoading = false;
 
-  @property({type: Number})
-  _prop!: number;
+  @property({type: Boolean})
+  _canEditCashTransfer!: boolean;
+
+  set canEditCashTransfer(val) {
+    this._canEditCashTransfer = val;
+  }
+
+  get canEditCashTransfer() {
+    return this._canEditCashTransfer;
+  }
+
+  @property({type: Boolean})
+  _canEditHQ!: boolean;
+
+  set canEditHQ(val) {
+    this._canEditHQ = val;
+  }
+
+  get canEditHQ() {
+    return this._canEditHQ;
+  }
+
+  @property({type: String})
+  _prop!: string;
 
   set prop(val) {
-    this._prop = Math.floor(val);
+    this._prop = val;
   }
 
   get prop() {
@@ -157,17 +197,26 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
       return;
     }
     if (state.interventions.current) {
+      console.log('staet changed');
       this.data = selectFinancialComponent(state);
       this.permissions = selectFinancialComponentPermissions(state);
+      this.currency = state.interventions.current.planned_budget.currency;
       this.setCanEditFinancialData(this.permissions.edit);
       this.originalData = cloneDeep(this.data);
-      this._prop = 0;
+      if (this.data.hq_support_cost) {
+        this._prop = this.data.hq_support_cost;
+      } else {
+        this._prop = '0';
+        this.data.hq_support_cost = '0';
+      }
+      this.originalData = cloneDeep(this.data);
     }
   }
 
   setCanEditFinancialData(editPermissions: FinancialComponentPermissions) {
-    this.canEditFinancialComponent =
-      editPermissions.cash_transfer_modalities || editPermissions.headquarters_contribution;
+    this.canEditFinancialComponent = editPermissions.cash_transfer_modalities || editPermissions.hq_support_cost;
+    this.canEditHQOriginal = editPermissions.hq_support_cost;
+    this.canEditCashTransferOriginal = editPermissions.cash_transfer_modalities;
   }
 
   validate() {
@@ -180,5 +229,37 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
     }
     // this.showLoading = true;
     this.editMode = false;
+  }
+
+  // @lajos: this will have to be reviewd
+  checkCashTransferModality(value: string) {
+    if (!value) {
+      return;
+    }
+    if (this.data!.cash_tranfer_modalities.indexOf(value) > -1) {
+      return true;
+    }
+    return false;
+  }
+
+  allowEdit() {
+    this.editMode = true;
+    this.canEditHQ = this.canEditHQOriginal;
+    this.canEditCashTransfer = this.canEditCashTransferOriginal;
+  }
+
+  cancel() {
+    this.editMode = false;
+    this.data = cloneDeep(this.originalData);
+    this._prop = this.data.hq_support_cost;
+    this.canEditCashTransfer = false;
+    this.canEditHQ = false;
+  }
+
+  updateSlider(e: CustomEvent) {
+    if (!e.detail) {
+      return;
+    }
+    this._prop = e.detail.value;
   }
 }
