@@ -2,8 +2,8 @@ import {LitElement, customElement, html, property} from 'lit-element';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
 import {gridLayoutStylesLit} from '../../common/styles/grid-layout-styles-lit';
 import {elevationStyles} from '../../common/styles/elevation-styles';
-import {BudgetSummary} from './budgetSummary.models';
-import {selectBudgetSummary} from './budgetSummary.selectors';
+import {BudgetSummary, InterventionData} from './budgetSummary.models';
+import {selectBudgetSummary, selectInterventionData} from './budgetSummary.selectors';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../../utils/redux-store-access';
 import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
@@ -84,15 +84,15 @@ export class BudgetSummaryEl extends connect(getStore())(LitElement) {
           </div>
           <div class="col col-1">
             <span>
-              <label class="input-label" ?empty="${!this.budgetSummary?.hq_rate}">
-                ${this.budgetSummary?.hq_rate} %
+              <label class="input-label" ?empty="${!this.intervention?.hq_support_cost}">
+                ${this.intervention?.hq_support_cost} %
               </label>
             </span>
           </div>
           <div class="col col-2">
             <span>
-              <label class="input-label" ?empty="${!this.budgetSummary?.prgm_effectiveness}">
-                ${this.budgetSummary?.prgm_effectiveness} %
+              <label class="input-label" ?empty="${!this.intervention?.prgm_effectiveness}">
+                ${this.intervention?.prgm_effectiveness} %
               </label>
             </span>
           </div>
@@ -112,15 +112,15 @@ export class BudgetSummaryEl extends connect(getStore())(LitElement) {
           </div>
           <div class="col col-1">
             <span>
-              <label class="input-label" ?empty="${this.totalSupply(this.budgetSummary)}">
-                ${this.totalSupply(this.budgetSummary)}
+              <label class="input-label" ?empty="${this.budgetSummary.total_supply}">
+                ${this.budgetSummary.total_supply}
               </label>
             </span>
           </div>
           <div class="col col-1">
             <span>
-              <label class="input-label" ?empty="${!this.budgetSummary?.total_cash}">
-                ${this.budgetSummary?.total_cash}
+              <label class="input-label" ?empty="${!this.budgetSummary?.partner_percentage}">
+                ${this.budgetSummary?.partner_percentage}
               </label>
             </span>
           </div>
@@ -133,8 +133,8 @@ export class BudgetSummaryEl extends connect(getStore())(LitElement) {
           </div>
           <div class="col col-2">
             <span>
-              <label class="input-label" ?empty="${!this.budgetSummary?.total_amt}">
-                ${this.budgetSummary?.total_amt}
+              <label class="input-label" ?empty="${!this.budgetSummary?.in_kind_amount}">
+                ${this.budgetSummary?.in_kind_amount}
               </label>
             </span>
           </div>
@@ -146,6 +146,9 @@ export class BudgetSummaryEl extends connect(getStore())(LitElement) {
   @property({type: Object})
   budgetSummary!: BudgetSummary;
 
+  @property({type: Object})
+  intervention!: InterventionData;
+
   connectedCallback() {
     super.connectedCallback();
   }
@@ -156,10 +159,7 @@ export class BudgetSummaryEl extends connect(getStore())(LitElement) {
     }
     if (state.interventions.current) {
       this.budgetSummary = selectBudgetSummary(state);
+      this.intervention = selectInterventionData(state);
     }
-  }
-
-  public totalSupply(budget: BudgetSummary) {
-    return parseFloat(budget.unicef_cash_local) + parseFloat(budget.partner_contribution_local);
   }
 }
