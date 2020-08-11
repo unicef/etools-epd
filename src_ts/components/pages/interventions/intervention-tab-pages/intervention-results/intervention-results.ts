@@ -2,7 +2,7 @@ import {LitElement, customElement, html} from 'lit-element';
 import './budget-summary/budget-summary';
 import './supply-agreement/supply-agreement';
 import './results-structure/results-structure';
-import './effective-and-efficient-programme-management/effective-and-efficient-programme-management';
+import './effective-efficient-programme-mgmt/effective-efficient-programme-mgmt';
 
 /**
  * @customElement

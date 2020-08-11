@@ -15,6 +15,7 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
   @property() dialogOpened = true;
   @property() loadingInProcess = false;
   @property() isEditDialog = false;
+  @property() disableCpOutputs = false;
 
   @property() cpOutputs: CpOutput[] = [];
   @property() hideCpOutputs = false;
@@ -26,10 +27,11 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
   }
 
   set dialogData({pdOutput, cpOutputs, hideCpOutputs, interventionId}: any) {
-    this.data = pdOutput;
+    this.data = pdOutput || {};
     this.cpOutputs = cpOutputs || [];
     this.hideCpOutputs = hideCpOutputs;
     this.isEditDialog = Boolean(pdOutput && pdOutput.id);
+    this.disableCpOutputs = Boolean(pdOutput && !pdOutput.id && pdOutput.cp_output);
     this.interventionId = interventionId;
   }
 
@@ -72,7 +74,7 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
         no-padding
       >
         <etools-loading ?active="${this.loadingInProcess}" loading-text="Loading..."></etools-loading>
-        <div class="unassociated-warning" ?hidden="${!this.unassociated}">
+        <div class="unassociated-warning" ?hidden="${!this.unassociated || this.hideCpOutputs}">
           <iron-icon icon="warning"></iron-icon> Please associate PD with CP Output before moving forward
         </div>
         <div class="container layout vertical">
@@ -119,7 +121,7 @@ export class PdOutputDialog extends DataMixin()<ResultLinkLowerResult>(LitElemen
                   allow-outside-scroll
                   dynamic-align
                   required
-                  ?disabled="${!this.isEditDialog}"
+                  ?disabled="${this.disableCpOutputs}"
                   ?invalid="${this.errors.cp_output}"
                   .errorMessage="${this.errors.cp_output && this.errors.cp_output[0]}"
                   @focus="${() => this.resetFieldError('cp_output')}"

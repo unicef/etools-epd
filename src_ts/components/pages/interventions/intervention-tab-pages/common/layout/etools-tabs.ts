@@ -9,7 +9,7 @@ import {AnyObject} from '../models/globals.types';
  * @customElement
  */
 
-@customElement('etools-tabs')
+@customElement('etools-tabs-lit')
 export class EtoolsTabs extends LitElement {
   public render() {
     // main template

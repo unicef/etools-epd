@@ -15,7 +15,6 @@ import {buttonsStyles} from '../../common/styles/button-styles';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../../utils/redux-store-access';
 import {patchIntervention} from '../../common/actions';
-import {isJsonStrMatch} from '../../utils/utils';
 
 /**
  * @customElement
@@ -27,7 +26,7 @@ export class InterventionDates extends connect(getStore())(ComponentBaseMixin(Fr
   }
 
   render() {
-    if (!this.interventionDates) {
+    if (!this.data) {
       return html`<style>
           ${sharedStyles}
         </style>
@@ -65,7 +64,7 @@ export class InterventionDates extends connect(getStore())(ComponentBaseMixin(Fr
                 slot="field"
                 id="intStart"
                 label="Start date"
-                .value="${this.interventionDates.start}"
+                .value="${this.data.start}"
                 ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.start)}"
                 ?required="${this.permissions.required.start}"
                 error-message="Please select start date"
@@ -91,7 +90,7 @@ export class InterventionDates extends connect(getStore())(ComponentBaseMixin(Fr
                 slot="field"
                 id="intEnd"
                 label="End date"
-                .value="${this.interventionDates.end}"
+                .value="${this.data.end}"
                 ?readonly="${this.isReadonly(this.editMode, this.permissions.edit.end)}"
                 ?required="${this.permissions.required.end}"
                 error-message="Please select end date"
@@ -117,10 +116,10 @@ export class InterventionDates extends connect(getStore())(ComponentBaseMixin(Fr
   intervention!: Intervention;
 
   @property({type: Object})
-  originalInterventionDates!: ProgrammeDocDates;
+  originalData!: ProgrammeDocDates;
 
   @property({type: Object})
-  interventionDates!: ProgrammeDocDates;
+  data!: ProgrammeDocDates;
 
   @property({type: String})
   _frsStartConsistencyWarning = '';
@@ -139,8 +138,8 @@ export class InterventionDates extends connect(getStore())(ComponentBaseMixin(Fr
     if (!state.interventions.current) {
       return;
     }
-    this.interventionDates = selectInterventionDates(state);
-    this.originalInterventionDates = cloneDeep(this.interventionDates);
+    this.data = selectInterventionDates(state);
+    this.originalData = cloneDeep(this.data);
     this.permissions = selectInterventionDatesPermissions(state);
     this.set_canEditAtLeastOneField(this.permissions.edit);
   }
@@ -149,18 +148,13 @@ export class InterventionDates extends connect(getStore())(ComponentBaseMixin(Fr
     return validateRequiredFields(this);
   }
 
-  cancel() {
-    this.interventionDates = cloneDeep(this.originalInterventionDates);
-    this.editMode = false;
-  }
-
   save() {
     if (!this.validate()) {
       return;
     }
 
     getStore()
-      .dispatch(patchIntervention(this.interventionDates))
+      .dispatch(patchIntervention(this.data))
       .then(() => {
         this.editMode = false;
       });

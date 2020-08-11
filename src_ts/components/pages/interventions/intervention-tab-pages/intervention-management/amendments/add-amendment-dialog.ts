@@ -23,6 +23,7 @@ import {updateCurrentIntervention} from '../../common/actions';
 import {InterventionAmendment} from '../../common/models/intervention.types';
 import {LabelAndValue, AnyObject} from '../../common/models/globals.types';
 import {isJsonStrMatch} from '../../utils/utils';
+import CONSTANTS from '../../common/constants';
 
 /**
  * @customElement
@@ -63,7 +64,7 @@ export class AddAmendmentDialog extends connect(getStore())(ComponentBaseMixin(L
           <datepicker-lite
             id="signed-date"
             label="Signed date"
-            .value="${this.originalData.signed_date}"
+            .value="${this.data.signed_date}"
             max-date="${this.getCurrentDate()}"
             fire-date-has-changed
             @date-has-changed="${(e: CustomEvent) =>
@@ -82,7 +83,7 @@ export class AddAmendmentDialog extends connect(getStore())(ComponentBaseMixin(L
             label="Amendment Types"
             placeholder="&#8212;"
             .options="${this.filteredAmendmentTypes}"
-            .selectedValues="${this.originalData.types}"
+            .selectedValues="${this.data.types}"
             hide-search
             required
             option-label="label"
@@ -109,7 +110,7 @@ export class AddAmendmentDialog extends connect(getStore())(ComponentBaseMixin(L
             ?required="${this.showOtherInput}"
             auto-validate
             error-message="This is required"
-            .value="${this.originalData.other_description}"
+            .value="${this.data.other_description}"
             @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'other_description')}"
           >
           </paper-input>
@@ -120,7 +121,7 @@ export class AddAmendmentDialog extends connect(getStore())(ComponentBaseMixin(L
             id="signed-agreement-upload"
             label="Signed Amendment"
             accept=".doc,.docx,.pdf,.jpg,.png"
-            .fileUrl="${this.originalData.signed_amendment_attachment}"
+            .fileUrl="${this.data.signed_amendment_attachment}"
             .uploadEndpoint="${this.uploadEndpoint}"
             @upload-finished="${this._amendmentUploadFinished}"
             required
@@ -135,7 +136,7 @@ export class AddAmendmentDialog extends connect(getStore())(ComponentBaseMixin(L
             id="prc-review-upload"
             label="Internal / PRC Reviews"
             accept=".doc,.docx,.pdf,.jpg,.png"
-            .fileUrl="${this.originalData.internal_prc_review}"
+            .fileUrl="${this.data.internal_prc_review}"
             .uploadEndpoint="${this.uploadEndpoint}"
             .uploadInProgress="${this.prcUploadInProgress}"
             @upload-finished="${this._prcReviewUploadFinished}"
@@ -157,12 +158,6 @@ export class AddAmendmentDialog extends connect(getStore())(ComponentBaseMixin(L
 
   @property({type: Array})
   amendmentTypes!: LabelAndValue[];
-
-  @property({type: Object})
-  originalData!: Partial<InterventionAmendment>;
-
-  @property({type: Object})
-  data!: Partial<InterventionAmendment>;
 
   @property({type: String})
   uploadEndpoint: string | undefined = getEndpoint(interventionEndpoints.attachmentsUpload).url;
@@ -306,8 +301,8 @@ export class AddAmendmentDialog extends connect(getStore())(ComponentBaseMixin(L
   _amendmentUploadFinished(e: CustomEvent) {
     if (e.detail.success) {
       const uploadResponse = e.detail.success;
-      this.originalData.signed_amendment_attachment = uploadResponse.id;
-      this.originalData = {...this.originalData};
+      this.data.signed_amendment_attachment = uploadResponse.id;
+      this.data = {...this.data};
       this.data.signed_amendment_attachment = uploadResponse.id;
     }
   }
@@ -315,8 +310,8 @@ export class AddAmendmentDialog extends connect(getStore())(ComponentBaseMixin(L
   _prcReviewUploadFinished(e: CustomEvent) {
     if (e.detail.success) {
       const uploadResponse = e.detail.success;
-      this.originalData.internal_prc_review = uploadResponse.id;
-      this.originalData = {...this.originalData};
+      this.data.internal_prc_review = uploadResponse.id;
+      this.data = {...this.data};
       this.data.internal_prc_review = uploadResponse.id;
     }
   }

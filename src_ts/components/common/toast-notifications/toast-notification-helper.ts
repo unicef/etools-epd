@@ -3,6 +3,7 @@ import './etools-toast'; // element loaded (if not, etools-toast will not render
 import {AnyObject} from '../../../types/globals';
 import {LitElement} from 'lit-element';
 import {store} from '../../../redux/store';
+import get from 'lodash-es/get';
 
 /**
  * Toasts notification messages queue utility class
@@ -83,9 +84,11 @@ export class ToastNotificationHelper {
   }
 
   closeToast() {
-    store.dispatch({
-      type: 'CLOSE_TOAST'
-    });
+    if (get(store.getState(), 'app.toastNotification.active')) {
+      store.dispatch({
+        type: 'CLOSE_TOAST'
+      });
+    }
     this._toggleToast();
   }
 

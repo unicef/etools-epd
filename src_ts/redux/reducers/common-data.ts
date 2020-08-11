@@ -1,10 +1,10 @@
 import {Reducer} from 'redux';
-import {SET_UNICEF_USERS, SET_ALL_STATIC_DATA} from '../actions/common-data';
+import {SET_ALL_STATIC_DATA} from '../actions/common-data';
 import {RootAction} from '../store';
 import {CpOutput, Disaggregation, LocationObject, Section, LabelAndValue} from '../../types/globals';
 
 export interface CommonDataState {
-  unicefUsers: [];
+  unicefUsersData: [];
   partners: [];
   locations: LocationObject[];
   sections: Section[];
@@ -18,7 +18,7 @@ export interface CommonDataState {
 }
 
 const INITIAL_COMMON_DATA: CommonDataState = {
-  unicefUsers: [],
+  unicefUsersData: [],
   partners: [],
   locations: [],
   sections: [],
@@ -33,11 +33,6 @@ const INITIAL_COMMON_DATA: CommonDataState = {
 
 const commonData: Reducer<CommonDataState, RootAction> = (state = INITIAL_COMMON_DATA, action) => {
   switch (action.type) {
-    case SET_UNICEF_USERS:
-      return {
-        ...state,
-        unicefUsers: action.unicefUsers
-      };
     case SET_ALL_STATIC_DATA:
       return {
         ...state,
@@ -50,7 +45,8 @@ const commonData: Reducer<CommonDataState, RootAction> = (state = INITIAL_COMMON
         genderEquityRatings: action.staticData.genderEquityRatings,
         cpOutputs: action.staticData.cpOutputs,
         interventionAmendmentTypes: action.staticData.interventionAmendmentTypes,
-        offices: action.staticData.offices
+        offices: action.staticData.offices,
+        unicefUsersData: action.staticData.unicefUsersData
       };
     default:
       return state;

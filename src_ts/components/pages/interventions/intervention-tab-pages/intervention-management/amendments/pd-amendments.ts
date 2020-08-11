@@ -3,7 +3,6 @@ import '@polymer/iron-icons/iron-icons';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import '@unicef-polymer/etools-data-table/etools-data-table';
-import ComponentBaseMixin from '../../common/mixins/component-base-mixin';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {getStore} from '../../utils/redux-store-access';
 import {sharedStyles} from '../../common/styles/shared-styles-lit';
@@ -15,12 +14,16 @@ import cloneDeep from 'lodash-es/cloneDeep';
 import {AnyObject, LabelAndValue} from '../../common/models/globals.types';
 import {prettyDate} from '../../utils/date-utils';
 import {getFileNameFromURL, isJsonStrMatch} from '../../utils/utils';
+import {selectAmendmentsPermissions} from './pd-amendments.selectors';
+import {Permission} from '../../common/models/intervention.types';
+import {PdAmendmentPermissions} from './pd-amendments.models';
+import {pageIsNotCurrentlyActive} from '../../utils/common-methods';
 
 /**
  * @customElement
  */
 @customElement('pd-amendments')
-export class PdAmendments extends connect(getStore())(ComponentBaseMixin(LitElement)) {
+export class PdAmendments extends connect(getStore())(LitElement) {
   static get styles() {
     return [gridLayoutStylesLit];
   }
@@ -58,7 +61,7 @@ export class PdAmendments extends connect(getStore())(ComponentBaseMixin(LitElem
           <paper-icon-button
             icon="add"
             title="Add Amendment"
-            ?hidden="${!this.canEditAmendment}"
+            ?hidden="${!this.permissions.edit.amendments}"
             @tap="${() => this._showAddAmendmentDialog()}"
           >
           </paper-icon-button>
@@ -149,21 +152,34 @@ export class PdAmendments extends connect(getStore())(ComponentBaseMixin(LitElem
   @property({type: Object})
   addAmendmentDialog!: AddAmendmentDialog;
 
-  @property({type: Boolean, reflect: true})
-  canEditAmendment = true;
+  @property({type: Object})
+  permissions!: Permission<PdAmendmentPermissions>;
 
   @property({type: Object})
   intervention!: AnyObject;
 
   stateChanged(state: AnyObject) {
+    if (pageIsNotCurrentlyActive(get(state, 'app.routeDetails'), 'interventions', 'management')) {
+      return;
+    }
+
     const amendmentTypes = get(state, 'commonData.interventionAmendmentTypes');
     if (amendmentTypes && !isJsonStrMatch(this.amendmentTypes, amendmentTypes)) {
       this.amendmentTypes = [...state.commonData!.interventionAmendmentTypes];
     }
     const currentIntervention = get(state, 'interventions.current');
-    if (currentIntervention) {
+    if (currentIntervention && !isJsonStrMatch(this.intervention, currentIntervention)) {
       this.intervention = cloneDeep(currentIntervention);
       this.amendments = this.intervention.amendments;
+    }
+    this.setPermissions(state);
+  }
+
+  private setPermissions(state: any) {
+    const permissions = selectAmendmentsPermissions(state);
+
+    if (!isJsonStrMatch(this.permissions, permissions)) {
+      this.permissions = permissions;
     }
   }
 

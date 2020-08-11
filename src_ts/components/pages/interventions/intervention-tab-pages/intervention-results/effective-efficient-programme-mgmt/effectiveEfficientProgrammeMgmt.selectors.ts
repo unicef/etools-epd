@@ -4,7 +4,7 @@ import {currentIntervention, currentInterventionPermissions} from '../../common/
 import {
   ProgrammeManagement,
   ProgrammeManagementActivityPermissions
-} from './effectiveAndEfficientProgrammeManagement.models';
+} from './effectiveEfficientProgrammeMgmt.models';
 
 export const selectProgrammeManagement = createSelector(currentIntervention, (intervention: Intervention) => {
   return new ProgrammeManagement(intervention);
