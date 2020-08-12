@@ -3,6 +3,12 @@ import './budget-summary/budget-summary';
 import './supply-agreement/supply-agreement';
 import './results-structure/results-structure';
 import './effective-and-efficient-programme-management/effective-and-efficient-programme-management';
+import {getStore} from '../utils/redux-store-access';
+import {commentsData} from '../common/comments-components/comments.reducer';
+
+getStore().addReducers({
+  commentsData
+});
 
 /**
  * @customElement

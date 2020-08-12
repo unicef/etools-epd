@@ -18,9 +18,11 @@ import '@unicef-polymer/etools-content-panel';
 import './cp-output-level';
 import './pd-indicators';
 import './pd-activities';
+import '../../common/comments-components/comments-dialog';
 import './modals/pd-output-dialog';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {openDialog} from '../../utils/dialog';
+import {getComments} from '../../common/comments-components/comments.actions';
 
 /**
  * @customElement
@@ -183,6 +185,20 @@ export class ResultsStructure extends connect(getStore())(LitElement) {
         </div>
       </etools-content-panel>
     `;
+  }
+  connectedCallback(): void {
+    super.connectedCallback();
+    getStore()
+      .dispatch(getComments(9))
+      .then(() => {
+        openDialog({
+          dialog: 'comments-dialog',
+          dialogData: {
+            interventionId: 9,
+            relatedTo: 'test'
+          }
+        });
+      });
   }
 
   stateChanged(state: any) {
