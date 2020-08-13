@@ -67,6 +67,7 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
             <paper-checkbox
               ?checked="${this.checkCashTransferModality('Direct Cash Transfer')}"
               ?disabled="${!this.canEditCashTransfer}"
+              @checked-changed=${(e: CustomEvent) => this.test()}
             >
               Direct Cash Transfer
             </paper-checkbox>
@@ -94,7 +95,7 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
           </div>
         </div>
         <div class="layout-horizontal row-padding-v">
-          <div class="col col-3">
+          <div class="col col-4">
             <paper-slider
               .value="${this.prop}"
               max="7"
@@ -197,7 +198,6 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
       return;
     }
     if (state.interventions.current) {
-      console.log('staet changed');
       this.data = selectFinancialComponent(state);
       this.permissions = selectFinancialComponentPermissions(state);
       this.currency = state.interventions.current.planned_budget.currency;
@@ -261,5 +261,9 @@ export class FinancialComponent extends connect(getStore())(ComponentBaseMixin(L
       return;
     }
     this._prop = e.detail.value;
+  }
+
+  test() {
+    console.log('changed');
   }
 }
