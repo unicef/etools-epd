@@ -1,7 +1,6 @@
 import {EtoolsToast} from './etools-toast';
 import './etools-toast'; // element loaded (if not, etools-toast will not render)
 import {AnyObject} from '../../../types/globals';
-import {LitElement} from 'lit-element';
 import {store} from '../../../redux/store';
 import get from 'lodash-es/get';
 
@@ -9,13 +8,11 @@ import get from 'lodash-es/get';
  * Toasts notification messages queue utility class
  */
 export class ToastNotificationHelper {
-  private appShellEl: LitElement;
   private readonly _toast: EtoolsToast;
   private _toastQueue: AnyObject[] = [];
   private TOAST_EL_ID = 'toastNotificationQueueEl';
 
-  constructor(appShellEl: LitElement) {
-    this.appShellEl = appShellEl;
+  constructor() {
     const toast = document.querySelector(this.TOAST_EL_ID) as EtoolsToast;
     this._toast = toast ? toast : this.createToastNotificationElement();
   }
