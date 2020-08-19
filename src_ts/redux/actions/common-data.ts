@@ -1,15 +1,20 @@
-import {Action} from 'redux';
+import {Action, ActionCreator} from 'redux';
 import {AnyObject} from '../../types/globals';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {etoolsEndpoints} from '../../endpoints/endpoints-list';
 
 export const SET_ALL_STATIC_DATA = 'SET_ALL_STATIC_DATA';
+export const UPDATE_ENV_FLAGS = 'UPDATE_ENV_FLAGS';
 
 export interface CommonDataActionSetAllStaticData extends Action<'SET_ALL_STATIC_DATA'> {
   genderEquityRatings: AnyObject[];
 }
 
-export type CommonDataAction = CommonDataActionSetAllStaticData;
+export interface CommonDataActionUpdateEnvFlags extends Action<'UPDATE_ENV_FLAGS'> {
+  envFlags: AnyObject;
+}
+
+export type CommonDataAction = CommonDataActionSetAllStaticData | CommonDataActionUpdateEnvFlags;
 
 export const getPartners = () => {
   return sendRequest({
@@ -59,4 +64,11 @@ export const getStaticData = () => {
   return sendRequest({
     endpoint: {url: etoolsEndpoints.static.url!}
   });
+};
+
+export const updateEnvFlags: ActionCreator<CommonDataActionUpdateEnvFlags> = (envFlags: AnyObject) => {
+  return {
+    type: UPDATE_ENV_FLAGS,
+    envFlags
+  };
 };

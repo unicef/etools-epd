@@ -19,6 +19,7 @@ export interface EtoolsEndpoints {
   unicefUsers: EtoolsEndpoint;
   dropdownsData: EtoolsEndpoint;
   agreements: EtoolsEndpoint;
+  environmentFlags: EtoolsEndpoint;
 }
 
 export const etoolsEndpoints: EtoolsEndpoints = {
@@ -60,5 +61,8 @@ export const etoolsEndpoints: EtoolsEndpoints = {
   },
   agreements: {
     url: '/api/v2/agreements/'
+  },
+  environmentFlags: {
+    url: '/api/v2/environment/flags/'
   }
 };

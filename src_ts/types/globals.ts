@@ -36,6 +36,12 @@ export type LocationObject = {
   };
 };
 
+export interface EnvFlags {
+  prp_mode_off: boolean;
+  prp_server_on: boolean;
+  active_flags?: string[];
+}
+
 export type Section = {
   id: string;
   created: string;
