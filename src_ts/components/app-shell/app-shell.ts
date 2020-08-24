@@ -28,6 +28,7 @@ import '@polymer/app-layout/app-toolbar/app-toolbar.js';
 import {AppDrawerLayoutElement} from '@polymer/app-layout/app-drawer-layout/app-drawer-layout';
 import {AppHeaderLayoutElement} from '@polymer/app-layout/app-header-layout/app-header-layout';
 import {AppDrawerElement} from '@polymer/app-layout/app-drawer/app-drawer';
+import LoadingMixin from '@unicef-polymer/etools-loading/etools-loading-mixin';
 import {customElement, html, LitElement, property, query} from 'lit-element';
 
 import {AppShellStyles} from './app-shell-styles';
@@ -72,7 +73,7 @@ store.addReducers({
  * @LitElement
  */
 @customElement('app-shell')
-export class AppShell extends connect(store)(LitElement) {
+export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
   static get styles() {
     return [AppShellStyles];
   }
