@@ -125,7 +125,7 @@ export class AppShell extends connect(store)(LitElement) {
                 this.mainPage,
                 'interventions',
                 this.subPage,
-                'overview|details|results|timing|management|attachments'
+                'overview|details|results|timing|management|attachments|progress'
               )}"
             >
             </intervention-tabs>

@@ -11,7 +11,7 @@
     "src/components/pages/interventions/intervention-tab-pages/intervention-results/intervention-results.js",
     "src/components/pages/interventions/intervention-tab-pages/intervention-attachments/intervention-attachments.js",
     "src/components/pages/interventions/intervention-tab-pages/intervention-timing/intervention-timing.js",
-    "src/components/pages/interventions/intervention-tab-pages/intervention-progress/intervention-progress.js",
+    "src/components/pages/interventions/intervention-tab-pages/intervention-progress/intervention-progress-tab.js",
     "src/components/pages/page-two.js"
   ],
   "sources": ["src/**/*", "images/**/*", "package.json"],
