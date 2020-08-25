@@ -61,6 +61,7 @@ import isEmpty from 'lodash-es/isEmpty';
 import {getGenderEquityRatingsDummy} from '../pages/interventions/list/list-dummy-data';
 import {fireEvent} from '../utils/fire-custom-event';
 import get from 'lodash-es/get';
+import '../env-flags/environment-flags';
 
 store.addReducers({
   user,
@@ -81,6 +82,8 @@ export class AppShell extends connect(store)(LitElement) {
     // main template
     // language=HTML
     return html`
+      <environment-flags></environment-flags>
+
       <app-drawer-layout
         id="layout"
         responsive-width="850px"

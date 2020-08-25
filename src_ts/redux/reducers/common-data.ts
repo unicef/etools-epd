@@ -1,7 +1,7 @@
 import {Reducer} from 'redux';
-import {SET_ALL_STATIC_DATA} from '../actions/common-data';
+import {SET_ALL_STATIC_DATA, UPDATE_ENV_FLAGS} from '../actions/common-data';
 import {RootAction} from '../store';
-import {CpOutput, Disaggregation, LocationObject, Section, LabelAndValue} from '../../types/globals';
+import {CpOutput, Disaggregation, LocationObject, Section, LabelAndValue, EnvFlags} from '../../types/globals';
 
 export interface CommonDataState {
   unicefUsersData: [];
@@ -15,6 +15,7 @@ export interface CommonDataState {
   genderEquityRatings: [];
   interventionAmendmentTypes: LabelAndValue[];
   offices: [];
+  envFlags: EnvFlags | null;
 }
 
 const INITIAL_COMMON_DATA: CommonDataState = {
@@ -28,7 +29,8 @@ const INITIAL_COMMON_DATA: CommonDataState = {
   genderEquityRatings: [],
   interventionAmendmentTypes: [],
   offices: [],
-  cpOutputs: []
+  cpOutputs: [],
+  envFlags: null
 };
 
 const commonData: Reducer<CommonDataState, RootAction> = (state = INITIAL_COMMON_DATA, action) => {
@@ -47,6 +49,11 @@ const commonData: Reducer<CommonDataState, RootAction> = (state = INITIAL_COMMON
         interventionAmendmentTypes: action.staticData.interventionAmendmentTypes,
         offices: action.staticData.offices,
         unicefUsersData: action.staticData.unicefUsersData
+      };
+    case UPDATE_ENV_FLAGS:
+      return {
+        ...state,
+        envFlags: action.envFlags
       };
     default:
       return state;
