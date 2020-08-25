@@ -32,7 +32,7 @@ export const componentsLazyLoadConfig: RoutesLazyLoadComponentsPath = {
   ],
   interventions_progress: [
     'components/pages/interventions/intervention-tab-pages/intervention-tabs.js',
-    'components/pages/interventions/intervention-tab-pages/intervention-progress/intervention-progress-tab.js'
+    'components/pages/interventions/intervention-tab-pages/intervention-progress/intervention-progress.js'
   ],
   'page-not-found': ['components/pages/page-not-found.js'],
   'page-two': ['components/pages/page-two.js']
