@@ -38,7 +38,6 @@ const loadPageComponents: ActionCreator<ThunkResult> = (routeDetails: RouteDetai
   const importBase = '../../'; // relative to current file
   // start importing components (lazy loading)
   const filesToImport: string[] = getFilePathsToImport(routeDetails);
-
   filesToImport.forEach((filePath: string) => {
     import(importBase + filePath)
       .then(() => {
@@ -50,7 +49,7 @@ const loadPageComponents: ActionCreator<ThunkResult> = (routeDetails: RouteDetai
   });
 
   // add page details to redux store, to be used in other components
-  dispatch(updateStoreRouteDetails(routeDetails));  
+  dispatch(updateStoreRouteDetails(routeDetails));
 };
 
 export const updateDrawerState: ActionCreator<AppActionUpdateDrawerState> = (opened: boolean) => {
