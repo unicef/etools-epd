@@ -37,24 +37,20 @@ const loadPageComponents: ActionCreator<ThunkResult> = (routeDetails: RouteDetai
 
   const importBase = '../../'; // relative to current file
   // start importing components (lazy loading)
-  try {
-    const filesToImport: string[] = getFilePathsToImport(routeDetails);
+  const filesToImport: string[] = getFilePathsToImport(routeDetails);
 
-    filesToImport.forEach((filePath: string) => {
-      import(importBase + filePath)
-        .then(() => {
-          // console.info(`component: ${filePath} has been loaded... yey!`);
-        })
-        .catch((importError: any) => {
-          console.info('component import failed...', importError);
-        });
-    });
+  filesToImport.forEach((filePath: string) => {
+    import(importBase + filePath)
+      .then(() => {
+        // console.info(`component: ${filePath} has been loaded... yey!`);
+      })
+      .catch((importError: any) => {
+        console.info('component import failed...', importError);
+      });
+  });
 
-    // add page details to redux store, to be used in other components
-    dispatch(updateStoreRouteDetails(routeDetails));
-  } catch (err) {
-    updateAppLocation(ROUTE_404, true);
-  }
+  // add page details to redux store, to be used in other components
+  dispatch(updateStoreRouteDetails(routeDetails));  
 };
 
 export const updateDrawerState: ActionCreator<AppActionUpdateDrawerState> = (opened: boolean) => {
