@@ -15,6 +15,7 @@ export interface CommonDataState {
   genderEquityRatings: [];
   interventionAmendmentTypes: LabelAndValue[];
   offices: [];
+  currencies: LabelAndValue[];
 }
 
 const INITIAL_COMMON_DATA: CommonDataState = {
@@ -28,7 +29,8 @@ const INITIAL_COMMON_DATA: CommonDataState = {
   genderEquityRatings: [],
   interventionAmendmentTypes: [],
   offices: [],
-  cpOutputs: []
+  cpOutputs: [],
+  currencies: []
 };
 
 const commonData: Reducer<CommonDataState, RootAction> = (state = INITIAL_COMMON_DATA, action) => {
@@ -46,7 +48,8 @@ const commonData: Reducer<CommonDataState, RootAction> = (state = INITIAL_COMMON
         cpOutputs: action.staticData.cpOutputs,
         interventionAmendmentTypes: action.staticData.interventionAmendmentTypes,
         offices: action.staticData.offices,
-        unicefUsersData: action.staticData.unicefUsersData
+        unicefUsersData: action.staticData.unicefUsersData,
+        currencies: action.staticData.currencies
       };
     default:
       return state;
