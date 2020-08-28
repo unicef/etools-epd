@@ -15,6 +15,7 @@ export interface CommonDataState {
   genderEquityRatings: [];
   interventionAmendmentTypes: LabelAndValue[];
   offices: [];
+  currencies: LabelAndValue[];
   envFlags: EnvFlags | null;
 }
 
@@ -30,6 +31,7 @@ const INITIAL_COMMON_DATA: CommonDataState = {
   interventionAmendmentTypes: [],
   offices: [],
   cpOutputs: [],
+  currencies: [],
   envFlags: null
 };
 
@@ -48,7 +50,8 @@ const commonData: Reducer<CommonDataState, RootAction> = (state = INITIAL_COMMON
         cpOutputs: action.staticData.cpOutputs,
         interventionAmendmentTypes: action.staticData.interventionAmendmentTypes,
         offices: action.staticData.offices,
-        unicefUsersData: action.staticData.unicefUsersData
+        unicefUsersData: action.staticData.unicefUsersData,
+        currencies: action.staticData.currencies
       };
     case UPDATE_ENV_FLAGS:
       return {
