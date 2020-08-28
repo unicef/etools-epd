@@ -37,7 +37,13 @@ const loadPageComponents: ActionCreator<ThunkResult> = (routeDetails: RouteDetai
 
   const importBase = '../../'; // relative to current file
   // start importing components (lazy loading)
-  const filesToImport: string[] = getFilePathsToImport(routeDetails);
+  const filesToImport: string[] | undefined = getFilePathsToImport(routeDetails);
+  if (!filesToImport) {
+    console.log('No file imports configuration found (componentsLazyLoadConfig)!');
+    updateAppLocation(ROUTE_404, true);
+    return;
+  }
+
   filesToImport.forEach((filePath: string) => {
     import(importBase + filePath)
       .then(() => {
@@ -47,7 +53,6 @@ const loadPageComponents: ActionCreator<ThunkResult> = (routeDetails: RouteDetai
         console.info('component import failed...', importError);
       });
   });
-
   // add page details to redux store, to be used in other components
   dispatch(updateStoreRouteDetails(routeDetails));
 };
