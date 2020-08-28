@@ -28,6 +28,7 @@ import '@polymer/app-layout/app-toolbar/app-toolbar.js';
 import {AppDrawerLayoutElement} from '@polymer/app-layout/app-drawer-layout/app-drawer-layout';
 import {AppHeaderLayoutElement} from '@polymer/app-layout/app-header-layout/app-header-layout';
 import {AppDrawerElement} from '@polymer/app-layout/app-drawer/app-drawer';
+import LoadingMixin from '@unicef-polymer/etools-loading/etools-loading-mixin';
 import {customElement, html, LitElement, property, query} from 'lit-element';
 
 import {AppShellStyles} from './app-shell-styles';
@@ -61,6 +62,7 @@ import isEmpty from 'lodash-es/isEmpty';
 import {getGenderEquityRatingsDummy} from '../pages/interventions/list/list-dummy-data';
 import {fireEvent} from '../utils/fire-custom-event';
 import get from 'lodash-es/get';
+import '../env-flags/environment-flags';
 
 store.addReducers({
   user,
@@ -72,7 +74,7 @@ store.addReducers({
  * @LitElement
  */
 @customElement('app-shell')
-export class AppShell extends connect(store)(LitElement) {
+export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
   static get styles() {
     return [AppShellStyles];
   }
@@ -81,6 +83,8 @@ export class AppShell extends connect(store)(LitElement) {
     // main template
     // language=HTML
     return html`
+      <environment-flags></environment-flags>
+
       <app-drawer-layout
         id="layout"
         responsive-width="850px"

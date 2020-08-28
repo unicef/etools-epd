@@ -7,13 +7,13 @@
     "src/components/pages/interventions/intervention-tab-pages/intervention-tabs.js",
     "src/components/pages/interventions/intervention-tab-pages/intervention-details/intervention-details.js",
     "src/components/pages/interventions/intervention-tab-pages/intervention-overview/intervention-overview.js",
+    "src/components/pages/interventions/intervention-tab-pages/intervention-management/intervention-management.js",
+    "src/components/pages/interventions/intervention-tab-pages/intervention-results/intervention-results.js",
+    "src/components/pages/interventions/intervention-tab-pages/intervention-attachments/intervention-attachments.js",
+    "src/components/pages/interventions/intervention-tab-pages/intervention-timing/intervention-timing.js",    
     "src/components/pages/page-two.js"
   ],
-  "sources": [
-    "src/**/*",
-    "images/**/*",
-    "package.json"
-  ],
+  "sources": ["src/**/*", "images/**/*", "package.json"],
   "extraDependencies": [
     "manifest.json",
     "push-manifest.json",
@@ -22,21 +22,13 @@
     "node_modules/moment/min/moment.min.js"
   ],
   "lint": {
-    "rules": [
-      "polymer-3"
-    ],
-    "ignoreWarnings": [
-      "could-not-resolve-reference",
-      "non-literal-import"
-    ]
+    "rules": ["polymer-3"],
+    "ignoreWarnings": ["could-not-resolve-reference", "non-literal-import"]
   },
   "builds": [
     {
       "name": "esm-bundled",
-      "browserCapabilities": [
-        "es2015",
-        "modules"
-      ],
+      "browserCapabilities": ["es2015", "modules"],
       "js": {
         "minify": true
       },
