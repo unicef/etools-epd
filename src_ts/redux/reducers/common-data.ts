@@ -46,7 +46,7 @@ const commonData: Reducer<CommonDataState, RootAction> = (state = INITIAL_COMMON
         disaggregations: action.staticData.disaggregations,
         locationTypes: action.staticData.locationTypes,
         documentTypes: action.staticData.documentTypes,
-        genderEquityRatings: action.staticData.genderEquityRatings,
+        genderEquityRatings: action.staticData.genderEquityRatings, // TODO -make sure data is loaded from bk
         cpOutputs: action.staticData.cpOutputs,
         interventionAmendmentTypes: action.staticData.interventionAmendmentTypes,
         offices: action.staticData.offices,
