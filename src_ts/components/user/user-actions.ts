@@ -15,7 +15,9 @@ export function getCurrentUser() {
       return response;
     })
     .catch((error: AnyObject) => {
-      console.error('[EtoolsUser]: getUserData req error...', error);
+      if (error.status === 403) {
+        window.location.href = window.location.origin + '/login';
+      }
       throw error;
     });
 }
