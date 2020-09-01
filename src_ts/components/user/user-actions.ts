@@ -15,7 +15,7 @@ export function getCurrentUser() {
       return response;
     })
     .catch((error: AnyObject) => {
-      if (error.status === 403) {
+      if ([403, 401].includes(error.status)) {
         window.location.href = window.location.origin + '/login';
       }
       throw error;
