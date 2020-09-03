@@ -49,15 +49,6 @@ export const getListDummydata = (paginator: any) => {
   });
 };
 
-export const getGenderEquityRatingsDummy = () => {
-  return [
-    {label: 'Principal', value: 'principal'},
-    {label: 'Significant', value: 'significant'},
-    {label: 'Marginal', value: 'marginal'},
-    {label: 'None', value: 'none'}
-  ];
-};
-
 export const getSupplyItems = () => {
   const arr = [];
   let i = 0;

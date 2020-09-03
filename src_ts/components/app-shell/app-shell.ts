@@ -59,7 +59,6 @@ import {
 import {getAgreements, SET_AGREEMENTS} from '../../redux/actions/agreements';
 import {EtoolsUserModel} from '../user/user-model';
 import isEmpty from 'lodash-es/isEmpty';
-import {getGenderEquityRatingsDummy} from '../pages/interventions/list/list-dummy-data';
 import {fireEvent} from '../utils/fire-custom-event';
 import get from 'lodash-es/get';
 import '../env-flags/environment-flags';
@@ -232,9 +231,7 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
     const staticData = this.getValue(response[6], {});
     data.locationTypes = isEmpty(staticData.location_types) ? [] : staticData.location_types;
     data.documentTypes = isEmpty(staticData.intervention_doc_type) ? [] : staticData.intervention_doc_type;
-    data.genderEquityRatings = isEmpty(staticData.genderEquityRatings)
-      ? getGenderEquityRatingsDummy()
-      : staticData.genderEquityRatings;
+    data.genderEquityRatings = staticData.gender_equity_sustainability_ratings || [];
     data.interventionAmendmentTypes = isEmpty(staticData.intervention_amendment_types)
       ? []
       : staticData.intervention_amendment_types;
