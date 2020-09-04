@@ -5,6 +5,7 @@ export const ROOT_PATH = '/' + getBasePath().replace(window.location.origin, '')
 const STAGING_DOMAIN = 'etools-staging.unicef.org';
 const DEV_DOMAIN = 'etools-dev.unicef.org';
 const DEMO_DOMAIN = 'etools-demo.unicef.org';
+const TEST_DOMAIN = 'etools-test.unicef.io';
 const LOCAL_DOMAIN = 'localhost:8082';
 
 function getBasePath() {
@@ -38,6 +39,9 @@ export const _checkEnvironment = () => {
     return 'DEMO';
   }
   if (location.indexOf(DEV_DOMAIN) > -1) {
+    return 'DEVELOPMENT';
+  }
+  if (location.indexOf(TEST_DOMAIN) > -1) {
     return 'DEVELOPMENT';
   }
   if (location.indexOf(LOCAL_DOMAIN) > -1) {

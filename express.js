@@ -16,7 +16,7 @@ function getSourcesPath(request) {
   }
 }
 
-app.use('/', (req, res, next) => {
+app.use('/epd/', (req, res, next) => {
   express.static(getSourcesPath(req))(req, res, next);
 });
 
