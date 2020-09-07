@@ -133,7 +133,6 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
               )}"
             >
             </intervention-tabs>
-            <page-two class="page" ?active="${this.isActivePage(this.mainPage, 'page-two')}"></page-two>
             <page-not-found
               class="page"
               ?active="${this.isActivePage(this.mainPage, 'page-not-found')}"
