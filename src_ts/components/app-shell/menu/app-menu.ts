@@ -62,14 +62,6 @@ export class AppMenu extends LitElement {
             </paper-tooltip>
             <div class="name">PDs/SPDs</div>
           </a>
-
-          <a class="nav-menu-item" menu-name="page-two" href="${this.rootPath + 'page-two'}">
-            <iron-icon id="page2-icon" icon="extension"></iron-icon>
-            <paper-tooltip for="page2-icon" position="right">
-              Page Two
-            </paper-tooltip>
-            <div class="name">Page Two</div>
-          </a>
         </iron-selector>
 
         <div class="nav-menu-item section-title">

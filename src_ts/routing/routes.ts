@@ -43,18 +43,6 @@ EtoolsRouter.addRoute(
         params: null
       };
     }
-  )
-  .addRoute(
-    new RegExp(`^page-two$`),
-    (params: RouteCallbackParams): RouteDetails => {
-      return {
-        routeName: 'page-two',
-        subRouteName: null,
-        path: params.matchDetails[0],
-        queryParams: null,
-        params: null
-      };
-    }
   );
 
 /**

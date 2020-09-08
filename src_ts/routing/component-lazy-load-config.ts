@@ -30,8 +30,7 @@ export const componentsLazyLoadConfig: RoutesLazyLoadComponentsPath = {
     'components/pages/interventions/intervention-tab-pages/intervention-tabs.js',
     'components/pages/interventions/intervention-tab-pages/intervention-attachments/intervention-attachments.js'
   ],
-  'page-not-found': ['components/pages/page-not-found.js'],
-  'page-two': ['components/pages/page-two.js']
+  'page-not-found': ['components/pages/page-not-found.js']
 };
 
 export const getFilePathsToImport = (routeDetails: RouteDetails): string[] | undefined => {
