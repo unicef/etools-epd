@@ -13,6 +13,7 @@ import '@polymer/paper-item/paper-item-body';
 import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
 import '@unicef-polymer/etools-dropdown/etools-dropdown';
 import '@unicef-polymer/etools-date-time/datepicker-lite';
+import '@unicef-polymer/etools-loading/etools-loading';
 import {elevation2} from '../../../styles/lit-styles/elevation-styles';
 
 export enum EtoolsFilterTypes {
@@ -174,7 +175,7 @@ export class EtoolsFilters extends LitElement {
 
   selectedFiltersTmpl(filters: EtoolsFilter[]) {
     if (!filters) {
-      return html``;
+      return html`<etools-loading loading-text="Loading..." active></etools-loading>`;
     }
     const tmpl: any[] = [];
     filters.forEach((f: EtoolsFilter) => {
