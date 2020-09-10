@@ -22,11 +22,9 @@ export const getPartners = () => {
   });
 };
 
-export const getCpOutputs = () => {
+export const getDropdownsData = () => {
   return sendRequest({
     endpoint: {url: etoolsEndpoints.dropdownsData.url!}
-  }).then((resp: any) => {
-    return resp.cp_outputs || [];
   });
 };
 
