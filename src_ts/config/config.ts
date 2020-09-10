@@ -1,5 +1,11 @@
 export const SMALL_MENU_ACTIVE_LOCALSTORAGE_KEY = 'etoolsAppSmallMenuIsActive';
 
+declare global {
+  interface Window {
+    EtoolsEsmmFitIntoEl: any;
+  }
+}
+
 export const ROOT_PATH = '/' + getBasePath().replace(window.location.origin, '').slice(1, -1) + '/';
 
 const STAGING_DOMAIN = 'etools-staging.unicef.org';
