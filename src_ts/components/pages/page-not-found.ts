@@ -5,6 +5,7 @@ import {ROOT_PATH} from '../../config/config';
 import {elevationStyles} from '../styles/lit-styles/elevation-styles';
 import {pageLayoutStyles} from '../styles/page-layout-styles';
 import {SharedStylesLit} from '../styles/shared-styles-lit';
+import {fireEvent} from './interventions/intervention-tab-pages/utils/fire-custom-event';
 
 /**
  * @customElement
@@ -31,4 +32,16 @@ export class PageNotFound extends LitElement {
 
   @property({type: String})
   rootPath: string = ROOT_PATH;
+
+  @property({type: Boolean, reflect: true})
+  set active(active: boolean) {
+    if (!active) {
+      return;
+    }
+    // Disable loading message for tab load
+    fireEvent(this, 'global-loading', {
+      active: false,
+      loadingSource: 'interv-page'
+    });
+  }
 }
