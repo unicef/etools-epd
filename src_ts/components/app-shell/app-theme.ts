@@ -23,6 +23,7 @@ documentContainer.innerHTML = `
 
         --main-border-color: #c1c1c1;
         --light-divider-color: rgba(0, 0, 0, 0.12);
+        --light-hex-divider-color: #b8b8b8;
         --dark-divider-color: rgba(0, 0, 0, 0.40);
         --darker-divider-color: #9D9D9D;
 
