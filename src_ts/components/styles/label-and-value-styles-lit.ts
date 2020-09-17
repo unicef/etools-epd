@@ -20,4 +20,8 @@ export const labelAndvalueStylesLit = css`
     content: '—';
     color: var(--secondary-text-color);
   }
+
+  .f-12 {
+    font-size: 12px;
+  }
 `;
