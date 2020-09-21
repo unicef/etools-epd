@@ -8,9 +8,13 @@ import {pageContentHeaderSlottedStyles} from '../../common/layout/page-content-h
 
 import '../../common/layout/filters/etools-filters';
 import {
-  ACTIVE_STATUS,
+  DEVELOPMENT_STATUS,
+  REVIEW_STATUS,
+  SIGNATURE_STATUS,
+  CLOSED_STATUS,
+  TERMINATED_STATUS,
   defaultFilters,
-  DRAFT_STATUS,
+  ACTIVE_STATUS,
   ENDED_STATUS,
   SIGNED_STATUS,
   SUSPENDED_STATUS,
@@ -294,7 +298,17 @@ export class InterventionList extends connect(store)(LitElement) {
     if (!currentParams.page_size || !currentParams.status) {
       this.updateCurrentParams({
         page_size: '20',
-        status: [DRAFT_STATUS, SIGNED_STATUS, ACTIVE_STATUS, ENDED_STATUS, SUSPENDED_STATUS]
+        status: [
+          DEVELOPMENT_STATUS,
+          REVIEW_STATUS,
+          SIGNATURE_STATUS,
+          CLOSED_STATUS,
+          TERMINATED_STATUS,
+          SIGNED_STATUS,
+          ACTIVE_STATUS,
+          ENDED_STATUS,
+          SUSPENDED_STATUS
+        ]
       });
       return false;
     } else {
