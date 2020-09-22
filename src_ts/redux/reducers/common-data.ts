@@ -19,6 +19,7 @@ export interface CommonDataState {
   envFlags: EnvFlags | null;
   riskTypes: LabelAndValue[];
   fileTypes: any[];
+  cashTransferModalities: any[];
 }
 
 const INITIAL_COMMON_DATA: CommonDataState = {
@@ -36,7 +37,8 @@ const INITIAL_COMMON_DATA: CommonDataState = {
   currencies: [],
   riskTypes: [],
   envFlags: null,
-  fileTypes: []
+  fileTypes: [],
+  cashTransferModalities: []
 };
 
 const commonData: Reducer<CommonDataState, RootAction> = (state = INITIAL_COMMON_DATA, action) => {
@@ -57,7 +59,8 @@ const commonData: Reducer<CommonDataState, RootAction> = (state = INITIAL_COMMON
         unicefUsersData: action.staticData.unicefUsersData,
         currencies: action.staticData.currencies,
         riskTypes: action.staticData.riskTypes,
-        fileTypes: action.staticData.fileTypes
+        fileTypes: action.staticData.fileTypes,
+        cashTransferModalities: action.staticData.cashTransferModalities
       };
     case UPDATE_ENV_FLAGS:
       return {
