@@ -3,7 +3,9 @@ import {AnyObject} from '../../../../types/globals';
 import {isJsonStrMatch} from '../../../utils/utils';
 import {RouteQueryParams} from '../../../../routing/router';
 
-export const DRAFT_STATUS = 'draft';
+export const DEVELOPMENT_STATUS = 'draft';
+export const REVIEW_STATUS = 'review';
+export const SIGNATURE_STATUS = 'signature';
 export const SIGNED_STATUS = 'signed';
 export const ACTIVE_STATUS = 'active';
 export const ENDED_STATUS = 'ended';
@@ -60,8 +62,16 @@ export const defaultFilters: EtoolsFilter[] = [
     type: EtoolsFilterTypes.DropdownMulti,
     selectionOptions: [
       {
-        id: DRAFT_STATUS,
-        name: 'Draft'
+        id: DEVELOPMENT_STATUS,
+        name: 'Development'
+      },
+      {
+        id: REVIEW_STATUS,
+        name: 'Review'
+      },
+      {
+        id: SIGNATURE_STATUS,
+        name: 'Signature'
       },
       {
         id: SIGNED_STATUS,
