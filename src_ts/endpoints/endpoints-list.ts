@@ -60,7 +60,7 @@ export const etoolsEndpoints: EtoolsEndpoints = {
     url: '/api/v2/dropdowns/pmp/'
   },
   agreements: {
-    url: '/api/v3/agreements/'
+    url: '/api/pmp/v3/agreements/'
   },
   environmentFlags: {
     url: '/api/v2/environment/flags/'
