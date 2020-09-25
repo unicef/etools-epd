@@ -240,7 +240,7 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
     data.interventionAmendmentTypes = isEmpty(staticData.intervention_amendment_types)
       ? []
       : staticData.intervention_amendment_types;
-    data.interventionStatus = staticData.intervention_status || [];
+    data.interventionStatuses = staticData.intervention_status || [];
     data.currencies = isEmpty(staticData.currencies) ? [] : staticData.currencies;
     data.riskTypes = staticData.risk_types || [];
     data.cashTransferModalities = staticData.cash_transfer_modalities || [];

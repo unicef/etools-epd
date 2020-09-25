@@ -7,20 +7,7 @@ import '../../common/layout/page-content-header/page-content-header';
 import {pageContentHeaderSlottedStyles} from '../../common/layout/page-content-header/page-content-header-slotted-styles';
 
 import '../../common/layout/filters/etools-filters';
-import {
-  DEVELOPMENT_STATUS,
-  REVIEW_STATUS,
-  SIGNATURE_STATUS,
-  CLOSED_STATUS,
-  TERMINATED_STATUS,
-  defaultFilters,
-  ACTIVE_STATUS,
-  ENDED_STATUS,
-  SIGNED_STATUS,
-  SUSPENDED_STATUS,
-  updateFilterSelectionOptions,
-  updateFiltersSelectedValues
-} from './list/filters';
+import {defaultFilters, updateFilterSelectionOptions, updateFiltersSelectedValues} from './list/filters';
 import {ROOT_PATH} from '../../../config/config';
 import {EtoolsFilter} from '../../common/layout/filters/etools-filters';
 import {pageLayoutStyles} from '../../styles/page-layout-styles';
@@ -45,9 +32,10 @@ import {SharedStylesLit} from '../../styles/shared-styles-lit';
 import '@unicef-polymer/etools-loading';
 import get from 'lodash-es/get';
 import '../../common/layout/export-data';
-import {GenericObject} from '../../../types/globals';
+import {GenericObject, LabelAndValue} from '../../../types/globals';
 import {InterventionsListHelper, ListHelperResponse} from './list/list-helper';
 import {InterventionsListStyles, InterventionsTableStyles} from './list/list-styles';
+import {isJsonStrMatch} from '../../utils/utils';
 
 /**
  * @LitElement
@@ -113,6 +101,9 @@ export class InterventionList extends connect(store)(LitElement) {
   @property({type: Boolean})
   showLoading = false;
 
+  @property({type: Array})
+  interventionStatuses!: LabelAndValue[];
+
   listColumns: EtoolsTableColumn[] = [
     {
       label: 'Reference No.',
@@ -176,6 +167,10 @@ export class InterventionList extends connect(store)(LitElement) {
     const stateRouteDetails = {...state.app!.routeDetails};
     if (JSON.stringify(stateRouteDetails) !== JSON.stringify(this.routeDetails)) {
       this.onParamsChange(stateRouteDetails);
+    }
+
+    if (!isJsonStrMatch(this.interventionStatuses, state.commonData!.interventionStatuses)) {
+      this.interventionStatuses = [...state.commonData!.interventionStatuses];
     }
 
     if (state.user && state.user.permissions) {
@@ -244,12 +239,22 @@ export class InterventionList extends connect(store)(LitElement) {
       this.showLoading = true;
       const {list, paginator}: ListHelperResponse<InterventionListData> = await this.listHelper.getList(currentParams);
       this.listData = list;
+      // remove this after status draft comes as development
+      this.mapDraftToDevelop(this.listData);
       // update paginator (total_pages, visible_range, count...)
       this.paginator = paginator;
       this.showLoading = false;
     } catch (error) {
       console.error('[EtoolsInterventionsList]: get Interventions req error...', error);
     }
+  }
+
+  private mapDraftToDevelop(data: InterventionListData[]) {
+    return data.forEach((intervention: InterventionListData) => {
+      if (intervention.hasOwnProperty('status') && intervention.status === 'draft') {
+        intervention.status = 'development';
+      }
+    });
   }
 
   private initFiltersForDisplay(state: RootState) {
@@ -267,6 +272,7 @@ export class InterventionList extends connect(store)(LitElement) {
     return !!(
       state.commonData &&
       get(state, 'commonData.partners.length') &&
+      get(state, 'commonData.interventionStatuses.length') &&
       this.routeDetails!.queryParams &&
       Object.keys(this.routeDetails!.queryParams).length > 0
     );
@@ -274,6 +280,7 @@ export class InterventionList extends connect(store)(LitElement) {
 
   private populateDropdownFilterOptionsFromCommonData(commonData: any, currentFilters: EtoolsFilter[]) {
     updateFilterSelectionOptions(currentFilters, 'partners', commonData.partners);
+    updateFilterSelectionOptions(currentFilters, 'status', commonData.interventionStatuses);
   }
 
   private initializeAndValidateParams(currentParams: GenericObject<any>): boolean {
@@ -298,17 +305,7 @@ export class InterventionList extends connect(store)(LitElement) {
     if (!currentParams.page_size || !currentParams.status) {
       this.updateCurrentParams({
         page_size: '20',
-        status: [
-          DEVELOPMENT_STATUS,
-          REVIEW_STATUS,
-          SIGNATURE_STATUS,
-          CLOSED_STATUS,
-          TERMINATED_STATUS,
-          SIGNED_STATUS,
-          ACTIVE_STATUS,
-          ENDED_STATUS,
-          SUSPENDED_STATUS
-        ]
+        status: ['draft', 'active']
       });
       return false;
     } else {

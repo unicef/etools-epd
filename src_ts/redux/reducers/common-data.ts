@@ -14,7 +14,7 @@ export interface CommonDataState {
   documentTypes: [];
   genderEquityRatings: [];
   interventionAmendmentTypes: LabelAndValue[];
-  interventionStatus: LabelAndValue[];
+  interventionStatuses: LabelAndValue[];
   offices: [];
   currencies: LabelAndValue[];
   envFlags: EnvFlags | null;
@@ -33,7 +33,7 @@ const INITIAL_COMMON_DATA: CommonDataState = {
   documentTypes: [],
   genderEquityRatings: [],
   interventionAmendmentTypes: [],
-  interventionStatus: [],
+  interventionStatuses: [],
   offices: [],
   cpOutputs: [],
   currencies: [],
@@ -57,7 +57,7 @@ const commonData: Reducer<CommonDataState, RootAction> = (state = INITIAL_COMMON
         genderEquityRatings: action.staticData.genderEquityRatings, // TODO -make sure data is loaded from bk
         cpOutputs: action.staticData.cpOutputs,
         interventionAmendmentTypes: action.staticData.interventionAmendmentTypes,
-        interventionStatus: action.staticData.interventionStatus,
+        interventionStatuses: action.staticData.interventionStatuses,
         offices: action.staticData.offices,
         unicefUsersData: action.staticData.unicefUsersData,
         currencies: action.staticData.currencies,
