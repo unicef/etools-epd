@@ -30,7 +30,7 @@ export const etoolsEndpoints: EtoolsEndpoints = {
     url: '/api/v3/users/changecountry/'
   },
   interventions: {
-    url: '/api/v3/interventions/'
+    url: '/api/pmp/v3/interventions/'
   },
   intervention: {
     template: '/api/pmp/v3/interventions/<%=interventionId%>/'
