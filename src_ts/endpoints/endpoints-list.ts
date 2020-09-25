@@ -30,7 +30,7 @@ export const etoolsEndpoints: EtoolsEndpoints = {
     url: '/api/v3/users/changecountry/'
   },
   interventions: {
-    url: '/api/v2/interventions/'
+    url: '/api/v3/interventions/'
   },
   intervention: {
     template: '/api/pmp/v3/interventions/<%=interventionId%>/'
@@ -45,10 +45,10 @@ export const etoolsEndpoints: EtoolsEndpoints = {
     url: '/api/v2/partners/'
   },
   sections: {
-    url: '/api/v2/reports/sections/'
+    url: '/api/sections/v3/'
   },
   offices: {
-    url: '/api/offices/'
+    url: '/api/offices/v3/'
   },
   disaggregations: {
     url: '/api/v2/reports/disaggregations/'
@@ -60,7 +60,7 @@ export const etoolsEndpoints: EtoolsEndpoints = {
     url: '/api/v2/dropdowns/pmp/'
   },
   agreements: {
-    url: '/api/v2/agreements/'
+    url: '/api/v3/agreements/'
   },
   environmentFlags: {
     url: '/api/v2/environment/flags/'
