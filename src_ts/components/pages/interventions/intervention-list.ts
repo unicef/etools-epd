@@ -207,7 +207,7 @@ export class InterventionList extends connect(store)(LitElement) {
               <div class="detail">${item.budget_currency || ''} ${item.total_budget}</div>
             </div>
             <div>
-              <div class="title">UNICEF Cache Contribution</div>
+              <div class="title">UNICEF Cash Contribution</div>
               <div class="detail">${item.budget_currency || ''} ${item.cso_contribution}</div>
             </div>
           </div>
