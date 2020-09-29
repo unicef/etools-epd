@@ -3,16 +3,6 @@ import {AnyObject} from '../../../../types/globals';
 import {isJsonStrMatch} from '../../../utils/utils';
 import {RouteQueryParams} from '../../../../routing/router';
 
-export const DEVELOPMENT_STATUS = 'draft';
-export const REVIEW_STATUS = 'review';
-export const SIGNATURE_STATUS = 'signature';
-export const SIGNED_STATUS = 'signed';
-export const ACTIVE_STATUS = 'active';
-export const ENDED_STATUS = 'ended';
-export const CLOSED_STATUS = 'closed';
-export const SUSPENDED_STATUS = 'suspended';
-export const TERMINATED_STATUS = 'terminated';
-
 export enum FilterKeys {
   search = 'search',
   status = 'status',
@@ -60,47 +50,10 @@ export const defaultFilters: EtoolsFilter[] = [
     filterName: 'Status',
     filterKey: FilterKeys.status,
     type: EtoolsFilterTypes.DropdownMulti,
-    selectionOptions: [
-      {
-        id: DEVELOPMENT_STATUS,
-        name: 'Development'
-      },
-      {
-        id: REVIEW_STATUS,
-        name: 'Review'
-      },
-      {
-        id: SIGNATURE_STATUS,
-        name: 'Signature'
-      },
-      {
-        id: SIGNED_STATUS,
-        name: 'Signed'
-      },
-      {
-        id: ACTIVE_STATUS,
-        name: 'Active'
-      },
-      {
-        id: ENDED_STATUS,
-        name: 'Ended'
-      },
-      {
-        id: CLOSED_STATUS,
-        name: 'Closed'
-      },
-      {
-        id: SUSPENDED_STATUS,
-        name: 'Suspended'
-      },
-      {
-        id: TERMINATED_STATUS,
-        name: 'Terminated'
-      }
-    ],
-    optionValue: 'id',
-    optionLabel: 'name',
-    selectedValue: [],
+    selectionOptions: [],
+    optionValue: 'value',
+    optionLabel: 'label',
+    selectedValue: ['draft', 'active'],
     selected: true,
     minWidth: '350px',
     hideSearch: true,
