@@ -62,6 +62,8 @@ import isEmpty from 'lodash-es/isEmpty';
 import {fireEvent} from '../utils/fire-custom-event';
 import get from 'lodash-es/get';
 import '../env-flags/environment-flags';
+import '../../redux/actions/prp-country-data';
+import {PrpCountryData} from '../../redux/actions/prp-country-data';
 
 store.addReducers({
   user,
@@ -83,6 +85,7 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
     // language=HTML
     return html`
       <environment-flags></environment-flags>
+      <prp-country-data id="prpCountryData"></prp-country-data>
 
       <app-drawer-layout
         id="layout"
@@ -165,6 +168,7 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
   @query('#layout') private drawerLayout!: AppDrawerLayoutElement;
   @query('#drawer') private drawer!: AppDrawerElement;
   @query('#appHeadLayout') private appHeaderLayout!: AppHeaderLayoutElement;
+  @query('#prpCountryData') private prpCountryData!: PrpCountryData;
 
   private appToastsNotificationsHelper!: ToastNotificationHelper;
 
@@ -203,7 +207,8 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
           getUnicefUsers(),
           getStaticData(),
           getDropdownsData(),
-          getAgreements()
+          getAgreements(),
+          this.prpCountryData.getPRPCountries()
         ]).then((response: any[]) => {
           store.dispatch({
             type: SET_ALL_STATIC_DATA,
@@ -233,6 +238,7 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
     data.unicefUsersData = this.getValue(response[5]);
     data.cpOutputs = this.getValue(response[7]).cp_outputs || [];
     data.fileTypes = this.getValue(response[7]).file_types || [];
+    data.PRPCountryData = this.getValue(response[9]) || [];
     const staticData = this.getValue(response[6], {});
     data.locationTypes = isEmpty(staticData.location_types) ? [] : staticData.location_types;
     data.documentTypes = isEmpty(staticData.intervention_doc_type) ? [] : staticData.intervention_doc_type;
