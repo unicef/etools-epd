@@ -203,7 +203,7 @@ export class InterventionList extends connect(store)(LitElement) {
             </div>
             <div>
               <div class="title">UNICEF Cash Contribution</div>
-              <div class="detail">${item.budget_currency || ''} ${item.cso_contribution}</div>
+              <div class="detail">${item.budget_currency || ''} ${item.unicef_cash}</div>
             </div>
           </div>
         </td>
