@@ -10,7 +10,7 @@ import {connect} from 'pwa-helpers/connect-mixin.js';
 import {RootState, store} from '../../../redux/store';
 import {isProductionServer, ROOT_PATH} from '../../../config/config';
 import {updateDrawerState} from '../../../redux/actions/app';
-import {EtoolsUserModel, dummyUserData} from '../../user/user-model';
+import {EtoolsUserModel} from '../../user/user-model';
 import {fireEvent} from '../../utils/fire-custom-event';
 import isEmpty from 'lodash-es/isEmpty';
 import {updateCurrentUser} from '../../user/user-actions';
@@ -133,7 +133,6 @@ export class PageHeader extends connect(store)(LitElement) {
   public stateChanged(state: RootState) {
     if (state) {
       this.profile = state.user!.data as EtoolsUserModel;
-      this.profile = dummyUserData;
     }
   }
 
