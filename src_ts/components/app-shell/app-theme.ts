@@ -34,7 +34,7 @@ documentContainer.innerHTML = `
 
         --success-color: #72c300;
         --error-color: #ea4022;
-        
+
         --add-button-color: var(--success-color);
         --icon-delete-color: var(--error-color);
 
@@ -56,7 +56,7 @@ documentContainer.innerHTML = `
         --error-box-text-color: var(--error-color);
 
         --epc-header: {
-          background-color: var( --primary-background-color);
+          background-color: var(--primary-background-color);
           border-bottom: 1px groove var(--dark-divider-color);
         }
         --epc-header-color: var(--primary-text-color);

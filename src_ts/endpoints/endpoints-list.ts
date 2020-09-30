@@ -57,7 +57,7 @@ export const etoolsEndpoints: EtoolsEndpoints = {
     url: '/api/v3/users/?verbosity=minimal'
   },
   dropdownsData: {
-    url: '/api/v2/dropdowns/pmp/'
+    url: '/api/pmp/v3/dropdowns/dynamic/'
   },
   agreements: {
     url: '/api/pmp/v3/agreements/'
