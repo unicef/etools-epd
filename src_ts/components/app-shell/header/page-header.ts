@@ -133,7 +133,6 @@ export class PageHeader extends connect(store)(LitElement) {
   public stateChanged(state: RootState) {
     if (state) {
       this.profile = state.user!.data as EtoolsUserModel;
-      this.profile = dummyUserData;
     }
   }
 
