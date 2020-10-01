@@ -78,10 +78,3 @@ export const updateEnvFlags: ActionCreator<CommonDataActionUpdateEnvFlags> = (en
     envFlags
   };
 };
-
-export const updatePrpCountries: ActionCreator<CommonDataActionUpdatePrpCountries> = (PRPCountryData: AnyObject[]) => {
-  return {
-    type: UPDATE_PRP_COUNTRIES,
-    PRPCountryData
-  };
-};
