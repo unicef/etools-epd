@@ -5,6 +5,7 @@ import {etoolsEndpoints} from '../../endpoints/endpoints-list';
 
 export const SET_ALL_STATIC_DATA = 'SET_ALL_STATIC_DATA';
 export const UPDATE_ENV_FLAGS = 'UPDATE_ENV_FLAGS';
+export const UPDATE_PRP_COUNTRIES = 'UPDATE_PRP_COUNTRIES';
 
 export interface CommonDataActionSetAllStaticData extends Action<'SET_ALL_STATIC_DATA'> {
   genderEquityRatings: AnyObject[];
@@ -14,7 +15,14 @@ export interface CommonDataActionUpdateEnvFlags extends Action<'UPDATE_ENV_FLAGS
   envFlags: AnyObject;
 }
 
-export type CommonDataAction = CommonDataActionSetAllStaticData | CommonDataActionUpdateEnvFlags;
+export interface CommonDataActionUpdatePrpCountries extends Action<'UPDATE_PRP_COUNTRIES'> {
+  PRPCountryData: AnyObject[];
+}
+
+export type CommonDataAction =
+  | CommonDataActionSetAllStaticData
+  | CommonDataActionUpdateEnvFlags
+  | CommonDataActionUpdatePrpCountries;
 
 export const getPartners = () => {
   return sendRequest({

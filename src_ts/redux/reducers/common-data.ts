@@ -1,5 +1,5 @@
 import {Reducer} from 'redux';
-import {SET_ALL_STATIC_DATA, UPDATE_ENV_FLAGS} from '../actions/common-data';
+import {SET_ALL_STATIC_DATA, UPDATE_ENV_FLAGS, UPDATE_PRP_COUNTRIES} from '../actions/common-data';
 import {RootAction} from '../store';
 import {CpOutput, Disaggregation, LocationObject, Section, LabelAndValue, EnvFlags} from '../../types/globals';
 
@@ -21,6 +21,7 @@ export interface CommonDataState {
   riskTypes: LabelAndValue[];
   fileTypes: any[];
   cashTransferModalities: any[];
+  PRPCountryData: any[];
 }
 
 const INITIAL_COMMON_DATA: CommonDataState = {
@@ -40,7 +41,8 @@ const INITIAL_COMMON_DATA: CommonDataState = {
   riskTypes: [],
   envFlags: null,
   fileTypes: [],
-  cashTransferModalities: []
+  cashTransferModalities: [],
+  PRPCountryData: []
 };
 
 const commonData: Reducer<CommonDataState, RootAction> = (state = INITIAL_COMMON_DATA, action) => {
@@ -69,6 +71,11 @@ const commonData: Reducer<CommonDataState, RootAction> = (state = INITIAL_COMMON
       return {
         ...state,
         envFlags: action.envFlags
+      };
+    case UPDATE_PRP_COUNTRIES:
+      return {
+        ...state,
+        PRPCountryData: action.PRPCountryData
       };
     default:
       return state;
