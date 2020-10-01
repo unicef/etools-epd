@@ -36,13 +36,14 @@ import {GenericObject, LabelAndValue} from '../../../types/globals';
 import {InterventionsListHelper, ListHelperResponse} from './list/list-helper';
 import {InterventionsListStyles, InterventionsTableStyles} from './list/list-styles';
 import {isJsonStrMatch} from '../../utils/utils';
+import {EtoolsCurrency} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-mixin';
 
 /**
  * @LitElement
  * @customElement
  */
 @customElement('intervention-list')
-export class InterventionList extends connect(store)(LitElement) {
+export class InterventionList extends connect(store)(EtoolsCurrency(LitElement)) {
   static get styles() {
     return [elevationStyles, buttonsStyles, pageLayoutStyles, pageContentHeaderSlottedStyles, InterventionsListStyles];
   }
@@ -73,7 +74,7 @@ export class InterventionList extends connect(store)(LitElement) {
           .columns="${this.listColumns}"
           .items="${this.listData.length ? this.listData : [{}]}"
           .paginator="${this.paginator}"
-          .getChildRowTemplateMethod="${this.listData.length ? this.getRowDetails : null}"
+          .getChildRowTemplateMethod="${this.listData.length ? this.getRowDetails.bind(this) : null}"
           .extraCSS="${InterventionsTableStyles}"
           singleSort
           @paginator-change="${this.paginatorChange}"
@@ -199,11 +200,15 @@ export class InterventionList extends connect(store)(LitElement) {
           <div class="details">
             <div>
               <div class="title">Total Budget</div>
-              <div class="detail">${item.budget_currency || ''} ${item.total_budget}</div>
+              <div class="detail">
+                ${item.budget_currency || ''} ${this.addCurrencyAmountDelimiter(item.total_budget)}
+              </div>
             </div>
             <div>
               <div class="title">UNICEF Cash Contribution</div>
-              <div class="detail">${item.budget_currency || ''} ${item.unicef_cash}</div>
+              <div class="detail">
+                ${item.budget_currency || ''} ${this.addCurrencyAmountDelimiter(item.unicef_cash)}
+              </div>
             </div>
           </div>
         </td>
