@@ -310,7 +310,7 @@ export class InterventionList extends connect(store)(EtoolsCurrency(LitElement))
     if (!currentParams.page_size || !currentParams.status) {
       this.updateCurrentParams({
         page_size: '20',
-        status: ['draft', 'active']
+        status: ['draft', 'active', 'review', 'signed', 'signature']
       });
       return false;
     } else {

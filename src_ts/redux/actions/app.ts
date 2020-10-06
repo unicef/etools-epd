@@ -87,5 +87,5 @@ export const navigate: ActionCreator<ThunkResult> = (path: string) => (dispatch)
    * The timeout is to avoid the import of the component (which triggers connect(getStore()))
    * before the store has gotten a chance to be initialised
    */
-  setTimeout(() => dispatch(loadPageComponents(routeDetails)), 300);
+  setTimeout(() => dispatch(loadPageComponents(routeDetails)), 800);
 };
