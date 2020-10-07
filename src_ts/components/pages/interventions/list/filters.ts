@@ -60,7 +60,7 @@ export const defaultFilters: EtoolsFilter[] = [
     disabled: false
   },
   {
-    filterName: 'PD/SSFA Type',
+    filterName: 'PD Type',
     filterKey: FilterKeys.document_type,
     type: EtoolsFilterTypes.DropdownMulti,
     selectionOptions: [],
