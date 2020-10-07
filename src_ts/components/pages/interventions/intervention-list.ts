@@ -278,6 +278,7 @@ export class InterventionList extends connect(store)(EtoolsCurrency(LitElement))
       state.commonData &&
       get(state, 'commonData.partners.length') &&
       get(state, 'commonData.interventionStatuses.length') &&
+      get(state, 'commonData.documentTypes.length') &&
       this.routeDetails!.queryParams &&
       Object.keys(this.routeDetails!.queryParams).length > 0
     );
@@ -286,6 +287,7 @@ export class InterventionList extends connect(store)(EtoolsCurrency(LitElement))
   private populateDropdownFilterOptionsFromCommonData(commonData: any, currentFilters: EtoolsFilter[]) {
     updateFilterSelectionOptions(currentFilters, 'partners', commonData.partners);
     updateFilterSelectionOptions(currentFilters, 'status', commonData.interventionStatuses);
+    updateFilterSelectionOptions(currentFilters, 'document_type', commonData.documentTypes);
   }
 
   private initializeAndValidateParams(currentParams: GenericObject<any>): boolean {
