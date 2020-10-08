@@ -63,22 +63,9 @@ export const defaultFilters: EtoolsFilter[] = [
     filterName: 'PD/SSFA Type',
     filterKey: FilterKeys.document_type,
     type: EtoolsFilterTypes.DropdownMulti,
-    selectionOptions: [
-      {
-        id: 'HPD',
-        name: 'Humanitarian Programme Document'
-      },
-      {
-        id: 'PD',
-        name: 'Programme Document'
-      },
-      {
-        id: 'SSFA',
-        name: 'SSFA'
-      }
-    ],
-    optionValue: 'id',
-    optionLabel: 'name',
+    selectionOptions: [],
+    optionValue: 'value',
+    optionLabel: 'label',
     selectedValue: [],
     selected: false,
     minWidth: '350px',
