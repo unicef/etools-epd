@@ -12,22 +12,22 @@ documentContainer.innerHTML = `
         --medium-theme-background-color: #eeeeee;
         --light-theme-background-color: var(--paper-grey-50);
 
-        --primary-text-color: rgba(0, 0, 0, 0.87);
-        --secondary-text-color: rgba(0, 0, 0, 0.54);
+        --primary-text-color: #212121;
+        --secondary-text-color: #757575;
 
         --header-color: #ffffff;
         --header-bg-color: #233944;
-        --header-icon-color: rgba(250, 250, 250, 0.70);
+        --header-icon-color: #e1c3c5;
         --nonprod-header-color: #a94442;
         --nonprod-text-warn-color: #e6e600;
 
         --main-border-color: #c1c1c1;
-        --light-divider-color: rgba(0, 0, 0, 0.12);
+        --light-divider-color: #e0e0e0;
         --light-hex-divider-color: #b8b8b8;
-        --dark-divider-color: rgba(0, 0, 0, 0.40);
+        --dark-divider-color: #999999;
         --darker-divider-color: #9D9D9D;
 
-        --dark-icon-color: rgba(0, 0, 0, 0.65);
+        --dark-icon-color: #595959;
         --light-icon-color: rgba(255, 255, 255, 1);
 
         --side-bar-scrolling: visible;
