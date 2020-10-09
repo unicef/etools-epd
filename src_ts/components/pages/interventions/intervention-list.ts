@@ -320,7 +320,7 @@ export class InterventionList extends connect(store)(EtoolsCurrency(LitElement))
           ? this.urlParams
           : {
               page_size: '20',
-              status: ['draft', 'active']
+              status: ['draft', 'active', 'review', 'signed', 'signature']
             }
       );
       return false;
