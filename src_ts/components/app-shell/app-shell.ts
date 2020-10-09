@@ -188,7 +188,12 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
   public connectedCallback() {
     super.connectedCallback();
 
-    installRouter((location) => store.dispatch(navigate(decodeURIComponent(location.pathname + location.search))));
+    installRouter((location) => {
+      store.dispatch(navigate(decodeURIComponent(location.pathname + location.search)));
+      if (this.appHeaderLayout) {
+        this.appHeaderLayout.$.contentContainer.scrollTop = 0;
+      }
+    });
     installMediaQueryWatcher(`(min-width: 460px)`, () => store.dispatch(updateDrawerState(false)));
 
     getCurrentUser().then((user: EtoolsUserModel) => {
