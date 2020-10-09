@@ -115,6 +115,23 @@ export const defaultFilters: EtoolsFilter[] = [
   }
 ];
 
+export const getSelectedFiltersFromUrlParams = (params: AnyObject): FilterKeysAndTheirSelectedValues => {
+  const selectedFilters: AnyObject = {};
+
+  for (const filterKey in params) {
+    if (params[filterKey]) {
+      if (selectedValueTypeByFilterKey[filterKey] === 'Array') {
+        selectedFilters[filterKey] = params[filterKey].split(',');
+      } else if (selectedValueTypeByFilterKey[filterKey] === 'boolean') {
+        selectedFilters[filterKey] = params[filterKey] === 'true';
+      } else {
+        selectedFilters[filterKey] = params[filterKey];
+      }
+    }
+  }
+  return selectedFilters as FilterKeysAndTheirSelectedValues;
+};
+
 export const updateFiltersSelectedValues = (params: RouteQueryParams, filters: EtoolsFilter[]) => {
   const availableFilters = [...filters];
 
@@ -143,21 +160,4 @@ export const updateFilterSelectionOptions = (filters: EtoolsFilter[], fKey: stri
       filter.selectionOptions = [...options];
     }
   }
-};
-
-export const getSelectedFiltersFromUrlParams = (params: AnyObject): FilterKeysAndTheirSelectedValues => {
-  const selectedFilters: AnyObject = {};
-
-  for (const filterKey in params) {
-    if (params[filterKey]) {
-      if (selectedValueTypeByFilterKey[filterKey] === 'Array') {
-        selectedFilters[filterKey] = params[filterKey].split(',');
-      } else if (selectedValueTypeByFilterKey[filterKey] === 'boolean') {
-        selectedFilters[filterKey] = params[filterKey] === 'true';
-      } else {
-        selectedFilters[filterKey] = params[filterKey];
-      }
-    }
-  }
-  return selectedFilters as FilterKeysAndTheirSelectedValues;
 };

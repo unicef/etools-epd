@@ -105,6 +105,9 @@ export class InterventionList extends connect(store)(EtoolsCurrency(LitElement))
   @property({type: Array})
   interventionStatuses!: LabelAndValue[];
 
+  @property({type: Object})
+  urlParams!: GenericObject<any>;
+
   listColumns: EtoolsTableColumn[] = [
     {
       label: 'Reference No.',
@@ -233,6 +236,7 @@ export class InterventionList extends connect(store)(EtoolsCurrency(LitElement))
   private updateCurrentParams(paramsToUpdate: GenericObject<any>): void {
     const currentParams: RouteQueryParams = this.routeDetails!.queryParams || {};
     const newParams: RouteQueryParams = {...currentParams, ...paramsToUpdate};
+    this.urlParams = newParams;
     const stringParams: string = buildUrlQueryString(newParams);
     this.exportParams = stringParams;
     replaceAppLocation(`${this.routeDetails!.path}?${stringParams}`, true);
@@ -310,10 +314,15 @@ export class InterventionList extends connect(store)(EtoolsCurrency(LitElement))
 
     // set required params in url
     if (!currentParams.page_size || !currentParams.status) {
-      this.updateCurrentParams({
-        page_size: '20',
-        status: ['draft', 'active', 'review', 'signed', 'signature']
-      });
+      // urlParams store page previous filtering params, if set, apply them to preserve user filters selection
+      this.updateCurrentParams(
+        this.urlParams
+          ? this.urlParams
+          : {
+              page_size: '20',
+              status: ['draft', 'active', 'review', 'signed', 'signature']
+            }
+      );
       return false;
     } else {
       return true;
