@@ -1,4 +1,5 @@
 import {UPDATE_CURRENT_INTERVENTION} from '../actionsContants';
+// eslint-disable-next-line max-len
 import {Intervention} from '../../components/pages/interventions/intervention-tab-pages/common/models/intervention.types';
 
 export interface InterventionsState {

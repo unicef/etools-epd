@@ -9,7 +9,7 @@
   "repository": "https://github.com/unicef/etools-epd",
   "scripts": {
     "tsToJs": "tsc --skipLibCheck",
-    "tsEslint": "node_modules/eslint/bin/eslint.js 'src_ts/**' --fix",
+    "tsEslint": "node_modules/eslint/bin/eslint.js 'src_ts/**/*.ts' --fix",
     "start": "gulp serve",
     "build": "tsc --skipLibCheck || true && npm run build:static",
     "build:prpl-server": "polymer build --auto-base-path && gulp prpl-server",

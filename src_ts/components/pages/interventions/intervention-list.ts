@@ -4,6 +4,7 @@ import {connect} from 'pwa-helpers/connect-mixin';
 import {RootState, store} from '../../../redux/store';
 
 import '../../common/layout/page-content-header/page-content-header';
+// eslint-disable-next-line max-len
 import {pageContentHeaderSlottedStyles} from '../../common/layout/page-content-header/page-content-header-slotted-styles';
 
 import '../../common/layout/filters/etools-filters';
@@ -294,7 +295,7 @@ export class InterventionList extends connect(store)(EtoolsCurrency(LitElement))
 
   private mapDraftToDevelop(data: InterventionListData[]) {
     return data.forEach((intervention: InterventionListData) => {
-      if (intervention.hasOwnProperty('status') && intervention.status === 'draft') {
+      if (Object.hasOwnProperty.call(intervention, 'status') && intervention.status === 'draft') {
         intervention.status = 'development';
       }
     });

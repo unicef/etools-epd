@@ -1,4 +1,5 @@
 import {SET_AGREEMENTS} from '../actions/agreements';
+// eslint-disable-next-line max-len
 import {MinimalAgreement} from '../../components/pages/interventions/intervention-tab-pages/common/models/agreement.types';
 
 export interface AgreementsState {
