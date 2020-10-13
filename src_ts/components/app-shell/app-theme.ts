@@ -28,7 +28,7 @@ documentContainer.innerHTML = `
         --darker-divider-color: #9D9D9D;
 
         --dark-icon-color: #595959;
-        --light-icon-color: rgba(255, 255, 255, 1);
+        --light-icon-color: #ffffff;
 
         --side-bar-scrolling: visible;
 
@@ -40,8 +40,7 @@ documentContainer.innerHTML = `
 
         --primary-shade-of-green: #1A9251;
         --primary-shade-of-red: #E32526;
-        --primary-shade-of-orange: orange;
-        --light-hex-divider-color: #b8b8b8;
+        --primary-shade-of-orange: #ffa500;
 
         --info-color: #cebc06;
         --light-info-color: #fff176;
