@@ -163,7 +163,6 @@ export class InterventionList extends connect(store)(EtoolsCurrency(LitElement))
     const routeDetails = get(state, 'app.routeDetails');
     if (!(routeDetails.routeName === 'interventions' && routeDetails.subRouteName === 'list')) {
       this.paramsInitialized = false;
-      this.filters = null;
       this.routeDetails = null;
       return; // Avoid code execution while on a different page
     }
