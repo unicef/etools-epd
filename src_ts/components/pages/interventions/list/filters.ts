@@ -53,7 +53,7 @@ export const defaultFilters: EtoolsFilter[] = [
     selectionOptions: [],
     optionValue: 'value',
     optionLabel: 'label',
-    selectedValue: ['draft', 'active'],
+    selectedValue: [],
     selected: true,
     minWidth: '350px',
     hideSearch: true,

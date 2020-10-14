@@ -313,7 +313,7 @@ export class InterventionList extends connect(store)(EtoolsCurrency(LitElement))
     }
 
     // set required params in url
-    if (!currentParams.page_size || !currentParams.status) {
+    if (!currentParams.page_size) {
       // urlParams store page previous filtering params, if set, apply them to preserve user filters selection
       this.updateCurrentParams(
         this.urlParams
