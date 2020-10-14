@@ -37,7 +37,7 @@ import {InterventionsListHelper, ListHelperResponse} from './list/list-helper';
 import {InterventionsListStyles, InterventionsTableStyles} from './list/list-styles';
 import {isJsonStrMatch} from '../../utils/utils';
 import {EtoolsCurrency} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-mixin';
-import {notHiddenPartnersSelector} from './intervention-tab-pages/common/selectors';
+import {notHiddenPartnersSelector} from '../../../redux/reducers/common-data';
 
 /**
  * @LitElement
