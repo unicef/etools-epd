@@ -37,6 +37,7 @@ import {InterventionsListHelper, ListHelperResponse} from './list/list-helper';
 import {InterventionsListStyles, InterventionsTableStyles} from './list/list-styles';
 import {isJsonStrMatch} from '../../utils/utils';
 import {EtoolsCurrency} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-mixin';
+import {notHiddenPartnersSelector} from './intervention-tab-pages/common/selectors';
 
 /**
  * @LitElement
@@ -269,7 +270,7 @@ export class InterventionList extends connect(store)(EtoolsCurrency(LitElement))
   private initFiltersForDisplay(state: RootState) {
     if (!this.filters && this.dataRequiredByFiltersHasBeenLoaded(state)) {
       const availableFilters = [...defaultFilters];
-      this.populateDropdownFilterOptionsFromCommonData(state.commonData, availableFilters);
+      this.populateDropdownFilterOptionsFromCommonData(state, availableFilters);
 
       // update filter selection and assign the result to etools-filters(trigger render)
       const currentParams: RouteQueryParams = state.app!.routeDetails.queryParams || {};
@@ -288,10 +289,10 @@ export class InterventionList extends connect(store)(EtoolsCurrency(LitElement))
     );
   }
 
-  private populateDropdownFilterOptionsFromCommonData(commonData: any, currentFilters: EtoolsFilter[]) {
-    updateFilterSelectionOptions(currentFilters, 'partners', commonData.partners);
-    updateFilterSelectionOptions(currentFilters, 'status', commonData.interventionStatuses);
-    updateFilterSelectionOptions(currentFilters, 'document_type', commonData.documentTypes);
+  private populateDropdownFilterOptionsFromCommonData(state: RootState, currentFilters: EtoolsFilter[]) {
+    updateFilterSelectionOptions(currentFilters, 'partners', notHiddenPartnersSelector(state));
+    updateFilterSelectionOptions(currentFilters, 'status', state.commonData!.interventionStatuses);
+    updateFilterSelectionOptions(currentFilters, 'document_type', state.commonData!.documentTypes);
   }
 
   private initializeAndValidateParams(currentParams: GenericObject<any>): boolean {

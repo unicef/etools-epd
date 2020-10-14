@@ -231,9 +231,7 @@ export class EtoolsFilters extends LitElement {
 
     // language=HTML
     return html`
-      <div id="filters">
-        ${this.selectedFiltersTmpl(this.filters)}
-      </div>
+      <div id="filters">${this.selectedFiltersTmpl(this.filters)}</div>
 
       <div id="filters-selector">
         <paper-menu-button id="filterMenu" ignore-select horizontal-align="right">
@@ -242,13 +240,9 @@ export class EtoolsFilters extends LitElement {
             Filters
           </paper-button>
           <div slot="dropdown-content" class="clear-all-filters">
-            <paper-button @tap="${this.clearAllFilterValues}" class="secondary-btn">
-              CLEAR ALL
-            </paper-button>
+            <paper-button @tap="${this.clearAllFilterValues}" class="secondary-btn"> CLEAR ALL </paper-button>
           </div>
-          <paper-listbox slot="dropdown-content" multi>
-            ${this.filterMenuOptions(this.filters)}
-          </paper-listbox>
+          <paper-listbox slot="dropdown-content" multi> ${this.filterMenuOptions(this.filters)} </paper-listbox>
         </paper-menu-button>
       </div>
     `;
