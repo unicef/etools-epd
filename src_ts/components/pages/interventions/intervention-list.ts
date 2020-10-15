@@ -252,6 +252,7 @@ export class InterventionList extends connect(store)(EtoolsCurrency(LitElement))
       this.mapDraftToDevelop(this.listData);
       // update paginator (total_pages, visible_range, count...)
       this.paginator = paginator;
+      this.updateDraftStatus(this.listData);
       this.showLoading = false;
     } catch (error) {
       console.error('[EtoolsInterventionsList]: get Interventions req error...', error);
@@ -264,6 +265,34 @@ export class InterventionList extends connect(store)(EtoolsCurrency(LitElement))
         intervention.status = 'development';
       }
     });
+  }
+
+  private updateDraftStatus(data: InterventionListData[]) {
+    return data.forEach((intervention: InterventionListData) => {
+      if (intervention.hasOwnProperty('status') && intervention.status === 'development') {
+        intervention.status = intervention.status + this.getDraftDetails(intervention);
+      }
+    });
+  }
+
+  private getDraftDetails(data: InterventionListData) {
+    if (data.partner_accepted && data.unicef_accepted) {
+      return ' IP & Unicef Accepted';
+    }
+    if (!data.partner_accepted && data.unicef_accepted) {
+      return ' Unicef Accepted';
+    }
+    if (data.partner_accepted && !data.unicef_accepted) {
+      return ' IP Accepted';
+    }
+    if (!data.unicef_court && !!data.date_sent_to_partner) {
+      return ' Sent to Partner';
+    }
+
+    if (data.unicef_court && !!data.date_draft_by_partner) {
+      return ' Sent to Unicef';
+    }
+    return '';
   }
 
   private initFiltersForDisplay(state: RootState) {

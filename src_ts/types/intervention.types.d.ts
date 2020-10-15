@@ -35,4 +35,9 @@ type InterventionListData = {
   total_unicef_budget: string;
   unicef_cash: string;
   unicef_focal_points: number[];
+  partner_accepted: boolean;
+  unicef_accepted: boolean;
+  unicef_court: boolean;
+  date_sent_to_partner: string;
+  date_draft_by_partner: string;
 };
