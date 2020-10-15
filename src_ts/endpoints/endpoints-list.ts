@@ -42,7 +42,7 @@ export const etoolsEndpoints: EtoolsEndpoints = {
     url: '/api/v2/dropdowns/static/'
   },
   partners: {
-    url: '/api/v2/partners/'
+    url: '/api/pmp/v3/partners/'
   },
   sections: {
     url: '/api/sections/v3/'

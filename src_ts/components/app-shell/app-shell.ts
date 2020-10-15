@@ -62,6 +62,10 @@ import isEmpty from 'lodash-es/isEmpty';
 import {fireEvent} from '../utils/fire-custom-event';
 import get from 'lodash-es/get';
 import '../env-flags/environment-flags';
+import {setStore} from '../pages/interventions/intervention-tab-pages/utils/redux-store-access';
+
+// set store for intervention-tab-pages
+setStore(store as any);
 
 store.addReducers({
   user,
@@ -123,7 +127,6 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
             ></intervention-list>
             <intervention-tabs
               class="page"
-              .store="${store}"
               ?active="${this.isActivePage(
                 this.mainPage,
                 'interventions',
@@ -188,7 +191,12 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
   public connectedCallback() {
     super.connectedCallback();
 
-    installRouter((location) => store.dispatch(navigate(decodeURIComponent(location.pathname + location.search))));
+    installRouter((location) => {
+      store.dispatch(navigate(decodeURIComponent(location.pathname + location.search)));
+      if (this.appHeaderLayout) {
+        this.appHeaderLayout.$.contentContainer.scrollTop = 0;
+      }
+    });
     installMediaQueryWatcher(`(min-width: 460px)`, () => store.dispatch(updateDrawerState(false)));
 
     getCurrentUser().then((user: EtoolsUserModel) => {

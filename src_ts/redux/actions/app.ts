@@ -83,9 +83,5 @@ export const navigate: ActionCreator<ThunkResult> = (path: string) => (dispatch)
 
   const routeDetails: RouteDetails | null = EtoolsRouter.getRouteDetails(path);
 
-  /**
-   * The timeout is to avoid the import of the component (which triggers connect(getStore()))
-   * before the store has gotten a chance to be initialised
-   */
-  setTimeout(() => dispatch(loadPageComponents(routeDetails)), 300);
+  dispatch(loadPageComponents(routeDetails));
 };

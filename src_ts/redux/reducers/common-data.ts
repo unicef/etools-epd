@@ -2,6 +2,7 @@ import {Reducer} from 'redux';
 import {SET_ALL_STATIC_DATA, UPDATE_ENV_FLAGS, UPDATE_PRP_COUNTRIES} from '../actions/common-data';
 import {RootAction} from '../store';
 import {CpOutput, Disaggregation, LocationObject, Section, LabelAndValue, EnvFlags} from '../../types/globals';
+import {createSelector} from 'reselect';
 
 export interface CommonDataState {
   unicefUsersData: [];
@@ -81,5 +82,11 @@ const commonData: Reducer<CommonDataState, RootAction> = (state = INITIAL_COMMON
       return state;
   }
 };
+
+const partnersSelector = (state: any) => state.commonData!.partners;
+export const notHiddenPartnersSelector = createSelector(partnersSelector, (partners: any) => {
+  return partners.filter((p: any) => !p.hidden);
+});
+
 
 export default commonData;

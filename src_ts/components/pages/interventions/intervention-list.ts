@@ -37,6 +37,7 @@ import {InterventionsListHelper, ListHelperResponse} from './list/list-helper';
 import {InterventionsListStyles, InterventionsTableStyles} from './list/list-styles';
 import {isJsonStrMatch} from '../../utils/utils';
 import {EtoolsCurrency} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-mixin';
+import {notHiddenPartnersSelector} from '../../../redux/reducers/common-data';
 
 /**
  * @LitElement
@@ -105,6 +106,9 @@ export class InterventionList extends connect(store)(EtoolsCurrency(LitElement))
   @property({type: Array})
   interventionStatuses!: LabelAndValue[];
 
+  @property({type: Object})
+  urlParams!: GenericObject<any>;
+
   listColumns: EtoolsTableColumn[] = [
     {
       label: 'Reference No.',
@@ -160,7 +164,6 @@ export class InterventionList extends connect(store)(EtoolsCurrency(LitElement))
     const routeDetails = get(state, 'app.routeDetails');
     if (!(routeDetails.routeName === 'interventions' && routeDetails.subRouteName === 'list')) {
       this.paramsInitialized = false;
-      this.filters = null;
       this.routeDetails = null;
       return; // Avoid code execution while on a different page
     }
@@ -233,6 +236,7 @@ export class InterventionList extends connect(store)(EtoolsCurrency(LitElement))
   private updateCurrentParams(paramsToUpdate: GenericObject<any>): void {
     const currentParams: RouteQueryParams = this.routeDetails!.queryParams || {};
     const newParams: RouteQueryParams = {...currentParams, ...paramsToUpdate};
+    this.urlParams = newParams;
     const stringParams: string = buildUrlQueryString(newParams);
     this.exportParams = stringParams;
     replaceAppLocation(`${this.routeDetails!.path}?${stringParams}`, true);
@@ -265,7 +269,7 @@ export class InterventionList extends connect(store)(EtoolsCurrency(LitElement))
   private initFiltersForDisplay(state: RootState) {
     if (!this.filters && this.dataRequiredByFiltersHasBeenLoaded(state)) {
       const availableFilters = [...defaultFilters];
-      this.populateDropdownFilterOptionsFromCommonData(state.commonData, availableFilters);
+      this.populateDropdownFilterOptionsFromCommonData(state, availableFilters);
 
       // update filter selection and assign the result to etools-filters(trigger render)
       const currentParams: RouteQueryParams = state.app!.routeDetails.queryParams || {};
@@ -284,10 +288,10 @@ export class InterventionList extends connect(store)(EtoolsCurrency(LitElement))
     );
   }
 
-  private populateDropdownFilterOptionsFromCommonData(commonData: any, currentFilters: EtoolsFilter[]) {
-    updateFilterSelectionOptions(currentFilters, 'partners', commonData.partners);
-    updateFilterSelectionOptions(currentFilters, 'status', commonData.interventionStatuses);
-    updateFilterSelectionOptions(currentFilters, 'document_type', commonData.documentTypes);
+  private populateDropdownFilterOptionsFromCommonData(state: RootState, currentFilters: EtoolsFilter[]) {
+    updateFilterSelectionOptions(currentFilters, 'partners', notHiddenPartnersSelector(state));
+    updateFilterSelectionOptions(currentFilters, 'status', state.commonData!.interventionStatuses);
+    updateFilterSelectionOptions(currentFilters, 'document_type', state.commonData!.documentTypes);
   }
 
   private initializeAndValidateParams(currentParams: GenericObject<any>): boolean {
@@ -309,11 +313,16 @@ export class InterventionList extends connect(store)(EtoolsCurrency(LitElement))
     }
 
     // set required params in url
-    if (!currentParams.page_size || !currentParams.status) {
-      this.updateCurrentParams({
-        page_size: '20',
-        status: ['draft', 'active']
-      });
+    if (!currentParams.page_size) {
+      // urlParams store page previous filtering params, if set, apply them to preserve user filters selection
+      this.updateCurrentParams(
+        this.urlParams
+          ? this.urlParams
+          : {
+              page_size: '20',
+              status: ['draft', 'active', 'review', 'signed', 'signature']
+            }
+      );
       return false;
     } else {
       return true;
