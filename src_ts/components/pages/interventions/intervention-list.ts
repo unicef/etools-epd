@@ -53,6 +53,11 @@ export class InterventionList extends connect(store)(EtoolsCurrency(LitElement))
     // language=HTML
     return html`
       ${SharedStylesLit}
+      <style>
+        .col_type {
+          white-space: pre-line !important;
+        }
+      </style>
       <page-content-header>
         <h1 slot="page-title">PDs/SPDs list</h1>
 
@@ -131,9 +136,31 @@ export class InterventionList extends connect(store)(EtoolsCurrency(LitElement))
     {
       label: 'Status',
       name: 'status',
-      type: EtoolsTableColumnType.Text,
+      type: EtoolsTableColumnType.Custom,
       capitalize: true,
-      sort: null
+      sort: null,
+      customMethod: (item: any, _key: string) => {
+        if (item.status === 'development') {
+          if (item.partner_accepted && item.unicef_accepted) {
+            return item.status + 'IP & Unicef Accepted';
+          }
+          if (!item.partner_accepted && item.unicef_accepted) {
+            return item.status + ' Unicef Accepted';
+          }
+          if (item.partner_accepted && !item.unicef_accepted) {
+            return item.status + ' IP Accepted';
+          }
+          if (!item.unicef_court && !!item.date_sent_to_partner) {
+            return item.status + '\nSent to Partner';
+          }
+
+          if (item.unicef_court && !!item.date_draft_by_partner) {
+            return item.status + ' Sent to Unicef';
+          }
+        }
+        return item.status;
+      },
+      cssClass: 'col_type'
     },
     {
       label: 'Title',
@@ -252,7 +279,6 @@ export class InterventionList extends connect(store)(EtoolsCurrency(LitElement))
       this.mapDraftToDevelop(this.listData);
       // update paginator (total_pages, visible_range, count...)
       this.paginator = paginator;
-      this.updateDraftStatus(this.listData);
       this.showLoading = false;
     } catch (error) {
       console.error('[EtoolsInterventionsList]: get Interventions req error...', error);
@@ -265,34 +291,6 @@ export class InterventionList extends connect(store)(EtoolsCurrency(LitElement))
         intervention.status = 'development';
       }
     });
-  }
-
-  private updateDraftStatus(data: InterventionListData[]) {
-    return data.forEach((intervention: InterventionListData) => {
-      if (intervention.hasOwnProperty('status') && intervention.status === 'development') {
-        intervention.status = intervention.status + this.getDraftDetails(intervention);
-      }
-    });
-  }
-
-  private getDraftDetails(data: InterventionListData) {
-    if (data.partner_accepted && data.unicef_accepted) {
-      return ' IP & Unicef Accepted';
-    }
-    if (!data.partner_accepted && data.unicef_accepted) {
-      return ' Unicef Accepted';
-    }
-    if (data.partner_accepted && !data.unicef_accepted) {
-      return ' IP Accepted';
-    }
-    if (!data.unicef_court && !!data.date_sent_to_partner) {
-      return ' Sent to Partner';
-    }
-
-    if (data.unicef_court && !!data.date_draft_by_partner) {
-      return ' Sent to Unicef';
-    }
-    return '';
   }
 
   private initFiltersForDisplay(state: RootState) {
