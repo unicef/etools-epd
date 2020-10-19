@@ -140,23 +140,29 @@ export class InterventionList extends connect(store)(EtoolsCurrency(LitElement))
       capitalize: true,
       sort: null,
       customMethod: (item: any, _key: string) => {
-        if (item.status === 'development') {
-          if (item.partner_accepted && item.unicef_accepted) {
-            return item.status + 'IP & Unicef Accepted';
-          }
-          if (!item.partner_accepted && item.unicef_accepted) {
-            return item.status + ' Unicef Accepted';
-          }
-          if (item.partner_accepted && !item.unicef_accepted) {
-            return item.status + ' IP Accepted';
-          }
-          if (!item.unicef_court && !!item.date_sent_to_partner) {
-            return item.status + '\nSent to Partner';
-          }
+        if (item.status !== 'development') {
+          return item.status;
+        }
+        if (item.partner_accepted && item.unicef_accepted) {
+          return html`${item.status} <br />
+            IP & Unicef Accepted`;
+        }
+        if (!item.partner_accepted && item.unicef_accepted) {
+          return html`${item.status} <br />
+            Unicef Accepted`;
+        }
+        if (item.partner_accepted && !item.unicef_accepted) {
+          return html`${item.status} <br />
+            IP Accepted`;
+        }
+        if (!item.unicef_court && !!item.date_sent_to_partner) {
+          return html`${item.status} <br />
+            Sent to Partner`;
+        }
 
-          if (item.unicef_court && !!item.date_draft_by_partner) {
-            return item.status + ' Sent to Unicef';
-          }
+        if (item.unicef_court && !!item.date_draft_by_partner) {
+          return html`${item.status} <br />
+            Sent to Unicef`;
         }
         return item.status;
       },
