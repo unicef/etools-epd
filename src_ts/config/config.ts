@@ -6,11 +6,6 @@ declare global {
   }
 }
 
-/** To avoid country_programmes, cp outputs requests which are not really needed for a PArtner user
- *  but we need them for easier testing
- */
-export const avoidUnnecessaryRequestsInEPD = false;
-
 export const ROOT_PATH = '/' + getBasePath().replace(window.location.origin, '').slice(1, -1) + '/';
 
 const STAGING_DOMAIN = 'etools-staging.unicef.org';

@@ -73,8 +73,8 @@ export const getStaticData = () => {
   });
 };
 
-export const getCountryProgrammes = () => {
-  if (avoidUnnecessaryRequestsInEPD) {
+export const getCountryProgrammes = (isUnicefUser: boolean) => {
+  if (!isUnicefUser) {
     return Promise.resolve([]);
   }
   return sendRequest({

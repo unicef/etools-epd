@@ -213,7 +213,7 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
           getStaticData(),
           getDropdownsData(),
           getAgreements(),
-          getCountryProgrammes()
+          getCountryProgrammes(user.is_unicef_user)
         ]).then((response: any[]) => {
           store.dispatch({
             type: SET_ALL_STATIC_DATA,

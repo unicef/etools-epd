@@ -22,7 +22,7 @@ export interface EtoolsUserModel {
   user: number;
   username: string;
   vendor_number: string | null;
-  [key: string]: any;
+  is_unicef_user: boolean;
 }
 
 export const dummyUserData = {
