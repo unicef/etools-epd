@@ -23,6 +23,7 @@ export interface CommonDataState {
   fileTypes: any[];
   cashTransferModalities: any[];
   PRPCountryData: any[];
+  countryProgrammes: any[];
 }
 
 const INITIAL_COMMON_DATA: CommonDataState = {
@@ -43,7 +44,11 @@ const INITIAL_COMMON_DATA: CommonDataState = {
   envFlags: null,
   fileTypes: [],
   cashTransferModalities: [],
-  PRPCountryData: []
+  PRPCountryData: [],
+  /** Given that countryProgrammes won't be shown to Partner user,
+   * there is no need to populate this field in ePD with actual data
+   */
+  countryProgrammes: []
 };
 
 const commonData: Reducer<CommonDataState, RootAction> = (state = INITIAL_COMMON_DATA, action) => {
