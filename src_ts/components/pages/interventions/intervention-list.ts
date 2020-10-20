@@ -54,6 +54,11 @@ export class InterventionList extends connect(store)(EtoolsCurrency(LitElement))
     // language=HTML
     return html`
       ${SharedStylesLit}
+      <style>
+        .col_type {
+          white-space: pre-line !important;
+        }
+      </style>
       <page-content-header>
         <h1 slot="page-title">PDs/SPDs list</h1>
 
@@ -132,9 +137,37 @@ export class InterventionList extends connect(store)(EtoolsCurrency(LitElement))
     {
       label: 'Status',
       name: 'status',
-      type: EtoolsTableColumnType.Text,
+      type: EtoolsTableColumnType.Custom,
       capitalize: true,
-      sort: null
+      sort: null,
+      customMethod: (item: any, _key: string) => {
+        if (item.status !== 'development') {
+          return item.status;
+        }
+        if (item.partner_accepted && item.unicef_accepted) {
+          return html`${item.status} <br />
+            IP & Unicef Accepted`;
+        }
+        if (!item.partner_accepted && item.unicef_accepted) {
+          return html`${item.status} <br />
+            Unicef Accepted`;
+        }
+        if (item.partner_accepted && !item.unicef_accepted) {
+          return html`${item.status} <br />
+            IP Accepted`;
+        }
+        if (!item.unicef_court && !!item.date_sent_to_partner) {
+          return html`${item.status} <br />
+            Sent to Partner`;
+        }
+
+        if (item.unicef_court && !!item.date_draft_by_partner) {
+          return html`${item.status} <br />
+            Sent to Unicef`;
+        }
+        return item.status;
+      },
+      cssClass: 'col_type'
     },
     {
       label: 'Title',
