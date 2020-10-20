@@ -2,6 +2,7 @@ import {Action, ActionCreator} from 'redux';
 import {AnyObject} from '../../types/globals';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {etoolsEndpoints} from '../../endpoints/endpoints-list';
+import {avoidUnnecessaryRequestsInEPD} from '../../config/config';
 
 export const SET_ALL_STATIC_DATA = 'SET_ALL_STATIC_DATA';
 export const UPDATE_ENV_FLAGS = 'UPDATE_ENV_FLAGS';
@@ -69,6 +70,15 @@ export const getDisaggregations = () => {
 export const getStaticData = () => {
   return sendRequest({
     endpoint: {url: etoolsEndpoints.static.url!}
+  });
+};
+
+export const getCountryProgrammes = () => {
+  if (avoidUnnecessaryRequestsInEPD) {
+    return Promise.resolve([]);
+  }
+  return sendRequest({
+    endpoint: {url: etoolsEndpoints.countryProgrammes.url!}
   });
 };
 
