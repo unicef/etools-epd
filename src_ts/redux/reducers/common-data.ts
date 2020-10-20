@@ -45,9 +45,6 @@ const INITIAL_COMMON_DATA: CommonDataState = {
   fileTypes: [],
   cashTransferModalities: [],
   PRPCountryData: [],
-  /** Given that countryProgrammes won't be shown to Partner user,
-   * there is no need to populate this field in ePD with actual data, except for easier testing
-   */
   countryProgrammes: []
 };
 
