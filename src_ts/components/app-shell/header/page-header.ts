@@ -65,8 +65,6 @@ export class PageHeader extends connect(store)(LitElement) {
           display: flex;
           align-items: center;
         }
-        .header__left-group {
-        }
         .header__right-group {
           justify-content: space-evenly;
         }
@@ -90,7 +88,7 @@ export class PageHeader extends connect(store)(LitElement) {
       </style>
 
       <app-toolbar sticky class="content-align header">
-        <div class="header__item header__left-group">
+        <div class="header__item">
           <paper-icon-button
             id="menuButton"
             icon="menu"
