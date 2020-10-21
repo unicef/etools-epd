@@ -8,12 +8,15 @@ declare global {
 import {createStore, compose, applyMiddleware, combineReducers, Reducer, StoreEnhancer} from 'redux';
 import thunk, {ThunkMiddleware} from 'redux-thunk';
 import {lazyReducerEnhancer} from 'pwa-helpers/lazy-reducer-enhancer.js';
+import {actionsMiddleware, asyncActionMiddleware} from './middleware';
 
 import app, {AppState} from './reducers/app.js';
 import {interventions, InterventionsState} from './reducers/interventions.js';
+import {ActiveLanguageState} from './reducers/active-language.js';
 import {agreements, AgreementsState} from './reducers/agreements.js';
 import {AppAction} from './actions/app.js';
 import {AgreementsAction} from './actions/agreements.js';
+import {ActiveLanguageActionTypes} from './actions/active-language';
 import {UserAction} from './actions/user.js';
 import {UserState} from './reducers/user.js';
 import {CommonDataAction} from './actions/common-data';
@@ -26,11 +29,12 @@ export interface RootState {
   agreements?: AgreementsState;
   commonData?: CommonDataState;
   interventions?: InterventionsState;
+  activeLanguage?: ActiveLanguageState;
 }
 
 // could be more than one action AppAction | OtherAppAction ...
 // TODO: remove any and find a way to fix generated ts-lint errors
-export type RootAction = AppAction | UserAction | CommonDataAction | AgreementsAction | any;
+export type RootAction = AppAction | UserAction | CommonDataAction | AgreementsAction | ActiveLanguageActionTypes | any;
 
 // Sets up a Chrome extension for time travel debugging.
 // See https://github.com/zalmoxisus/redux-devtools-extension for more information.
@@ -46,7 +50,10 @@ const devCompose: <Ext0, Ext1, StateExt0, StateExt1>(
 // https://github.com/Polymer/pwa-starter-kit/wiki/4.-Redux-and-state-management
 export const store = createStore(
   (state) => state as Reducer<RootState, RootAction>,
-  devCompose(lazyReducerEnhancer(combineReducers), applyMiddleware(thunk as ThunkMiddleware<RootState, RootAction>))
+  devCompose(
+    lazyReducerEnhancer(combineReducers),
+    applyMiddleware(thunk as ThunkMiddleware<RootState, RootAction>, actionsMiddleware, asyncActionMiddleware)
+  )
 );
 
 // Initially loaded reducers.

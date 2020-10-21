@@ -38,6 +38,7 @@ import {InterventionsListStyles, InterventionsTableStyles} from './list/list-sty
 import {isJsonStrMatch} from '../../utils/utils';
 import {EtoolsCurrency} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-mixin';
 import {notHiddenPartnersSelector} from '../../../redux/reducers/common-data';
+import {translate} from 'lit-translate';
 
 /**
  * @LitElement
@@ -60,7 +61,7 @@ export class InterventionList extends connect(store)(EtoolsCurrency(LitElement))
         }
       </style>
       <page-content-header>
-        <h1 slot="page-title">PDs/SPDs list</h1>
+        <h1 slot="page-title">${translate('INTERVENTIONS_LIST.TITLE')}</h1>
 
         <div slot="title-row-actions" class="content-header-actions">
           <div class="action">
@@ -116,26 +117,26 @@ export class InterventionList extends connect(store)(EtoolsCurrency(LitElement))
 
   listColumns: EtoolsTableColumn[] = [
     {
-      label: 'Reference No.',
+      label: translate('INTERVENTIONS_LIST.COLUMNS.REFERENCE_NO'),
       name: 'number',
       link_tmpl: `${ROOT_PATH}interventions/:id/details`,
       type: EtoolsTableColumnType.Link,
       sort: null
     },
     {
-      label: 'Partner Org Name',
+      label: translate('INTERVENTIONS_LIST.COLUMNS.PARTNER_ORG_NAME'),
       name: 'partner_name',
       type: EtoolsTableColumnType.Text,
       sort: null
     },
     {
-      label: 'Doc Type',
+      label: translate('INTERVENTIONS_LIST.COLUMNS.DOC_TYPE'),
       name: 'document_type',
       type: EtoolsTableColumnType.Text,
       sort: null
     },
     {
-      label: 'Status',
+      label: translate('INTERVENTIONS_LIST.COLUMNS.STATUS'),
       name: 'status',
       type: EtoolsTableColumnType.Custom,
       capitalize: true,
@@ -170,19 +171,19 @@ export class InterventionList extends connect(store)(EtoolsCurrency(LitElement))
       cssClass: 'col_type'
     },
     {
-      label: 'Title',
+      label: translate('INTERVENTIONS_LIST.COLUMNS.TITLE'),
       name: 'title',
       type: EtoolsTableColumnType.Text,
       sort: null
     },
     {
-      label: 'Start Date',
+      label: translate('INTERVENTIONS_LIST.COLUMNS.START_DATE'),
       name: 'start',
       type: EtoolsTableColumnType.Date,
       sort: null
     },
     {
-      label: 'End Date',
+      label: translate('INTERVENTIONS_LIST.COLUMNS.END_DATE'),
       name: 'end',
       type: EtoolsTableColumnType.Date,
       sort: null

@@ -68,6 +68,7 @@
     "@unicef-polymer/etools-upload": "^3.2.0",
     "@webcomponents/webcomponentsjs": "^2.0.0",
     "lit-element": "^2.3.1",
+    "lit-translate": "^1.2.1",
     "lodash-es": "^4.17.15",
     "moment": "^2.29.1",
     "polymer-cli": "^1.9.11",
