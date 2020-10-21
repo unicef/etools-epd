@@ -23,7 +23,7 @@ export const countriesDropdownStyles = html`
       }
 
       --esmm-icons: {
-        color: var(--header-color);
+        color: var(--header-icon-color);
         cursor: pointer;
       }
 
@@ -40,7 +40,7 @@ export const countriesDropdownStyles = html`
       }
 
       --paper-input-container-input: {
-        color: var(--header-color);
+        color: var(--header-icon-color);
         cursor: pointer;
         min-height: 24px;
         text-align: right;
@@ -49,6 +49,12 @@ export const countriesDropdownStyles = html`
 
       --paper-menu-button-dropdown: {
         max-height: 380px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      etools-dropdown {
+        width: 130px;
       }
     }
   </style>
