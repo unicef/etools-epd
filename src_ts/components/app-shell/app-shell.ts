@@ -63,7 +63,9 @@ import {fireEvent} from '../utils/fire-custom-event';
 import get from 'lodash-es/get';
 import '../env-flags/environment-flags';
 import {setStore} from '../pages/interventions/intervention-tab-pages/utils/redux-store-access';
+import {registerTranslateConfig, use} from 'lit-translate';
 
+registerTranslateConfig({loader: (lang: string) => fetch(`assets/i18n/${lang}.json`).then((res: any) => res.json())});
 // set store for intervention-tab-pages
 setStore(store as any);
 
@@ -188,7 +190,8 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
     }
   }
 
-  public connectedCallback() {
+  async connectedCallback() {
+    await use('en');
     super.connectedCallback();
 
     installRouter((location) => {

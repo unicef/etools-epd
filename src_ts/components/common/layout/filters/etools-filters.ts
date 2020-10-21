@@ -15,6 +15,7 @@ import '@unicef-polymer/etools-dropdown/etools-dropdown';
 import '@unicef-polymer/etools-date-time/datepicker-lite';
 import '@unicef-polymer/etools-loading/etools-loading';
 import {elevation2} from '../../../styles/lit-styles/elevation-styles';
+import {Callback} from '../../../../types/globals';
 
 export enum EtoolsFilterTypes {
   Search,
@@ -25,7 +26,7 @@ export enum EtoolsFilterTypes {
 }
 
 export interface EtoolsFilter {
-  filterName: string;
+  filterName: string | Callback;
   filterKey: string;
   type: EtoolsFilterTypes;
   selected: boolean; // flag filter as selected from filters menu

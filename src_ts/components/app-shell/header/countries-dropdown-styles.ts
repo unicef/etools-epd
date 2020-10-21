@@ -16,7 +16,7 @@ export const countriesDropdownStyles = html`
     }
 
     etools-dropdown {
-      width: 160px;
+      /*width: 160px;*/
 
       --paper-listbox: {
         max-height: 600px;
