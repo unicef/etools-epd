@@ -1,11 +1,15 @@
-export enum ActiveLanguageActionTypes {
-  ACTIVE_LANGUAGE_SWITCHED = '[LANGUAGE SWITCH] ACTIVE_LANGUAGE_SWITCHED'
+import {ActionCreator, Action} from 'redux';
+export const SET_LANGUAGE = 'SET_LANGUAGE';
+
+export interface LanguageActionSet extends Action<'SET_LANGUAGE'> {
+  payload: string;
 }
 
-export class ActiveLanguageSwitched {
-  readonly type: ActiveLanguageActionTypes.ACTIVE_LANGUAGE_SWITCHED =
-    ActiveLanguageActionTypes.ACTIVE_LANGUAGE_SWITCHED;
-  constructor(public payload: string) {}
-}
+export const setLanguage: ActionCreator<LanguageActionSet> = (payload: string) => {
+  return {
+    type: SET_LANGUAGE,
+    payload
+  };
+};
 
-export type ActiveLanguageTypes = ActiveLanguageSwitched;
+export type LanguageAction = LanguageActionSet;

@@ -1,5 +1,4 @@
-import {Reducer} from 'redux';
-import {ActiveLanguageActionTypes, ActiveLanguageTypes} from '../actions/active-language';
+import {SET_LANGUAGE} from '../actions/active-language';
 
 export interface ActiveLanguageState {
   activeLanguage: string;
@@ -9,12 +8,9 @@ const INITIAL_STATE: ActiveLanguageState = {
   activeLanguage: 'en'
 };
 
-export const activeLanguage: Reducer<ActiveLanguageState, any> = (
-  state: ActiveLanguageState = INITIAL_STATE,
-  action: ActiveLanguageTypes
-) => {
+export const activeLanguage = (state = INITIAL_STATE, action: any) => {
   switch (action.type) {
-    case ActiveLanguageActionTypes.ACTIVE_LANGUAGE_SWITCHED:
+    case SET_LANGUAGE:
       return {...state, activeLanguage: action.payload};
     default:
       return state;

@@ -1,7 +1,7 @@
 {
   "INTERVENTIONS_LIST": {
     "TITLE": "PDs/SPDs List",
-    "CREATE_NEW_BUTTON": "Create New",
+    "TABLE_TITLE": "PDs/SPDs",
     "COLUMNS": {
       "REFERENCE_NO": "Reference No.",
       "PARTNER_ORG_NAME": "Partner Org Name",

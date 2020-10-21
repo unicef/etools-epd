@@ -18,7 +18,7 @@ import {AnyObject} from '../../../types/globals';
 import {pageHeaderStyles} from './page-header-styles';
 import {GenericObject} from '../../pages/interventions/intervention-tab-pages/common/models/globals.types';
 import {use} from 'lit-translate';
-import {ActiveLanguageSwitched} from '../../../redux/actions/active-language';
+import {setLanguage} from '../../../redux/actions/active-language';
 import {activeLanguage} from '../../../redux/reducers/active-language';
 import {countriesDropdownStyles} from './countries-dropdown-styles';
 
@@ -178,7 +178,7 @@ export class PageHeader extends connect(store)(LitElement) {
   @property({type: String})
   environment = 'LOCAL';
 
-  languages: GenericObject<string>[] = [{value: 'en', display_name: 'English'}];
+  languages: GenericObject<string>[] = [{value: 'en', display_name: 'English'}, {value: 'fr', display_name: 'French'}];
 
   @property() selectedLanguage = 'en';
 
@@ -240,7 +240,7 @@ export class PageHeader extends connect(store)(LitElement) {
   }
 
   languageChanged(language: string): void {
-    use(language).finally(() => store.dispatch(new ActiveLanguageSwitched(language)));
+    use(language).finally(() => store.dispatch(setLanguage(language)));
   }
 
   public menuBtnClicked() {

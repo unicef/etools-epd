@@ -77,7 +77,7 @@ export class InterventionList extends connect(store)(EtoolsCurrency(LitElement))
       <section class="elevation page-content no-padding" elevation="1">
         <etools-loading loading-text="Loading..." .active="${this.showLoading}"></etools-loading>
         <etools-table
-          caption="PDs/SPDs"
+          caption="${translate('INTERVENTIONS_LIST.TABLE_TITLE')}"
           .columns="${this.listColumns}"
           .items="${this.listData.length ? this.listData : [{}]}"
           .paginator="${this.paginator}"
