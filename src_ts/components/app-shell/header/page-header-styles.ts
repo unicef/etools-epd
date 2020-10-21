@@ -40,7 +40,6 @@ export const pageHeaderStyles = css`
   .content-align {
     ${layoutHorizontal}
     ${layoutCenter}
-    ${layoutFlex}
   }
 
   #app-logo {
