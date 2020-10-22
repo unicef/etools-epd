@@ -195,8 +195,8 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
     await use('en');
     super.connectedCallback();
 
-    installRouter((location) => {
-      store.dispatch(navigate(decodeURIComponent(location.pathname + location.search)));
+    installRouter((location) => store.dispatch(navigate(decodeURIComponent(location.pathname + location.search))));
+    this.addEventListener('scroll-up', () => {
       if (this.appHeaderLayout) {
         this.appHeaderLayout.$.contentContainer.scrollTop = 0;
       }
