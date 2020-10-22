@@ -20,7 +20,7 @@ type InterventionListData = {
   grants: [];
   id: number;
   location_p_codes: [];
-  metadata: {};
+  metadata: any;
   multi_curr_flag: boolean;
   number: string;
   offices: number[];

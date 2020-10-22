@@ -71,7 +71,7 @@ export class InterventionsListHelper {
 
   private sortList(list: InterventionListData[], sort = ''): InterventionListData[] {
     const [field, direction] = sort.split('.') as [keyof InterventionListData, string];
-    if (!field || !direction || !list.length || !list[0].hasOwnProperty(field)) {
+    if (!field || !direction || !list.length || !Object.hasOwnProperty.call(list[0], field)) {
       return list;
     }
     const sorted: InterventionListData[] = sortBy(list, (intervention: InterventionListData) => {

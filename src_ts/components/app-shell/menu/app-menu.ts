@@ -25,9 +25,7 @@ export class AppMenu extends LitElement {
     // language=HTML
     return html`
       <div class="menu-header">
-        <span id="app-name">
-          ePD
-        </span>
+        <span id="app-name"> ePD </span>
 
         <span class="ripple-wrapper main">
           <iron-icon
@@ -38,9 +36,7 @@ export class AppMenu extends LitElement {
           <paper-ripple class="circle" center></paper-ripple>
         </span>
 
-        <paper-tooltip for="menu-header-top-icon" position="right">
-          ePD
-        </paper-tooltip>
+        <paper-tooltip for="menu-header-top-icon" position="right"> ePD </paper-tooltip>
 
         <span class="ripple-wrapper">
           <iron-icon id="minimize-menu" icon="chevron-left" @tap="${() => this._toggleSmallMenu()}"></iron-icon>
@@ -57,9 +53,7 @@ export class AppMenu extends LitElement {
         >
           <a class="nav-menu-item" menu-name="interventions" href="${this.rootPath + 'interventions'}">
             <iron-icon id="page1-icon" icon="accessibility"></iron-icon>
-            <paper-tooltip for="page1-icon" position="right">
-              PDs/SPDs
-            </paper-tooltip>
+            <paper-tooltip for="page1-icon" position="right"> PDs/SPDs </paper-tooltip>
             <div class="name">PDs/SPDs</div>
           </a>
         </iron-selector>
@@ -70,9 +64,7 @@ export class AppMenu extends LitElement {
 
         <a class="nav-menu-item lighter-item" href="http://etools.zendesk.com" target="_blank">
           <iron-icon id="knoledge-icon" icon="maps:local-library"></iron-icon>
-          <paper-tooltip for="knoledge-icon" position="right">
-            Knowledge base
-          </paper-tooltip>
+          <paper-tooltip for="knoledge-icon" position="right"> Knowledge base </paper-tooltip>
           <div class="name">Knowledge base</div>
         </a>
 
@@ -82,17 +74,13 @@ export class AppMenu extends LitElement {
           target="_blank"
         >
           <iron-icon id="discussion-icon" icon="icons:question-answer"></iron-icon>
-          <paper-tooltip for="discussion-icon" position="right">
-            Discussion
-          </paper-tooltip>
+          <paper-tooltip for="discussion-icon" position="right"> Discussion </paper-tooltip>
           <div class="name">Discussion</div>
         </a>
 
         <a class="nav-menu-item lighter-item last-one" href="http://etoolsinfo.unicef.org" target="_blank">
           <iron-icon id="information-icon" icon="icons:info"></iron-icon>
-          <paper-tooltip for="information-icon" position="right">
-            Information
-          </paper-tooltip>
+          <paper-tooltip for="information-icon" position="right"> Information </paper-tooltip>
           <div class="name">Information</div>
         </a>
       </div>
