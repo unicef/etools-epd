@@ -178,7 +178,7 @@ export class PageHeader extends connect(store)(LitElement) {
 
   languages: GenericObject<string>[] = [{value: 'en', display_name: 'English'}, {value: 'fr', display_name: 'French'}];
 
-  @property() selectedLanguage = 'en';
+  @property() selectedLanguage!: string;
 
   public connectedCallback() {
     super.connectedCallback();
@@ -189,6 +189,9 @@ export class PageHeader extends connect(store)(LitElement) {
   public stateChanged(state: RootState) {
     if (state) {
       this.profile = state.user!.data as EtoolsUserModel;
+      if (state.activeLanguage && state.activeLanguage.activeLanguage !== this.selectedLanguage) {
+        this.selectedLanguage = state.activeLanguage!.activeLanguage;
+      }
     }
   }
 
@@ -238,7 +241,10 @@ export class PageHeader extends connect(store)(LitElement) {
   }
 
   languageChanged(language: string): void {
-    use(language).finally(() => store.dispatch(setLanguage(language)));
+    if (this.selectedLanguage !== language) {
+      localStorage.setItem('defaultLanguage', language);
+      use(language).finally(() => store.dispatch(setLanguage(language)));
+    }
   }
 
   public menuBtnClicked() {

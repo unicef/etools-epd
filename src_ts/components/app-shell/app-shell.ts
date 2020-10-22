@@ -168,6 +168,9 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
   @property({type: Boolean})
   public smallMenu = false;
 
+  @property({type: String})
+  selectedLanguage!: string;
+
   @query('#layout') private drawerLayout!: AppDrawerLayoutElement;
   @query('#drawer') private drawer!: AppDrawerElement;
   @query('#appHeadLayout') private appHeaderLayout!: AppHeaderLayoutElement;
@@ -192,7 +195,6 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
   }
 
   async connectedCallback() {
-    await use('en');
     super.connectedCallback();
 
     installRouter((location) => store.dispatch(navigate(decodeURIComponent(location.pathname + location.search))));
@@ -282,6 +284,14 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
         showCloseBtn: state.app!.toastNotification.showCloseBtn
       });
     }
+    if (state.activeLanguage && state.activeLanguage.activeLanguage !== this.selectedLanguage) {
+      this.selectedLanguage = state.activeLanguage!.activeLanguage;
+      this.loadLocalization();
+    }
+  }
+
+  async loadLocalization() {
+    await use(this.selectedLanguage);
   }
 
   // TODO: just for testing...
