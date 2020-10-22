@@ -72,6 +72,18 @@ export const getStaticData = () => {
   });
 };
 
+export const getCountryProgrammes = (isUnicefUser: boolean) => {
+  if (!isUnicefUser) {
+    /**
+     * Partner users can not see country programmes
+     */
+    return Promise.resolve([]);
+  }
+  return sendRequest({
+    endpoint: {url: etoolsEndpoints.countryProgrammes.url!}
+  });
+};
+
 export const updateEnvFlags: ActionCreator<CommonDataActionUpdateEnvFlags> = (envFlags: AnyObject) => {
   return {
     type: UPDATE_ENV_FLAGS,

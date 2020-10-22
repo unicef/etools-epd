@@ -23,6 +23,7 @@ export interface CommonDataState {
   fileTypes: any[];
   cashTransferModalities: any[];
   PRPCountryData: any[];
+  countryProgrammes: any[];
 }
 
 const INITIAL_COMMON_DATA: CommonDataState = {
@@ -43,7 +44,8 @@ const INITIAL_COMMON_DATA: CommonDataState = {
   envFlags: null,
   fileTypes: [],
   cashTransferModalities: [],
-  PRPCountryData: []
+  PRPCountryData: [],
+  countryProgrammes: []
 };
 
 const commonData: Reducer<CommonDataState, RootAction> = (state = INITIAL_COMMON_DATA, action) => {
@@ -57,7 +59,7 @@ const commonData: Reducer<CommonDataState, RootAction> = (state = INITIAL_COMMON
         disaggregations: action.staticData.disaggregations,
         locationTypes: action.staticData.locationTypes,
         documentTypes: action.staticData.documentTypes,
-        genderEquityRatings: action.staticData.genderEquityRatings, // TODO -make sure data is loaded from bk
+        genderEquityRatings: action.staticData.genderEquityRatings,
         cpOutputs: action.staticData.cpOutputs,
         interventionAmendmentTypes: action.staticData.interventionAmendmentTypes,
         interventionStatuses: action.staticData.interventionStatuses,
@@ -66,7 +68,8 @@ const commonData: Reducer<CommonDataState, RootAction> = (state = INITIAL_COMMON
         currencies: action.staticData.currencies,
         riskTypes: action.staticData.riskTypes,
         fileTypes: action.staticData.fileTypes,
-        cashTransferModalities: action.staticData.cashTransferModalities
+        cashTransferModalities: action.staticData.cashTransferModalities,
+        countryProgrammes: action.staticData.countryProgrammes
       };
     case UPDATE_ENV_FLAGS:
       return {
@@ -87,6 +90,5 @@ const partnersSelector = (state: any) => state.commonData!.partners;
 export const notHiddenPartnersSelector = createSelector(partnersSelector, (partners: any) => {
   return partners.filter((p: any) => !p.hidden);
 });
-
 
 export default commonData;

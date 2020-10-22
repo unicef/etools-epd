@@ -54,7 +54,8 @@ import {
   getUnicefUsers,
   getStaticData,
   getDropdownsData,
-  SET_ALL_STATIC_DATA
+  SET_ALL_STATIC_DATA,
+  getCountryProgrammes
 } from '../../redux/actions/common-data';
 import {getAgreements, SET_AGREEMENTS} from '../../redux/actions/agreements';
 import {EtoolsUserModel} from '../user/user-model';
@@ -214,7 +215,8 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
           getUnicefUsers(),
           getStaticData(),
           getDropdownsData(),
-          getAgreements()
+          getAgreements(),
+          getCountryProgrammes(user.is_unicef_user)
         ]).then((response: any[]) => {
           store.dispatch({
             type: SET_ALL_STATIC_DATA,
@@ -222,7 +224,7 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
           });
           store.dispatch({
             type: SET_AGREEMENTS,
-            list: this.getValue(response[response.length - 1])
+            list: this.getValue(response[8])
           });
         });
       }
@@ -245,6 +247,7 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
     data.cpOutputs = this.getValue(response[7]).cp_outputs || [];
     data.fileTypes = this.getValue(response[7]).file_types || [];
     const staticData = this.getValue(response[6], {});
+    data.countryProgrammes = this.getValue(response[9]);
     data.locationTypes = isEmpty(staticData.location_types) ? [] : staticData.location_types;
     data.documentTypes = isEmpty(staticData.intervention_doc_type) ? [] : staticData.intervention_doc_type;
     data.genderEquityRatings = staticData.gender_equity_sustainability_ratings || [];

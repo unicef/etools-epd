@@ -20,6 +20,7 @@ export interface EtoolsEndpoints {
   dropdownsData: EtoolsEndpoint;
   agreements: EtoolsEndpoint;
   environmentFlags: EtoolsEndpoint;
+  countryProgrammes: EtoolsEndpoint;
 }
 
 export const etoolsEndpoints: EtoolsEndpoints = {
@@ -28,6 +29,9 @@ export const etoolsEndpoints: EtoolsEndpoints = {
   },
   changeCountry: {
     url: '/api/v3/users/changecountry/'
+  },
+  countryProgrammes: {
+    url: '/api/v2/reports/countryprogramme/'
   },
   interventions: {
     url: '/api/pmp/v3/interventions/'

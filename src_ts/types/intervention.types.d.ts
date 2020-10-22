@@ -2,7 +2,7 @@ type InterventionListData = {
   actual_amount: null;
   all_currencies_are_consistent: boolean;
   budget_currency: null;
-  country_programme: number | null;
+  country_programmes: number | null;
   cp_outputs: number[];
   cso_contribution: string;
   document_type: string;
