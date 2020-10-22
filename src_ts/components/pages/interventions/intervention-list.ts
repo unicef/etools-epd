@@ -118,26 +118,26 @@ export class InterventionList extends connect(store)(EtoolsCurrency(LitElement))
 
   listColumns: EtoolsTableColumn[] = [
     {
-      label: translate('INTERVENTIONS_LIST.COLUMNS.REFERENCE_NO'),
+      label: (translate('INTERVENTIONS_LIST.COLUMNS.REFERENCE_NO') as unknown) as string,
       name: 'number',
       link_tmpl: `${ROOT_PATH}interventions/:id/details`,
       type: EtoolsTableColumnType.Link,
       sort: null
     },
     {
-      label: translate('INTERVENTIONS_LIST.COLUMNS.PARTNER_ORG_NAME'),
+      label: (translate('INTERVENTIONS_LIST.COLUMNS.PARTNER_ORG_NAME') as unknown) as string,
       name: 'partner_name',
       type: EtoolsTableColumnType.Text,
       sort: null
     },
     {
-      label: translate('INTERVENTIONS_LIST.COLUMNS.DOC_TYPE'),
+      label: (translate('INTERVENTIONS_LIST.COLUMNS.DOC_TYPE') as unknown) as string,
       name: 'document_type',
       type: EtoolsTableColumnType.Text,
       sort: null
     },
     {
-      label: translate('INTERVENTIONS_LIST.COLUMNS.STATUS'),
+      label: (translate('INTERVENTIONS_LIST.COLUMNS.STATUS') as unknown) as string,
       name: 'status',
       type: EtoolsTableColumnType.Custom,
       capitalize: true,
@@ -172,19 +172,19 @@ export class InterventionList extends connect(store)(EtoolsCurrency(LitElement))
       cssClass: 'col_type'
     },
     {
-      label: translate('INTERVENTIONS_LIST.COLUMNS.TITLE'),
+      label: (translate('INTERVENTIONS_LIST.COLUMNS.TITLE') as unknown) as string,
       name: 'title',
       type: EtoolsTableColumnType.Text,
       sort: null
     },
     {
-      label: translate('INTERVENTIONS_LIST.COLUMNS.START_DATE'),
+      label: (translate('INTERVENTIONS_LIST.COLUMNS.START_DATE') as unknown) as string,
       name: 'start',
       type: EtoolsTableColumnType.Date,
       sort: null
     },
     {
-      label: translate('INTERVENTIONS_LIST.COLUMNS.END_DATE'),
+      label: (translate('INTERVENTIONS_LIST.COLUMNS.END_DATE') as unknown) as string,
       name: 'end',
       type: EtoolsTableColumnType.Date,
       sort: null
