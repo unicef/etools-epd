@@ -51,7 +51,7 @@ export class PageHeader extends connect(store)(LitElement) {
         .dropdowns {
           display: flex;
           margin-right: 5px;
-          max-width: 200px;
+          max-width: 280px;
         }
         .header {
           flex-wrap: wrap;
@@ -108,8 +108,7 @@ export class PageHeader extends connect(store)(LitElement) {
               .options="${this.languages}"
               option-label="display_name"
               option-value="value"
-              @etools-selected-item-changed="${({detail}: CustomEvent) =>
-                this.languageChanged(detail.selectedItem.value)}"
+              @etools-selected-item-changed="${({detail}: CustomEvent) => this.languageChanged(detail.selectedItem)}"
               trigger-value-change-event
               hide-search
               allow-outside-scroll
@@ -240,10 +239,14 @@ export class PageHeader extends connect(store)(LitElement) {
     return modifiedFields;
   }
 
-  languageChanged(language: string): void {
-    if (this.selectedLanguage !== language) {
-      localStorage.setItem('defaultLanguage', language);
-      use(language).finally(() => store.dispatch(setLanguage(language)));
+  languageChanged(selectedItem: any): void {
+    if (!selectedItem || !selectedItem.value) {
+      return;
+    }
+    const newLanguage = selectedItem.value;
+    if (this.selectedLanguage !== newLanguage) {
+      localStorage.setItem('defaultLanguage', newLanguage);
+      use(newLanguage).finally(() => store.dispatch(setLanguage(newLanguage)));
     }
   }
 
