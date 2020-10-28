@@ -3,9 +3,9 @@ import {ThunkAction} from 'redux-thunk';
 import {RootState} from '../store';
 import {ROOT_PATH} from '../../config/config';
 import {DEFAULT_ROUTE, EtoolsRouter, ROUTE_404, updateAppLocation} from '../../routing/routes';
-import {RouteDetails} from '../../routing/router';
 import {getFilePathsToImport} from '../../routing/component-lazy-load-config';
 import {getRedirectToListPath} from '../../routing/subpage-redirect';
+import {RouteDetails} from '@unicef-polymer/etools-types';
 
 export const UPDATE_ROUTE_DETAILS = 'UPDATE_ROUTE_DETAILS';
 export const UPDATE_DRAWER_STATE = 'UPDATE_DRAWER_STATE';

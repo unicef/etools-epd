@@ -26,20 +26,25 @@ import {
   getSortFields,
   getUrlQueryStringSort
 } from '../../common/layout/etools-table/etools-table-utility';
-import {RouteDetails, RouteQueryParams} from '../../../routing/router';
 import {replaceAppLocation} from '../../../routing/routes';
 import {SharedStylesLit} from '../../styles/shared-styles-lit';
 
 import '@unicef-polymer/etools-loading';
 import get from 'lodash-es/get';
 import '../../common/layout/export-data';
-import {GenericObject, LabelAndValue} from '../../../types/globals';
 import {InterventionsListHelper, ListHelperResponse} from './list/list-helper';
 import {InterventionsListStyles, InterventionsTableStyles} from './list/list-styles';
 import {isJsonStrMatch} from '../../utils/utils';
 import {EtoolsCurrency} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-mixin';
 import {notHiddenPartnersSelector} from '../../../redux/reducers/common-data';
 import {translate} from 'lit-translate';
+import {
+  InterventionListData,
+  LabelAndValue,
+  GenericObject,
+  RouteDetails,
+  RouteQueryParams
+} from '@unicef-polymer/etools-types';
 
 /**
  * @LitElement
@@ -114,7 +119,7 @@ export class InterventionList extends connect(store)(EtoolsCurrency(LitElement))
   interventionStatuses!: LabelAndValue[];
 
   @property({type: Object})
-  urlParams!: GenericObject<any>;
+  urlParams!: GenericObject;
 
   listColumns: EtoolsTableColumn[] = [
     {

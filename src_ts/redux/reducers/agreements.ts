@@ -1,6 +1,5 @@
 import {SET_AGREEMENTS} from '../actions/agreements';
-// eslint-disable-next-line max-len
-import {MinimalAgreement} from '../../components/pages/interventions/intervention-tab-pages/common/models/agreement.types';
+import {MinimalAgreement} from '@unicef-polymer/etools-types';
 
 export interface AgreementsState {
   list: MinimalAgreement[] | null;

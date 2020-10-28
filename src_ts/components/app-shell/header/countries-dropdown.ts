@@ -7,12 +7,11 @@ import {customElement, LitElement, html, property, query} from 'lit-element';
 
 // import EndpointsMixin from '../../endpoints/endpoints-mixin.js';
 import {fireEvent} from '../../utils/fire-custom-event';
-import {EtoolsUserModel} from '../../user/user-model';
 import {countriesDropdownStyles} from './countries-dropdown-styles';
 import {changeCurrentUserCountry} from '../../user/user-actions';
 import {DEFAULT_ROUTE, updateAppLocation} from '../../../routing/routes';
 import {ROOT_PATH} from '../../../config/config';
-import {AnyObject} from '../../../types/globals';
+import {AnyObject, EtoolsUser} from '@unicef-polymer/etools-types';
 
 /**
  * @LitElement
@@ -56,7 +55,7 @@ export class CountriesDropdown extends connect(store)(LitElement) {
   countrySelectorVisible = false;
 
   @property({type: Object})
-  userData!: EtoolsUserModel;
+  userData!: EtoolsUser;
 
   @query('#countrySelector') private countryDropdown!: EtoolsDropdownEl;
 
@@ -77,7 +76,7 @@ export class CountriesDropdown extends connect(store)(LitElement) {
     this.userDataChanged(this.userData);
   }
 
-  userDataChanged(userData: EtoolsUserModel) {
+  userDataChanged(userData: EtoolsUser) {
     if (userData) {
       this.countries = userData.countries_available;
       this.currentCountry = userData.country;
