@@ -66,7 +66,7 @@
     "@unicef-polymer/etools-profile-dropdown": "^4.0.6-rc.1",
     "@unicef-polymer/etools-table": "^1.0.8",
     "@unicef-polymer/etools-upload": "^3.2.1",
-    "@unicef-polymer/etools-types": "^0.0.6",
+    "@unicef-polymer/etools-types": "^0.0.7",
     "@webcomponents/webcomponentsjs": "^2.0.0",
     "lit-element": "^2.3.1",
     "lit-translate": "^1.2.1",
