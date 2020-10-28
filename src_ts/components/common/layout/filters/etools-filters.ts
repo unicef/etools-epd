@@ -78,7 +78,7 @@ export class EtoolsFilters extends LitElement {
       const loadingEl = self.shadowRoot.querySelector('etools-loading');
       if (loadingEl && loadingEl.active) {
         loadingEl.active = false;
-        fireEvent(self, 'toast', {text: 'There was an issue with loading data for filters!'})
+        fireEvent(self, 'toast', {text: 'There was an issue with loading data for filters'});
       }
     });
   }
