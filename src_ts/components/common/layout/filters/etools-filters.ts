@@ -16,6 +16,7 @@ import '@unicef-polymer/etools-date-time/datepicker-lite';
 import '@unicef-polymer/etools-loading/etools-loading';
 import {elevation2} from '../../../styles/lit-styles/elevation-styles';
 import {Callback} from '../../../../types/globals';
+import {fireEvent} from '../../../utils/fire-custom-event';
 
 export enum EtoolsFilterTypes {
   Search,
@@ -69,6 +70,28 @@ export class EtoolsFilters extends LitElement {
         }
       `
     ];
+  }
+
+  connectedCallback() {
+    super.connectedCallback();
+    this.waitForAllPendingHttpRequests(this).then((self: any) => {
+      const loadingEl = self.shadowRoot.querySelector('etools-loading');
+      if (loadingEl && loadingEl.active) {
+        loadingEl.active = false;
+        fireEvent(self, 'toast', {text: 'There was an issue with loading data for filters!'})
+      }
+    });
+  }
+
+  public waitForAllPendingHttpRequests(self: any) {
+    return new Promise((resolve) => {
+      const check = setInterval(() => {
+        if (document.readyState === 'complete') {
+          clearInterval(check);
+          resolve(self);
+        }
+      }, 4000);
+    });
   }
 
   getSearchTmpl(f: EtoolsFilter) {
