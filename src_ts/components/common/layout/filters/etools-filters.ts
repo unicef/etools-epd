@@ -72,28 +72,6 @@ export class EtoolsFilters extends LitElement {
     ];
   }
 
-  connectedCallback() {
-    super.connectedCallback();
-    this.waitForAllPendingHttpRequests(this).then((self: any) => {
-      const loadingEl = self.shadowRoot.querySelector('etools-loading');
-      if (loadingEl && loadingEl.active) {
-        loadingEl.active = false;
-        fireEvent(self, 'toast', {text: 'There was an issue with loading data for filters!'})
-      }
-    });
-  }
-
-  public waitForAllPendingHttpRequests(self: any) {
-    return new Promise((resolve) => {
-      const check = setInterval(() => {
-        if (document.readyState === 'complete') {
-          clearInterval(check);
-          resolve(self);
-        }
-      }, 4000);
-    });
-  }
-
   getSearchTmpl(f: EtoolsFilter) {
     // language=HTML
     return html`
