@@ -1,4 +1,3 @@
-import {logInfo} from '@unicef-polymer/etools-behaviors/etools-logging';
 
 export interface RouteQueryParam {
   [key: string]: string;
@@ -88,7 +87,6 @@ export class Router {
   getRouteDetails(path?: string): RouteDetails | null {
     let routeDetails: RouteDetails | null = null;
     let locationPath: string = path ? this.getLocationPath(path) : this.getLocationPath();
-    logInfo(locationPath, 'Router.getRouteDetails.locationPath: ');
 
     const qsStartIndex: number = locationPath.indexOf('?');
     let qs = '';
