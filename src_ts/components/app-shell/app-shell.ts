@@ -44,7 +44,6 @@ import commonData, {CommonDataState} from '../../redux/reducers/common-data';
 import {SMALL_MENU_ACTIVE_LOCALSTORAGE_KEY} from '../../config/config';
 import {getCurrentUser} from '../user/user-actions';
 import {EtoolsRouter} from '../../routing/routes';
-import {RouteDetails} from '../../routing/router';
 import {
   getPartners,
   getLocations,
@@ -58,13 +57,13 @@ import {
   getCountryProgrammes
 } from '../../redux/actions/common-data';
 import {getAgreements, SET_AGREEMENTS} from '../../redux/actions/agreements';
-import {EtoolsUserModel} from '../user/user-model';
 import isEmpty from 'lodash-es/isEmpty';
 import {fireEvent} from '../utils/fire-custom-event';
 import get from 'lodash-es/get';
 import '../env-flags/environment-flags';
 import {setStore} from '../pages/interventions/intervention-tab-pages/utils/redux-store-access';
 import {registerTranslateConfig, use} from 'lit-translate';
+import {EtoolsUser, RouteDetails} from '@unicef-polymer/etools-types';
 
 registerTranslateConfig({loader: (lang: string) => fetch(`assets/i18n/${lang}.json`).then((res: any) => res.json())});
 // set store for intervention-tab-pages
@@ -205,7 +204,7 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
     });
     installMediaQueryWatcher(`(min-width: 460px)`, () => store.dispatch(updateDrawerState(false)));
 
-    getCurrentUser().then((user: EtoolsUserModel) => {
+    getCurrentUser().then((user: EtoolsUser) => {
       if (user) {
         // @ts-ignore
         Promise.allSettled([
