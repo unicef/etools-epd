@@ -1,10 +1,7 @@
-import {RouteDetails} from './router';
+import {GenericObject, RouteDetails} from '@unicef-polymer/etools-types';
 
-export interface RoutesLazyLoadComponentsPath {
-  [key: string]: string[];
-}
 // each key from this object is computed from routeName_routeSubPage (if subRoute exists)
-export const componentsLazyLoadConfig: RoutesLazyLoadComponentsPath = {
+export const componentsLazyLoadConfig: GenericObject<string[]> = {
   interventions_list: ['components/pages/interventions/intervention-list.js'],
   interventions_overview: [
     'components/pages/interventions/intervention-tab-pages/intervention-tabs.js',

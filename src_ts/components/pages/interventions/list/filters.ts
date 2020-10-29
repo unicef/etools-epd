@@ -1,8 +1,7 @@
 import {EtoolsFilter, EtoolsFilterTypes} from '../../../common/layout/filters/etools-filters';
-import {AnyObject} from '../../../../types/globals';
 import {isJsonStrMatch} from '../../../utils/utils';
-import {RouteQueryParams} from '../../../../routing/router';
 import {translate} from 'lit-translate';
+import {AnyObject, RouteQueryParams} from '@unicef-polymer/etools-types';
 
 export enum FilterKeys {
   search = 'search',

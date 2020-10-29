@@ -3,13 +3,13 @@ import '@polymer/paper-toast/paper-toast';
 import '@polymer/paper-button/paper-button';
 import {PaperToastElement} from '@polymer/paper-toast/paper-toast';
 import {PaperButtonElement} from '@polymer/paper-button/paper-button';
-import {AnyObject} from '../../../types/globals';
 import {
   layoutSelfEnd,
   layoutHorizontal,
   layoutCenter,
   layoutVertical
 } from '../../styles/lit-styles/flex-layout-styles';
+import {AnyObject} from '@unicef-polymer/etools-types';
 
 /**
  * @LitElement

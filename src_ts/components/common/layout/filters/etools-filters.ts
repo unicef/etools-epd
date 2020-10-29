@@ -15,8 +15,7 @@ import '@unicef-polymer/etools-dropdown/etools-dropdown';
 import '@unicef-polymer/etools-date-time/datepicker-lite';
 import '@unicef-polymer/etools-loading/etools-loading';
 import {elevation2} from '../../../styles/lit-styles/elevation-styles';
-import {Callback} from '../../../../types/globals';
-import {fireEvent} from '../../../utils/fire-custom-event';
+import {Callback} from '@unicef-polymer/etools-types';
 
 export enum EtoolsFilterTypes {
   Search,

@@ -10,17 +10,15 @@ import {connect} from 'pwa-helpers/connect-mixin.js';
 import {RootState, store} from '../../../redux/store';
 import {isProductionServer, ROOT_PATH} from '../../../config/config';
 import {updateDrawerState} from '../../../redux/actions/app';
-import {EtoolsUserModel} from '../../user/user-model';
 import {fireEvent} from '../../utils/fire-custom-event';
 import isEmpty from 'lodash-es/isEmpty';
 import {updateCurrentUser} from '../../user/user-actions';
-import {AnyObject} from '../../../types/globals';
 import {pageHeaderStyles} from './page-header-styles';
-import {GenericObject} from '../../pages/interventions/intervention-tab-pages/common/models/globals.types';
 import {use} from 'lit-translate';
 import {setLanguage} from '../../../redux/actions/active-language';
 import {activeLanguage} from '../../../redux/reducers/active-language';
 import {countriesDropdownStyles} from './countries-dropdown-styles';
+import {AnyObject, EtoolsUser, GenericObject} from '@unicef-polymer/etools-types';
 
 store.addReducers({
   activeLanguage
@@ -146,7 +144,7 @@ export class PageHeader extends connect(store)(LitElement) {
   public headerColor = 'var(--header-bg-color)';
 
   @property({type: Object})
-  profile!: EtoolsUserModel;
+  profile!: EtoolsUser | null;
 
   @property({type: Object})
   profileDropdownData: any | null = null;
@@ -187,7 +185,7 @@ export class PageHeader extends connect(store)(LitElement) {
 
   public stateChanged(state: RootState) {
     if (state) {
-      this.profile = state.user!.data as EtoolsUserModel;
+      this.profile = state.user!.data;
       if (state.activeLanguage && state.activeLanguage.activeLanguage !== this.selectedLanguage) {
         this.selectedLanguage = state.activeLanguage!.activeLanguage;
       }

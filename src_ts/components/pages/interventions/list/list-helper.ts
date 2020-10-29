@@ -1,10 +1,10 @@
 import {EtoolsPaginator} from '@unicef-polymer/etools-table/pagination/etools-pagination';
-import {GenericObject} from '../../../../types/globals';
 import {isEqual, sortBy} from 'lodash-es';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {getEndpoint} from '../../../../endpoints/endpoints';
 import {etoolsEndpoints} from '../../../../endpoints/endpoints-list';
 import {abortRequestByKey} from '@unicef-polymer/etools-ajax/etools-iron-request';
+import {InterventionListData, GenericObject} from '@unicef-polymer/etools-types';
 
 export type ListHelperResponse<T> = {
   list: T[];
