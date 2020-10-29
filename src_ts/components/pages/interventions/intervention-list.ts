@@ -210,6 +210,14 @@ export class InterventionList extends connect(store)(EtoolsCurrency(LitElement))
 
     const stateRouteDetails = {...state.app!.routeDetails};
     if (JSON.stringify(stateRouteDetails) !== JSON.stringify(this.routeDetails)) {
+      if (
+        (!stateRouteDetails.queryParams || Object.keys(stateRouteDetails.queryParams).length === 0) &&
+        this.urlParams
+      ) {
+        this.routeDetails = stateRouteDetails;
+        this.updateCurrentParams(this.urlParams);
+        return;
+      }
       this.onParamsChange(stateRouteDetails);
     }
 
