@@ -10,7 +10,7 @@ import thunk, {ThunkMiddleware} from 'redux-thunk';
 import {lazyReducerEnhancer} from 'pwa-helpers/lazy-reducer-enhancer.js';
 
 import app, {AppState} from './reducers/app.js';
-import {interventions, InterventionsState} from './reducers/interventions.js';
+import {InterventionsState} from './reducers/interventions.js';
 import {ActiveLanguageState} from './reducers/active-language.js';
 import {agreements, AgreementsState} from './reducers/agreements.js';
 import {AppAction} from './actions/app.js';
