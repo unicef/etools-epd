@@ -45,7 +45,7 @@ export class EtoolsToast extends LitElement {
         }
 
         .toast-general-style {
-          max-width: 568px !important;
+          max-width: 640px !important;
           min-height: 40px;
           max-height: 70vh !important;
         }
@@ -59,6 +59,7 @@ export class EtoolsToast extends LitElement {
         .toast-multi-line {
           ${layoutVertical}
           text-align: justify;
+          white-space: pre-line;
         }
       </style>
       <paper-toast id="toast" class="toast-general-style" @iron-overlay-closed="${() => this.toastClosed()}">
