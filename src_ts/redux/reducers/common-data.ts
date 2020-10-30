@@ -1,8 +1,16 @@
 import {Reducer} from 'redux';
 import {SET_ALL_STATIC_DATA, UPDATE_ENV_FLAGS, UPDATE_PRP_COUNTRIES} from '../actions/common-data';
 import {RootAction} from '../store';
-import {CpOutput, Disaggregation, LocationObject, Section, LabelAndValue, EnvFlags} from '../../types/globals';
 import {createSelector} from 'reselect';
+import {
+  CountryProgram,
+  Disaggregation,
+  EnvFlags,
+  LabelAndValue,
+  LocationObject,
+  Section,
+  CpOutput
+} from '@unicef-polymer/etools-types';
 
 export interface CommonDataState {
   unicefUsersData: [];
@@ -23,7 +31,7 @@ export interface CommonDataState {
   fileTypes: any[];
   cashTransferModalities: any[];
   PRPCountryData: any[];
-  countryProgrammes: any[];
+  countryProgrammes: CountryProgram[];
 }
 
 const INITIAL_COMMON_DATA: CommonDataState = {

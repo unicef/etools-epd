@@ -11,8 +11,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 import {Reducer} from 'redux';
 import {UPDATE_ROUTE_DETAILS, UPDATE_DRAWER_STATE} from '../actions/app';
 import {RootAction} from '../store';
-import {RouteDetails} from '../../routing/router';
 import {SHOW_TOAST, CLOSE_TOAST} from '../actionsContants';
+import {RouteDetails} from '@unicef-polymer/etools-types';
 
 export interface AppState {
   routeDetails: RouteDetails;

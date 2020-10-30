@@ -1,6 +1,5 @@
 import {ActionCreator, Action} from 'redux';
-// eslint-disable-next-line max-len
-import {MinimalAgreement} from '../../components/pages/interventions/intervention-tab-pages/common/models/agreement.types';
+import {MinimalAgreement} from '@unicef-polymer/etools-types';
 import {sendRequest} from '@unicef-polymer/etools-ajax';
 import {etoolsEndpoints} from '../../endpoints/endpoints-list';
 
