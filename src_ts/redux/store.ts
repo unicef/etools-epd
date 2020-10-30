@@ -55,7 +55,6 @@ export const store = createStore(
 // Initially loaded reducers.
 store.addReducers({
   app,
-  interventions,
   agreements
 });
 
