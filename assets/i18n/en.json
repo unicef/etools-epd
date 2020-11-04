@@ -1,4 +1,13 @@
 {
+  "GENERAL": {
+    "ADD": "Add",
+    "SAVE": "Save",
+    "DELETE": "Delete",
+    "TITLE": "Title",
+    "TOTAL": "Total",
+    "DESCRIPTION": "Description",
+    "ERR_OCCURRED": "An error occurred. Try again."
+  },
   "INTERVENTIONS_LIST": {
     "TITLE": "PDs/SPDs List",
     "TABLE_TITLE": "PDs/SPDs",
@@ -104,7 +113,44 @@
     "REMOVE_CP_OUTPUT_MSG": "Are you sure you want to remove this CP Output?",
     "RESULT_VIEW": "Result view",
     "COMBINED_VIEW": "Combined view",
-    "BUDGET_VIEW": "Budget view"
+    "BUDGET_VIEW": "Budget view",
+    "EFF_EFF_PROG_MGM": {
+      "EFFECTIVE_EFFICIENT_PROG_MGM": "Effective and Efficient Programme Management",
+      "TOTAL": "TOTAL:",
+      "ITEM_PD_CURRENCY": "Item (all prices in PD currency)",
+      "UNICEF_CASH": "Unicef Cash",
+      "PARTNER_CONTRIBUTION": "Partner Contribution",
+      "TITLE_1": "In-country management and support staff",
+      "DESCRIPTION_1": "Contribution for In-country management and support staff prorated to their contribution to the programme (representation, planning, coordination, logistics, administration, finance)",
+      "TITLE_2": "Operational costs",
+      "DESCRIPTION_2": "Contribution for Operational costs prorated to their contribution to the programme (office space, equipment, office supplies, maintenance)",
+      "TITLE_3": "Planning, monitoring, evaluation and communication",
+      "DESCRIPTION_3": "Contribution for Planning, monitoring, evaluation and communication, prorated to their contribution to the programme (venue, travels, etc.)",
+      "ACTIVITY_DIALOG": {
+        "EDIT_ACTIVITY": "Edit activity"
+      }
+    },
+    "SUPPLY_AGREEMENT": {
+      "NUMBER_UNITS": "Number of Units",
+      "ITEM_ALL_PRICES": "Item (all prices in PD Currency)",
+      "PRICE_UNIT": "Price / Unit",
+      "TOTAL_PRICE": "Total Price",
+      "CP_OUTPUTS": "Cp Outputs",
+      "OTHER_MENTIONS": "Other Mentions",
+      "DELETE_SUPPLY_PROMPT": "Are you sure you want to delete this Supply Agreement item?",
+      "SUPPLY_AGREEMENT": "Supply Agreement",
+      "TOTAL_SUPPLY_BUDGET": "TOTAL SUPPLY BUDGET:",
+      "NO_SUPPLY_AGREEMENTS": "There are no supply agreements added.",
+      "SUPPLIES_UPLOADED": "Supplies uploaded successfully"
+    },
+    "SUPPLY_AGREEMENT_DIALOG": {
+      "ADD_SUPPLY_AGREEMENT": "Add Supply Agreement",
+      "EDIT_SUPPLY_AGREEMENT": "Edit Supply Agreement",
+      "CP_OUTPUT": "CP Output",
+      "ENTER_PRICE_UNIT": "Enter price / unit",
+      "ENTER_NUMBER_UNITS": "Enter number of units",
+      "ENTER_TITLE": "Enter title"
+    }
   },
   "INDICATOR_DIALOG": {
     "INDICATOR": "Indicator",
@@ -140,6 +186,16 @@
     "RESPONSE_PLAN_ERR": "Please select Response Plan",
     "CLUSTER": "Cluster",
     "CLUSTER_ERR": "Please select Cluster",
-    "INDICATOR_ERR": "Please select Indicator"
+    "INDICATOR_ERR": "Please select Indicator",
+    "HERE": "here",
+    "DISAGGREGATE_BY": "Disaggregate By",
+    "DISAGGREGATION_GROUPS": "Disaggregation Groups",
+    "NO_DISAGGREGATIONS_ADDED": "There are no disaggregations added.",
+    "ADD_DISAGGREGATION": "Add Disaggregation",
+    "ADD_DISAGREG": "ADD DISAGGREGATION",
+    "DISAGREG_ALREADY_SELECTED": "Disaggregation already selected",
+    "DISAGREG_BY": "Disaggregate By",
+    "DISAGREG_GROUPS": "Disaggregation Groups",
+    "NO_DISAGREG_ADDED": "There are no disaggregations added."
   }
 }
