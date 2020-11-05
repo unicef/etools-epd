@@ -5,8 +5,10 @@
     "DELETE": "Delete",
     "TITLE": "Title",
     "TOTAL": "Total",
+    "TOTAL_C": "TOTAL",
     "DESCRIPTION": "Description",
-    "ERR_OCCURRED": "An error occurred. Try again."
+    "ERR_OCCURRED": "An error occurred. Try again.",
+    "REQUIRED_FIELD": "This field is required"
   },
   "INTERVENTIONS_LIST": {
     "TITLE": "PDs/SPDs List",
@@ -197,5 +199,138 @@
     "DISAGREG_BY": "Disaggregate By",
     "DISAGREG_GROUPS": "Disaggregation Groups",
     "NO_DISAGREG_ADDED": "There are no disaggregations added."
+  },
+  "INTERVENTION_TIMING": {
+    "TIMING_OVERVIEW": {
+      "DATE_CREATED": "Date Created",
+      "DATE_FIRST_SENT_PARTNER": "Date First Sent to Partner",
+      "DATE_FIRST_DRAFT_PARTNER": "Date First Draft by Partner",
+      "PRC_SUBMISSION_DATE": "PRC Submission Date",
+      "PRC_REVIEW_DATE": "PRC Review Date",
+      "DATE_PARTNER_SIGNED": "Date Partner Signed",
+      "DATE_UNICEF_SIGNED": "Date Unicef Signed",
+      "DATE_LAST_AMENDED": "Date Last Amended"
+    },
+    "INTERVENTION_DATES": {
+      "PROGRAMME_DOC_DATES": "Programme Document Dates",
+      "START_DATE": "Start Date",
+      "SELECT_START_DATE": "Please select start date",
+      "END_DATE": "End Date",
+      "SELECT_END_DATE": "Please select end date",
+      "ACTIVATION_LETTER": "Activation Letter"
+    },
+    "ACTIVITY_TIMEFRAMES": {
+      "ACTIVITY_TIMES": "Activity Times (click to select/deselect)",
+      "ACTIVITY_TIMES_MSG": "Activity Timeframes will be available after Start and End date are set."
+    }
+  },
+  "INTERVENTION_MANAGEMENT": {
+    "REVIEW_AND_SIGN": {
+      "SIGNATURES_DATES": "Signatures & Dates",
+      "DOC_SUB_DATE": "Document Submission Date",
+      "MAX_DATE_ERR": "Date can not be in the future",
+      "DOC_DATE_REQUIRED": "Document Submission Date is required",
+      "SUBMITTED_PRC": "Submitted to PRC?",
+      "SUBMISSION_DATE_PRC": "Submission Date to PRC",
+      "REVIEW_DATE_PRC": "Review Date by PRC",
+      "PRC_REVIEW_DOC": "PRC Review Document",
+      "SIGNED_PARTNER_AUTH_OFFICER": "Signed by Partner Authorized Officer",
+      "PARTNER_AUTH_OFFICER_ERR": "Please select Partner Authorized Officer",
+      "SIGNED_PARTNER_DATE": "Signed by Partner Date",
+      "DATE_REQUIRED": "Date is required",
+      "SIGNED_UNICEF_AUTH_OFFICER": "Signed by UNICEF Authorized Officer",
+      "SIGNED_UNICEF_DATE": "Signed by UNICEF Date",
+      "SIGNED_UNICEF": "Signed by UNICEF",
+      "UNICEF_USER_ERR": "Please select UNICEF user",
+      "SIGNED_PD_SPD": "Signed PD/SPD",
+      "SELECT_SIGNED_PD_SPD_DOC": "Please select Signed PD/SPD document",
+      "DAYS_SUBMISSION_SIGNED": "Days from Submission to Signed",
+      "DAYS_REVIEW_SIGNED": "Days from Review to Signed",
+      "TERMINATION_NOTICE": "Termination Notice"
+    },
+    "RISKS": {
+      "RISKS": "Risks",
+      "NO_RISK_ADDED": "There are no risks added.",
+      "TYPE": "Type",
+      "PROPOSED_MITIGATION_MEASURES": "Proposed Mitigation Measures",
+      "DELETE_RISK_PROMPT": "Are you sure you want to delete this Risk item?",
+      "RISK_DIALOG": {
+        "EDIT_RISK": "Edit risk",
+        "ADD_RISK": "Add risk"
+      }
+    },
+    "PROGRAMATIC_VISITS": {
+      "PROGRAMATIC_VISITS": "Programmatic Visits",
+      "ADD_YEAR": "ADD YEAR",
+      "YEAR": "Year",
+      "NO_PLANNED_VISITS": "There are no planned visits added.",
+      "QUARTER_1": "Quarter 1",
+      "QUARTER_2": "Quarter 2",
+      "QUARTER_3": "Quarter 3",
+      "QUARTER_4": "Quarter 4",
+      "TOTAL_ERR": "Total has to be greater than 0",
+      "YEAR_SELECTED_ERR": "Year already selected on other planned visit item.",
+      "ALREADY_ADDED_PLANNED_VISIT": "Already added planned visit data is not valid yet"
+    },
+    "AMENDMENTS": {
+      "AMENDMENTS": "Amendments",
+      "ADD_AMENDMENT": "Add Amendment",
+      "REF": "Ref #",
+      "SIGNED_DATE": "Signed Date",
+      "AMENDMENT_TYPES": "Amendment Types",
+      "SIGNED_AMENDMENT": "Signed Amendment",
+      "INTERNAL_PRC_REVIEWS": "Internal / PRC Reviews",
+      "OTHER_INFO": "Other Info",
+      "NO_AMENDMENTS_ADDED": "There are no amendments added.",
+      "AMENDMENT_DIALOG": {
+        "MAX_DATE_ERR": "Date can not be in the future",
+        "TYPE_ERR": "Type is required",
+        "OTHER": "Other",
+        "ATTACHMENT_REQUIRED": "Attachment required",
+        "ADMIN_ERR_MSG": "Corrections in the programme document due to typos or administrative error.",
+        "BUDGET_LTE_20_MSG": "Changes to the budget of activities resulting in a change in the UNICEF contribution ≤20% of previously approved cash and/or supplies, with or without changes to the programme results.",
+        "BUDGET_GT_20_MSG": "Changes to the budget of activities resulting in a change in the UNICEF contribution >20% of previously approved cash and/or supplies, with or without changes to the programme results.",
+        "NO_COST_EXTENSION_MSG": "No cost extension",
+        "CHANGE_MSG": "Changes to planned results, population or geographical coverage of the programme with no change in UNICEF contribution.",
+        "OTHER_MSG": "Other"
+      }
+    },
+    "FINANCIAL_COMPONENT": {
+      "FINANCIAL": "Financial",
+      "CASH_TRANSFER_MOD": "Cash Transfer Modality(ies)",
+      "HEADQUARTERS_CONTRIBUTION": "Headquarters Contribution (automatic 7% for INGO)",
+      "DOCUMENT_CURRENCY": "Document currency"
+    },
+    "FUND_RESERVATIONS": {
+      "FUND_RESERVATIONS": "Fund Reservations",
+      "FR_WARNING": "Fund Reservation Warning",
+      "OK_BTN": "Yes",
+      "CANCEL_BTN": "No",
+      "ADD_UPDATE_FR_NUMBER_ERR": "Can not add/update FR numbers. Please try again later!",
+      "NO_FR_NUM_ADDED": "There are no fund reservations numbers added.",
+      "CAN_NOT_ADD_FR_NUM": "You can not add FR Numbers. The PD/SPD needs to be saved first."
+    },
+    "FINAL_REVIEW": {
+      "FINAL_PARTNERSHIP_REVIEW": "Final Partnership Review",
+      "DATE_REVIEW_PERFORMED": "Date Review Performed",
+      "FINAL_REVIEW_POP": {
+        "FINAL_PARTNERSHIP_REV_ATT": "Final Partnership Review Attachment",
+        "CORRECT_FILE_ERR": "Please, select correct file"
+      }
+    }
+  },
+  "INTERVENTION_ATTACHMENTS": {
+    "ATTACHMENTS_LIST": {
+      "ATTACHMENTS": "Attachments",
+      "DATE_UPLOADED": "Date Uploaded",
+      "DOC_TYPE": "Document Type",
+      "DOC": "Document",
+      "INVALID": "Invalid",
+      "NO_ATTACHMENTS_ADDED": "There are no attachments added.",
+      "INT_ATT_DIALOG": {
+        "ATTACHMENT": "Attachment",
+        "SELECT_DOC_TYPE": "Select Document Type",
+      }
+    }
   }
 }
