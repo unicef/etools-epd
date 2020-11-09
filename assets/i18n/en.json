@@ -335,5 +335,33 @@
         "SELECT_DOC_TYPE": "Select Document Type"
       }
     }
+  },
+  "INTERVENTION_REPORTS": {
+    "NO_REPORTS_YET": "There are no reports yet.",
+    "REPORT_NUM": "Report #",
+    "PARTNER": "Partner",
+    "REPORT_STATUS": "Report Status",
+    "DUE_DATE": "Due Date",
+    "REPORTING_PERIOD": "Reporting Period",
+    "PD_SPD_REF_NUM": "PD/SPD ref.#",
+    "FINAL": "final",
+    "UNICEF_FOCAL_POINTS": "UNICEF Focal Points",
+    "DISBURSEMENT_AMOUNTS": "Disbursement amounts in multiple currencies.",
+    "UNICEF_CASH": "UNICEF Cash",
+    "FR_CURRENCY_NOT_MATCH": "FR currency does not match PD/SPD currency.",
+    "NA_%": "N/A %",
+    "OVERALL_PD_SPD_RATING": "Overall PD/SPD Rating by UNICEF",
+    "RESULTS_REPORTED": "Results reported",
+    "NO_RESULTS": "There are no results to show.",
+    "CP_OUTPUT": "CP Output:",
+    "NO_PD_OUTPUTS": "There are no PD Outputs.",
+    "PD_OUTPUTS": "PD Outputs",
+    "CURRENT_PROGRESS": "Current progress (Last Reported on)",
+    "NO_INDICATORS": "No indicators on this PD Output",
+    "TARGET": "Target:",
+    "TOTAL_CUMULATIVE": "Total cumulative progress:",
+    "ACHIEVEMENT_IN_REPORTING_PERIOD": "Achievement in reporting period:",
+    "RAM_INDICATORS": "RAM Indicators",
+    "PMP_NOT_SYNCED": "PMP is not synced with PRP"
   }
 }
