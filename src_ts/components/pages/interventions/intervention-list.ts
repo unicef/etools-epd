@@ -373,6 +373,8 @@ export class InterventionList extends connect(store)(EtoolsCurrency(LitElement))
       );
       return false;
     } else {
+      // store existing url params in urlParams property, to be used on navigation to PD list as default params
+      this.urlParams = currentParams;
       return true;
     }
   }
