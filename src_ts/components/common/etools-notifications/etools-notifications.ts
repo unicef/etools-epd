@@ -71,7 +71,8 @@ export class EtoolsNotifications extends LitElement {
     super.connectedCallback();
 
     this._updateNotifications = this._updateNotifications.bind(this);
-    document.body.addEventListener('send-notification', this._updateNotifications as any);
+    document.body.addEventListener('show-notification', this._updateNotifications as any);
+
     setTimeout(() => {
       this.getDummyData();
     }, 5000);
