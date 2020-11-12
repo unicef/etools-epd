@@ -8,7 +8,8 @@
     "TOTAL_C": "TOTAL",
     "DESCRIPTION": "Description",
     "ERR_OCCURRED": "An error occurred. Try again.",
-    "REQUIRED_FIELD": "This field is required"
+    "REQUIRED_FIELD": "This field is required",
+    "CANCEL": "Cancel"
   },
   "INTERVENTIONS_LIST": {
     "TITLE": "PDs/SPDs List",
@@ -88,7 +89,12 @@
     "TECHNICAL_GUIDANCE": "Technical Guidance",
     "CAPACITY_DEVELOPMENT": "Capacity Development",
     "OTHER_PARTNERS_INVOLVED": "Other Partners Involved",
-    "OTHER_INFORMATION": "Other Information"
+    "OTHER_INFORMATION": "Other Information",
+    "GROUPED_LOCATIONS":{
+      "LOCATIONS_PD_COVERS": "Locations PD/SPD Covers",
+      "GROUP_LOCATIONS_BY": "Group Locations By",
+      "LOCATIONS_UNABLE_TO_GROUP": "Locations unable to group: "
+    }
   },
   "INTERVENTION_RESULTS": {
     "BUDGET_CURRENCY": "Budget Currency",
@@ -131,6 +137,16 @@
       "ACTIVITY_DIALOG": {
         "EDIT_ACTIVITY": "Edit activity"
       }
+    },
+    "ACTIVITY_DATA_DIALOG": {
+      "ACTIVITY_DATA": "Activity Data",
+      "ACTIVITY_NAME": "Activity Name",
+      "OTHER_NOTES": "Other Notes",
+      "CSO_CASH_BUDGET": "CSO Cash Budget",
+      "UNICEF_CASH_BUDGET": "UNICEF Cash Budget",
+      "USE_INPUT_LEVEL": "Use Input-level",
+      "FILL_ALL_ACTIVITY_ITEMS": "Please fill all Activity Items names",
+      "FILL_ACTIVITY_TIME": "Please select an Activity time frame."
     },
     "SUPPLY_AGREEMENT": {
       "NUMBER_UNITS": "Number of Units",
