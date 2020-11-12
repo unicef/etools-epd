@@ -79,7 +79,7 @@ export class EtoolsNotifications extends LitElement {
   }
 
   _updateNotifications(e: CustomEvent) {
-    this.renderNotifications((e.detail.notifications || []).concat(this.notifications));
+    this.renderNotifications(this.notifications.concat(e.detail.notifications || []));
   }
 
   removeNotification(id: string) {
@@ -97,13 +97,15 @@ export class EtoolsNotifications extends LitElement {
 
   renderNotifications(items: AnyObject[]) {
     this.showNotification = false;
-    this.notifications = [];
+    // depemds how we want to display new added notifications
+
+    // this.notifications = [];
+    // setTimeout(() => {
+    this.notifications = items;
     setTimeout(() => {
-      this.notifications = items;
-      setTimeout(() => {
-        this.showNotification = true;
-      }, 100);
+      this.showNotification = true;
     }, 100);
+    // }, 100);
   }
 
   getDummyData() {
