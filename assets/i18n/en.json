@@ -9,7 +9,14 @@
     "DESCRIPTION": "Description",
     "ERR_OCCURRED": "An error occurred. Try again.",
     "REQUIRED_FIELD": "This field is required",
-    "CANCEL": "Cancel"
+    "CANCEL": "Cancel",
+    "YES": "Yes"
+  },
+  "ARE_YOU_SURE": {
+    "ARE_YOU_SURE_PROMPT": "Are you sure you want to delete this item?",
+    "DELETE_CONFIRMATION": "Delete confirmation",
+    "DELETE_FROM_SERVER": "Deleting items from server...",
+    "DELETE_FAILED": "Deleting items from server action has failed!"
   },
   "INTERVENTIONS_LIST": {
     "TITLE": "PDs/SPDs List",
@@ -107,7 +114,19 @@
     "PARTNER_CONTRIB": "% Partner Contrib",
     "TOTAL_CASH_AMT": "Total Cash Amt",
     "TOTAL_AMT": "Total Amt (Cash + Supply)",
-    "RESULTS_STRUCTURE": "Results Structure",
+    "RESULTS_STRUCTURE": {
+      "RESULTS_STRUCTURE": "Results Structure",
+      "CSO_CASH": "CSO Cash",
+      "UNICEF_CASH": "UNICEF Cash",
+      "PERCENT_PARTNER": "%Partner",
+      "TIME_PERIODS": "Time Periods",
+      "OTHER_NOTES": "Other Notes",
+      "DELETE_ACTIVITY_PROMPT": "Are you sure you want to delete this activity?",
+      "COUNTRY_PROGRAME_OUTPUT": "Country Program Output",
+      "RAM_INDICATORS": "Ram Indicators",
+      "UNASSOCIATED_TO_CP_OUTPUT": "Unassociated to CP Output! Please associate before moving forward",
+      "ADD_PD_OUTPUT": "Add PD Output"
+    },
     "EXPORT_RESULTS": "Export results",
     "EXPORT": "Export",
     "SHOW_INACTIVE": "Show Inactive",
@@ -126,7 +145,7 @@
       "EFFECTIVE_EFFICIENT_PROG_MGM": "Effective and Efficient Programme Management",
       "TOTAL": "TOTAL:",
       "ITEM_PD_CURRENCY": "Item (all prices in PD currency)",
-      "UNICEF_CASH": "Unicef Cash",
+      "UNICEF_CASH": "UNICEF Cash",
       "PARTNER_CONTRIBUTION": "Partner Contribution",
       "TITLE_1": "In-country management and support staff",
       "DESCRIPTION_1": "Contribution for In-country management and support staff prorated to their contribution to the programme (representation, planning, coordination, logistics, administration, finance)",
@@ -324,7 +343,14 @@
       "CANCEL_BTN": "No",
       "ADD_UPDATE_FR_NUMBER_ERR": "Can not add/update FR numbers. Please try again later!",
       "NO_FR_NUM_ADDED": "There are no fund reservations numbers added.",
-      "CAN_NOT_ADD_FR_NUM": "You can not add FR Numbers. The PD/SPD needs to be saved first."
+      "CAN_NOT_ADD_FR_NUM": "You can not add FR Numbers. The PD/SPD needs to be saved first.",
+      "FR_DIALOG": {
+        "ADD_UPDATE_FR_NUMBERS": "Add/Update FR Numbers",
+        "FILL_FR_NUMBER": "Please fill FR Number or remove the field",
+        "ADD_FR_NUM": "Add FR Number",
+        "DELETE_FR_PROMPT": "Are you sure you want to delete this FR Number?",
+        "NO_FUND_RESERVATIONS_ADDED": "There are no fund reservations numbers added."
+      }
     },
     "FINAL_REVIEW": {
       "FINAL_PARTNERSHIP_REVIEW": "Final Partnership Review",

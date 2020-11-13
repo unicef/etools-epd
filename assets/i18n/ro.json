@@ -9,7 +9,14 @@
     "DESCRIPTION": "Descriere",
     "ERR_OCCURRED": "A aparut o eroare. Te rugam sa mai incerci.",
     "REQUIRED_FIELD": "Camp necesar",
-    "CANCEL": "Anuleaza"
+    "CANCEL": "Anuleaza",
+    "YES": "Da"
+  },
+  "ARE_YOU_SURE": {
+    "ARE_YOU_SURE_PROMPT": "Sunteti sigur ca doriti sa stergeti acest element?",
+    "DELETE_CONFIRMATION": "Confirmare stergere",
+    "DELETE_FROM_SERVER": "Se sterg elementele de pe server...",
+    "DELETE_FAILED": "Stergerea elementelor de pe server a esuat!"
   },
   "INTERVENTIONS_LIST": {
     "TITLE": "Lista PD/SPD",
@@ -107,13 +114,25 @@
     "PARTNER_CONTRIB": "% Contributie Partener",
     "TOTAL_CASH_AMT": "Total Valoare Numerar",
     "TOTAL_AMT": "Total (Numerar + Supply)",
-    "RESULTS_STRUCTURE": "Results Structure",
+    "RESULTS_STRUCTURE": {
+      "RESULTS_STRUCTURE": "Results Structure",
+      "CSO_CASH": "Numerar CSO",
+      "UNICEF_CASH": "Numerar UNICEF",
+      "PERCENT_PARTNER": "%Partener",
+      "TIME_PERIODS": "Perioade de Timp",
+      "OTHER_NOTES": "Alte Note",
+      "DELETE_ACTIVITY_PROMPT": "Sunteti sigur ca doriti sa stergeti aceasta activitate?",
+      "COUNTRY_PROGRAME_OUTPUT": "Country Program Output",
+      "RAM_INDICATORS": "Indicatori Ram",
+      "UNASSOCIATED_TO_CP_OUTPUT": "Unassociated to CP Output! Please associate before moving forward",
+      "ADD_PD_OUTPUT": "Add PD Output"
+    },
     "EXPORT_RESULTS": "Export results",
     "EXPORT": "Export",
     "SHOW_INACTIVE": "Arata Inactive",
     "VIEW": "Vizualizeaza",
     "PROGRAM_DOCUMENT_OUTPUT": "Program Document Output",
-    "TOTAL_CASH_BUDGET": "Total Cash Budget",
+    "TOTAL_CASH_BUDGET": "Total Numerar Buget",
     "NO_RESULTS_ADDED": "Nu sunt rezultate adaugate.",
     "ADD_PD_OUTPUT": "Add PD Output",
     "REMOVE_PD_MSG": "Are you sure you want to remove this PD Output?",
@@ -123,10 +142,10 @@
     "COMBINED_VIEW": "Viziune Combinat",
     "BUDGET_VIEW": "Viziune Buget",
     "EFF_EFF_PROG_MGM": {
-      "EFFECTIVE_EFFICIENT_PROG_MGM": "Effective and Efficient Programme Management",
+      "EFFECTIVE_EFFICIENT_PROG_MGM": "Managementul Programului Eficient",
       "TOTAL": "TOTAL:",
-      "ITEM_PD_CURRENCY": "Item (all prices in PD currency)",
-      "UNICEF_CASH": "Unicef Cash",
+      "ITEM_PD_CURRENCY": "Element (toate preturile in valuta PD)",
+      "UNICEF_CASH": "Numerar UNICEF",
       "PARTNER_CONTRIBUTION": "Contributie Partener",
       "TITLE_1": "In-country management and support staff",
       "DESCRIPTION_1": "Contribution for In-country management and support staff prorated to their contribution to the programme (representation, planning, coordination, logistics, administration, finance)",
@@ -269,7 +288,7 @@
       "NO_RISK_ADDED": "Nu sunt riscuri adaugate.",
       "TYPE": "Tip",
       "PROPOSED_MITIGATION_MEASURES": "Masuri de Mitigare Propuse",
-      "DELETE_RISK_PROMPT": "Sunteti siguri ca vreti sa stergeti acest Risc?",
+      "DELETE_RISK_PROMPT": "Sunteti sigur ca vreti sa stergeti acest Risc?",
       "RISK_DIALOG": {
         "EDIT_RISK": "Editeaza risc",
         "ADD_RISK": "Adauga risc"
@@ -324,7 +343,14 @@
       "CANCEL_BTN": "Nu",
       "ADD_UPDATE_FR_NUMBER_ERR": "Nu se poate adauga/modifica numerele FR. Va rugam incercati mai tarziu!",
       "NO_FR_NUM_ADDED": "Nu sunt rezervari de fonduri adaugate.",
-      "CAN_NOT_ADD_FR_NUM": "Nu poti adauga numere FR. PD/SPD trebuie salvat mai intai."
+      "CAN_NOT_ADD_FR_NUM": "Nu poti adauga numere FR. PD/SPD trebuie salvat mai intai.",
+      "FR_DIALOG": {
+        "ADD_UPDATE_FR_NUMBERS": "Adauga/Modifica Numere FR",
+        "FILL_FR_NUMBER": "Va rugam introduceti un numar FR sau stergeti campul",
+        "ADD_FR_NUM": "Adauga Numar FR",
+        "DELETE_FR_PROMPT": "Sunteti sigur ca doriti sa stergeti acest numar FR?",
+        "NO_FUND_RESERVATIONS_ADDED": "There are no fund reservations numbers added."
+      }
     },
     "FINAL_REVIEW": {
       "FINAL_PARTNERSHIP_REVIEW": "Revizuirea Finala a Parteneriatului",
@@ -353,31 +379,31 @@
     }
   },
   "INTERVENTION_REPORTS": {
-    "NO_REPORTS_YET": "There are no reports yet.",
-    "REPORT_NUM": "Report #",
-    "PARTNER": "Partner",
-    "REPORT_STATUS": "Report Status",
-    "DUE_DATE": "Due Date",
-    "REPORTING_PERIOD": "Reporting Period",
+    "NO_REPORTS_YET": "Nu există încă rapoarte.",
+    "REPORT_NUM": "Raport #",
+    "PARTNER": "Partener",
+    "REPORT_STATUS": "Status Raport",
+    "DUE_DATE": "Data scadentă",
+    "REPORTING_PERIOD": "Perioada de Raportare",
     "PD_SPD_REF_NUM": "PD/SPD ref.#",
     "FINAL": "final",
     "UNICEF_FOCAL_POINTS": "UNICEF Focal Points",
-    "DISBURSEMENT_AMOUNTS": "Disbursement amounts in multiple currencies.",
-    "UNICEF_CASH": "UNICEF Cash",
-    "FR_CURRENCY_NOT_MATCH": "FR currency does not match PD/SPD currency.",
+    "DISBURSEMENT_AMOUNTS": "Sume de debursare în mai multe valute.",
+    "UNICEF_CASH": "Numerar UNICEF",
+    "FR_CURRENCY_NOT_MATCH": "Valuta FR nu este aceeasi cu cea din PD/SPD.",
     "NA_%": "N/A %",
     "OVERALL_PD_SPD_RATING": "Overall PD/SPD Rating by UNICEF",
-    "RESULTS_REPORTED": "Results reported",
-    "NO_RESULTS": "There are no results to show.",
+    "RESULTS_REPORTED": "Rezultate raportate",
+    "NO_RESULTS": "Nu sunt rezultate.",
     "CP_OUTPUT": "CP Output:",
     "NO_PD_OUTPUTS": "There are no PD Outputs.",
     "PD_OUTPUTS": "PD Outputs",
-    "CURRENT_PROGRESS": "Current progress (Last Reported on)",
+    "CURRENT_PROGRESS": "Progres curent (Ultimul raport)",
     "NO_INDICATORS": "No indicators on this PD Output",
     "TARGET": "Target:",
-    "TOTAL_CUMULATIVE": "Total cumulative progress:",
+    "TOTAL_CUMULATIVE": "Progres Total cumulat:",
     "ACHIEVEMENT_IN_REPORTING_PERIOD": "Achievement in reporting period:",
-    "RAM_INDICATORS": "RAM Indicators",
-    "PMP_NOT_SYNCED": "PMP is not synced with PRP"
+    "RAM_INDICATORS": "Indicatori RAM",
+    "PMP_NOT_SYNCED": "PMP nu este sincronizat cu PRP"
   }
 }
