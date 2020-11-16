@@ -168,7 +168,7 @@ export class InterventionList extends connect(store)(EtoolsCurrency(LitElement))
             Sent to Partner`;
         }
 
-        if (item.unicef_court && !!item.date_draft_by_partner) {
+        if (item.unicef_court && !!item.submission_date) {
           return html`${item.status} <br />
             Sent to Unicef`;
         }
