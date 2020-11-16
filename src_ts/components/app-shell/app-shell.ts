@@ -54,7 +54,8 @@ import {
   getStaticData,
   getDropdownsData,
   SET_ALL_STATIC_DATA,
-  getCountryProgrammes
+  getCountryProgrammes,
+  setCommonDataIsLoaded
 } from '../../redux/actions/common-data';
 import {getAgreements, SET_AGREEMENTS} from '../../redux/actions/agreements';
 import isEmpty from 'lodash-es/isEmpty';
@@ -227,6 +228,7 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
             type: SET_AGREEMENTS,
             list: this.getValue(response[8])
           });
+          store.dispatch(setCommonDataIsLoaded(true));
         });
       }
     });

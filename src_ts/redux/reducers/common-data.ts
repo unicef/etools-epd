@@ -1,5 +1,5 @@
 import {Reducer} from 'redux';
-import {SET_ALL_STATIC_DATA, UPDATE_ENV_FLAGS, UPDATE_PRP_COUNTRIES} from '../actions/common-data';
+import {SET_ALL_STATIC_DATA, UPDATE_ENV_FLAGS, UPDATE_PRP_COUNTRIES, SET_COMMON_DATA_IS_LOADED} from '../actions/common-data';
 import {RootAction} from '../store';
 import {createSelector} from 'reselect';
 import {
@@ -32,6 +32,7 @@ export interface CommonDataState {
   cashTransferModalities: any[];
   PRPCountryData: any[];
   countryProgrammes: CountryProgram[];
+  commonDataIsLoaded: boolean;
 }
 
 const INITIAL_COMMON_DATA: CommonDataState = {
@@ -53,7 +54,8 @@ const INITIAL_COMMON_DATA: CommonDataState = {
   fileTypes: [],
   cashTransferModalities: [],
   PRPCountryData: [],
-  countryProgrammes: []
+  countryProgrammes: [],
+  commonDataIsLoaded: false
 };
 
 const commonData: Reducer<CommonDataState, RootAction> = (state = INITIAL_COMMON_DATA, action) => {
@@ -78,6 +80,11 @@ const commonData: Reducer<CommonDataState, RootAction> = (state = INITIAL_COMMON
         fileTypes: action.staticData.fileTypes,
         cashTransferModalities: action.staticData.cashTransferModalities,
         countryProgrammes: action.staticData.countryProgrammes
+      };
+    case SET_COMMON_DATA_IS_LOADED:
+      return {
+        ...state,
+        commonDataIsLoaded: action.commonDataIsLoaded
       };
     case UPDATE_ENV_FLAGS:
       return {

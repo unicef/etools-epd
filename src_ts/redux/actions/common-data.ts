@@ -6,6 +6,7 @@ import {AnyObject} from '@unicef-polymer/etools-types';
 export const SET_ALL_STATIC_DATA = 'SET_ALL_STATIC_DATA';
 export const UPDATE_ENV_FLAGS = 'UPDATE_ENV_FLAGS';
 export const UPDATE_PRP_COUNTRIES = 'UPDATE_PRP_COUNTRIES';
+export const SET_COMMON_DATA_IS_LOADED = 'SET_COMMON_DATA_IS_LOADED';
 
 export interface CommonDataActionSetAllStaticData extends Action<'SET_ALL_STATIC_DATA'> {
   genderEquityRatings: AnyObject[];
@@ -23,6 +24,13 @@ export type CommonDataAction =
   | CommonDataActionSetAllStaticData
   | CommonDataActionUpdateEnvFlags
   | CommonDataActionUpdatePrpCountries;
+
+export const setCommonDataIsLoaded = (isLoaded: boolean) => {
+  return {
+    type: SET_COMMON_DATA_IS_LOADED,
+    commonDataIsLoaded: isLoaded
+  };
+};
 
 export const getPartners = () => {
   return sendRequest({
