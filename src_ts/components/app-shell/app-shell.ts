@@ -228,7 +228,6 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
             type: SET_AGREEMENTS,
             list: this.getValue(response[8])
           });
-          store.dispatch(setCommonDataIsLoaded(true));
         });
       }
     });

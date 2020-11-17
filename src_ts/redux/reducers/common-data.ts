@@ -1,5 +1,5 @@
 import {Reducer} from 'redux';
-import {SET_ALL_STATIC_DATA, UPDATE_ENV_FLAGS, UPDATE_PRP_COUNTRIES, SET_COMMON_DATA_IS_LOADED} from '../actions/common-data';
+import {SET_ALL_STATIC_DATA, UPDATE_ENV_FLAGS, UPDATE_PRP_COUNTRIES} from '../actions/common-data';
 import {RootAction} from '../store';
 import {createSelector} from 'reselect';
 import {
@@ -79,12 +79,8 @@ const commonData: Reducer<CommonDataState, RootAction> = (state = INITIAL_COMMON
         riskTypes: action.staticData.riskTypes,
         fileTypes: action.staticData.fileTypes,
         cashTransferModalities: action.staticData.cashTransferModalities,
-        countryProgrammes: action.staticData.countryProgrammes
-      };
-    case SET_COMMON_DATA_IS_LOADED:
-      return {
-        ...state,
-        commonDataIsLoaded: action.commonDataIsLoaded
+        countryProgrammes: action.staticData.countryProgrammes,
+        commonDataIsLoaded: true
       };
     case UPDATE_ENV_FLAGS:
       return {
