@@ -54,8 +54,7 @@ import {
   getStaticData,
   getDropdownsData,
   SET_ALL_STATIC_DATA,
-  getCountryProgrammes,
-  setCommonDataIsLoaded
+  getCountryProgrammes
 } from '../../redux/actions/common-data';
 import {getAgreements, SET_AGREEMENTS} from '../../redux/actions/agreements';
 import isEmpty from 'lodash-es/isEmpty';
