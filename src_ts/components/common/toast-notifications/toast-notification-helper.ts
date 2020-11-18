@@ -1,8 +1,8 @@
 import {EtoolsToast} from './etools-toast';
 import './etools-toast'; // element loaded (if not, etools-toast will not render)
-import {AnyObject} from '../../../types/globals';
 import {store} from '../../../redux/store';
 import get from 'lodash-es/get';
+import {AnyObject} from '@unicef-polymer/etools-types';
 
 /**
  * Toasts notification messages queue utility class

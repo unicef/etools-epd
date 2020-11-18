@@ -4,6 +4,7 @@ import {connect} from 'pwa-helpers/connect-mixin';
 import {RootState, store} from '../../../redux/store';
 
 import '../../common/layout/page-content-header/page-content-header';
+// eslint-disable-next-line max-len
 import {pageContentHeaderSlottedStyles} from '../../common/layout/page-content-header/page-content-header-slotted-styles';
 
 import '../../common/layout/filters/etools-filters';
@@ -25,19 +26,25 @@ import {
   getSortFields,
   getUrlQueryStringSort
 } from '../../common/layout/etools-table/etools-table-utility';
-import {RouteDetails, RouteQueryParams} from '../../../routing/router';
 import {replaceAppLocation} from '../../../routing/routes';
 import {SharedStylesLit} from '../../styles/shared-styles-lit';
 
 import '@unicef-polymer/etools-loading';
 import get from 'lodash-es/get';
 import '../../common/layout/export-data';
-import {GenericObject, LabelAndValue} from '../../../types/globals';
 import {InterventionsListHelper, ListHelperResponse} from './list/list-helper';
 import {InterventionsListStyles, InterventionsTableStyles} from './list/list-styles';
 import {isJsonStrMatch} from '../../utils/utils';
 import {EtoolsCurrency} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-mixin';
 import {notHiddenPartnersSelector} from '../../../redux/reducers/common-data';
+import {translate} from 'lit-translate';
+import {
+  InterventionListData,
+  LabelAndValue,
+  GenericObject,
+  RouteDetails,
+  RouteQueryParams
+} from '@unicef-polymer/etools-types';
 
 /**
  * @LitElement
@@ -54,8 +61,13 @@ export class InterventionList extends connect(store)(EtoolsCurrency(LitElement))
     // language=HTML
     return html`
       ${SharedStylesLit}
+      <style>
+        .col_type {
+          white-space: pre-line !important;
+        }
+      </style>
       <page-content-header>
-        <h1 slot="page-title">PDs/SPDs list</h1>
+        <h1 slot="page-title">${translate('INTERVENTIONS_LIST.TITLE')}</h1>
 
         <div slot="title-row-actions" class="content-header-actions">
           <div class="action">
@@ -71,7 +83,7 @@ export class InterventionList extends connect(store)(EtoolsCurrency(LitElement))
       <section class="elevation page-content no-padding" elevation="1">
         <etools-loading loading-text="Loading..." .active="${this.showLoading}"></etools-loading>
         <etools-table
-          caption="PDs/SPDs"
+          caption="${translate('INTERVENTIONS_LIST.TABLE_TITLE')}"
           .columns="${this.listColumns}"
           .items="${this.listData.length ? this.listData : [{}]}"
           .paginator="${this.paginator}"
@@ -107,49 +119,77 @@ export class InterventionList extends connect(store)(EtoolsCurrency(LitElement))
   interventionStatuses!: LabelAndValue[];
 
   @property({type: Object})
-  urlParams!: GenericObject<any>;
+  urlParams!: GenericObject;
 
   listColumns: EtoolsTableColumn[] = [
     {
-      label: 'Reference No.',
+      label: (translate('INTERVENTIONS_LIST.COLUMNS.REFERENCE_NO') as unknown) as string,
       name: 'number',
       link_tmpl: `${ROOT_PATH}interventions/:id/details`,
       type: EtoolsTableColumnType.Link,
       sort: null
     },
     {
-      label: 'Partner Org Name',
+      label: (translate('INTERVENTIONS_LIST.COLUMNS.PARTNER_ORG_NAME') as unknown) as string,
       name: 'partner_name',
       type: EtoolsTableColumnType.Text,
       sort: null
     },
     {
-      label: 'Doc Type',
+      label: (translate('INTERVENTIONS_LIST.COLUMNS.DOC_TYPE') as unknown) as string,
       name: 'document_type',
       type: EtoolsTableColumnType.Text,
       sort: null
     },
     {
-      label: 'Status',
+      label: (translate('INTERVENTIONS_LIST.COLUMNS.STATUS') as unknown) as string,
       name: 'status',
-      type: EtoolsTableColumnType.Text,
+      type: EtoolsTableColumnType.Custom,
       capitalize: true,
-      sort: null
+      sort: null,
+      customMethod: (item: any, _key: string) => {
+        if (item.status !== 'development') {
+          return item.status;
+        }
+        if (item.partner_accepted && item.unicef_accepted) {
+          return html`${item.status} <br />
+            IP & Unicef Accepted`;
+        }
+        if (!item.partner_accepted && item.unicef_accepted) {
+          return html`${item.status} <br />
+            Unicef Accepted`;
+        }
+        if (item.partner_accepted && !item.unicef_accepted) {
+          return html`${item.status} <br />
+            IP Accepted`;
+        }
+        if (!item.unicef_court && !!item.date_sent_to_partner) {
+          return html`${item.status} <br />
+            Sent to Partner`;
+        }
+
+        if (item.unicef_court && !!item.submission_date) {
+          return html`${item.status} <br />
+            Sent to Unicef`;
+        }
+        return item.status;
+      },
+      cssClass: 'col_type'
     },
     {
-      label: 'Title',
+      label: (translate('INTERVENTIONS_LIST.COLUMNS.TITLE') as unknown) as string,
       name: 'title',
       type: EtoolsTableColumnType.Text,
       sort: null
     },
     {
-      label: 'Start Date',
+      label: (translate('INTERVENTIONS_LIST.COLUMNS.START_DATE') as unknown) as string,
       name: 'start',
       type: EtoolsTableColumnType.Date,
       sort: null
     },
     {
-      label: 'End Date',
+      label: (translate('INTERVENTIONS_LIST.COLUMNS.END_DATE') as unknown) as string,
       name: 'end',
       type: EtoolsTableColumnType.Date,
       sort: null
@@ -170,6 +210,14 @@ export class InterventionList extends connect(store)(EtoolsCurrency(LitElement))
 
     const stateRouteDetails = {...state.app!.routeDetails};
     if (JSON.stringify(stateRouteDetails) !== JSON.stringify(this.routeDetails)) {
+      if (
+        (!stateRouteDetails.queryParams || Object.keys(stateRouteDetails.queryParams).length === 0) &&
+        this.urlParams
+      ) {
+        this.routeDetails = stateRouteDetails;
+        this.updateCurrentParams(this.urlParams);
+        return;
+      }
       this.onParamsChange(stateRouteDetails);
     }
 
@@ -260,7 +308,7 @@ export class InterventionList extends connect(store)(EtoolsCurrency(LitElement))
 
   private mapDraftToDevelop(data: InterventionListData[]) {
     return data.forEach((intervention: InterventionListData) => {
-      if (intervention.hasOwnProperty('status') && intervention.status === 'draft') {
+      if (Object.hasOwnProperty.call(intervention, 'status') && intervention.status === 'draft') {
         intervention.status = 'development';
       }
     });
@@ -279,10 +327,7 @@ export class InterventionList extends connect(store)(EtoolsCurrency(LitElement))
 
   private dataRequiredByFiltersHasBeenLoaded(state: RootState): boolean {
     return !!(
-      state.commonData &&
-      get(state, 'commonData.partners.length') &&
-      get(state, 'commonData.interventionStatuses.length') &&
-      get(state, 'commonData.documentTypes.length') &&
+      state.commonData?.commonDataIsLoaded &&
       this.routeDetails!.queryParams &&
       Object.keys(this.routeDetails!.queryParams).length > 0
     );
@@ -325,6 +370,8 @@ export class InterventionList extends connect(store)(EtoolsCurrency(LitElement))
       );
       return false;
     } else {
+      // store existing url params in urlParams property, to be used on navigation to PD list as default params
+      this.urlParams = currentParams;
       return true;
     }
   }

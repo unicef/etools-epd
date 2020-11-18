@@ -1,10 +1,5 @@
-export interface EtoolsEndpoint {
-  url?: string;
-  template?: string;
-  exp?: any;
-  cachingKey?: string;
-  cacheTableName?: string;
-}
+import {EtoolsEndpoint} from '@unicef-polymer/etools-types';
+
 export interface EtoolsEndpoints {
   userProfile: EtoolsEndpoint;
   changeCountry: EtoolsEndpoint;
@@ -20,6 +15,7 @@ export interface EtoolsEndpoints {
   dropdownsData: EtoolsEndpoint;
   agreements: EtoolsEndpoint;
   environmentFlags: EtoolsEndpoint;
+  countryProgrammes: EtoolsEndpoint;
 }
 
 export const etoolsEndpoints: EtoolsEndpoints = {
@@ -28,6 +24,9 @@ export const etoolsEndpoints: EtoolsEndpoints = {
   },
   changeCountry: {
     url: '/api/v3/users/changecountry/'
+  },
+  countryProgrammes: {
+    url: '/api/v2/reports/countryprogramme/'
   },
   interventions: {
     url: '/api/pmp/v3/interventions/'

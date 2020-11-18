@@ -1,5 +1,5 @@
 import {SET_AGREEMENTS} from '../actions/agreements';
-import {MinimalAgreement} from '../../components/pages/interventions/intervention-tab-pages/common/models/agreement.types';
+import {MinimalAgreement} from '@unicef-polymer/etools-types';
 
 export interface AgreementsState {
   list: MinimalAgreement[] | null;

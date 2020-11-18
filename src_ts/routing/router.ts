@@ -1,28 +1,5 @@
-import {logInfo} from '@unicef-polymer/etools-behaviors/etools-logging';
+import {RouteCallbackParams, RouteDetails, RouteQueryParams} from '@unicef-polymer/etools-types';
 
-export interface RouteQueryParam {
-  [key: string]: string;
-}
-export interface RouteParams {
-  [key: string]: number | string;
-}
-
-export interface RouteQueryParams {
-  [key: string]: string;
-}
-
-export interface RouteCallbackParams {
-  matchDetails: string[];
-  queryParams: RouteQueryParams;
-}
-
-export interface RouteDetails {
-  routeName: string;
-  subRouteName: string | null;
-  path: string;
-  queryParams: RouteQueryParam | null;
-  params: RouteParams | null;
-}
 /**
  * Simple router that will help with:
  *  - registering app routes
@@ -88,7 +65,6 @@ export class Router {
   getRouteDetails(path?: string): RouteDetails | null {
     let routeDetails: RouteDetails | null = null;
     let locationPath: string = path ? this.getLocationPath(path) : this.getLocationPath();
-    logInfo(locationPath, 'Router.getRouteDetails.locationPath: ');
 
     const qsStartIndex: number = locationPath.indexOf('?');
     let qs = '';

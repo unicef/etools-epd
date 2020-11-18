@@ -10,10 +10,11 @@ import thunk, {ThunkMiddleware} from 'redux-thunk';
 import {lazyReducerEnhancer} from 'pwa-helpers/lazy-reducer-enhancer.js';
 
 import app, {AppState} from './reducers/app.js';
-import {interventions, InterventionsState} from './reducers/interventions.js';
+import {ActiveLanguageState} from './reducers/active-language.js';
 import {agreements, AgreementsState} from './reducers/agreements.js';
 import {AppAction} from './actions/app.js';
 import {AgreementsAction} from './actions/agreements.js';
+import {LanguageAction} from './actions/active-language';
 import {UserAction} from './actions/user.js';
 import {UserState} from './reducers/user.js';
 import {CommonDataAction} from './actions/common-data';
@@ -25,12 +26,13 @@ export interface RootState {
   user?: UserState;
   agreements?: AgreementsState;
   commonData?: CommonDataState;
-  interventions?: InterventionsState;
+  interventions?: any;
+  activeLanguage?: ActiveLanguageState;
 }
 
 // could be more than one action AppAction | OtherAppAction ...
 // TODO: remove any and find a way to fix generated ts-lint errors
-export type RootAction = AppAction | UserAction | CommonDataAction | AgreementsAction | any;
+export type RootAction = AppAction | UserAction | CommonDataAction | AgreementsAction | LanguageAction | any;
 
 // Sets up a Chrome extension for time travel debugging.
 // See https://github.com/zalmoxisus/redux-devtools-extension for more information.
@@ -52,7 +54,6 @@ export const store = createStore(
 // Initially loaded reducers.
 store.addReducers({
   app,
-  interventions,
   agreements
 });
 

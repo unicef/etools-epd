@@ -44,7 +44,6 @@ import commonData, {CommonDataState} from '../../redux/reducers/common-data';
 import {SMALL_MENU_ACTIVE_LOCALSTORAGE_KEY} from '../../config/config';
 import {getCurrentUser} from '../user/user-actions';
 import {EtoolsRouter} from '../../routing/routes';
-import {RouteDetails} from '../../routing/router';
 import {
   getPartners,
   getLocations,
@@ -54,16 +53,19 @@ import {
   getUnicefUsers,
   getStaticData,
   getDropdownsData,
-  SET_ALL_STATIC_DATA
+  SET_ALL_STATIC_DATA,
+  getCountryProgrammes
 } from '../../redux/actions/common-data';
 import {getAgreements, SET_AGREEMENTS} from '../../redux/actions/agreements';
-import {EtoolsUserModel} from '../user/user-model';
 import isEmpty from 'lodash-es/isEmpty';
 import {fireEvent} from '../utils/fire-custom-event';
 import get from 'lodash-es/get';
 import '../env-flags/environment-flags';
 import {setStore} from '../pages/interventions/intervention-tab-pages/utils/redux-store-access';
+import {registerTranslateConfig, use} from 'lit-translate';
+import {EtoolsUser, RouteDetails} from '@unicef-polymer/etools-types';
 
+registerTranslateConfig({loader: (lang: string) => fetch(`assets/i18n/${lang}.json`).then((res: any) => res.json())});
 // set store for intervention-tab-pages
 setStore(store as any);
 
@@ -165,6 +167,9 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
   @property({type: Boolean})
   public smallMenu = false;
 
+  @property({type: String})
+  selectedLanguage!: string;
+
   @query('#layout') private drawerLayout!: AppDrawerLayoutElement;
   @query('#drawer') private drawer!: AppDrawerElement;
   @query('#appHeadLayout') private appHeaderLayout!: AppHeaderLayoutElement;
@@ -188,18 +193,18 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
     }
   }
 
-  public connectedCallback() {
+  async connectedCallback() {
     super.connectedCallback();
 
-    installRouter((location) => {
-      store.dispatch(navigate(decodeURIComponent(location.pathname + location.search)));
+    installRouter((location) => store.dispatch(navigate(decodeURIComponent(location.pathname + location.search))));
+    this.addEventListener('scroll-up', () => {
       if (this.appHeaderLayout) {
         this.appHeaderLayout.$.contentContainer.scrollTop = 0;
       }
     });
     installMediaQueryWatcher(`(min-width: 460px)`, () => store.dispatch(updateDrawerState(false)));
 
-    getCurrentUser().then((user: EtoolsUserModel) => {
+    getCurrentUser().then((user: EtoolsUser) => {
       if (user) {
         // @ts-ignore
         Promise.allSettled([
@@ -211,7 +216,8 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
           getUnicefUsers(),
           getStaticData(),
           getDropdownsData(),
-          getAgreements()
+          getAgreements(),
+          getCountryProgrammes(user.is_unicef_user)
         ]).then((response: any[]) => {
           store.dispatch({
             type: SET_ALL_STATIC_DATA,
@@ -219,7 +225,7 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
           });
           store.dispatch({
             type: SET_AGREEMENTS,
-            list: this.getValue(response[response.length - 1])
+            list: this.getValue(response[8])
           });
         });
       }
@@ -242,6 +248,7 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
     data.cpOutputs = this.getValue(response[7]).cp_outputs || [];
     data.fileTypes = this.getValue(response[7]).file_types || [];
     const staticData = this.getValue(response[6], {});
+    data.countryProgrammes = this.getValue(response[9]);
     data.locationTypes = isEmpty(staticData.location_types) ? [] : staticData.location_types;
     data.documentTypes = isEmpty(staticData.intervention_doc_type) ? [] : staticData.intervention_doc_type;
     data.genderEquityRatings = staticData.gender_equity_sustainability_ratings || [];
@@ -276,6 +283,14 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
         showCloseBtn: state.app!.toastNotification.showCloseBtn
       });
     }
+    if (state.activeLanguage && state.activeLanguage.activeLanguage !== this.selectedLanguage) {
+      this.selectedLanguage = state.activeLanguage!.activeLanguage;
+      this.loadLocalization();
+    }
+  }
+
+  async loadLocalization() {
+    await use(this.selectedLanguage);
   }
 
   // TODO: just for testing...

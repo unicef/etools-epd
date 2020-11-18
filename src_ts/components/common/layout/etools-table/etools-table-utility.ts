@@ -2,8 +2,8 @@
  * Utility functions used in etools data lists
  */
 
-import {AnyObject} from '../../../../types/globals';
 import {EtoolsTableColumn, EtoolsTableColumnSort} from '@unicef-polymer/etools-table/etools-table';
+import {AnyObject} from '@unicef-polymer/etools-types';
 export interface EtoolsTableSortItem {
   name: string;
   sort: EtoolsTableColumnSort;

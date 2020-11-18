@@ -1,7 +1,8 @@
-import {Router, RouteCallbackParams, RouteDetails} from './router';
+import {Router} from './router';
 import {store} from '../redux/store';
 import {navigate} from '../redux/actions/app';
 import {ROOT_PATH} from '../config/config';
+import {RouteCallbackParams, RouteDetails} from '@unicef-polymer/etools-types';
 
 export const EtoolsRouter = new Router(ROOT_PATH);
 const routeParamRegex = '([^\\/?#=+]+)';

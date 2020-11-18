@@ -3,13 +3,13 @@ import '@polymer/paper-toast/paper-toast';
 import '@polymer/paper-button/paper-button';
 import {PaperToastElement} from '@polymer/paper-toast/paper-toast';
 import {PaperButtonElement} from '@polymer/paper-button/paper-button';
-import {AnyObject} from '../../../types/globals';
 import {
   layoutSelfEnd,
   layoutHorizontal,
   layoutCenter,
   layoutVertical
 } from '../../styles/lit-styles/flex-layout-styles';
+import {AnyObject} from '@unicef-polymer/etools-types';
 
 /**
  * @LitElement
@@ -45,7 +45,7 @@ export class EtoolsToast extends LitElement {
         }
 
         .toast-general-style {
-          max-width: 568px !important;
+          max-width: 640px !important;
           min-height: 40px;
           max-height: 70vh !important;
         }
@@ -59,6 +59,7 @@ export class EtoolsToast extends LitElement {
         .toast-multi-line {
           ${layoutVertical}
           text-align: justify;
+          white-space: pre-line;
         }
       </style>
       <paper-toast id="toast" class="toast-general-style" @iron-overlay-closed="${() => this.toastClosed()}">

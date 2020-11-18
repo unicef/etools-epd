@@ -1,8 +1,16 @@
 import {Reducer} from 'redux';
 import {SET_ALL_STATIC_DATA, UPDATE_ENV_FLAGS, UPDATE_PRP_COUNTRIES} from '../actions/common-data';
 import {RootAction} from '../store';
-import {CpOutput, Disaggregation, LocationObject, Section, LabelAndValue, EnvFlags} from '../../types/globals';
 import {createSelector} from 'reselect';
+import {
+  CountryProgram,
+  Disaggregation,
+  EnvFlags,
+  LabelAndValue,
+  LocationObject,
+  Section,
+  CpOutput
+} from '@unicef-polymer/etools-types';
 
 export interface CommonDataState {
   unicefUsersData: [];
@@ -23,6 +31,8 @@ export interface CommonDataState {
   fileTypes: any[];
   cashTransferModalities: any[];
   PRPCountryData: any[];
+  countryProgrammes: CountryProgram[];
+  commonDataIsLoaded: boolean;
 }
 
 const INITIAL_COMMON_DATA: CommonDataState = {
@@ -43,7 +53,9 @@ const INITIAL_COMMON_DATA: CommonDataState = {
   envFlags: null,
   fileTypes: [],
   cashTransferModalities: [],
-  PRPCountryData: []
+  PRPCountryData: [],
+  countryProgrammes: [],
+  commonDataIsLoaded: false
 };
 
 const commonData: Reducer<CommonDataState, RootAction> = (state = INITIAL_COMMON_DATA, action) => {
@@ -57,7 +69,7 @@ const commonData: Reducer<CommonDataState, RootAction> = (state = INITIAL_COMMON
         disaggregations: action.staticData.disaggregations,
         locationTypes: action.staticData.locationTypes,
         documentTypes: action.staticData.documentTypes,
-        genderEquityRatings: action.staticData.genderEquityRatings, // TODO -make sure data is loaded from bk
+        genderEquityRatings: action.staticData.genderEquityRatings,
         cpOutputs: action.staticData.cpOutputs,
         interventionAmendmentTypes: action.staticData.interventionAmendmentTypes,
         interventionStatuses: action.staticData.interventionStatuses,
@@ -66,7 +78,9 @@ const commonData: Reducer<CommonDataState, RootAction> = (state = INITIAL_COMMON
         currencies: action.staticData.currencies,
         riskTypes: action.staticData.riskTypes,
         fileTypes: action.staticData.fileTypes,
-        cashTransferModalities: action.staticData.cashTransferModalities
+        cashTransferModalities: action.staticData.cashTransferModalities,
+        countryProgrammes: action.staticData.countryProgrammes,
+        commonDataIsLoaded: true
       };
     case UPDATE_ENV_FLAGS:
       return {
@@ -87,6 +101,5 @@ const partnersSelector = (state: any) => state.commonData!.partners;
 export const notHiddenPartnersSelector = createSelector(partnersSelector, (partners: any) => {
   return partners.filter((p: any) => !p.hidden);
 });
-
 
 export default commonData;

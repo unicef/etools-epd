@@ -3,9 +3,9 @@ import {connect} from 'pwa-helpers/connect-mixin';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging.js';
 import {store} from '../../redux/store';
 import {LitElement, property} from 'lit-element';
-import {EnvFlags} from '../../types/globals';
 import {etoolsEndpoints} from '../../endpoints/endpoints-list';
 import {updateEnvFlags} from '../../redux/actions/common-data';
+import {EnvFlags} from '@unicef-polymer/etools-types';
 
 /**
  * @customElement
