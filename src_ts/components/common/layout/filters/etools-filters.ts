@@ -16,6 +16,7 @@ import '@unicef-polymer/etools-date-time/datepicker-lite';
 import '@unicef-polymer/etools-loading/etools-loading';
 import {elevation2} from '../../../styles/lit-styles/elevation-styles';
 import {Callback} from '@unicef-polymer/etools-types';
+import {translate} from 'lit-translate';
 
 export enum EtoolsFilterTypes {
   Search,
@@ -237,10 +238,12 @@ export class EtoolsFilters extends LitElement {
         <paper-menu-button id="filterMenu" ignore-select horizontal-align="right">
           <paper-button class="button" slot="dropdown-trigger">
             <iron-icon icon="filter-list"></iron-icon>
-            Filters
+            ${translate('GENERAL.FILTERS')}
           </paper-button>
           <div slot="dropdown-content" class="clear-all-filters">
-            <paper-button @tap="${this.clearAllFilterValues}" class="secondary-btn"> CLEAR ALL </paper-button>
+            <paper-button @tap="${this.clearAllFilterValues}" class="secondary-btn"
+              >${translate('GENERAL.CLEAR_ALL')}</paper-button
+            >
           </div>
           <paper-listbox slot="dropdown-content" multi> ${this.filterMenuOptions(this.filters)} </paper-listbox>
         </paper-menu-button>

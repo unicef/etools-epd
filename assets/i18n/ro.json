@@ -10,7 +10,19 @@
     "ERR_OCCURRED": "A aparut o eroare. Te rugam sa mai incerci.",
     "REQUIRED_FIELD": "Camp necesar",
     "CANCEL": "Anuleaza",
-    "YES": "Da"
+    "YES": "Da",
+    "FILTERS": "Filtre",
+    "CLEAR_ALL": "ELIMINA TOT"
+  },
+  "INTERVENTION_TABS": {
+    "OVERVIEW_TAB": "General",
+    "DETAILS_TAB": "Detalii",
+    "RESULTS_TAB": "Rezultate",
+    "TIMING_TAB": "Timing",
+    "MANAGEMENT_TAB": "Management",
+    "ATTACHMENTS_TAB": "Atasamante",
+    "PROGRESS_TAB": "Progres",
+    "REPORTS_TAB": "Rapoarte"
   },
   "ARE_YOU_SURE": {
     "ARE_YOU_SURE_PROMPT": "Sunteti sigur ca doriti sa stergeti acest element?",
@@ -178,15 +190,13 @@
       "SUPPLY_AGREEMENT": "Acord privind livrabilele",
       "TOTAL_SUPPLY_BUDGET": "Buget al Tuturor Livrabilelor:",
       "NO_SUPPLY_AGREEMENTS": "Nu s-au adaugat acorduri pentru livrabile.",
-      "SUPPLIES_UPLOADED": "Livrabilele au fost incarcate cu succes"
+      "SUPPLIES_UPLOADED": "Livrabilele au fost incarcate cu succes",
+      "UNICEF_PRODUCT_NUMBER": "Numar Produs UNICEF"
     },
     "SUPPLY_AGREEMENT_DIALOG": {
       "ADD_SUPPLY_AGREEMENT": "Adauga Acord privind livrabile",
       "EDIT_SUPPLY_AGREEMENT": "Editeaza Acordul privind livrabilele",
-      "CP_OUTPUT": "Realizari CP",
-      "ENTER_PRICE_UNIT": "Adauga pret / unitate",
-      "ENTER_NUMBER_UNITS": "Adauga numar de unitati",
-      "ENTER_TITLE": "Adauga titlu"
+      "CP_OUTPUT": "Realizari CP"
     }
   },
   "INDICATOR_DIALOG": {
@@ -255,6 +265,8 @@
       "ACTIVATION_LETTER": "Scrisoare de Activare"
     },
     "ACTIVITY_TIMEFRAMES": {
+      "ACTIVITY_TIMEFRAMES": "Perioade de activitate",
+      "NO_ACTIVITIES": "Fara Activitati",
       "ACTIVITY_TIMES": "Perioada de Activitate (click pentru a selecta/deselecta)",
       "ACTIVITY_TIMES_MSG": "Perioada de Activitate va fi disponibila dupa selectarea datei de Inceput si Final."
     }
@@ -357,7 +369,8 @@
       "DATE_REVIEW_PERFORMED": "Data efectuarii Revizuirii",
       "FINAL_REVIEW_POP": {
         "FINAL_PARTNERSHIP_REV_ATT": "Final Partnership Review Attachment",
-        "CORRECT_FILE_ERR": "Va rugam selectati fisierul corect"
+        "CORRECT_FILE_ERR": "Va rugam selectati fisierul corect",
+        "DATE_REQUIRED": "Daae este necesara"
       }
     }
   },
@@ -373,8 +386,7 @@
       "CONFIRM_BTN_TEXT": "Da",
       "DELETE_ATTACHMENTS_PROMPT": "Sunteti sigur ca doriti sa stergeti acest atasament?",
       "INT_ATT_DIALOG": {
-        "ATTACHMENT": "Atasament",
-        "SELECT_DOC_TYPE": "Selectati Tipul Documentului"
+        "ATTACHMENT": "Atasament"
       }
     }
   },
