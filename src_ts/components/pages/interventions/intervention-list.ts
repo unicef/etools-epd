@@ -168,7 +168,7 @@ export class InterventionList extends connect(store)(EtoolsCurrency(LitElement))
             Sent to Partner`;
         }
 
-        if (item.unicef_court && !!item.date_draft_by_partner) {
+        if (item.unicef_court && !!item.submission_date) {
           return html`${item.status} <br />
             Sent to Unicef`;
         }
@@ -327,10 +327,7 @@ export class InterventionList extends connect(store)(EtoolsCurrency(LitElement))
 
   private dataRequiredByFiltersHasBeenLoaded(state: RootState): boolean {
     return !!(
-      state.commonData &&
-      get(state, 'commonData.partners.length') &&
-      get(state, 'commonData.interventionStatuses.length') &&
-      get(state, 'commonData.documentTypes.length') &&
+      state.commonData?.commonDataIsLoaded &&
       this.routeDetails!.queryParams &&
       Object.keys(this.routeDetails!.queryParams).length > 0
     );
