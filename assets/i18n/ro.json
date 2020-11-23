@@ -83,6 +83,7 @@
     "NO_ACTIVITIES": "Nu sunt activitati."
   },
   "INTERVENTION_DETAILS": {
+    "DOCUMENT_DETAILS": "Detalii Document",
     "DOCUMENT_TYPE": "Tip Document",
     "UNPP_CFEI_DSR": "UNPP CFEI/DSR Ref Number",
     "HUMANITARIAN": "Umanitar",
@@ -111,7 +112,7 @@
     "SEE_ALL": "Vezi tot",
     "GENDER_EQUITY_SUSTAINABILITY": "Gen, Echitate & Durabilitate",
     "GENDER_RATING": "Rating dupa sex",
-    "GENDER_NARATIVE": "Gender Narrative",
+    "GENDER_NARATIVE": "Narațiune de Gen",
     "SUSTAINABILITY_RATING": "Rating dupa sustenabilitate",
     "SUSTAINABILITY_NARRATIVE": "Sustainability Narrative",
     "EQUITY_RATING": "Rating de echitate",
@@ -134,12 +135,18 @@
     "TOTAL_CSO_CONTRIB": "Total CSO Contrib",
     "TOTAL_UNICEF_CONTRIB": "Total Contributie UNICEF",
     "TOTAL_UNICEF_CASH": "Total UNICEF Numerar",
-    "TOTAL_SUPPLY": "Total Supply",
+    "TOTAL_SUPPLY": "Total Livrabile",
     "PARTNER_CONTRIB": "% Contributie Partener",
     "TOTAL_CASH_AMT": "Total Valoare Numerar",
     "TOTAL_AMT": "Total (Numerar + Supply)",
+    "PD_INDICATORS": "Indicatori PD",
+    "BASELINE": "Val. de baza",
+    "TARGET": "Target",
+    "DEACTIVATE_PROMPT": "Aceasta este o acțiune ireversibilă, sunteți sigur că doriți să dezactivați acest indicator?",
+    "DEACTIVATE": "Dezactiveaza",
+    "DELETE_PROMPT": "Sigur doriți să ștergeți acest indicator?",
     "RESULTS_STRUCTURE": {
-      "RESULTS_STRUCTURE": "Results Structure",
+      "RESULTS_STRUCTURE": "Structura Rezultatelor",
       "CSO_CASH": "Numerar CSO",
       "UNICEF_CASH": "Numerar UNICEF",
       "PERCENT_PARTNER": "%Partener",
@@ -149,7 +156,8 @@
       "COUNTRY_PROGRAME_OUTPUT": "Rezultat CP",
       "RAM_INDICATORS": "Indicatori Ram",
       "UNASSOCIATED_TO_CP_OUTPUT": "Neasociat cu un resultat CP! Va rugam sa asociati inainte de a continua",
-      "ADD_PD_OUTPUT": "Adauga Rezultat al PD-ului/Rezultat PD"
+      "ADD_PD_OUTPUT": "Adauga Rezultat al PD-ului/Rezultat PD",
+      "PD_ACTIVITIES": "Activitati PD"
     },
     "EXPORT_RESULTS": "Exporta rezultate",
     "EXPORT": "Export",
@@ -194,7 +202,7 @@
     "SUPPLY_AGREEMENT": {
       "NUMBER_UNITS": "Numar Unitati",
       "ITEM_ALL_PRICES": "Element (toate preturile explimate in valuta din PD)",
-      "PRICE_UNIT": "Pret / Unitate",
+      "PRICE_UNIT": "Pret/Unitate",
       "TOTAL_PRICE": "Pret Total",
       "CP_OUTPUTS": "Realizari CP",
       "OTHER_MENTIONS": "Alte Mentiuni",
