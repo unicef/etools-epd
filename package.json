@@ -77,11 +77,10 @@
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
     "reselect": "^4.0.0",
-    "web-animations-js": "^2.3.2"
+    "web-animations-js": "^2.3.2",
+    "@polymer/decorators": "^3.0.0"
   },
   "devDependencies": {
-    "@polymer/decorators": "^3.0.0",
-    "@polymer/test-fixture": "^4.0.2",
     "@typescript-eslint/eslint-plugin": "^3.10.1",
     "@typescript-eslint/parser": "^3.10.1",
     "@typescript-eslint/typescript-estree": "^3.10.1",
