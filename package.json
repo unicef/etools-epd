@@ -71,6 +71,7 @@
     "@vaadin/vaadin-combo-box": "^5.4.6",
     "@vaadin/vaadin-radio-button": "^1.5.1",
     "@vaadin/vaadin-date-picker": "^4.4.1",
+    "@vaadin/vaadin-upload": "^4.4.1",
     "@webcomponents/webcomponentsjs": "^2.0.0",
     "lit-element": "^2.3.1",
     "lit-translate": "^1.2.1",
