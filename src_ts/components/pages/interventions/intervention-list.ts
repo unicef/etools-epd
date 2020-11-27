@@ -35,7 +35,7 @@ import '../../common/layout/export-data';
 import {InterventionsListHelper, ListHelperResponse} from './list/list-helper';
 import {InterventionsListStyles, InterventionsTableStyles} from './list/list-styles';
 import {isJsonStrMatch} from '../../utils/utils';
-import {EtoolsCurrency} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-mixin';
+import {addCurrencyAmountDelimiter} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {notHiddenPartnersSelector} from '../../../redux/reducers/common-data';
 import {translate} from 'lit-translate';
 import {
@@ -51,7 +51,7 @@ import {
  * @customElement
  */
 @customElement('intervention-list')
-export class InterventionList extends connect(store)(EtoolsCurrency(LitElement)) {
+export class InterventionList extends connect(store)(LitElement) {
   static get styles() {
     return [elevationStyles, buttonsStyles, pageLayoutStyles, pageContentHeaderSlottedStyles, InterventionsListStyles];
   }
@@ -251,15 +251,11 @@ export class InterventionList extends connect(store)(EtoolsCurrency(LitElement))
           <div class="details">
             <div>
               <div class="title">Total Budget</div>
-              <div class="detail">
-                ${item.budget_currency || ''} ${this.addCurrencyAmountDelimiter(item.total_budget)}
-              </div>
+              <div class="detail">${item.budget_currency || ''} ${addCurrencyAmountDelimiter(item.total_budget)}</div>
             </div>
             <div>
               <div class="title">UNICEF Cash Contribution</div>
-              <div class="detail">
-                ${item.budget_currency || ''} ${this.addCurrencyAmountDelimiter(item.unicef_cash)}
-              </div>
+              <div class="detail">${item.budget_currency || ''} ${addCurrencyAmountDelimiter(item.unicef_cash)}</div>
             </div>
           </div>
         </td>
