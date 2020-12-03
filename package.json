@@ -57,7 +57,7 @@
     "@unicef-polymer/etools-behaviors": "^3.0.3",
     "@unicef-polymer/etools-content-panel": "^3.0.5",
     "@unicef-polymer/etools-currency-amount-input": "^3.0.5",
-    "@unicef-polymer/etools-data-table": "^3.0.2",
+    "@unicef-polymer/etools-data-table": "^3.0.3-rc.1",
     "@unicef-polymer/etools-date-time": "^1.0.2",
     "@unicef-polymer/etools-dialog": "^3.0.5",
     "@unicef-polymer/etools-dropdown": "^3.1.7-rc.3",
