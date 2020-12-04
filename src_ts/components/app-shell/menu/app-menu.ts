@@ -35,6 +35,10 @@ export class AppMenu extends LitElement {
           ></iron-icon>
           <paper-ripple class="circle" center></paper-ripple>
         </span>
+        <span class="chev-right">
+          <iron-icon id="expand-menu" icon="chevron-right" @tap="${() => this._toggleSmallMenu()}"></iron-icon>
+          <paper-ripple class="circle" center></paper-ripple>
+        </span>
 
         <paper-tooltip for="menu-header-top-icon" position="right"> ePD </paper-tooltip>
 
@@ -87,6 +91,8 @@ export class AppMenu extends LitElement {
     `;
   }
 
+  private icon = 'assignment-ind';
+
   @property({type: String, attribute: 'selected-option'})
   public selectedOption = '';
 
@@ -98,8 +104,40 @@ export class AppMenu extends LitElement {
 
   public _toggleSmallMenu(): void {
     this.smallMenu = !this.smallMenu;
+    // if (this.smallMenu) {
+    //   this.icon = 'chevron-right';
+    // }
     const localStorageVal: number = this.smallMenu ? 1 : 0;
     localStorage.setItem(SMALL_MENU_ACTIVE_LOCALSTORAGE_KEY, String(localStorageVal));
     fireEvent(this, 'toggle-small-menu', {value: this.smallMenu});
   }
+
+  // changeIcon() {
+  //   console.log('changeIcon');
+  //   return html`
+  //     <iron-icon
+  //       icon="chevron-right"
+  //       @tap="${() => this._toggleSmallMenu()}"
+  //       @mouseover="${() => this.resetIcon()}"
+  //     ></iron-icon>
+  //   `;
+  //   // console.log('before', this.icon);
+  //   // this.icon = 'chevron-right';
+  //   this.requestUpdate();
+  //   // console.log('after', this.icon);
+  // }
+
+  // resetIcon() {
+  //   console.log('resetIcon');
+  //   return html`
+  //     <iron-icon
+  //       id="menu-header-top-icon"
+  //       icon="assignment-ind"
+  //       @tap="${() => this._toggleSmallMenu()}"
+  //       @mouseover="${() => this.changeIcon()}"
+  //     ></iron-icon>
+  //   `;
+  //   // this.icon = 'assignment-ind';
+  //   this.requestUpdate();
+  // }
 }

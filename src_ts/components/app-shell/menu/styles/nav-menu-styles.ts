@@ -71,12 +71,14 @@ export const navMenuStyles = css`
   :host #menu-header-top-icon,
   :host([small-menu]) .nav-menu-item .name,
   :host(:not([small-menu])) paper-tooltip,
+  :host(:not([small-menu])) #expand-menu,
   :host([small-menu]) .section-title span,
   :host([small-menu]) #minimize-menu,
   :host([small-menu]) .menu-header .ripple-wrapper:not(.main) {
     display: none;
   }
   :host([small-menu]) #menu-header-top-icon,
+  :host([small-menu]) #expand-menu,
   :host(:not([small-menu])) #minimize-menu {
     display: block;
   }
@@ -98,6 +100,17 @@ export const navMenuStyles = css`
     --iron-icon-height: 36px;
     --iron-icon-width: 36px;
   }
+
+  :host([small-menu]) #menu-header-top-icon:hover {
+    display: none !important;
+    z-index: 0;
+  }
+  /*#menu-header-top-icon:hover {*/
+  /*  !*color: red;*!*/
+  /*  */
+  /*  !*cursor: none;*!*/
+  /*  !*visibility: hidden;*!*/
+  /*}*/
 
   .divider {
     margin: 8px 0;
