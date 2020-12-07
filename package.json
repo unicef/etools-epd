@@ -8,10 +8,10 @@
   "license": "BSD-3-Clause",
   "repository": "https://github.com/unicef/etools-epd",
   "scripts": {
-    "tsToJs": "tsc --skipLibCheck",
+    "tsToJs": "tsc --skipLibCheck || true",
     "tsEslint": "node_modules/eslint/bin/eslint.js 'src_ts/**/*.ts' --fix",
     "start": "gulp serve",
-    "build": "tsc --skipLibCheck || true && npm run build:static",
+    "build": "export NODE_OPTIONS=--max_old_space_size=4096 && npm run tsToJs && npm run build:static",
     "build:prpl-server": "polymer build --auto-base-path && gulp prpl-server",
     "build:static": "polymer build",
     "serve:prpl-server": "prpl-server --root server/build",
