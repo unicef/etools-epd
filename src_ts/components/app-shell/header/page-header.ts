@@ -192,6 +192,14 @@ export class PageHeader extends connect(store)(LitElement) {
       this.profile = state.user!.data;
       if (state.activeLanguage && state.activeLanguage.activeLanguage !== this.selectedLanguage) {
         this.selectedLanguage = state.activeLanguage!.activeLanguage;
+        setTimeout(() => {
+          const body = document.querySelector('body');
+          if (this.selectedLanguage === 'ar') {
+            body!.setAttribute('dir', 'rtl');
+          } else if (body!.getAttribute('dir')) {
+            body!.removeAttribute('dir');
+          }
+        });
       }
     }
   }
@@ -251,12 +259,6 @@ export class PageHeader extends connect(store)(LitElement) {
       use(newLanguage)
         .then(() => store.dispatch(setLanguage(newLanguage)))
         .finally(() => location.reload());
-      const body = document.querySelector('body');
-      if (newLanguage === 'ar') {
-        body!.setAttribute('dir', 'rtl');
-      } else if (body!.getAttribute('dir')) {
-        body!.removeAttribute('dir');
-      }
     }
   }
 
