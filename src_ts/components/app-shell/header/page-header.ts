@@ -248,7 +248,9 @@ export class PageHeader extends connect(store)(LitElement) {
     const newLanguage = selectedItem.value;
     if (this.selectedLanguage !== newLanguage) {
       localStorage.setItem('defaultLanguage', newLanguage);
-      use(newLanguage).finally(() => store.dispatch(setLanguage(newLanguage)));
+      use(newLanguage)
+        .then(() => store.dispatch(setLanguage(newLanguage)))
+        .finally(() => location.reload());
       const body = document.querySelector('body');
       if (newLanguage === 'ar') {
         body!.setAttribute('dir', 'rtl');
