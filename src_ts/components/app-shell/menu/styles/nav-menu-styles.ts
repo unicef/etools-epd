@@ -101,17 +101,6 @@ export const navMenuStyles = css`
     --iron-icon-width: 36px;
   }
 
-  :host([small-menu]) #menu-header-top-icon:hover {
-    display: none !important;
-    z-index: 0;
-  }
-  /*#menu-header-top-icon:hover {*/
-  /*  !*color: red;*!*/
-  /*  */
-  /*  !*cursor: none;*!*/
-  /*  !*visibility: hidden;*!*/
-  /*}*/
-
   .divider {
     margin: 8px 0;
     border-bottom: 1px solid var(--light-divider-color);
