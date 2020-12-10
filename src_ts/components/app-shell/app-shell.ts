@@ -68,17 +68,15 @@ import {EtoolsUser, RouteDetails} from '@unicef-polymer/etools-types';
 function fetchLangFiles(lang: string) {
   return Promise.allSettled([
     fetch(`assets/i18n/${lang}.json`).then((res: any) => res.json()),
-    fetch(`src/components/pages/interventions/intervention-tab-pages/assets/i18n/${lang}.json`).then((res: any) => res.json())
-  ]).then((response) => {
-    let c = Object.assign(response[0].value, response[1].value);
-    console.log(c);
-    return c;
+    fetch(`src/components/pages/interventions/intervention-tab-pages/assets/i18n/${lang}.json`).then((res: any) =>
+      res.json()
+    )
+  ]).then((response: any) => {
+    return Object.assign(response[0].value, response[1].value);
   });
 }
-
 registerTranslateConfig({loader: (lang: string) => fetchLangFiles(lang)});
-// registerTranslateConfig({loader: (lang: string) => fetch(`assets/i18n/${lang}.json`)
- //.then((res: any) => res.json())});
+
 // set store for intervention-tab-pages
 setStore(store as any);
 
