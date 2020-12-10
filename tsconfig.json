@@ -17,7 +17,10 @@
     "resolveJsonModule": true,
   },
   "include": [
-    "src_ts/**/*.ts"
+    "src_ts/**/*.ts",
+    "src_ts/components/pages/interventions/intervention-tab-pages/assets/i18n/en.json",
+    "src_ts/components/pages/interventions/intervention-tab-pages/assets/i18n/ro.json",
+    "src_ts/components/pages/interventions/intervention-tab-pages/assets/i18n/ar.json"
   ],
   "exclude": []
 }
