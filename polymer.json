@@ -12,8 +12,7 @@
     "src/components/pages/interventions/intervention-tab-pages/intervention-attachments/intervention-attachments.js",
     "src/components/pages/interventions/intervention-tab-pages/intervention-timing/intervention-timing.js"
   ],
-  "sources": ["src/**/*", "images/**/*", "assets/**", "package.json",
-  "src/components/pages/interventions/intervention-tab-pages/assets/**"],
+  "sources": ["src/**/*", "images/**/*", "assets/**", "package.json"],
   "extraDependencies": [
     "manifest.json",
     "push-manifest.json",
