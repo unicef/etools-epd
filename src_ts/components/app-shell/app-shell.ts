@@ -65,7 +65,18 @@ import {setStore} from '../pages/interventions/intervention-tab-pages/utils/redu
 import {registerTranslateConfig, use} from 'lit-translate';
 import {EtoolsUser, RouteDetails} from '@unicef-polymer/etools-types';
 
-registerTranslateConfig({loader: (lang: string) => fetch(`assets/i18n/${lang}.json`).then((res: any) => res.json())});
+function fetchLangFiles(lang: string) {
+  return Promise.allSettled([
+    fetch(`assets/i18n/${lang}.json`).then((res: any) => res.json()),
+    fetch(`src/components/pages/interventions/intervention-tab-pages/assets/i18n/${lang}.json`).then((res: any) =>
+      res.json()
+    )
+  ]).then((response: any) => {
+    return Object.assign(response[0].value, response[1].value);
+  });
+}
+registerTranslateConfig({loader: (lang: string) => fetchLangFiles(lang)});
+
 // set store for intervention-tab-pages
 setStore(store as any);
 
