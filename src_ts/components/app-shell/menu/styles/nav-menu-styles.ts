@@ -92,8 +92,13 @@ export const navMenuStyles = css`
   }
 
   #menu-header-top-icon,
-  #minimize-menu {
+  #minimize-menu,
+  #expand-menu {
     cursor: pointer;
+  }
+
+  .chev-right {
+    position: relative;
   }
 
   #menu-header-top-icon {
