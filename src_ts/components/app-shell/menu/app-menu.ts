@@ -36,8 +36,12 @@ export class AppMenu extends LitElement {
           ></iron-icon>
           <paper-ripple class="circle" center></paper-ripple>
         </span>
-
         <paper-tooltip for="menu-header-top-icon" position="right"> ePD </paper-tooltip>
+
+        <span class="chev-right">
+          <iron-icon id="expand-menu" icon="chevron-right" @tap="${() => this._toggleSmallMenu()}"></iron-icon>
+          <paper-ripple class="circle" center></paper-ripple>
+        </span>
 
         <span class="ripple-wrapper">
           <iron-icon id="minimize-menu" icon="chevron-left" @tap="${() => this._toggleSmallMenu()}"></iron-icon>
