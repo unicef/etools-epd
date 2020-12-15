@@ -168,7 +168,7 @@ export class InterventionList extends connect(store)(LitElement) {
             Sent to Partner`;
         }
 
-        if (item.unicef_court && !!item.submission_date) {
+        if (item.unicef_court && !!item.submission_date && !!item.date_sent_to_partner) {
           return html`${item.status} <br />
             Sent to Unicef`;
         }

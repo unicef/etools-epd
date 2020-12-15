@@ -10,8 +10,7 @@
     "src/components/pages/interventions/intervention-tab-pages/intervention-management/intervention-management.js",
     "src/components/pages/interventions/intervention-tab-pages/intervention-results/intervention-results.js",
     "src/components/pages/interventions/intervention-tab-pages/intervention-attachments/intervention-attachments.js",
-    "src/components/pages/interventions/intervention-tab-pages/intervention-timing/intervention-timing.js",
-    "src/components/pages/page-two.js"
+    "src/components/pages/interventions/intervention-tab-pages/intervention-timing/intervention-timing.js"
   ],
   "sources": ["src/**/*", "images/**/*", "assets/**", "package.json"],
   "extraDependencies": [
