@@ -18,6 +18,8 @@ ADD . /code/
 WORKDIR /code
 RUN rm -rf node_modules
 RUN cp -a /tmp/node_modules /code/node_modules
+RUN git submodule init
+RUN git submodule update --checkout
 ENV NODE_OPTIONS --max_old_space_size=4096
 RUN npm run build
 
