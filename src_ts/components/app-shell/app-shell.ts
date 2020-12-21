@@ -64,6 +64,10 @@ import '../env-flags/environment-flags';
 import {setStore} from '../pages/interventions/intervention-tab-pages/utils/redux-store-access';
 import {registerTranslateConfig, use} from 'lit-translate';
 import {EtoolsUser, RouteDetails} from '@unicef-polymer/etools-types';
+declare const dayjs: any;
+declare const dayjs_plugin_utc: any;
+
+dayjs.extend(dayjs_plugin_utc);
 
 function fetchLangFiles(lang: string) {
   return Promise.allSettled([
