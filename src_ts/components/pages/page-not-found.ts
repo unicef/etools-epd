@@ -33,6 +33,23 @@ export class PageNotFound extends LitElement {
   @property({type: String})
   rootPath: string = ROOT_PATH;
 
+  _active = false;
+  @property({type: Boolean})
+  get active() {
+    return this._active;
+  }
+
+  set active(newVal) {
+    console.log('HERE');
+    this._active = newVal;
+    if (this._active) {
+      fireEvent(this, 'global-loading', {
+        active: false,
+        loadingSource: 'interv-page'
+      });
+    }
+  }
+
   connectedCallback() {
     super.connectedCallback();
     // Disable loading message for tab load, triggered by parent element on stamp or by tap event on tabs
