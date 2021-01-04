@@ -39,8 +39,7 @@ export class PageNotFound extends LitElement {
     return this._active;
   }
 
-  set active(newVal) {
-    console.log('HERE');
+  set active(newVal) {    
     this._active = newVal;
     if (this._active) {
       fireEvent(this, 'global-loading', {
