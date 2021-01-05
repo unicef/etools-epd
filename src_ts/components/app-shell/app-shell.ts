@@ -64,8 +64,23 @@ import '../env-flags/environment-flags';
 import {setStore} from '../pages/interventions/intervention-tab-pages/utils/redux-store-access';
 import {registerTranslateConfig, use} from 'lit-translate';
 import {EtoolsUser, RouteDetails} from '@unicef-polymer/etools-types';
+declare const dayjs: any;
+declare const dayjs_plugin_utc: any;
 
-registerTranslateConfig({loader: (lang: string) => fetch(`assets/i18n/${lang}.json`).then((res: any) => res.json())});
+dayjs.extend(dayjs_plugin_utc);
+
+function fetchLangFiles(lang: string) {
+  return Promise.allSettled([
+    fetch(`assets/i18n/${lang}.json`).then((res: any) => res.json()),
+    fetch(`src/components/pages/interventions/intervention-tab-pages/assets/i18n/${lang}.json`).then((res: any) =>
+      res.json()
+    )
+  ]).then((response: any) => {
+    return Object.assign(response[0].value, response[1].value);
+  });
+}
+registerTranslateConfig({loader: (lang: string) => fetchLangFiles(lang)});
+
 // set store for intervention-tab-pages
 setStore(store as any);
 
@@ -133,7 +148,7 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
                 this.mainPage,
                 'interventions',
                 this.subPage,
-                'overview|details|results|timing|management|attachments'
+                'overview|details|results|timing|management|review|attachments'
               )}"
             >
             </intervention-tabs>

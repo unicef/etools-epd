@@ -8,6 +8,7 @@ import {navMenuStyles} from './styles/nav-menu-styles';
 import {fireEvent} from '../../utils/fire-custom-event';
 import {ROOT_PATH, SMALL_MENU_ACTIVE_LOCALSTORAGE_KEY} from '../../../config/config';
 import {customElement, html, LitElement, property} from 'lit-element';
+import {translate} from 'lit-translate';
 
 /**
  * main menu
@@ -35,8 +36,12 @@ export class AppMenu extends LitElement {
           ></iron-icon>
           <paper-ripple class="circle" center></paper-ripple>
         </span>
-
         <paper-tooltip for="menu-header-top-icon" position="right"> ePD </paper-tooltip>
+
+        <span class="chev-right">
+          <iron-icon id="expand-menu" icon="chevron-right" @tap="${() => this._toggleSmallMenu()}"></iron-icon>
+          <paper-ripple class="circle" center></paper-ripple>
+        </span>
 
         <span class="ripple-wrapper">
           <iron-icon id="minimize-menu" icon="chevron-left" @tap="${() => this._toggleSmallMenu()}"></iron-icon>
@@ -59,13 +64,13 @@ export class AppMenu extends LitElement {
         </iron-selector>
 
         <div class="nav-menu-item section-title">
-          <span>eTools Community Channels</span>
+          <span>${translate('NAV_BAR.COMMUNITY_CHANNELS')}</span>
         </div>
 
         <a class="nav-menu-item lighter-item" href="http://etools.zendesk.com" target="_blank">
           <iron-icon id="knoledge-icon" icon="maps:local-library"></iron-icon>
-          <paper-tooltip for="knoledge-icon" position="right"> Knowledge base </paper-tooltip>
-          <div class="name">Knowledge base</div>
+          <paper-tooltip for="knoledge-icon" position="right">${translate('NAV_BAR.KNOLEDGE_BASE')}</paper-tooltip>
+          <div class="name">${translate('NAV_BAR.KNOLEDGE_BASE')}</div>
         </a>
 
         <a
@@ -74,14 +79,14 @@ export class AppMenu extends LitElement {
           target="_blank"
         >
           <iron-icon id="discussion-icon" icon="icons:question-answer"></iron-icon>
-          <paper-tooltip for="discussion-icon" position="right"> Discussion </paper-tooltip>
-          <div class="name">Discussion</div>
+          <paper-tooltip for="discussion-icon" position="right">${translate('NAV_BAR.DISCUSSION')}</paper-tooltip>
+          <div class="name">${translate('NAV_BAR.DISCUSSION')}</div>
         </a>
 
         <a class="nav-menu-item lighter-item last-one" href="http://etoolsinfo.unicef.org" target="_blank">
           <iron-icon id="information-icon" icon="icons:info"></iron-icon>
-          <paper-tooltip for="information-icon" position="right"> Information </paper-tooltip>
-          <div class="name">Information</div>
+          <paper-tooltip for="information-icon" position="right">${translate('NAV_BAR.INFORMATION')}</paper-tooltip>
+          <div class="name">${translate('NAV_BAR.INFORMATION')}</div>
         </a>
       </div>
     `;

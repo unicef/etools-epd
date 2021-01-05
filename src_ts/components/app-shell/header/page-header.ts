@@ -175,7 +175,8 @@ export class PageHeader extends connect(store)(LitElement) {
 
   languages: GenericObject<string>[] = [
     {value: 'en', display_name: 'English'},
-    {value: 'ro', display_name: 'Romanian'}
+    {value: 'ro', display_name: 'Romanian'},
+    {value: 'ar', display_name: 'Arabic'}
   ];
 
   @property() selectedLanguage!: string;
@@ -191,6 +192,14 @@ export class PageHeader extends connect(store)(LitElement) {
       this.profile = state.user!.data;
       if (state.activeLanguage && state.activeLanguage.activeLanguage !== this.selectedLanguage) {
         this.selectedLanguage = state.activeLanguage!.activeLanguage;
+        setTimeout(() => {
+          const body = document.querySelector('body');
+          if (this.selectedLanguage === 'ar') {
+            body!.setAttribute('dir', 'rtl');
+          } else if (body!.getAttribute('dir')) {
+            body!.removeAttribute('dir');
+          }
+        });
       }
     }
   }
@@ -247,7 +256,9 @@ export class PageHeader extends connect(store)(LitElement) {
     const newLanguage = selectedItem.value;
     if (this.selectedLanguage !== newLanguage) {
       localStorage.setItem('defaultLanguage', newLanguage);
-      use(newLanguage).finally(() => store.dispatch(setLanguage(newLanguage)));
+      use(newLanguage)
+        .then(() => store.dispatch(setLanguage(newLanguage)))
+        .finally(() => location.reload());
     }
   }
 

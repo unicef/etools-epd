@@ -1,4 +1,4 @@
-FROM node:12.18.3-alpine as builder
+FROM node:14.15.1-alpine3.12 as builder
 RUN apk update
 RUN apk add --update bash
 
@@ -18,11 +18,15 @@ ADD . /code/
 WORKDIR /code
 RUN rm -rf node_modules
 RUN cp -a /tmp/node_modules /code/node_modules
-ENV NODE_OPTIONS --max_old_space_size=4096
+
+# Necessary for circle ci
+WORKDIR /code
+RUN git submodule init && git submodule update --checkout
+
 RUN npm run build
 
 
-FROM node:11.9.0-alpine
+FROM node:14.15.1-alpine3.12
 RUN apk update
 RUN apk add --update bash
 

@@ -12,10 +12,15 @@
     "experimentalDecorators": true,
     "esModuleInterop": true,
     "outDir": "src",
-    "typeRoots": ["./src_ts/types"]
+    "typeRoots": ["./src_ts/types"],
+    "skipLibCheck": true,
+    "resolveJsonModule": true
   },
   "include": [
-    "src_ts/**/*.ts"
+    "src_ts/**/*.ts",
+    "src_ts/components/pages/interventions/intervention-tab-pages/assets/i18n/en.json",
+    "src_ts/components/pages/interventions/intervention-tab-pages/assets/i18n/ro.json",
+    "src_ts/components/pages/interventions/intervention-tab-pages/assets/i18n/ar.json"
   ],
   "exclude": []
 }
