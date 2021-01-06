@@ -261,8 +261,17 @@ export class EtoolsFilters extends LitElement {
     if (this.filters.length === 0) {
       return;
     }
+    // Clear selected value in filters
     this.filters.forEach((f: EtoolsFilter) => {
       f.selectedValue = this.getFilterEmptyValue(f.type);
+    });
+
+    // clear selecter filters
+    this.filters.forEach((f: EtoolsFilter) => {
+      if (f.filterKey === 'search') {
+        return;
+      }
+      f.selected = false;
     });
     // repaint
     this.requestUpdate().then(() => this.fireFiltersChangeEvent());
