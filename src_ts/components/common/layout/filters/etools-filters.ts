@@ -241,7 +241,7 @@ export class EtoolsFilters extends LitElement {
             ${translate('GENERAL.FILTERS')}
           </paper-button>
           <div slot="dropdown-content" class="clear-all-filters">
-            <paper-button @tap="${this.clearAllFilterValues}" class="secondary-btn"
+            <paper-button @tap="${this.clearAllFilters}" class="secondary-btn"
               >${translate('GENERAL.CLEAR_ALL')}</paper-button
             >
           </div>
@@ -257,7 +257,7 @@ export class EtoolsFilters extends LitElement {
     }
   }
 
-  clearAllFilterValues() {
+  clearAllFilters() {
     if (this.filters.length === 0) {
       return;
     }
