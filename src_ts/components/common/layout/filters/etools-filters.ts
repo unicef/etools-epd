@@ -268,7 +268,7 @@ export class EtoolsFilters extends LitElement {
 
     // clear selecter filters
     this.filters.forEach((f: EtoolsFilter) => {
-      if (f.filterKey === 'search') {
+      if (f.filterKey === 'search') {// TODO - using FilterKeys.search here breaks the app
         return;
       }
       f.selected = false;
