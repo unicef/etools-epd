@@ -45,6 +45,7 @@ import {
   RouteDetails,
   RouteQueryParams
 } from '@unicef-polymer/etools-types';
+import pick from 'lodash-es/pick';
 
 /**
  * @LitElement
@@ -264,7 +265,7 @@ export class InterventionList extends connect(store)(LitElement) {
   }
 
   filtersChange(e: CustomEvent) {
-    this.updateCurrentParams({...e.detail, page: 1});
+    this.updateCurrentParams({...e.detail, page: 1}, true);
   }
 
   paginatorChange(e: CustomEvent) {
@@ -277,8 +278,11 @@ export class InterventionList extends connect(store)(LitElement) {
     this.updateCurrentParams({sort: getUrlQueryStringSort(sort)});
   }
 
-  private updateCurrentParams(paramsToUpdate: GenericObject<any>): void {
-    const currentParams: RouteQueryParams = this.routeDetails!.queryParams || {};
+  private updateCurrentParams(paramsToUpdate: GenericObject<any>, reset = false): void {
+    let currentParams: RouteQueryParams = this.routeDetails!.queryParams || {};
+    if (reset) {
+      currentParams = pick(currentParams, ['sort', 'page_size']);
+    }
     const newParams: RouteQueryParams = {...currentParams, ...paramsToUpdate};
     this.urlParams = newParams;
     const stringParams: string = buildUrlQueryString(newParams);

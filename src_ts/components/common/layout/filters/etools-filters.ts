@@ -241,7 +241,7 @@ export class EtoolsFilters extends LitElement {
             ${translate('GENERAL.FILTERS')}
           </paper-button>
           <div slot="dropdown-content" class="clear-all-filters">
-            <paper-button @tap="${this.clearAllFilterValues}" class="secondary-btn"
+            <paper-button @tap="${this.clearAllFilters}" class="secondary-btn"
               >${translate('GENERAL.CLEAR_ALL')}</paper-button
             >
           </div>
@@ -257,12 +257,21 @@ export class EtoolsFilters extends LitElement {
     }
   }
 
-  clearAllFilterValues() {
+  clearAllFilters() {
     if (this.filters.length === 0) {
       return;
     }
+    // Clear selected value in filters
     this.filters.forEach((f: EtoolsFilter) => {
       f.selectedValue = this.getFilterEmptyValue(f.type);
+    });
+
+    // clear selecter filters
+    this.filters.forEach((f: EtoolsFilter) => {
+      if (f.filterKey === 'search') {// TODO - using FilterKeys.search here breaks the app
+        return;
+      }
+      f.selected = false;
     });
     // repaint
     this.requestUpdate().then(() => this.fireFiltersChangeEvent());
