@@ -45,48 +45,48 @@ const loadPageComponents: ActionCreator<ThunkResult> = (routeDetails: RouteDetai
   }
 
   filesToImport.forEach((filePath: string) => {
-    if (filePath.includes('intervention-list.js')) {
-      import('../../components/pages/interventions/intervention-list.js');
-    }
-    if (filePath.includes('intervention-tabs.js')) {
-      import('../../components/pages/page-not-found.js');
-    }
-    if (filePath.includes('page-not-found.js')) {
-      import('../../components/pages/interventions/intervention-tab-pages/intervention-tabs.js');
-    }
-    if (filePath.includes('intervention-details.js')) {
-      import(
-        '../../components/pages/interventions/intervention-tab-pages/intervention-details/intervention-details.js'
-      );
-    }
-    if (filePath.includes('intervention-results.js')) {
-      import(
-        '../../components/pages/interventions/intervention-tab-pages/intervention-results/intervention-results.js'
-      );
-    }
-    if (filePath.includes('intervention-timing.js')) {
-      import('../../components/pages/interventions/intervention-tab-pages/intervention-timing/intervention-timing.js');
-    }
-    if (filePath.includes('intervention-management.js')) {
-      import(
-        '../../components/pages/interventions/intervention-tab-pages/intervention-management/intervention-management.js'
-      );
-    }
-    if (filePath.includes('intervention-attachments.js')) {
-      import(
-        '../../components/pages/interventions/intervention-tab-pages/intervention-attachments/intervention-attachments.js'
-      );
-    }
-    if (filePath.includes('intervention-review.js')) {
-      import('../../components/pages/interventions/intervention-tab-pages/intervention-review/intervention-review.js');
-    }
-    // import(importBase + filePath)
-    //   .then(() => {
-    //     // console.info(`component: ${filePath} has been loaded... yey!`);
-    //   })
-    //   .catch((importError: any) => {
-    //     console.info('component import failed...', importError);
-    //   });
+    // if (filePath.includes('intervention-list.js')) {
+    //   import('../../components/pages/interventions/intervention-list.js');
+    // }
+    // if (filePath.includes('intervention-tabs.js')) {
+    //   import('../../components/pages/page-not-found.js');
+    // }
+    // if (filePath.includes('page-not-found.js')) {
+    //   import('../../components/pages/interventions/intervention-tab-pages/intervention-tabs.js');
+    // }
+    // if (filePath.includes('intervention-details.js')) {
+    //   import(
+    //     '../../components/pages/interventions/intervention-tab-pages/intervention-details/intervention-details.js'
+    //   );
+    // }
+    // if (filePath.includes('intervention-results.js')) {
+    //   import(
+    //     '../../components/pages/interventions/intervention-tab-pages/intervention-results/intervention-results.js'
+    //   );
+    // }
+    // if (filePath.includes('intervention-timing.js')) {
+    //   import('../../components/pages/interventions/intervention-tab-pages/intervention-timing/intervention-timing.js');
+    // }
+    // if (filePath.includes('intervention-management.js')) {
+    //   import(
+    //     '../../components/pages/interventions/intervention-tab-pages/intervention-management/intervention-management.js'
+    //   );
+    // }
+    // if (filePath.includes('intervention-attachments.js')) {
+    //   import(
+    //     '../../components/pages/interventions/intervention-tab-pages/intervention-attachments/intervention-attachments.js'
+    //   );
+    // }
+    // if (filePath.includes('intervention-review.js')) {
+    //   import('../../components/pages/interventions/intervention-tab-pages/intervention-review/intervention-review.js');
+    // }
+    import(importBase + filePath)
+      .then(() => {
+        // console.info(`component: ${filePath} has been loaded... yey!`);
+      })
+      .catch((importError: any) => {
+        console.info('component import failed...', importError);
+      });
   });
   // add page details to redux store, to be used in other components
   dispatch(updateStoreRouteDetails(routeDetails));
