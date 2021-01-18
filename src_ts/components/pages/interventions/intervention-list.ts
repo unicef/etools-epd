@@ -154,11 +154,11 @@ export class InterventionList extends connect(store)(LitElement) {
         }
         if (item.partner_accepted && item.unicef_accepted) {
           return html`${item.status} <br />
-            IP & Unicef Accepted`;
+            IP & UNICEF Accepted`;
         }
         if (!item.partner_accepted && item.unicef_accepted) {
           return html`${item.status} <br />
-            Unicef Accepted`;
+            UNICEF Accepted`;
         }
         if (item.partner_accepted && !item.unicef_accepted) {
           return html`${item.status} <br />
@@ -171,7 +171,7 @@ export class InterventionList extends connect(store)(LitElement) {
 
         if (item.unicef_court && !!item.submission_date && !!item.date_sent_to_partner) {
           return html`${item.status} <br />
-            Sent to Unicef`;
+            Sent to UNICEF`;
         }
         return item.status;
       },
