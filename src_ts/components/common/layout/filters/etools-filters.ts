@@ -14,7 +14,6 @@ import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
 import '@unicef-polymer/etools-dropdown/etools-dropdown';
 import '@unicef-polymer/etools-date-time/datepicker-lite';
 import '@unicef-polymer/etools-loading/etools-loading';
-import {elevation2} from '../../../styles/lit-styles/elevation-styles';
 import {Callback} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 
@@ -59,10 +58,6 @@ export class EtoolsFilters extends LitElement {
         }
         *[hidden] {
           display: none !important;
-        }
-
-        paper-button:focus {
-          ${elevation2}
         }
 
         .date {
