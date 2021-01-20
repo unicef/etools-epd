@@ -13,7 +13,7 @@
     "esModuleInterop": true,
     "outDir": "src",
     "typeRoots": ["./src_ts/types"],
-    "skipLibCheck": true,
+
     "resolveJsonModule": true
   },
   "include": [
