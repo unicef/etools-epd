@@ -1,3 +1,8 @@
+
+
+//----- DOESN'T  WORK -----
+// 404 errors
+
 import merge from 'deepmerge';
 // use createSpaConfig for bundling a Single Page App
 import {createSpaConfig} from '@open-wc/building-rollup';
@@ -7,7 +12,7 @@ import {createSpaConfig} from '@open-wc/building-rollup';
 
 const baseConfig = createSpaConfig({
   // use the outputdir option to modify where files are output
-  // outputDir: 'dist',
+  outputDir: 'multipleInputs',
 
   // if you need to support older browsers, such as IE11, set the legacyBuild
   // option to generate an additional build just for this browser
