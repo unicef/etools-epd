@@ -28,10 +28,10 @@ const updateStoreRouteDetails: ActionCreator<AppActionUpdateRouteDetails> = (rou
   };
 };
 
-const loadPageComponents: ActionCreator<ThunkResult> = (routeDetails: RouteDetails) => (dispatch) => {
+const loadPageComponents = (routeDetails: RouteDetails | null) => {
   if (!routeDetails) {
     // invalid route => redirect to 404 page
-    updateAppLocation(ROUTE_404, true);
+    updateAppLocation(ROUTE_404);
     return;
   }
 
@@ -40,56 +40,59 @@ const loadPageComponents: ActionCreator<ThunkResult> = (routeDetails: RouteDetai
   const filesToImport: string[] | undefined = getFilePathsToImport(routeDetails);
   if (!filesToImport) {
     console.log('No file imports configuration found (componentsLazyLoadConfig)!');
-    updateAppLocation(ROUTE_404, true);
+    updateAppLocation(ROUTE_404);
     return;
   }
 
   filesToImport.forEach((filePath: string) => {
-    // if (filePath.includes('intervention-list.js')) {
-    //   import('../../components/pages/interventions/intervention-list.js');
-    // }
-    // if (filePath.includes('intervention-tabs.js')) {
-    //   import('../../components/pages/page-not-found.js');
-    // }
-    // if (filePath.includes('page-not-found.js')) {
-    //   import('../../components/pages/interventions/intervention-tab-pages/intervention-tabs.js');
-    // }
-    // if (filePath.includes('intervention-details.js')) {
-    //   import(
-    //     '../../components/pages/interventions/intervention-tab-pages/intervention-details/intervention-details.js'
-    //   );
-    // }
-    // if (filePath.includes('intervention-results.js')) {
-    //   import(
-    //     '../../components/pages/interventions/intervention-tab-pages/intervention-results/intervention-results.js'
-    //   );
-    // }
-    // if (filePath.includes('intervention-timing.js')) {
-    //   import('../../components/pages/interventions/intervention-tab-pages/intervention-timing/intervention-timing.js');
-    // }
-    // if (filePath.includes('intervention-management.js')) {
-    //   import(
-    //     '../../components/pages/interventions/intervention-tab-pages/intervention-management/intervention-management.js'
-    //   );
-    // }
-    // if (filePath.includes('intervention-attachments.js')) {
-    //   import(
-    //     '../../components/pages/interventions/intervention-tab-pages/intervention-attachments/intervention-attachments.js'
-    //   );
-    // }
-    // if (filePath.includes('intervention-review.js')) {
-    //   import('../../components/pages/interventions/intervention-tab-pages/intervention-review/intervention-review.js');
-    // }
-    import(importBase + filePath)
-      .then(() => {
-        // console.info(`component: ${filePath} has been loaded... yey!`);
-      })
-      .catch((importError: any) => {
-        console.info('component import failed...', importError);
-      });
+    if (filePath.includes('intervention-list.js')) {
+      import('../../components/pages/interventions/intervention-list.js');
+    }
+    if (filePath.includes('page-not-found.js')) {
+      import('../../components/pages/page-not-found.js');
+    }
+    if (filePath.includes('intervention-tabs.js')) {
+      import('../../components/pages/interventions/intervention-tab-pages/intervention-tabs.js');
+    }
+    if (filePath.includes('intervention-details.js')) {
+      import(
+        '../../components/pages/interventions/intervention-tab-pages/intervention-details/intervention-details.js'
+      );
+    }
+    if (filePath.includes('intervention-overview.js')) {
+      import(
+        '../../components/pages/interventions/intervention-tab-pages/intervention-overview/intervention-overview.js'
+      );
+    }
+    if (filePath.includes('intervention-results.js')) {
+      import(
+        '../../components/pages/interventions/intervention-tab-pages/intervention-results/intervention-results.js'
+      );
+    }
+    if (filePath.includes('intervention-timing.js')) {
+      import('../../components/pages/interventions/intervention-tab-pages/intervention-timing/intervention-timing.js');
+    }
+    if (filePath.includes('intervention-management.js')) {
+      import(
+        '../../components/pages/interventions/intervention-tab-pages/intervention-management/intervention-management.js'
+      );
+    }
+    if (filePath.includes('intervention-attachments.js')) {
+      import(
+        '../../components/pages/interventions/intervention-tab-pages/intervention-attachments/intervention-attachments.js'
+      );
+    }
+    if (filePath.includes('intervention-review.js')) {
+      import('../../components/pages/interventions/intervention-tab-pages/intervention-review/intervention-review.js');
+    }
+    // import(importBase + filePath)
+    //   .then(() => {
+    //     // console.info(`component: ${filePath} has been loaded... yey!`);
+    //   })
+    //   .catch((importError: any) => {
+    //     console.info('component import failed...', importError);
+    //   });
   });
-  // add page details to redux store, to be used in other components
-  dispatch(updateStoreRouteDetails(routeDetails));
 };
 
 export const updateDrawerState: ActionCreator<AppActionUpdateDrawerState> = (opened: boolean) => {
@@ -100,23 +103,25 @@ export const updateDrawerState: ActionCreator<AppActionUpdateDrawerState> = (ope
 };
 
 export const navigate: ActionCreator<ThunkResult> = (path: string) => (dispatch) => {
+  const routeDetails: RouteDetails | null = EtoolsRouter.getRouteDetails(path);
   // Check if path matches a valid app route, use route details to load required page components
 
   // if app route is accessed, redirect to default route (if not already on it)
   // @ts-ignore
   if (path === ROOT_PATH && ROOT_PATH !== DEFAULT_ROUTE) {
-    updateAppLocation(DEFAULT_ROUTE, true);
+    updateAppLocation(DEFAULT_ROUTE);
     return;
   }
 
   // some routes need redirect to subRoute list
   const redirectPath: string | undefined = getRedirectToListPath(path);
   if (redirectPath) {
-    updateAppLocation(redirectPath, true);
+    updateAppLocation(redirectPath);
     return;
   }
 
-  const routeDetails: RouteDetails | null = EtoolsRouter.getRouteDetails(path);
+  loadPageComponents(routeDetails);
 
-  dispatch(loadPageComponents(routeDetails));
+  // add page details to redux store, to be used in other components
+  dispatch(updateStoreRouteDetails(routeDetails));
 };

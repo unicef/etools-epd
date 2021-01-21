@@ -46,6 +46,7 @@ import {
   RouteQueryParams
 } from '@unicef-polymer/etools-types';
 import pick from 'lodash-es/pick';
+import {navigate} from '../../../redux/actions/app';
 
 /**
  * @LitElement
@@ -287,7 +288,9 @@ export class InterventionList extends connect(store)(LitElement) {
     this.urlParams = newParams;
     const stringParams: string = buildUrlQueryString(newParams);
     this.exportParams = stringParams;
-    replaceAppLocation(`${this.routeDetails!.path}?${stringParams}`, true);
+    const newUrl = `${this.routeDetails!.path}?${stringParams}`;
+    replaceAppLocation(newUrl);
+    store.dispatch(navigate(newUrl));
   }
 
   private async getListData() {
