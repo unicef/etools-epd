@@ -68,7 +68,7 @@
     "@unicef-polymer/etools-table": "^1.1.0",
     "@unicef-polymer/etools-types": "^1.0.2",
     "@unicef-polymer/etools-upload": "^3.2.2",
-    "@webcomponents/webcomponentsjs": "^2.5.0",
+    "@webcomponents/shadycss": "^1.10.2",
     "dayjs": "^1.9.7",
     "lit-element": "^2.3.1",
     "lit-translate": "^1.2.1",
@@ -82,13 +82,16 @@
   },
   "devDependencies": {
     "@babel/plugin-syntax-class-properties": "^7.12.1",
+    "@open-wc/building-rollup": "^1.9.4",
     "@open-wc/dev-server-hmr": "^0.1.0",
+    "@rollup/plugin-dynamic-import-vars": "^1.1.1",
     "@typescript-eslint/eslint-plugin": "^3.10.1",
     "@typescript-eslint/parser": "^3.10.1",
     "@typescript-eslint/typescript-estree": "^3.10.1",
     "@web/dev-server": "0.1.3",
     "@web/dev-server-esbuild": "^0.2.11",
     "concurrently": "^5.3.0",
+    "deepmerge": "^4.2.2",
     "del": "^3.0.0",
     "eslint": "^7.15.0",
     "eslint-config-google": "^0.13.0",
@@ -102,6 +105,10 @@
     "gulp-rename": "^1.3.0",
     "gulp-replace": "^1.0.0",
     "prettier": "^2.2.1",
+    "rollup": "^2.36.1",
+    "rollup-plugin-copy": "^3.3.0",
+    "rollup-plugin-minify-html-literals": "^1.2.5",
+    "rollup-plugin-node-resolve": "^5.2.0",
     "typescript": "^3.9.6"
   }
 }
