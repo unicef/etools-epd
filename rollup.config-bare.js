@@ -7,7 +7,7 @@ import copy from 'rollup-plugin-copy';
 
 const copyConfig = {
   targets: [
-    {src: 'node_modules/@webcomponents', dest: 'rollup-bare/node_modules/@webcomponents'},
+    {src: 'node_modules/@webcomponents/shadycss', dest: 'rollup-bare/node_modules/@webcomponents'},
     {
       src: 'node_modules/web-animations-js/web-animations-next-lite.min.js',
       dest: 'rollup-bare/node_modules/web-animations-js'

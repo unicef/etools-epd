@@ -68,7 +68,7 @@
     "@unicef-polymer/etools-table": "^1.1.0",
     "@unicef-polymer/etools-types": "^1.0.2",
     "@unicef-polymer/etools-upload": "^3.2.2",
-    "@webcomponents/webcomponentsjs": "^2.5.0",
+    "@webcomponents/shadycss": "^1.10.2",
     "dayjs": "^1.9.7",
     "lit-element": "^2.3.1",
     "lit-translate": "^1.2.1",
