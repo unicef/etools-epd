@@ -3,12 +3,6 @@ import '@polymer/paper-toast/paper-toast';
 import '@polymer/paper-button/paper-button';
 import {PaperToastElement} from '@polymer/paper-toast/paper-toast';
 import {PaperButtonElement} from '@polymer/paper-button/paper-button';
-import {
-  layoutSelfEnd,
-  layoutHorizontal,
-  layoutCenter,
-  layoutVertical
-} from '../../styles/lit-styles/flex-layout-styles';
 import {AnyObject} from '@unicef-polymer/etools-types';
 
 /**
@@ -40,7 +34,7 @@ export class EtoolsToast extends LitElement {
             padding: 8px;
             min-width: 16px;
             margin: 16px -8px -8px 0;
-            ${layoutSelfEnd}
+            align-self: flex-end;
           };
         }
 
@@ -51,13 +45,15 @@ export class EtoolsToast extends LitElement {
         }
 
         .toast {
-          ${layoutHorizontal}
-          ${layoutCenter}
+          display: flex;
+          flex-direction: row;
+          align-items: center;
           justify-content: space-between;
         }
 
         .toast-multi-line {
-          ${layoutVertical}
+          display: flex;
+          flex-direction: column;
           text-align: justify;
           white-space: pre-line;
         }
