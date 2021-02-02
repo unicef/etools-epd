@@ -33,7 +33,6 @@ export const etoolsFiltersStyles = css`
     -webkit-flex: 1;
     flex: 1;
     -webkit-flex-basis: 0.000000001px;
-    flex-basis: 0.000000001px;
 
     margin-right: auto;
   }

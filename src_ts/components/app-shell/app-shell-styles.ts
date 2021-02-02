@@ -13,7 +13,6 @@ export const AppShellStyles = css`
 
   .main-content {
     flex: 1;
-    flex-basis: 0.000000001px;
   }
 
   .page {
