@@ -2,17 +2,9 @@ import {css} from 'lit-element';
 
 // language=CSS
 export const etoolsFiltersStyles = css`
-  :host {
-    display: -ms-flexbox;
-    display: -webkit-flex;
+  :host {   
     display: flex;
-
-    -ms-flex-direction: row;
-    -webkit-flex-direction: row;
-    flex-direction: row;
-
-    -ms-flex-align: center;
-    -webkit-align-items: center;
+    flex-direction: row;    
     align-items: center;
 
     box-sizing: border-box;
@@ -25,15 +17,8 @@ export const etoolsFiltersStyles = css`
     flex-direction: row;
     align-items: center;
 
-    -ms-flex-wrap: wrap;
-    -webkit-flex-wrap: wrap;
-    flex-wrap: wrap;
-
-    -ms-flex: 1 1 0.000000001px;
-    -webkit-flex: 1;
-    flex: 1;
-    -webkit-flex-basis: 0.000000001px;
-    flex-basis: 0.000000001px;
+    flex-wrap: wrap;    
+    flex: 1;    
 
     margin-right: auto;
   }
@@ -71,16 +56,8 @@ export const etoolsFiltersStyles = css`
   }
 
   #filters .filter.toggle {
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-
-    -ms-flex-direction: row;
-    -webkit-flex-direction: row;
-    flex-direction: row;
-
-    -ms-flex-align: center;
-    -webkit-align-items: center;
+    display: flex;   
+    flex-direction: row;   
     align-items: center;
 
     cursor: pointer;
@@ -92,21 +69,10 @@ export const etoolsFiltersStyles = css`
     margin-left: 10px;
   }
 
-  #filters-selector {
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-
-    -ms-flex-direction: column;
-    -webkit-flex-direction: column;
-    flex-direction: column;
-
-    -ms-flex-pack: center;
-    -webkit-justify-content: center;
-    justify-content: center;
-
-    -ms-align-self: stretch;
-    -webkit-align-self: stretch;
+  #filters-selector {    
+    display: flex;   
+    flex-direction: column;   
+    justify-content: center;    
     align-self: stretch;
 
     padding: 0 0 0 8px;
@@ -151,21 +117,10 @@ export const etoolsFiltersStyles = css`
     background: var(--etools-filters-menu-selected-bg, #dcdcdc);
   }
 
-  paper-icon-item {
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-
-    -ms-flex-direction: row;
-    -webkit-flex-direction: row;
-    flex-direction: row;
-
-    -ms-flex-align: center;
-    -webkit-align-items: center;
-    align-items: center;
-
-    -ms-flex-wrap: wrap;
-    -webkit-flex-wrap: wrap;
+  paper-icon-item {   
+    display: flex;    
+    flex-direction: row;   
+    align-items: center;  
     flex-wrap: wrap;
 
     min-height: 48px;
@@ -175,17 +130,10 @@ export const etoolsFiltersStyles = css`
   }
 
   .clear-all-filters {
-    min-height: 48px;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-
-    -ms-flex-direction: row;
-    -webkit-flex-direction: row;
+    min-height: 48px;   
+    display: flex;    
     flex-direction: row;
 
-    -ms-flex-align: center;
-    -webkit-align-items: center;
     align-items: center;
     color: var(--primary-color, rgba(0, 0, 0, 0.87));
     padding-right: 16px;
@@ -193,9 +141,7 @@ export const etoolsFiltersStyles = css`
   }
 
   @media (max-width: 576px) {
-    :host {
-      -ms-flex-direction: column;
-      -webkit-flex-direction: column;
+    :host {     
       flex-direction: column;
     }
     #filters .filter,

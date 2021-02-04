@@ -16,7 +16,6 @@ export class PageFooter extends LitElement {
           display: flex;
           flex-direction: column;
           flex: 1;
-          flex-basis: 0.000000001px;
           justify-content: flex-end;
           padding: 18px 24px;
           width: 100%;
