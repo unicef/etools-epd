@@ -27,7 +27,6 @@ export const pageHeaderStyles = css`
 
   .titlebar {
     flex: 1;
-    flex-basis: 0.000000001px;
     font-size: 28px;
     font-weight: 300;
   }
