@@ -57,17 +57,7 @@ documentContainer.innerHTML = `
         --error-box-border-color: #ebccd1;
         --error-box-text-color: var(--error-color);
 
-        --epc-header: {
-          background-color: var(--primary-background-color);
-          border-bottom: 1px groove var(--dark-divider-color);
-        }
-        --epc-header-color: var(--primary-text-color);
-        --ecp-header-title: {
-          padding: 0 24px 0 0;
-          text-align: left;
-          font-size: 18px;
-          font-weight: 500;
-        }
+        --ecp-header-color: var(--primary-text-color);
 
         --etools-dialog-primary-color: #FFFFFF;
         --etools-dialog-contrast-text-color: var(--primary-text-color);
@@ -120,6 +110,18 @@ documentContainer.innerHTML = `
           outline: 0;
           box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12), 0 3px 5px -1px rgba(0, 0, 0, 0.4);
         }
+        /*-----------------styles have been moved to shared-styles---------------------------------------------------*/
+        /*etools-content-panel::part(ecp-header) {*/
+        /*  background-color: var(--primary-background-color);*/
+        /*  border-bottom: 1px groove var(--dark-divider-color);*/
+        /*}*/
+
+        /*etools-content-panel::part(ecp-header-title) {*/
+        /*  padding: 0 24px 0 0;*/
+        /*  text-align: left;*/
+        /*  font-size: 18px;*/
+        /*  font-weight: 500;*/
+        /*}*/
 
       }
     </style>
