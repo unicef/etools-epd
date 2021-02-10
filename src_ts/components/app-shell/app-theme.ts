@@ -61,9 +61,6 @@ documentContainer.innerHTML = `
 
         --etools-dialog-primary-color: #FFFFFF;
         --etools-dialog-contrast-text-color: var(--primary-text-color);
-        --etools-dialog-title: {
-          border-bottom: solid 1px var(--dark-divider-color);
-        }
 
         --paper-input-container-label: {
           color: var(--secondary-text-color, #737373);
@@ -121,6 +118,9 @@ documentContainer.innerHTML = `
         /*  text-align: left;*/
         /*  font-size: 18px;*/
         /*  font-weight: 500;*/
+        /*}*/
+        /*etools-dialog::part(ed-title) {*/
+        /*  border-bottom: solid 1px var(--dark-divider-color);*/
         /*}*/
 
       }
