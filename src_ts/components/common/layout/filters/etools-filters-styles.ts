@@ -2,9 +2,9 @@ import {css} from 'lit-element';
 
 // language=CSS
 export const etoolsFiltersStyles = css`
-  :host {   
+  :host {
     display: flex;
-    flex-direction: row;    
+    flex-direction: row;
     align-items: center;
 
     box-sizing: border-box;
@@ -17,8 +17,8 @@ export const etoolsFiltersStyles = css`
     flex-direction: row;
     align-items: center;
 
-    flex-wrap: wrap;    
-    flex: 1;    
+    flex-wrap: wrap;
+    flex: 1;
 
     margin-right: auto;
   }
@@ -56,8 +56,8 @@ export const etoolsFiltersStyles = css`
   }
 
   #filters .filter.toggle {
-    display: flex;   
-    flex-direction: row;   
+    display: flex;
+    flex-direction: row;
     align-items: center;
 
     cursor: pointer;
@@ -69,10 +69,10 @@ export const etoolsFiltersStyles = css`
     margin-left: 10px;
   }
 
-  #filters-selector {    
-    display: flex;   
-    flex-direction: column;   
-    justify-content: center;    
+  #filters-selector {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     align-self: stretch;
 
     padding: 0 0 0 8px;
@@ -117,10 +117,10 @@ export const etoolsFiltersStyles = css`
     background: var(--etools-filters-menu-selected-bg, #dcdcdc);
   }
 
-  paper-icon-item {   
-    display: flex;    
-    flex-direction: row;   
-    align-items: center;  
+  paper-icon-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     flex-wrap: wrap;
 
     min-height: 48px;
@@ -130,8 +130,8 @@ export const etoolsFiltersStyles = css`
   }
 
   .clear-all-filters {
-    min-height: 48px;   
-    display: flex;    
+    min-height: 48px;
+    display: flex;
     flex-direction: row;
 
     align-items: center;
@@ -141,7 +141,7 @@ export const etoolsFiltersStyles = css`
   }
 
   @media (max-width: 576px) {
-    :host {     
+    :host {
       flex-direction: column;
     }
     #filters .filter,

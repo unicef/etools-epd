@@ -21,7 +21,7 @@ export class EtoolsToast extends LitElement {
             padding: 8px;
             min-width: 16px;
             margin: 0 -8px 0 24px;
-          };
+          }
         }
 
         .toast-dismiss-btn-general-style {
@@ -35,7 +35,7 @@ export class EtoolsToast extends LitElement {
             min-width: 16px;
             margin: 16px -8px -8px 0;
             align-self: flex-end;
-          };
+          }
         }
 
         .toast-general-style {

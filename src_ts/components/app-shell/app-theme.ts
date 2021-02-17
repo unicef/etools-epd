@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import '@polymer/polymer/polymer-element.js';
 import '@polymer/polymer/lib/elements/custom-style.js';
 
