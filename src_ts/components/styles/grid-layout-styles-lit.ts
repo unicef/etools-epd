@@ -59,25 +59,30 @@ export const gridLayoutStylesLit = html` <style>
     flex: 1;
   }
 
-  .row-h, .row-v {
+  .row-h,
+  .row-v {
     padding: 16px 24px;
   }
 
-  .row-v.t-border, .row-h.t-border {
+  .row-v.t-border,
+  .row-h.t-border {
     border-top: 1px solid var(--light-divider-color);
   }
 
-  .row-v.b-border, .row-h.b-border {
+  .row-v.b-border,
+  .row-h.b-border {
     border-bottom: 1px solid var(--light-divider-color);
   }
 
-  .row-v.header-row, .row-h.header-row {
+  .row-v.header-row,
+  .row-h.header-row {
     color: var(--secondary-text-color);
     border-bottom: 1px solid var(--light-divider-color);
     font-weight: 600;
   }
 
-  .row-v.header-row > .col, .row-h.header-row > .col {
+  .row-v.header-row > .col,
+  .row-h.header-row > .col {
     line-height: 24px;
   }
 
