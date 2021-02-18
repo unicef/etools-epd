@@ -126,6 +126,7 @@ documentContainer.innerHTML = `
         /*  border-bottom: solid 1px var(--dark-divider-color);*/
         /*}*/
 
+        --epd-profile-dialog-border-b: solid 1px var(--dark-divider-color);
       }
     </style>
   </custom-style>`;
