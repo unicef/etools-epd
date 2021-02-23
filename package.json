@@ -29,6 +29,7 @@
     "format": "npm run format:eslint"
   },
   "dependencies": {
+    "@duetds/date-picker": "^1.2.0",
     "@polymer/app-layout": "^3.1.0",
     "@polymer/decorators": "^3.0.0",
     "@polymer/iron-icons": "^3.0.1",

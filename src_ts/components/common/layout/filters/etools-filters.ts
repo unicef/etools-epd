@@ -15,7 +15,12 @@ import '@unicef-polymer/etools-dropdown/etools-dropdown';
 import '@unicef-polymer/etools-date-time/datepicker-lite';
 import '@unicef-polymer/etools-loading/etools-loading';
 import {Callback} from '@unicef-polymer/etools-types';
-import {translate} from 'lit-translate';
+import {translate, get as getTranslation} from 'lit-translate';
+import {DuetDatePicker} from '@duetds/date-picker/custom-element';
+import {duetDateAdapter, getDuetLocalization} from '../../../utils/duet-date-picker/duet-datepicker-utils';
+import {materialUIifyDuetDatePicker} from '../../../utils/duet-date-picker/duet-datepicker-style';
+import {store} from '../../../../redux/store';
+customElements.define('duet-date-picker', DuetDatePicker);
 
 export enum EtoolsFilterTypes {
   Search,
@@ -49,6 +54,7 @@ export class EtoolsFilters extends LitElement {
   static get styles() {
     return [
       etoolsFiltersStyles,
+      materialUIifyDuetDatePicker,
       css`
         /* Set datepicker prefix icon color using mixin (cannot be used in etools-filter-styles) */
         datepicker-lite {
@@ -144,19 +150,32 @@ export class EtoolsFilters extends LitElement {
   }
 
   getDateTmpl(f: EtoolsFilter) {
+    //   <datepicker-lite
+    //   class="filter date"
+    //   ?hidden="${!f.selected}"
+    //   .label="${f.filterName}"
+    //   .value="${f.selectedValue}"
+    //   fire-date-has-changed
+    //   @date-has-changed="${this.filterDateChange}"
+    //   data-filter-key="${f.filterKey}"
+    //   selected-date-display-format="D MMM YYYY"
+    // >
+    // </datepicker-lite>
     // language=HTML
     return html`
-      <datepicker-lite
-        class="filter date"
+      <duet-date-picker
+        identifier="filter"
         ?hidden="${!f.selected}"
-        .label="${f.filterName}"
         .value="${f.selectedValue}"
-        fire-date-has-changed
-        @date-has-changed="${this.filterDateChange}"
         data-filter-key="${f.filterKey}"
-        selected-date-display-format="D MMM YYYY"
+        .dateAdapter="${duetDateAdapter}"
+        .localization="${getDuetLocalization(store.getState().activeLanguage.activeLanguage)}"
+        @duetChange="${(e) => {
+          console.log('duetChange', e);
+          this.filterDateChange(e);
+        }}"
       >
-      </datepicker-lite>
+      </duet-date-picker>
     `;
   }
 
@@ -204,6 +223,7 @@ export class EtoolsFilters extends LitElement {
         tmpl.push(filterHtml);
       }
     });
+
     return tmpl;
   }
 
@@ -252,6 +272,9 @@ export class EtoolsFilters extends LitElement {
     `;
   }
 
+  connectedCallback() {
+    super.connectedCallback();
+  }
   setDefaultLastSelectedValues() {
     if (!this.lastSelectedValues && this.filters) {
       this.lastSelectedValues = this.getAllFiltersAndTheirValues();
