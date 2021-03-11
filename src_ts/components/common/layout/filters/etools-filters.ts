@@ -14,7 +14,6 @@ import '@unicef-polymer/etools-dropdown/etools-dropdown-multi';
 import '@unicef-polymer/etools-dropdown/etools-dropdown';
 import '@unicef-polymer/etools-date-time/datepicker-lite';
 import '@unicef-polymer/etools-loading/etools-loading';
-import {elevation2} from '../../../styles/lit-styles/elevation-styles';
 import {Callback} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 
@@ -62,7 +61,9 @@ export class EtoolsFilters extends LitElement {
         }
 
         paper-button:focus {
-          ${elevation2}
+          outline: 0;
+          box-shadow: 0 0 5px 5px rgba(170, 165, 165, 0.2);
+          background-color: rgba(170, 165, 165, 0.2);
         }
 
         .date {
@@ -241,7 +242,7 @@ export class EtoolsFilters extends LitElement {
             ${translate('GENERAL.FILTERS')}
           </paper-button>
           <div slot="dropdown-content" class="clear-all-filters">
-            <paper-button @tap="${this.clearAllFilterValues}" class="secondary-btn"
+            <paper-button @tap="${this.clearAllFilters}" class="secondary-btn"
               >${translate('GENERAL.CLEAR_ALL')}</paper-button
             >
           </div>
@@ -257,12 +258,22 @@ export class EtoolsFilters extends LitElement {
     }
   }
 
-  clearAllFilterValues() {
+  clearAllFilters() {
     if (this.filters.length === 0) {
       return;
     }
+    // Clear selected value in filters
     this.filters.forEach((f: EtoolsFilter) => {
       f.selectedValue = this.getFilterEmptyValue(f.type);
+    });
+
+    // clear selecter filters
+    this.filters.forEach((f: EtoolsFilter) => {
+      if (f.filterKey === 'search') {
+        // TODO - using FilterKeys.search here breaks the app
+        return;
+      }
+      f.selected = false;
     });
     // repaint
     this.requestUpdate().then(() => this.fireFiltersChangeEvent());
