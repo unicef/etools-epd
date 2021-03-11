@@ -162,7 +162,7 @@ export class InterventionList extends connect(store)(LitElement) {
         }
         if (item.partner_accepted && !item.unicef_accepted) {
           return html`${item.status} <br />
-            IP Accepted`;
+            Partner Accepted`;
         }
         if (!item.unicef_court && !!item.date_sent_to_partner) {
           return html`${item.status} <br />
