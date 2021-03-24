@@ -55,6 +55,7 @@ jobs:
           command: |
             TAG=${CIRCLE_BRANCH}
             docker build -t unicef/etools-epd:$TAG .
+          no_output_timeout: 15m
       - run:
           name: Pushing to Docker Hub
           command: |
