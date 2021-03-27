@@ -69,6 +69,7 @@
     "@unicef-polymer/etools-types": "^1.0.3",
     "@unicef-polymer/etools-upload": "^3.4.0",
     "@webcomponents/webcomponentsjs": "^2.5.0",
+    "@material/mwc-select": "0.20.0",
     "dayjs": "^1.9.7",
     "focus-visible": "^5.2.0",
     "lit-element": "^2.3.1",
