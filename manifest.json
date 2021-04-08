@@ -1,7 +1,7 @@
 {
-  "name": "Etools Frontend Template",
-  "short_name": "Etools Frontend Template",
-  "description": "Etools Frontend Template description",
+  "name": "eTools ePD",
+  "short_name": "eTools ePD",
+  "description": "Partner facing module that makes the process of signing PDs more efficient",
   "start_url": "/",
   "display": "standalone",
   "theme_color": "#3f51b5",
