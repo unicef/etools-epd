@@ -7,9 +7,9 @@ export const componentsLazyLoadConfig: GenericObject<string[]> = {
     'components/pages/interventions/intervention-tab-pages/intervention-tabs.js',
     'components/pages/interventions/intervention-tab-pages/intervention-overview/intervention-overview.js'
   ],
-  interventions_details: [
+  interventions_metadata: [
     'components/pages/interventions/intervention-tab-pages/intervention-tabs.js',
-    'components/pages/interventions/intervention-tab-pages/intervention-details/intervention-details.js'
+    'components/pages/interventions/intervention-tab-pages/intervention-metadata/intervention-metadata.js'
   ],
   interventions_results: [
     'components/pages/interventions/intervention-tab-pages/intervention-tabs.js',
@@ -19,9 +19,9 @@ export const componentsLazyLoadConfig: GenericObject<string[]> = {
     'components/pages/interventions/intervention-tab-pages/intervention-tabs.js',
     'components/pages/interventions/intervention-tab-pages/intervention-timing/intervention-timing.js'
   ],
-  interventions_management: [
+  interventions_strategy: [
     'components/pages/interventions/intervention-tab-pages/intervention-tabs.js',
-    'components/pages/interventions/intervention-tab-pages/intervention-management/intervention-management.js'
+    'components/pages/interventions/intervention-tab-pages/intervention-strategy/intervention-strategy.js'
   ],
   interventions_attachments: [
     'components/pages/interventions/intervention-tab-pages/intervention-tabs.js',
