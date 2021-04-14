@@ -31,6 +31,10 @@ export const componentsLazyLoadConfig: GenericObject<string[]> = {
     'components/pages/interventions/intervention-tab-pages/intervention-tabs.js',
     'components/pages/interventions/intervention-tab-pages/intervention-review/intervention-review.js'
   ],
+  interventions_info: [
+    'components/pages/interventions/intervention-tab-pages/intervention-tabs.js',
+    'components/pages/interventions/intervention-tab-pages/intervention-info/intervention-info.js'
+  ],
   'page-not-found': ['components/pages/page-not-found.js']
 };
 
