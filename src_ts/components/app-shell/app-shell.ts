@@ -152,7 +152,7 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
                 this.mainPage,
                 'interventions',
                 this.subPage,
-                'overview|details|results|timing|management|review|attachments'
+                'overview|metadata|strategy|results|timing|review|attachments'
               )}"
             >
             </intervention-tabs>

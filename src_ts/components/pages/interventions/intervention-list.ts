@@ -126,7 +126,7 @@ export class InterventionList extends connect(store)(LitElement) {
     {
       label: (translate('INTERVENTIONS_LIST.COLUMNS.REFERENCE_NO') as unknown) as string,
       name: 'number',
-      link_tmpl: `${ROOT_PATH}interventions/:id/details`,
+      link_tmpl: `${ROOT_PATH}interventions/:id/metadata`,
       type: EtoolsTableColumnType.Link,
       sort: null
     },
