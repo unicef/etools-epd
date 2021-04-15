@@ -39,7 +39,7 @@ EtoolsRouter.addRoute(
       return {
         routeName: 'interventions',
         subRouteName: params.matchDetails[2], // tab name
-        subSubRouteName: params.matchDetails[3], //sub tab name
+        subSubRouteName: params.matchDetails[3], // sub tab name
         path: params.matchDetails[0],
         queryParams: params.queryParams,
         params: {

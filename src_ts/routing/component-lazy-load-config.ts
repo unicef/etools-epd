@@ -3,10 +3,6 @@ import {GenericObject, RouteDetails} from '@unicef-polymer/etools-types';
 // each key from this object is computed from routeName_routeSubPage (if subRoute exists)
 export const componentsLazyLoadConfig: GenericObject<string[]> = {
   interventions_list: ['components/pages/interventions/intervention-list.js'],
-  interventions_overview: [
-    'components/pages/interventions/intervention-tab-pages/intervention-tabs.js',
-    'components/pages/interventions/intervention-tab-pages/intervention-overview/intervention-overview.js'
-  ],
   interventions_metadata: [
     'components/pages/interventions/intervention-tab-pages/intervention-tabs.js',
     'components/pages/interventions/intervention-tab-pages/intervention-metadata/intervention-metadata.js'
