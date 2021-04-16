@@ -6,7 +6,7 @@
     "src/components/pages/interventions/intervention-list.js",
     "src/components/pages/interventions/intervention-tab-pages/intervention-tabs.js",
     "src/components/pages/interventions/intervention-tab-pages/intervention-metadata/intervention-metadata.js",
-    "src/components/pages/interventions/intervention-tab-pages/intervention-overview/intervention-overview.js",
+    "src/components/pages/interventions/intervention-tab-pages/intervention-info/intervention-info.js",
     "src/components/pages/interventions/intervention-tab-pages/intervention-strategy/intervention-strategy.js",
     "src/components/pages/interventions/intervention-tab-pages/intervention-results/intervention-results.js",
     "src/components/pages/interventions/intervention-tab-pages/intervention-attachments/intervention-attachments.js",
