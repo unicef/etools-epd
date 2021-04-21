@@ -16,8 +16,6 @@ export const countriesDropdownStyles = html`
     }
 
     etools-dropdown {
-      /*width: 160px;*/
-
       --paper-listbox: {
         max-height: 600px;
       }
@@ -39,12 +37,12 @@ export const countriesDropdownStyles = html`
         display: none;
       }
 
-      --paper-input-container-input: {
+      --paper-input-container-shared-input-style: {
         color: var(--header-icon-color);
         cursor: pointer;
-        min-height: 24px;
+        font-size: 16px;
         text-align: right;
-        line-height: 21px; /* for IE */
+        width: 100px;
       }
 
       --paper-menu-button-dropdown: {
