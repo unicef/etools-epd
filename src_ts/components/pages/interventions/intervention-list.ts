@@ -154,24 +154,24 @@ export class InterventionList extends connect(store)(LitElement) {
         }
         if (item.partner_accepted && item.unicef_accepted) {
           return html`${item.status} <br />
-            ${translate('PERFORMED_ACTIONS_STATUS.PARTNER_AND_UNICEF_ACCEPTED')}`;
+            ${translate('PARTNER_AND_UNICEF_ACCEPTED')}`;
         }
         if (!item.partner_accepted && item.unicef_accepted) {
           return html`${item.status} <br />
-            ${translate('PERFORMED_ACTIONS_STATUS.UNICEF_ACCEPTED')}`;
+            ${translate('UNICEF_ACCEPTED')}`;
         }
         if (item.partner_accepted && !item.unicef_accepted) {
           return html`${item.status} <br />
-            ${translate('PERFORMED_ACTIONS_STATUS.PARTNER_ACCEPTED')}`;
+            ${translate('PARTNER_ACCEPTED')}`;
         }
         if (!item.unicef_court && !!item.date_sent_to_partner) {
           return html`${item.status} <br />
-            ${translate('PERFORMED_ACTIONS_STATUS.SENT_TO_PARTNER')}`;
+            ${translate('SENT_TO_PARTNER')}`;
         }
 
         if (item.unicef_court && !!item.submission_date && !!item.date_sent_to_partner) {
           return html`${item.status} <br />
-            ${translate('PERFORMED_ACTIONS_STATUS.SENT_TO_UNICEF')}`;
+            ${translate('SENT_TO_UNICEF')}`;
         }
         return item.status;
       },
