@@ -68,7 +68,7 @@ export class InterventionList extends connect(store)(LitElement) {
         }
       </style>
       <page-content-header>
-        <h1 slot="page-title">${translate('INTERVENTIONS_LIST.TITLE')}</h1>
+        <h1 slot="page-title">${translate('INTERVENTIONS_LIST.PD_LIST')}</h1>
 
         <div slot="title-row-actions" class="content-header-actions">
           <div class="action">
@@ -124,26 +124,26 @@ export class InterventionList extends connect(store)(LitElement) {
 
   listColumns: EtoolsTableColumn[] = [
     {
-      label: (translate('INTERVENTIONS_LIST.COLUMNS.REFERENCE_NO') as unknown) as string,
+      label: (translate('INTERVENTIONS_LIST.REFERENCE_NO') as unknown) as string,
       name: 'number',
       link_tmpl: `${ROOT_PATH}interventions/:id/metadata`,
       type: EtoolsTableColumnType.Link,
       sort: null
     },
     {
-      label: (translate('INTERVENTIONS_LIST.COLUMNS.PARTNER_ORG_NAME') as unknown) as string,
+      label: (translate('INTERVENTIONS_LIST.PARTNER_ORG_NAME') as unknown) as string,
       name: 'partner_name',
       type: EtoolsTableColumnType.Text,
       sort: null
     },
     {
-      label: (translate('INTERVENTIONS_LIST.COLUMNS.DOC_TYPE') as unknown) as string,
+      label: (translate('INTERVENTIONS_LIST.DOC_TYPE') as unknown) as string,
       name: 'document_type',
       type: EtoolsTableColumnType.Text,
       sort: null
     },
     {
-      label: (translate('INTERVENTIONS_LIST.COLUMNS.STATUS') as unknown) as string,
+      label: (translate('INTERVENTIONS_LIST.STATUS') as unknown) as string,
       name: 'status',
       type: EtoolsTableColumnType.Custom,
       capitalize: true,
@@ -178,19 +178,19 @@ export class InterventionList extends connect(store)(LitElement) {
       cssClass: 'col_type'
     },
     {
-      label: (translate('INTERVENTIONS_LIST.COLUMNS.TITLE') as unknown) as string,
+      label: (translate('INTERVENTIONS_LIST.TITLE') as unknown) as string,
       name: 'title',
       type: EtoolsTableColumnType.Text,
       sort: null
     },
     {
-      label: (translate('INTERVENTIONS_LIST.COLUMNS.START_DATE') as unknown) as string,
+      label: (translate('INTERVENTIONS_LIST.START_DATE') as unknown) as string,
       name: 'start',
       type: EtoolsTableColumnType.Date,
       sort: null
     },
     {
-      label: (translate('INTERVENTIONS_LIST.COLUMNS.END_DATE') as unknown) as string,
+      label: (translate('INTERVENTIONS_LIST.END_DATE') as unknown) as string,
       name: 'end',
       type: EtoolsTableColumnType.Date,
       sort: null
