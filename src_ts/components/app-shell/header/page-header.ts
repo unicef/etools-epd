@@ -1,6 +1,7 @@
 import '@polymer/app-layout/app-toolbar/app-toolbar';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@unicef-polymer/etools-profile-dropdown/etools-profile-dropdown';
+import '@unicef-polymer/etools-dropdown/etools-dropdown.js';
 import {customElement, LitElement, html, property} from 'lit-element';
 
 import '../../common/layout/support-btn';
@@ -49,7 +50,6 @@ export class PageHeader extends connect(store)(LitElement) {
         .dropdowns {
           display: flex;
           margin-right: 5px;
-          max-width: 280px;
         }
         .header {
           flex-wrap: wrap;
@@ -111,7 +111,6 @@ export class PageHeader extends connect(store)(LitElement) {
               hide-search
               allow-outside-scroll
               no-label-float
-              .minWidth="160px"
               .autoWidth="${true}"
             ></etools-dropdown>
 
