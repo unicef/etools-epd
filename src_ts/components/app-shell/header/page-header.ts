@@ -196,7 +196,7 @@ export class PageHeader extends connect(store)(LitElement) {
           if (this.selectedLanguage === 'ar') {
             htmlTag!.setAttribute('dir', 'rtl');
           } else if (htmlTag!.getAttribute('dir')) {
-            htmlTag!.setAttribute('dir', 'rtl');
+            htmlTag!.removeAttribute('dir');
           }
         });
       }
