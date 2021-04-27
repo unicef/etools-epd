@@ -312,11 +312,6 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
     }
     if (state.activeLanguage && state.activeLanguage.activeLanguage !== this.selectedLanguage) {
       this.selectedLanguage = state.activeLanguage!.activeLanguage;
-      if (this.selectedLanguage === 'ar') {
-        import('./required-style-theme-arabic.js');
-      } else {
-        import('./required-style-theme.js');
-      }
       this.loadLocalization();
     }
   }

@@ -114,6 +114,14 @@ documentContainer.innerHTML = `
         --epd-profile-dialog-border-b: solid 1px var(--dark-divider-color);        
          
       }
+
+      html[dir="rtl"] {
+        --required-star-style: {
+          background: url('./images/required.svg') no-repeat 99% 20%/8px;
+          right: auto;
+          padding-right: 15px;
+        }
+      }
     </style>
   </custom-style>`;
 
