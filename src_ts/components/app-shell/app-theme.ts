@@ -111,8 +111,15 @@ documentContainer.innerHTML = `
            0 3px 5px -1px rgba(0, 0, 0, 0.4);
         }      
 
-        --epd-profile-dialog-border-b: solid 1px var(--dark-divider-color);        
-         
+        --epd-profile-dialog-border-b: solid 1px var(--dark-divider-color);  
+        
+        --required-star-style: {
+          background: url('./images/required.svg') no-repeat 99% 20%/8px;
+          width: auto !important;
+          max-width: 100%;
+          right: auto;
+          padding-right: 15px;
+        }               
       }
 
       html[dir="rtl"] {
