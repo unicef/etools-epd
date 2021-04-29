@@ -192,11 +192,11 @@ export class PageHeader extends connect(store)(LitElement) {
       if (state.activeLanguage && state.activeLanguage.activeLanguage !== this.selectedLanguage) {
         this.selectedLanguage = state.activeLanguage!.activeLanguage;
         setTimeout(() => {
-          const body = document.querySelector('body');
+          const htmlTag = document.querySelector('html');
           if (this.selectedLanguage === 'ar') {
-            body!.setAttribute('dir', 'rtl');
-          } else if (body!.getAttribute('dir')) {
-            body!.removeAttribute('dir');
+            htmlTag!.setAttribute('dir', 'rtl');
+          } else if (htmlTag!.getAttribute('dir')) {
+            htmlTag!.removeAttribute('dir');
           }
         });
       }
