@@ -20,6 +20,7 @@ import {setLanguage} from '../../../redux/actions/active-language';
 import {activeLanguage} from '../../../redux/reducers/active-language';
 import {countriesDropdownStyles} from './countries-dropdown-styles';
 import {AnyObject, EtoolsUser, GenericObject} from '@unicef-polymer/etools-types';
+import {EtoolsDropdownEl} from '@unicef-polymer/etools-dropdown/etools-dropdown.js';
 
 store.addReducers({
   activeLanguage
@@ -49,7 +50,7 @@ export class PageHeader extends connect(store)(LitElement) {
         }
         .dropdowns {
           display: flex;
-          margin-right: 5px;
+          margin-inline: 5px;
         }
         .header {
           flex-wrap: wrap;
@@ -182,6 +183,7 @@ export class PageHeader extends connect(store)(LitElement) {
 
   public connectedCallback() {
     super.connectedCallback();
+
     this.setBgColor();
     this.checkEnvironment();
   }
@@ -195,6 +197,7 @@ export class PageHeader extends connect(store)(LitElement) {
           const htmlTag = document.querySelector('html');
           if (this.selectedLanguage === 'ar') {
             htmlTag!.setAttribute('dir', 'rtl');
+            this.setDropdownsStyleForLtr();
           } else if (htmlTag!.getAttribute('dir')) {
             htmlTag!.removeAttribute('dir');
           }
@@ -291,5 +294,17 @@ export class PageHeader extends connect(store)(LitElement) {
   protected checkEnvironment() {
     this.isStaging = !isProductionServer();
     this.environment = isProductionServer() ? 'DEMO' : 'LOCAL';
+  }
+
+  protected setDropdownsStyleForLtr() {
+    [
+      this.shadowRoot!.querySelector('etools-dropdown'),
+      this.shadowRoot!.querySelector('countries-dropdown')?.shadowRoot?.querySelector('etools-dropdown')
+    ].forEach((el: EtoolsDropdownEl | null | undefined) => {
+      if (el) {
+        el.classList.add('ltr-dropdown');
+      }
+    });
+    this.shadowRoot!.querySelector('countries-dropdown')?.classList.add('countries-ltr-margin');
   }
 }

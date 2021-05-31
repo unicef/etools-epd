@@ -50,6 +50,14 @@ export const countriesDropdownStyles = html`
       }
     }
 
+    .ltr-dropdown {
+      --paper-input-container-shared-input-style_-_max-width: 75px;
+    }
+
+    .countries-ltr-margin {
+      margin-inline: 30px 20px;
+    }
+
     @media (max-width: 768px) {
       etools-dropdown {
         width: 130px;
