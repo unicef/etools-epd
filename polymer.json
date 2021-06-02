@@ -5,9 +5,9 @@
     "src/components/pages/page-not-found.js",
     "src/components/pages/interventions/intervention-list.js",
     "src/components/pages/interventions/intervention-tab-pages/intervention-tabs.js",
-    "src/components/pages/interventions/intervention-tab-pages/intervention-details/intervention-details.js",
-    "src/components/pages/interventions/intervention-tab-pages/intervention-overview/intervention-overview.js",
-    "src/components/pages/interventions/intervention-tab-pages/intervention-management/intervention-management.js",
+    "src/components/pages/interventions/intervention-tab-pages/intervention-metadata/intervention-metadata.js",
+    "src/components/pages/interventions/intervention-tab-pages/intervention-info/intervention-info.js",
+    "src/components/pages/interventions/intervention-tab-pages/intervention-strategy/intervention-strategy.js",
     "src/components/pages/interventions/intervention-tab-pages/intervention-results/intervention-results.js",
     "src/components/pages/interventions/intervention-tab-pages/intervention-attachments/intervention-attachments.js",
     "src/components/pages/interventions/intervention-tab-pages/intervention-timing/intervention-timing.js",
@@ -22,7 +22,8 @@
     "node_modules/dayjs/dayjs.min.js",
     "node_modules/dayjs/plugin/utc.js",
     "node_modules/dayjs/plugin/isBetween.js",
-    "node_modules/dayjs/plugin/isSameOrBefore.js"
+    "node_modules/dayjs/plugin/isSameOrBefore.js",
+    "node_modules/focus-visible/dist/focus-visible.min.js"
   ],
   "lint": {
     "rules": ["polymer-3"],

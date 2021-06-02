@@ -145,6 +145,7 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
             <intervention-list
               class="page"
               ?active="${this.isActivePage(this.mainPage, 'interventions', this.subPage, 'list')}"
+              ?hidden="${!this.isActivePage(this.mainPage, 'interventions', this.subPage, 'list')}"
             ></intervention-list>
             <intervention-tabs
               class="page"
@@ -152,7 +153,13 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
                 this.mainPage,
                 'interventions',
                 this.subPage,
-                'overview|details|results|timing|management|review|attachments'
+                'overview|metadata|strategy|results|timing|review|attachments|info'
+              )}"
+              ?hidden="${!this.isActivePage(
+                this.mainPage,
+                'interventions',
+                this.subPage,
+                'overview|metadata|strategy|results|timing|review|attachments|info'
               )}"
             >
             </intervention-tabs>
@@ -210,6 +217,7 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
     } else {
       this.smallMenu = !!parseInt(menuTypeStoredVal, 10);
     }
+    
   }
 
   async connectedCallback() {

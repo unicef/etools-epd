@@ -60,6 +60,12 @@ export class EtoolsFilters extends LitElement {
           display: none !important;
         }
 
+        paper-button:focus {
+          outline: 0;
+          box-shadow: 0 0 5px 5px rgba(170, 165, 165, 0.2);
+          background-color: rgba(170, 165, 165, 0.2);
+        }
+
         .date {
           margin-right: 16px;
         }
@@ -263,7 +269,8 @@ export class EtoolsFilters extends LitElement {
 
     // clear selecter filters
     this.filters.forEach((f: EtoolsFilter) => {
-      if (f.filterKey === 'search') {// TODO - using FilterKeys.search here breaks the app
+      if (f.filterKey === 'search') {
+        // TODO - using FilterKeys.search here breaks the app
         return;
       }
       f.selected = false;

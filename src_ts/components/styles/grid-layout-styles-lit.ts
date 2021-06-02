@@ -1,5 +1,4 @@
 import {html} from 'lit-element';
-import {layoutHorizontal, layoutVertical, layoutWrap, layoutFlex} from './lit-styles/flex-layout-styles';
 
 // language=HTML
 export const gridLayoutStylesLit = html` <style>
@@ -13,16 +12,16 @@ export const gridLayoutStylesLit = html` <style>
   }
 
   .layout-horizontal {
-    ${layoutHorizontal}
+    flex-direction: row;
   }
 
   .layout-vertical,
   .col.layout-vertical {
-    ${layoutVertical}
+    flex-direction: column;
   }
 
   .layout-wrap {
-    ${layoutWrap}
+    flex-wrap: wrap;
   }
 
   .row-padding {
@@ -48,37 +47,42 @@ export const gridLayoutStylesLit = html` <style>
   }
 
   .row-h {
-    ${layoutHorizontal}
+    flex-direction: row;
   }
 
   .row-v {
-    ${layoutVertical}
+    flex-direction: column;
   }
 
   .flex-c {
     /* flex container */
-    ${layoutFlex}
+    flex: 1;
   }
 
-  .row-h, .row-v {
+  .row-h,
+  .row-v {
     padding: 16px 24px;
   }
 
-  .row-v.t-border, .row-h.t-border {
+  .row-v.t-border,
+  .row-h.t-border {
     border-top: 1px solid var(--light-divider-color);
   }
 
-  .row-v.b-border, .row-h.b-border {
+  .row-v.b-border,
+  .row-h.b-border {
     border-bottom: 1px solid var(--light-divider-color);
   }
 
-  .row-v.header-row, .row-h.header-row {
+  .row-v.header-row,
+  .row-h.header-row {
     color: var(--secondary-text-color);
     border-bottom: 1px solid var(--light-divider-color);
     font-weight: 600;
   }
 
-  .row-v.header-row > .col, .row-h.header-row > .col {
+  .row-v.header-row > .col,
+  .row-h.header-row > .col {
     line-height: 24px;
   }
 
@@ -101,7 +105,7 @@ export const gridLayoutStylesLit = html` <style>
   }
 
   .right-align {
-    ${layoutHorizontal}
+    flex-direction: row;
     justify-content: flex-end;
     align-items: center;
     text-align: right;
@@ -117,7 +121,7 @@ export const gridLayoutStylesLit = html` <style>
   }
 
   .col {
-    ${layoutHorizontal}
+    flex-direction: row;
     box-sizing: border-box;
   }
 
