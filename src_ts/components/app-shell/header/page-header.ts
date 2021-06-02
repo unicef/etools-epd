@@ -20,7 +20,6 @@ import {setLanguage} from '../../../redux/actions/active-language';
 import {activeLanguage} from '../../../redux/reducers/active-language';
 import {countriesDropdownStyles} from './countries-dropdown-styles';
 import {AnyObject, EtoolsUser, GenericObject} from '@unicef-polymer/etools-types';
-import {EtoolsDropdownEl} from '@unicef-polymer/etools-dropdown/etools-dropdown.js';
 
 store.addReducers({
   activeLanguage
@@ -194,12 +193,11 @@ export class PageHeader extends connect(store)(LitElement) {
       if (state.activeLanguage && state.activeLanguage.activeLanguage !== this.selectedLanguage) {
         this.selectedLanguage = state.activeLanguage!.activeLanguage;
         setTimeout(() => {
-          const htmlTag = document.querySelector('html');
+          const htmlElements = this.getElementsForDirAttribute();
           if (this.selectedLanguage === 'ar') {
-            htmlTag!.setAttribute('dir', 'rtl');
-            this.setDropdownsStyleForLtr();
-          } else if (htmlTag!.getAttribute('dir')) {
-            htmlTag!.removeAttribute('dir');
+            htmlElements.forEach((el) => el!.setAttribute('dir', 'rtl'));
+          } else {
+            htmlElements.forEach((el) => el!.removeAttribute('dir'));
           }
         });
       }
@@ -296,15 +294,12 @@ export class PageHeader extends connect(store)(LitElement) {
     this.environment = isProductionServer() ? 'DEMO' : 'LOCAL';
   }
 
-  protected setDropdownsStyleForLtr() {
-    [
+  protected getElementsForDirAttribute() {
+    return [
+      document.querySelector('html'),
       this.shadowRoot!.querySelector('etools-dropdown'),
+      this.shadowRoot!.querySelector('countries-dropdown'),
       this.shadowRoot!.querySelector('countries-dropdown')?.shadowRoot?.querySelector('etools-dropdown')
-    ].forEach((el: EtoolsDropdownEl | null | undefined) => {
-      if (el) {
-        el.classList.add('ltr-dropdown');
-      }
-    });
-    this.shadowRoot!.querySelector('countries-dropdown')?.classList.add('countries-ltr-margin');
+    ].filter((el) => el !== null && el);
   }
 }
