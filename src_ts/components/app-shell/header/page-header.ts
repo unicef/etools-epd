@@ -182,7 +182,6 @@ export class PageHeader extends connect(store)(LitElement) {
 
   public connectedCallback() {
     super.connectedCallback();
-
     this.setBgColor();
     this.checkEnvironment();
   }
