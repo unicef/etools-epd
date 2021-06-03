@@ -102,6 +102,7 @@ export class PageHeader extends connect(store)(LitElement) {
         <div class="header__item header__right-group">
           <div class="dropdowns">
             <etools-dropdown
+              dir="${this.dir}"
               .selected="${this.selectedLanguage}"
               .options="${this.languages}"
               option-label="display_name"
