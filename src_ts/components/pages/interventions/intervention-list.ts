@@ -287,7 +287,7 @@ export class InterventionList extends connect(store)(LitElement) {
     this.urlParams = newParams;
     const stringParams: string = buildUrlQueryString(newParams);
     this.exportParams = stringParams;
-    replaceAppLocation(`${this.routeDetails!.path}?${stringParams}`, true);
+    replaceAppLocation(`${this.routeDetails!.path}?${stringParams}`);
   }
 
   private async getListData() {
