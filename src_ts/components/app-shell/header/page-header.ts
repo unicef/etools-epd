@@ -102,7 +102,6 @@ export class PageHeader extends connect(store)(LitElement) {
         <div class="header__item header__right-group">
           <div class="dropdowns">
             <etools-dropdown
-              dir="${this.dir}"
               .selected="${this.selectedLanguage}"
               .options="${this.languages}"
               option-label="display_name"
@@ -199,9 +198,11 @@ export class PageHeader extends connect(store)(LitElement) {
           const htmlTag = document.querySelector('html');
           if (this.selectedLanguage === 'ar') {
             htmlTag!.setAttribute('dir', 'rtl');
+            this.setAttribute('dir', 'rtl');
             this.dir = 'rtl';
           } else if (htmlTag!.getAttribute('dir')) {
             htmlTag!.removeAttribute('dir');
+            this.removeAttribute('dir');
             this.dir = '';
           }
         });
