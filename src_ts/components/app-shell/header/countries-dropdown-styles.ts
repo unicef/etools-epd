@@ -15,6 +15,12 @@ export const countriesDropdownStyles = html`
       cursor: pointer;
     }
 
+    :host([dir='rtl']) {
+      etools-dropdown {
+        --paper-input-container-shared-input-style_-_max-width: 75px;
+      }
+    }
+
     etools-dropdown {
       --paper-listbox: {
         max-height: 600px;
