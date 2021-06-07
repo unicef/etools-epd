@@ -114,7 +114,7 @@ export class PageHeader extends connect(store)(LitElement) {
               .autoWidth="${true}"
             ></etools-dropdown>
 
-            <countries-dropdown></countries-dropdown>
+            <countries-dropdown dir="${this.dir}"></countries-dropdown>
           </div>
 
           <support-btn></support-btn>
@@ -172,6 +172,9 @@ export class PageHeader extends connect(store)(LitElement) {
   @property({type: String})
   environment = 'LOCAL';
 
+  @property({type: String})
+  dir = '';
+
   languages: GenericObject<string>[] = [
     {value: 'en', display_name: 'English'},
     {value: 'ro', display_name: 'Romanian'},
@@ -195,8 +198,12 @@ export class PageHeader extends connect(store)(LitElement) {
           const htmlTag = document.querySelector('html');
           if (this.selectedLanguage === 'ar') {
             htmlTag!.setAttribute('dir', 'rtl');
+            this.setAttribute('dir', 'rtl');
+            this.dir = 'rtl';
           } else if (htmlTag!.getAttribute('dir')) {
             htmlTag!.removeAttribute('dir');
+            this.removeAttribute('dir');
+            this.dir = '';
           }
         });
       }
