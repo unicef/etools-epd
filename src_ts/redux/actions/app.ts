@@ -31,7 +31,7 @@ const updateStoreRouteDetails: ActionCreator<AppActionUpdateRouteDetails> = (rou
 const loadPageComponents: ActionCreator<ThunkResult> = (routeDetails: RouteDetails) => (dispatch) => {
   if (!routeDetails) {
     // invalid route => redirect to 404 page
-    updateAppLocation(ROUTE_404, true);
+    updateAppLocation(ROUTE_404);
     return;
   }
 
@@ -40,7 +40,7 @@ const loadPageComponents: ActionCreator<ThunkResult> = (routeDetails: RouteDetai
   const filesToImport: string[] | undefined = getFilePathsToImport(routeDetails);
   if (!filesToImport) {
     console.log('No file imports configuration found (componentsLazyLoadConfig)!');
-    updateAppLocation(ROUTE_404, true);
+    updateAppLocation(ROUTE_404);
     return;
   }
 
@@ -70,14 +70,14 @@ export const navigate: ActionCreator<ThunkResult> = (path: string) => (dispatch)
   // if app route is accessed, redirect to default route (if not already on it)
   // @ts-ignore
   if (path === ROOT_PATH && ROOT_PATH !== DEFAULT_ROUTE) {
-    updateAppLocation(DEFAULT_ROUTE, true);
+    updateAppLocation(DEFAULT_ROUTE);
     return;
   }
 
   // some routes need redirect to subRoute list
   const redirectPath: string | undefined = getRedirectToListPath(path);
   if (redirectPath) {
-    updateAppLocation(redirectPath, true);
+    updateAppLocation(redirectPath);
     return;
   }
 
