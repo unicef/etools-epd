@@ -46,6 +46,7 @@ import {
   RouteQueryParams
 } from '@unicef-polymer/etools-types';
 import pick from 'lodash-es/pick';
+import debounce from 'lodash-es/debounce';
 
 /**
  * @LitElement
@@ -210,7 +211,10 @@ export class InterventionList extends connect(store)(LitElement) {
     }
 
     const stateRouteDetails = {...state.app!.routeDetails};
-    if (JSON.stringify(stateRouteDetails) !== JSON.stringify(this.routeDetails)) {
+    if (
+      JSON.stringify(stateRouteDetails) !== JSON.stringify(this.routeDetails) ||
+      state.interventions?.shouldReGetList
+    ) {
       if (
         (!stateRouteDetails.queryParams || Object.keys(stateRouteDetails.queryParams).length === 0) &&
         this.urlParams
@@ -219,7 +223,7 @@ export class InterventionList extends connect(store)(LitElement) {
         this.updateCurrentParams(this.urlParams);
         return;
       }
-      this.onParamsChange(stateRouteDetails);
+      this.onParamsChange(stateRouteDetails, state.interventions?.shouldReGetList);
     }
 
     if (!isJsonStrMatch(this.interventionStatuses, state.commonData!.interventionStatuses)) {
@@ -233,7 +237,7 @@ export class InterventionList extends connect(store)(LitElement) {
     this.initFiltersForDisplay(state);
   }
 
-  onParamsChange(routeDetails: RouteDetails): void {
+  onParamsChange(routeDetails: RouteDetails, forceReGet: boolean): void {
     this.routeDetails = routeDetails;
 
     const currentParams: GenericObject<any> = this.routeDetails.queryParams || {};
@@ -241,7 +245,7 @@ export class InterventionList extends connect(store)(LitElement) {
 
     if (paramsValid) {
       // get data as params are valid
-      this.getListData();
+      this.getListData(forceReGet);
     }
   }
 
@@ -290,11 +294,14 @@ export class InterventionList extends connect(store)(LitElement) {
     replaceAppLocation(`${this.routeDetails!.path}?${stringParams}`);
   }
 
-  private async getListData() {
+  private async getListData(forceReGet: boolean) {
     const currentParams: GenericObject<any> = this.routeDetails!.queryParams || {};
     try {
       this.showLoading = true;
-      const {list, paginator}: ListHelperResponse<InterventionListData> = await this.listHelper.getList(currentParams);
+      const {list, paginator}: ListHelperResponse<InterventionListData> = await this.listHelper.getList(
+        currentParams,
+        forceReGet
+      );
       this.listData = list;
       // remove this after status draft comes as development
       this.mapDraftToDevelop(this.listData);
