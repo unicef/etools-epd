@@ -46,7 +46,6 @@ import {
   RouteQueryParams
 } from '@unicef-polymer/etools-types';
 import pick from 'lodash-es/pick';
-import debounce from 'lodash-es/debounce';
 
 /**
  * @LitElement
@@ -223,6 +222,7 @@ export class InterventionList extends connect(store)(LitElement) {
         this.updateCurrentParams(this.urlParams);
         return;
       }
+      this.routeDetails = routeDetails;
       this.onParamsChange(stateRouteDetails, state.interventions?.shouldReGetList);
     }
 
@@ -238,8 +238,6 @@ export class InterventionList extends connect(store)(LitElement) {
   }
 
   onParamsChange(routeDetails: RouteDetails, forceReGet: boolean): void {
-    this.routeDetails = routeDetails;
-
     const currentParams: GenericObject<any> = this.routeDetails.queryParams || {};
     const paramsValid: boolean = this.paramsInitialized || this.initializeAndValidateParams(currentParams);
 
@@ -335,8 +333,8 @@ export class InterventionList extends connect(store)(LitElement) {
   private dataRequiredByFiltersHasBeenLoaded(state: RootState): boolean {
     return !!(
       state.commonData?.commonDataIsLoaded &&
-      this.routeDetails!.queryParams &&
-      Object.keys(this.routeDetails!.queryParams).length > 0
+      this.routeDetails?.queryParams &&
+      Object.keys(this.routeDetails?.queryParams).length > 0
     );
   }
 

@@ -8,6 +8,7 @@ import {getRedirectToListPath} from '../../routing/subpage-redirect';
 import {RouteDetails} from '@unicef-polymer/etools-types';
 
 export const UPDATE_ROUTE_DETAILS = 'UPDATE_ROUTE_DETAILS';
+export const UPDATE_ROUTE_AND_RESET_INTERVENTION = 'UPDATE_ROUTE_AND_RESET_INTERVENTION';
 export const UPDATE_DRAWER_STATE = 'UPDATE_DRAWER_STATE';
 
 export interface AppActionUpdateRouteDetails extends Action<'UPDATE_ROUTE_DETAILS'> {
@@ -28,7 +29,14 @@ const updateStoreRouteDetails: ActionCreator<AppActionUpdateRouteDetails> = (rou
   };
 };
 
-const loadPageComponents: ActionCreator<ThunkResult> = (routeDetails: RouteDetails) => (dispatch) => {
+const updatRouteDetailsAndResetIntervention = (routeDetails: any) => {
+  return {
+    type: UPDATE_ROUTE_AND_RESET_INTERVENTION,
+    routeDetails
+  };
+};
+
+const loadPageComponents: ActionCreator<ThunkResult> = (routeDetails: RouteDetails) => (dispatch, getState) => {
   if (!routeDetails) {
     // invalid route => redirect to 404 page
     updateAppLocation(ROUTE_404);
@@ -54,7 +62,13 @@ const loadPageComponents: ActionCreator<ThunkResult> = (routeDetails: RouteDetai
       });
   });
   // add page details to redux store, to be used in other components
-  dispatch(updateStoreRouteDetails(routeDetails));
+  const prevRouteDetails = getState().app?.routeDetails;
+  if (commingFromPDDetailsToList(prevRouteDetails!, routeDetails)) {
+    // Avoid multiple list requests after updating PD data that is displayed on the list and then going to the list
+    dispatch(updatRouteDetailsAndResetIntervention(routeDetails));
+  } else {
+    dispatch(updateStoreRouteDetails(routeDetails));
+  }
 };
 
 export const updateDrawerState: ActionCreator<AppActionUpdateDrawerState> = (opened: boolean) => {
@@ -64,7 +78,7 @@ export const updateDrawerState: ActionCreator<AppActionUpdateDrawerState> = (ope
   };
 };
 
-export const navigate: ActionCreator<ThunkResult> = (path: string) => (dispatch) => {
+export const navigate: ActionCreator<ThunkResult> = (path: string) => (dispatch, getState) => {
   // Check if path matches a valid app route, use route details to load required page components
 
   // if app route is accessed, redirect to default route (if not already on it)
@@ -85,3 +99,13 @@ export const navigate: ActionCreator<ThunkResult> = (path: string) => (dispatch)
 
   dispatch(loadPageComponents(routeDetails));
 };
+
+function commingFromPDDetailsToList(prevRouteDetails: RouteDetails, routeDetails: RouteDetails | null) {
+  return (
+    routeDetails &&
+    prevRouteDetails &&
+    prevRouteDetails.routeName === 'interventions' &&
+    prevRouteDetails.subRouteName !== 'list' &&
+    routeDetails?.subRouteName === 'list'
+  );
+}
