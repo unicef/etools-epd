@@ -210,7 +210,10 @@ export class InterventionList extends connect(store)(LitElement) {
     }
 
     const stateRouteDetails = {...state.app!.routeDetails};
-    if (JSON.stringify(stateRouteDetails) !== JSON.stringify(this.routeDetails)) {
+    if (
+      JSON.stringify(stateRouteDetails) !== JSON.stringify(this.routeDetails) ||
+      state.interventions?.shouldReGetList
+    ) {
       if (
         (!stateRouteDetails.queryParams || Object.keys(stateRouteDetails.queryParams).length === 0) &&
         this.urlParams
@@ -219,7 +222,8 @@ export class InterventionList extends connect(store)(LitElement) {
         this.updateCurrentParams(this.urlParams);
         return;
       }
-      this.onParamsChange(stateRouteDetails);
+      this.routeDetails = routeDetails;
+      this.onParamsChange(stateRouteDetails, state.interventions?.shouldReGetList);
     }
 
     if (!isJsonStrMatch(this.interventionStatuses, state.commonData!.interventionStatuses)) {
@@ -233,15 +237,13 @@ export class InterventionList extends connect(store)(LitElement) {
     this.initFiltersForDisplay(state);
   }
 
-  onParamsChange(routeDetails: RouteDetails): void {
-    this.routeDetails = routeDetails;
-
+  onParamsChange(routeDetails: RouteDetails, forceReGet: boolean): void {
     const currentParams: GenericObject<any> = this.routeDetails.queryParams || {};
     const paramsValid: boolean = this.paramsInitialized || this.initializeAndValidateParams(currentParams);
 
     if (paramsValid) {
       // get data as params are valid
-      this.getListData();
+      this.getListData(forceReGet);
     }
   }
 
@@ -290,11 +292,14 @@ export class InterventionList extends connect(store)(LitElement) {
     replaceAppLocation(`${this.routeDetails!.path}?${stringParams}`);
   }
 
-  private async getListData() {
+  private async getListData(forceReGet: boolean) {
     const currentParams: GenericObject<any> = this.routeDetails!.queryParams || {};
     try {
       this.showLoading = true;
-      const {list, paginator}: ListHelperResponse<InterventionListData> = await this.listHelper.getList(currentParams);
+      const {list, paginator}: ListHelperResponse<InterventionListData> = await this.listHelper.getList(
+        currentParams,
+        forceReGet
+      );
       this.listData = list;
       // remove this after status draft comes as development
       this.mapDraftToDevelop(this.listData);
@@ -328,8 +333,8 @@ export class InterventionList extends connect(store)(LitElement) {
   private dataRequiredByFiltersHasBeenLoaded(state: RootState): boolean {
     return !!(
       state.commonData?.commonDataIsLoaded &&
-      this.routeDetails!.queryParams &&
-      Object.keys(this.routeDetails!.queryParams).length > 0
+      this.routeDetails?.queryParams &&
+      Object.keys(this.routeDetails?.queryParams).length > 0
     );
   }
 
