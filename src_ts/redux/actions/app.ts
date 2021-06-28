@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import {Action, ActionCreator} from 'redux';
 import {ThunkAction} from 'redux-thunk';
 import {RootState} from '../store';
@@ -7,8 +8,9 @@ import {getFilePathsToImport} from '../../routing/component-lazy-load-config';
 import {getRedirectToListPath} from '../../routing/subpage-redirect';
 import {RouteDetails} from '@unicef-polymer/etools-types';
 
+import {UPDATE_ROUTE_AND_RESET_INTERVENTION} from '../../components/pages/interventions/intervention-tab-pages/common/actions/actionsContants';
+
 export const UPDATE_ROUTE_DETAILS = 'UPDATE_ROUTE_DETAILS';
-export const UPDATE_ROUTE_AND_RESET_INTERVENTION = 'UPDATE_ROUTE_AND_RESET_INTERVENTION';
 export const UPDATE_DRAWER_STATE = 'UPDATE_DRAWER_STATE';
 
 export interface AppActionUpdateRouteDetails extends Action<'UPDATE_ROUTE_DETAILS'> {
@@ -18,7 +20,7 @@ export interface AppActionUpdateDrawerState extends Action<'UPDATE_DRAWER_STATE'
   opened: boolean;
 }
 
-export type AppAction = AppActionUpdateRouteDetails | AppActionUpdateDrawerState;
+export type AppAction = AppActionUpdateRouteDetails | AppActionUpdateDrawerState | any;
 
 type ThunkResult = ThunkAction<void, RootState, undefined, AppAction>;
 
@@ -78,7 +80,7 @@ export const updateDrawerState: ActionCreator<AppActionUpdateDrawerState> = (ope
   };
 };
 
-export const navigate: ActionCreator<ThunkResult> = (path: string) => (dispatch, getState) => {
+export const navigate: ActionCreator<ThunkResult> = (path: string) => (dispatch) => {
   // Check if path matches a valid app route, use route details to load required page components
 
   // if app route is accessed, redirect to default route (if not already on it)

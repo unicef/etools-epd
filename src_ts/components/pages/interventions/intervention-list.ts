@@ -222,7 +222,7 @@ export class InterventionList extends connect(store)(LitElement) {
         this.updateCurrentParams(this.urlParams);
         return;
       }
-      this.routeDetails = routeDetails;
+
       this.onParamsChange(stateRouteDetails, state.interventions?.shouldReGetList);
     }
 
@@ -238,7 +238,8 @@ export class InterventionList extends connect(store)(LitElement) {
   }
 
   onParamsChange(routeDetails: RouteDetails, forceReGet: boolean): void {
-    const currentParams: GenericObject<any> = this.routeDetails.queryParams || {};
+    this.routeDetails = routeDetails;
+    const currentParams: GenericObject<any> = this.routeDetails?.queryParams || {};
     const paramsValid: boolean = this.paramsInitialized || this.initializeAndValidateParams(currentParams);
 
     if (paramsValid) {
