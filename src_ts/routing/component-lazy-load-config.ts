@@ -7,9 +7,9 @@ export const componentsLazyLoadConfig: GenericObject<string[]> = {
     'components/pages/interventions/intervention-tab-pages/intervention-tabs.js',
     'components/pages/interventions/intervention-tab-pages/intervention-metadata/intervention-metadata.js'
   ],
-  interventions_results: [
+  interventions_workplan: [
     'components/pages/interventions/intervention-tab-pages/intervention-tabs.js',
-    'components/pages/interventions/intervention-tab-pages/intervention-results/intervention-results.js'
+    'components/pages/interventions/intervention-tab-pages/intervention-workplan/intervention-workplan.js'
   ],
   interventions_timing: [
     'components/pages/interventions/intervention-tab-pages/intervention-tabs.js',
