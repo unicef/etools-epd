@@ -1,9 +1,12 @@
 import {LitElement, property} from 'lit-element';
-import {getEndpoint} from '../../utils/endpoint-helper';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
+import {getEndpoint} from '../utils/endpoint-helper';
+import {interventionEndpoints} from '../utils/intervention-endpoints';
 import {Constructor} from '@unicef-polymer/etools-types';
-import {getStore} from '../../utils/redux-store-access';
-import {DECREASE_UNSAVED_UPLOADS, INCREASE_UPLOADS_IN_PROGRESS} from '../../common/actions/actionsContants';
+import {getStore} from '../utils/redux-store-access';
+import {
+  DECREASE_UNSAVED_UPLOADS,
+  INCREASE_UPLOADS_IN_PROGRESS
+} from '../../interventions/intervention-tab-pages/common/actions/actionsContants';
 
 /**
  * @polymer

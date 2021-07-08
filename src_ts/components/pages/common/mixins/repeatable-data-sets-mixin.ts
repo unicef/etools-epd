@@ -1,9 +1,9 @@
 import {LitElement, property} from 'lit-element';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {fireEvent} from '../../utils/fire-custom-event';
-import {cloneDeep} from '../../utils/utils';
-import '../../common/layout/are-you-sure';
-import {openDialog} from '../../utils/dialog';
+import {fireEvent} from '../utils/fire-custom-event';
+import {cloneDeep} from '../utils/utils';
+import '../layout/are-you-sure';
+import {openDialog} from '../utils/dialog';
 import {AnyObject, Constructor} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';
 

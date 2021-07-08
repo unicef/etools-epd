@@ -1,5 +1,5 @@
 import {LitElement, PropertyDeclarations} from 'lit-element';
-import {cloneDeep} from '../../utils/utils';
+import {cloneDeep} from '../utils/utils';
 import {GenericObject} from '@unicef-polymer/etools-types';
 
 type Constructor<T> = new (...args: any[]) => T;

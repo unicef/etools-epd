@@ -1,11 +1,11 @@
 import {LitElement, property} from 'lit-element';
 import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {isJsonStrMatch} from '../../utils/utils';
+import {isJsonStrMatch} from '../utils/utils';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {tokenEndpointsHost, tokenStorageKeys, getTokenEndpoints} from '../../config/config';
+import {interventionEndpoints} from '../utils/intervention-endpoints';
+import {tokenEndpointsHost, tokenStorageKeys, getTokenEndpoints} from '../config/config';
 import {AnyObject, Constructor, User} from '@unicef-polymer/etools-types';
-import {RootState} from '../types/store.types';
+import {RootState} from '../../interventions/intervention-tab-pages/common/types/store.types';
 import get from 'lodash-es/get';
 
 function EndpointsLitMixin<T extends Constructor<LitElement>>(baseClass: T) {

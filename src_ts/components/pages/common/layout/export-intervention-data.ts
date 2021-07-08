@@ -3,10 +3,10 @@ import '@polymer/paper-button/paper-button';
 import '@polymer/paper-menu-button/paper-menu-button';
 import '@polymer/iron-icon/iron-icon';
 import '@polymer/paper-listbox/paper-listbox';
-import {fireEvent} from '../../utils/fire-custom-event';
+import {fireEvent} from '../utils/fire-custom-event';
 import {elevation2} from '../styles/elevation-styles';
-import {interventionEndpoints} from '../../utils/intervention-endpoints';
-import {getEndpoint} from '../../utils/endpoint-helper';
+import {interventionEndpoints} from '../utils/intervention-endpoints';
+import {getEndpoint} from '../utils/endpoint-helper';
 import {AnyObject} from '@unicef-polymer/etools-types';
 
 /**

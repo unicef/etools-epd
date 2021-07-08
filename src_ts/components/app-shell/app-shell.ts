@@ -61,7 +61,7 @@ import isEmpty from 'lodash-es/isEmpty';
 import {fireEvent} from '../utils/fire-custom-event';
 import get from 'lodash-es/get';
 import '../env-flags/environment-flags';
-import {setStore} from '../pages/interventions/intervention-tab-pages/utils/redux-store-access';
+import {setStore} from '../pages/common/utils/redux-store-access';
 import {registerTranslateConfig, use} from 'lit-translate';
 import {EtoolsUser, RouteDetails} from '@unicef-polymer/etools-types';
 declare const dayjs: any;

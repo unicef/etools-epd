@@ -1,5 +1,5 @@
 import {LitElement, property} from 'lit-element';
-import CONSTANTS from '../../common/constants';
+import CONSTANTS from '../../interventions/intervention-tab-pages/common/constants';
 import {Constructor} from '@unicef-polymer/etools-types';
 
 class Paginator {

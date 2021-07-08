@@ -1,7 +1,7 @@
 import {LitElement, property, html, customElement} from 'lit-element';
 import '@polymer/iron-icons/iron-icons';
 import '@polymer/paper-icon-button/paper-icon-button';
-import {fireEvent} from '../../utils/fire-custom-event';
+import {fireEvent} from '../utils/fire-custom-event';
 import {AnyObject} from '@unicef-polymer/etools-types';
 
 /**

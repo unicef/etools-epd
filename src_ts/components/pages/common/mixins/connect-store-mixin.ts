@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import {getStoreAsync} from '../../utils/redux-store-access';
+import {getStoreAsync} from '../utils/redux-store-access';
 import {Store, Unsubscribe} from 'redux';
 import {Constructor} from '@unicef-polymer/etools-types';
-import {RootState} from '../types/store.types';
+import {RootState} from '../../interventions/intervention-tab-pages/common/types/store.types';
 
 interface CustomElement {
   connectedCallback?(): void;

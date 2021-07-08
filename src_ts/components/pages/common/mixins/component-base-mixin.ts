@@ -1,11 +1,11 @@
 import {LitElement, property, html} from 'lit-element';
 import cloneDeep from 'lodash-es/cloneDeep';
-import {areEqual, filterByIds} from '../../utils/utils';
-import {fireEvent} from '../../utils/fire-custom-event';
-import {validateRequiredFields} from '../../utils/validation-helper';
-import {formatDate} from '../../utils/date-utils';
+import {areEqual, filterByIds} from '../utils/utils';
+import {fireEvent} from '../utils/fire-custom-event';
+import {validateRequiredFields} from '../utils/validation-helper';
+import {formatDate} from '../utils/date-utils';
 import isEmpty from 'lodash-es/isEmpty';
-import CONSTANTS from '../constants';
+import CONSTANTS from '../../interventions/intervention-tab-pages/common/constants';
 import ContentPanelMixin from './content-panel-mixin';
 import {AnyObject, Constructor, MinimalUser} from '@unicef-polymer/etools-types';
 import {translate} from 'lit-translate';

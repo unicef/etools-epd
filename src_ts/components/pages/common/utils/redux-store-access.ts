@@ -1,4 +1,4 @@
-import {RootState} from '../common/types/store.types';
+import {RootState} from '../../interventions/intervention-tab-pages/common/types/store.types';
 import {Store} from 'redux';
 
 let store: Store<RootState>;
