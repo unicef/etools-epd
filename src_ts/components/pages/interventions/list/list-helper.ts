@@ -5,6 +5,8 @@ import {getEndpoint} from '../../../../endpoints/endpoints';
 import {etoolsEndpoints} from '../../../../endpoints/endpoints-list';
 import {abortRequestByKey} from '@unicef-polymer/etools-ajax/etools-iron-request';
 import {InterventionListData, GenericObject} from '@unicef-polymer/etools-types';
+import {store} from '../../../../redux/store';
+import {setShouldReGetList} from '../intervention-tab-pages/common/actions/interventions';
 
 export type ListHelperResponse<T> = {
   list: T[];
@@ -17,10 +19,10 @@ export class InterventionsListHelper {
   private requestInProcess = false;
   private readonly requestUid = 'INTERVENTIONS_REQUEST';
 
-  async getList(params: GenericObject<string>): Promise<ListHelperResponse<InterventionListData>> {
+  async getList(params: GenericObject<string>, forceReGet: boolean): Promise<ListHelperResponse<InterventionListData>> {
     const {page = 1, page_size: pageSize = this.listData.length, sort, ...filters} = params;
     // checks if filters was changed and returns interventions list
-    const filteredList: InterventionListData[] = await this.getFilteredList(filters);
+    const filteredList: InterventionListData[] = await this.getFilteredList(filters, forceReGet);
     // returns sorted list if sort param exists
     const sortedList: InterventionListData[] = this.sortList(filteredList, sort);
     // paginates list depending on provided params
@@ -32,8 +34,11 @@ export class InterventionsListHelper {
     };
   }
 
-  private async getFilteredList(filtersParams: GenericObject<string>): Promise<InterventionListData[]> {
-    if (isEqual(filtersParams, this.lastParams)) {
+  private async getFilteredList(
+    filtersParams: GenericObject<string>,
+    forceReGet: boolean
+  ): Promise<InterventionListData[]> {
+    if (isEqual(filtersParams, this.lastParams) && !forceReGet) {
       // return cached list if params wasn't changed
       return this.listData;
     } else {
@@ -59,14 +64,19 @@ export class InterventionsListHelper {
         params: filtersParams
       },
       this.requestUid
-    ).catch((error: any) => {
-      // don't update flag if request was aborted
-      if (error.status !== 0) {
-        this.requestInProcess = false;
-      }
-      // This error must be handled inside component
-      return Promise.reject(error);
-    });
+    )
+      .then((response) => {
+        store.dispatch(setShouldReGetList(false));
+        return response;
+      })
+      .catch((error: any) => {
+        // don't update flag if request was aborted
+        if (error.status !== 0) {
+          this.requestInProcess = false;
+        }
+        // This error must be handled inside component
+        return Promise.reject(error);
+      });
   }
 
   private sortList(list: InterventionListData[], sort = ''): InterventionListData[] {

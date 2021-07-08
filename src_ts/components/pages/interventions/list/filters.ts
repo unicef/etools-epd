@@ -40,14 +40,14 @@ export const selectedValueTypeByFilterKey: AnyObject = {
 
 export const defaultFilters: EtoolsFilter[] = [
   {
-    filterName: translate('INTERVENTIONS_LIST.FILTERS.SEARCH_RECORDS'),
+    filterName: translate('INTERVENTIONS_LIST.SEARCH_RECORDS'),
     filterKey: FilterKeys.search,
     type: EtoolsFilterTypes.Search,
     selectedValue: '',
     selected: true
   },
   {
-    filterName: translate('INTERVENTIONS_LIST.FILTERS.STATUS'),
+    filterName: translate('INTERVENTIONS_LIST.STATUS'),
     filterKey: FilterKeys.status,
     type: EtoolsFilterTypes.DropdownMulti,
     selectionOptions: [],
@@ -60,7 +60,7 @@ export const defaultFilters: EtoolsFilter[] = [
     disabled: false
   },
   {
-    filterName: translate('INTERVENTIONS_LIST.FILTERS.PD_TYPE'),
+    filterName: translate('INTERVENTIONS_LIST.PD_TYPE'),
     filterKey: FilterKeys.document_type,
     type: EtoolsFilterTypes.DropdownMulti,
     selectionOptions: [],
@@ -73,7 +73,7 @@ export const defaultFilters: EtoolsFilter[] = [
     disabled: false
   },
   {
-    filterName: translate('INTERVENTIONS_LIST.FILTERS.PARTNER_ORG'),
+    filterName: translate('INTERVENTIONS_LIST.PARTNER_ORG'),
     filterKey: FilterKeys.partners,
     type: EtoolsFilterTypes.DropdownMulti,
     selectionOptions: [],
@@ -86,28 +86,28 @@ export const defaultFilters: EtoolsFilter[] = [
     optionLabel: 'name'
   },
   {
-    filterName: translate('INTERVENTIONS_LIST.FILTERS.CONTINGENCY_PD'),
+    filterName: translate('INTERVENTIONS_LIST.CONTINGENCY_PD'),
     type: EtoolsFilterTypes.Toggle,
     filterKey: FilterKeys.contingency_pd,
     selectedValue: false,
     selected: true
   },
   {
-    filterName: translate('INTERVENTIONS_LIST.FILTERS.ENDS_BEFORE'),
+    filterName: translate('INTERVENTIONS_LIST.ENDS_BEFORE'),
     type: EtoolsFilterTypes.Date,
     filterKey: FilterKeys.end,
     selectedValue: '',
     selected: false
   },
   {
-    filterName: translate('INTERVENTIONS_LIST.FILTERS.STARTS_AFTER'),
+    filterName: translate('INTERVENTIONS_LIST.STARTS_AFTER'),
     filterKey: FilterKeys.start,
     type: EtoolsFilterTypes.Date,
     selectedValue: null,
     selected: false
   },
   {
-    filterName: translate('INTERVENTIONS_LIST.FILTERS.ENDS_AFTER'),
+    filterName: translate('INTERVENTIONS_LIST.ENDS_AFTER'),
     type: EtoolsFilterTypes.Date,
     filterKey: FilterKeys.end_after,
     selectedValue: '',

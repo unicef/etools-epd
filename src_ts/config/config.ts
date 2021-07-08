@@ -16,7 +16,6 @@ const TEST_DOMAIN = 'etools-test.unicef.io';
 const LOCAL_DOMAIN = 'localhost:8082';
 
 function getBasePath() {
-  console.log(document.getElementsByTagName('base')[0].href);
   return document.getElementsByTagName('base')[0].href;
 }
 

@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import {Action, ActionCreator} from 'redux';
 import {ThunkAction} from 'redux-thunk';
 import {RootState} from '../store';
@@ -6,6 +7,8 @@ import {DEFAULT_ROUTE, EtoolsRouter, ROUTE_404, updateAppLocation} from '../../r
 import {getFilePathsToImport} from '../../routing/component-lazy-load-config';
 import {getRedirectToListPath} from '../../routing/subpage-redirect';
 import {RouteDetails} from '@unicef-polymer/etools-types';
+
+import {UPDATE_ROUTE_AND_RESET_INTERVENTION} from '../../components/pages/interventions/intervention-tab-pages/common/actions/actionsContants';
 
 export const UPDATE_ROUTE_DETAILS = 'UPDATE_ROUTE_DETAILS';
 export const UPDATE_DRAWER_STATE = 'UPDATE_DRAWER_STATE';
@@ -17,7 +20,7 @@ export interface AppActionUpdateDrawerState extends Action<'UPDATE_DRAWER_STATE'
   opened: boolean;
 }
 
-export type AppAction = AppActionUpdateRouteDetails | AppActionUpdateDrawerState;
+export type AppAction = AppActionUpdateRouteDetails | AppActionUpdateDrawerState | any;
 
 type ThunkResult = ThunkAction<void, RootState, undefined, AppAction>;
 
@@ -28,10 +31,17 @@ const updateStoreRouteDetails: ActionCreator<AppActionUpdateRouteDetails> = (rou
   };
 };
 
-const loadPageComponents: ActionCreator<ThunkResult> = (routeDetails: RouteDetails) => (dispatch) => {
+const updatRouteDetailsAndResetIntervention = (routeDetails: any) => {
+  return {
+    type: UPDATE_ROUTE_AND_RESET_INTERVENTION,
+    routeDetails
+  };
+};
+
+const loadPageComponents: ActionCreator<ThunkResult> = (routeDetails: RouteDetails) => (dispatch, getState) => {
   if (!routeDetails) {
     // invalid route => redirect to 404 page
-    updateAppLocation(ROUTE_404, true);
+    updateAppLocation(ROUTE_404);
     return;
   }
 
@@ -40,7 +50,7 @@ const loadPageComponents: ActionCreator<ThunkResult> = (routeDetails: RouteDetai
   const filesToImport: string[] | undefined = getFilePathsToImport(routeDetails);
   if (!filesToImport) {
     console.log('No file imports configuration found (componentsLazyLoadConfig)!');
-    updateAppLocation(ROUTE_404, true);
+    updateAppLocation(ROUTE_404);
     return;
   }
 
@@ -54,7 +64,13 @@ const loadPageComponents: ActionCreator<ThunkResult> = (routeDetails: RouteDetai
       });
   });
   // add page details to redux store, to be used in other components
-  dispatch(updateStoreRouteDetails(routeDetails));
+  const prevRouteDetails = getState().app?.routeDetails;
+  if (commingFromPDDetailsToList(prevRouteDetails!, routeDetails)) {
+    // Avoid multiple list requests after updating PD data that is displayed on the list and then going to the list
+    dispatch(updatRouteDetailsAndResetIntervention(routeDetails));
+  } else {
+    dispatch(updateStoreRouteDetails(routeDetails));
+  }
 };
 
 export const updateDrawerState: ActionCreator<AppActionUpdateDrawerState> = (opened: boolean) => {
@@ -70,14 +86,14 @@ export const navigate: ActionCreator<ThunkResult> = (path: string) => (dispatch)
   // if app route is accessed, redirect to default route (if not already on it)
   // @ts-ignore
   if (path === ROOT_PATH && ROOT_PATH !== DEFAULT_ROUTE) {
-    updateAppLocation(DEFAULT_ROUTE, true);
+    updateAppLocation(DEFAULT_ROUTE);
     return;
   }
 
   // some routes need redirect to subRoute list
   const redirectPath: string | undefined = getRedirectToListPath(path);
   if (redirectPath) {
-    updateAppLocation(redirectPath, true);
+    updateAppLocation(redirectPath);
     return;
   }
 
@@ -85,3 +101,13 @@ export const navigate: ActionCreator<ThunkResult> = (path: string) => (dispatch)
 
   dispatch(loadPageComponents(routeDetails));
 };
+
+function commingFromPDDetailsToList(prevRouteDetails: RouteDetails, routeDetails: RouteDetails | null) {
+  return (
+    routeDetails &&
+    prevRouteDetails &&
+    prevRouteDetails.routeName === 'interventions' &&
+    prevRouteDetails.subRouteName !== 'list' &&
+    routeDetails?.subRouteName === 'list'
+  );
+}

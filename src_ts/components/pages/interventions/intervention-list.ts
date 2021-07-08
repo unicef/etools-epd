@@ -68,7 +68,7 @@ export class InterventionList extends connect(store)(LitElement) {
         }
       </style>
       <page-content-header>
-        <h1 slot="page-title">${translate('INTERVENTIONS_LIST.TITLE')}</h1>
+        <h1 slot="page-title">${translate('INTERVENTIONS_LIST.PD_LIST')}</h1>
 
         <div slot="title-row-actions" class="content-header-actions">
           <div class="action">
@@ -124,26 +124,26 @@ export class InterventionList extends connect(store)(LitElement) {
 
   listColumns: EtoolsTableColumn[] = [
     {
-      label: (translate('INTERVENTIONS_LIST.COLUMNS.REFERENCE_NO') as unknown) as string,
+      label: (translate('INTERVENTIONS_LIST.REFERENCE_NO') as unknown) as string,
       name: 'number',
-      link_tmpl: `${ROOT_PATH}interventions/:id/details`,
+      link_tmpl: `${ROOT_PATH}interventions/:id/metadata`,
       type: EtoolsTableColumnType.Link,
       sort: null
     },
     {
-      label: (translate('INTERVENTIONS_LIST.COLUMNS.PARTNER_ORG_NAME') as unknown) as string,
+      label: (translate('INTERVENTIONS_LIST.PARTNER_ORG_NAME') as unknown) as string,
       name: 'partner_name',
       type: EtoolsTableColumnType.Text,
       sort: null
     },
     {
-      label: (translate('INTERVENTIONS_LIST.COLUMNS.DOC_TYPE') as unknown) as string,
+      label: (translate('INTERVENTIONS_LIST.DOC_TYPE') as unknown) as string,
       name: 'document_type',
       type: EtoolsTableColumnType.Text,
       sort: null
     },
     {
-      label: (translate('INTERVENTIONS_LIST.COLUMNS.STATUS') as unknown) as string,
+      label: (translate('INTERVENTIONS_LIST.STATUS') as unknown) as string,
       name: 'status',
       type: EtoolsTableColumnType.Custom,
       capitalize: true,
@@ -154,43 +154,43 @@ export class InterventionList extends connect(store)(LitElement) {
         }
         if (item.partner_accepted && item.unicef_accepted) {
           return html`${item.status} <br />
-            ${translate('PERFORMED_ACTIONS_STATUS.PARTNER_AND_UNICEF_ACCEPTED')}`;
+            ${translate('PARTNER_AND_UNICEF_ACCEPTED')}`;
         }
         if (!item.partner_accepted && item.unicef_accepted) {
           return html`${item.status} <br />
-            ${translate('PERFORMED_ACTIONS_STATUS.UNICEF_ACCEPTED')}`;
+            ${translate('UNICEF_ACCEPTED')}`;
         }
         if (item.partner_accepted && !item.unicef_accepted) {
           return html`${item.status} <br />
-            ${translate('PERFORMED_ACTIONS_STATUS.PARTNER_ACCEPTED')}`;
+            ${translate('PARTNER_ACCEPTED')}`;
         }
         if (!item.unicef_court && !!item.date_sent_to_partner) {
           return html`${item.status} <br />
-            ${translate('PERFORMED_ACTIONS_STATUS.SENT_TO_PARTNER')}`;
+            ${translate('SENT_TO_PARTNER')}`;
         }
 
         if (item.unicef_court && !!item.submission_date && !!item.date_sent_to_partner) {
           return html`${item.status} <br />
-            ${translate('PERFORMED_ACTIONS_STATUS.SENT_TO_UNICEF')}`;
+            ${translate('SENT_TO_UNICEF')}`;
         }
         return item.status;
       },
       cssClass: 'col_type'
     },
     {
-      label: (translate('INTERVENTIONS_LIST.COLUMNS.TITLE') as unknown) as string,
+      label: (translate('INTERVENTIONS_LIST.TITLE') as unknown) as string,
       name: 'title',
       type: EtoolsTableColumnType.Text,
       sort: null
     },
     {
-      label: (translate('INTERVENTIONS_LIST.COLUMNS.START_DATE') as unknown) as string,
+      label: (translate('INTERVENTIONS_LIST.START_DATE') as unknown) as string,
       name: 'start',
       type: EtoolsTableColumnType.Date,
       sort: null
     },
     {
-      label: (translate('INTERVENTIONS_LIST.COLUMNS.END_DATE') as unknown) as string,
+      label: (translate('INTERVENTIONS_LIST.END_DATE') as unknown) as string,
       name: 'end',
       type: EtoolsTableColumnType.Date,
       sort: null
@@ -210,7 +210,10 @@ export class InterventionList extends connect(store)(LitElement) {
     }
 
     const stateRouteDetails = {...state.app!.routeDetails};
-    if (JSON.stringify(stateRouteDetails) !== JSON.stringify(this.routeDetails)) {
+    if (
+      JSON.stringify(stateRouteDetails) !== JSON.stringify(this.routeDetails) ||
+      state.interventions?.shouldReGetList
+    ) {
       if (
         (!stateRouteDetails.queryParams || Object.keys(stateRouteDetails.queryParams).length === 0) &&
         this.urlParams
@@ -219,7 +222,8 @@ export class InterventionList extends connect(store)(LitElement) {
         this.updateCurrentParams(this.urlParams);
         return;
       }
-      this.onParamsChange(stateRouteDetails);
+
+      this.onParamsChange(stateRouteDetails, state.interventions?.shouldReGetList);
     }
 
     if (!isJsonStrMatch(this.interventionStatuses, state.commonData!.interventionStatuses)) {
@@ -233,15 +237,14 @@ export class InterventionList extends connect(store)(LitElement) {
     this.initFiltersForDisplay(state);
   }
 
-  onParamsChange(routeDetails: RouteDetails): void {
+  onParamsChange(routeDetails: RouteDetails, forceReGet: boolean): void {
     this.routeDetails = routeDetails;
-
-    const currentParams: GenericObject<any> = this.routeDetails.queryParams || {};
+    const currentParams: GenericObject<any> = this.routeDetails?.queryParams || {};
     const paramsValid: boolean = this.paramsInitialized || this.initializeAndValidateParams(currentParams);
 
     if (paramsValid) {
       // get data as params are valid
-      this.getListData();
+      this.getListData(forceReGet);
     }
   }
 
@@ -287,14 +290,17 @@ export class InterventionList extends connect(store)(LitElement) {
     this.urlParams = newParams;
     const stringParams: string = buildUrlQueryString(newParams);
     this.exportParams = stringParams;
-    replaceAppLocation(`${this.routeDetails!.path}?${stringParams}`, true);
+    replaceAppLocation(`${this.routeDetails!.path}?${stringParams}`);
   }
 
-  private async getListData() {
+  private async getListData(forceReGet: boolean) {
     const currentParams: GenericObject<any> = this.routeDetails!.queryParams || {};
     try {
       this.showLoading = true;
-      const {list, paginator}: ListHelperResponse<InterventionListData> = await this.listHelper.getList(currentParams);
+      const {list, paginator}: ListHelperResponse<InterventionListData> = await this.listHelper.getList(
+        currentParams,
+        forceReGet
+      );
       this.listData = list;
       // remove this after status draft comes as development
       this.mapDraftToDevelop(this.listData);
@@ -328,8 +334,8 @@ export class InterventionList extends connect(store)(LitElement) {
   private dataRequiredByFiltersHasBeenLoaded(state: RootState): boolean {
     return !!(
       state.commonData?.commonDataIsLoaded &&
-      this.routeDetails!.queryParams &&
-      Object.keys(this.routeDetails!.queryParams).length > 0
+      this.routeDetails?.queryParams &&
+      Object.keys(this.routeDetails?.queryParams).length > 0
     );
   }
 

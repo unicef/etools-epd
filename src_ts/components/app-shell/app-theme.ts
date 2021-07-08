@@ -109,24 +109,25 @@ documentContainer.innerHTML = `
           outline: 0;
           box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12),
            0 3px 5px -1px rgba(0, 0, 0, 0.4);
+        }      
+
+        --epd-profile-dialog-border-b: solid 1px var(--dark-divider-color);  
+        
+        --required-star-style: {
+          background: url('./images/required.svg') no-repeat 99% 20%/8px;
+          width: auto !important;
+          max-width: 100%;
+          right: auto;
+          padding-right: 15px;
+        }               
+      }
+
+      html[dir="rtl"] {
+        --required-star-style: {
+          background: url('./images/required.svg') no-repeat 99% 20%/8px;
+          right: auto;
+          padding-right: 15px;
         }
-        /*-----------------styles have been moved to shared-styles---------------------------------------------------*/
-        /*etools-content-panel::part(ecp-header) {*/
-        /*  background-color: var(--primary-background-color);*/
-        /*  border-bottom: 1px groove var(--dark-divider-color);*/
-        /*}*/
-
-        /*etools-content-panel::part(ecp-header-title) {*/
-        /*  padding: 0 24px 0 0;*/
-        /*  text-align: left;*/
-        /*  font-size: 18px;*/
-        /*  font-weight: 500;*/
-        /*}*/
-        /*etools-dialog::part(ed-title) {*/
-        /*  border-bottom: solid 1px var(--dark-divider-color);*/
-        /*}*/
-
-        --epd-profile-dialog-border-b: solid 1px var(--dark-divider-color);
       }
     </style>
   </custom-style>`;

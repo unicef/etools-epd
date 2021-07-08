@@ -5,10 +5,10 @@
     "src/components/pages/page-not-found.js",
     "src/components/pages/interventions/intervention-list.js",
     "src/components/pages/interventions/intervention-tab-pages/intervention-tabs.js",
-    "src/components/pages/interventions/intervention-tab-pages/intervention-details/intervention-details.js",
-    "src/components/pages/interventions/intervention-tab-pages/intervention-overview/intervention-overview.js",
-    "src/components/pages/interventions/intervention-tab-pages/intervention-management/intervention-management.js",
-    "src/components/pages/interventions/intervention-tab-pages/intervention-results/intervention-results.js",
+    "src/components/pages/interventions/intervention-tab-pages/intervention-metadata/intervention-metadata.js",
+    "src/components/pages/interventions/intervention-tab-pages/intervention-progress/intervention-progress.js",
+    "src/components/pages/interventions/intervention-tab-pages/intervention-strategy/intervention-strategy.js",
+    "src/components/pages/interventions/intervention-tab-pages/intervention-workplan/intervention-workplan.js",
     "src/components/pages/interventions/intervention-tab-pages/intervention-attachments/intervention-attachments.js",
     "src/components/pages/interventions/intervention-tab-pages/intervention-timing/intervention-timing.js",
     "src/components/pages/interventions/intervention-tab-pages/intervention-review/intervention-review.js"
@@ -43,11 +43,6 @@
         "minify": true
       },
       "bundle": true,
-      "addServiceWorker": true
-    },
-    {
-      "name": "es6-bundled",
-      "preset": "es6-bundled",
       "addServiceWorker": true
     }
   ],
