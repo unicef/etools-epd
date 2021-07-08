@@ -47,6 +47,32 @@ EtoolsRouter.addRoute(
     }
   )
   .addRoute(
+    new RegExp('^eface/list$'),
+    (params: RouteCallbackParams): RouteDetails => {
+      return {
+        routeName: 'eface',
+        subRouteName: 'list',
+        path: params.matchDetails[0],
+        queryParams: params.queryParams,
+        params: null
+      };
+    }
+  )
+  .addRoute(
+    new RegExp(`^eface\\/${routeParamRegex}\\/${routeParamRegex}$`),
+    (params: RouteCallbackParams): RouteDetails => {
+      return {
+        routeName: 'eface',
+        subRouteName: params.matchDetails[2], // tab name
+        path: params.matchDetails[0],
+        queryParams: params.queryParams,
+        params: {
+          efaceId: params.matchDetails[1]
+        }
+      };
+    }
+  )
+  .addRoute(
     new RegExp(`^page-not-found$`),
     (params: RouteCallbackParams): RouteDetails => {
       return {

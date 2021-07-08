@@ -61,6 +61,11 @@ export class AppMenu extends LitElement {
             <paper-tooltip for="page1-icon" position="right"> PDs/SPDs </paper-tooltip>
             <div class="name">PDs/SPDs</div>
           </a>
+          <a class="nav-menu-item" menu-name="eface" href="${this.rootPath + 'eface/list'}">
+            <iron-icon id="page1-icon" icon="assignment"></iron-icon>
+            <paper-tooltip for="page1-icon" position="right"> eFace Forms</paper-tooltip>
+            <div class="name" style="text-transform: none;">eFace</div>
+          </a>
         </iron-selector>
 
         <div class="nav-menu-item section-title">

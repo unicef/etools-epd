@@ -31,6 +31,11 @@ export const componentsLazyLoadConfig: GenericObject<string[]> = {
     'components/pages/interventions/intervention-tab-pages/intervention-tabs.js',
     'components/pages/interventions/intervention-tab-pages/intervention-progress/intervention-progress.js'
   ],
+  eface_list: ['components/pages/eface/list/eface-list.js'],
+  eface_details: [
+    'components/pages/eface/eface-tab-pages/eface-tabs.js',
+    'components/pages/eface/eface-tab-pages/details/eface-details.js'
+  ],
   'page-not-found': ['components/pages/page-not-found.js']
 };
 
