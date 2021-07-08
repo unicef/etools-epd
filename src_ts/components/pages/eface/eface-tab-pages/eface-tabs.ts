@@ -11,7 +11,6 @@ export class EfaceTabs extends LitElement {
     return html`
       <style></style>
 
-      eFace tabs
       <eface-details></eface-details>
     `;
   }
