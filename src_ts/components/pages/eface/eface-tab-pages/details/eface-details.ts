@@ -1,15 +1,19 @@
 import {LitElement, customElement, html} from 'lit-element';
 import {pageLayoutStyles} from '../../../../styles/page-layout-styles';
+import ComponentBaseMixin from '../../../common/mixins/component-base-mixin';
+import {buttonsStyles} from '../../../common/styles/button-styles';
 import {elevationStyles} from '../../../common/styles/elevation-styles';
+import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
 import {sharedStyles} from '../../../common/styles/shared-styles-lit';
+import {fireEvent} from '../../../common/utils/fire-custom-event';
 
 /**
  * @customElement
  */
 @customElement('eface-details')
-export class EfaceDetails extends LitElement {
+export class EfaceDetails extends ComponentBaseMixin(LitElement) {
   static get styles() {
-    return [elevationStyles, sharedStyles, pageLayoutStyles];
+    return [elevationStyles, sharedStyles, pageLayoutStyles, buttonsStyles, gridLayoutStylesLit];
   }
   render() {
     // language=HTML
@@ -25,16 +29,13 @@ export class EfaceDetails extends LitElement {
         }
 
         .row.h > div {
-          border: 3px solid #616161;
+          border-bottom: 1px solid var(--dark-divider-color);
           font-weight: 500;
+          color: var(--secondary-text-color);
         }
 
         .row.totals > div {
           font-weight: 500;
-          border-left: 3px solid #616161;
-          border-bottom: 3px solid #616161;
-          border-right: 3px solid #616161;
-          border-top: 1px solid #616161;
         }
 
         .currency {
@@ -42,7 +43,7 @@ export class EfaceDetails extends LitElement {
           grid-column-end: 3;
         }
         .double-border {
-          border: 4px double #616161;
+          border: 4px double var(--dark-divider-color);
         }
         .bold {
           font-weight: bold;
@@ -55,15 +56,23 @@ export class EfaceDetails extends LitElement {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
         }
-        .reporting-grid > div:not(:last-child),
-        .requests-grid > div:not(:last-of-type) {
-          border-inline-end: 1px solid #616161;
-        }
+
         .reporting-grid > div,
         .requests-grid > div {
           text-align: right;
           padding-right: 2px;
         }
+
+        .reporting-grid > div:nth-child(3),
+        .reporting-grid > div:nth-child(4) {
+          background-color: lightyellow;
+        }
+
+        .requests-grid > div:nth-child(2),
+        .requests-grid > div:nth-child(3) {
+          background-color: lightyellow;
+        }
+
         .center {
           text-align: center;
         }
@@ -75,17 +84,16 @@ export class EfaceDetails extends LitElement {
         .h > div {
           text-align: center;
         }
-        .b-spacing {
-          margin-bottom: 5px;
-        }
         .item {
-          border-left: 1px solid #616161;
-          border-right: 1px solid #616161;
-          border-bottom: 1px solid #616161;
+          border-bottom: 1px solid var(--dark-divider-color);
         }
       </style>
       <section class="elevation page-content" elevation="1">
-        <div class="row b-spacing center">
+        <div class="paper-label">For Programme Document:</div>
+        <div class="input-label">My PD title that will be readonly once the eface Form is Saved</div>
+      </section>
+      <section class="elevation page-content" elevation="1">
+        <div class="row center" style="margin-bottom: 4px;">
           <div class="currency">Currency: US</div>
           <div class="double-border center bold">REPORTING</div>
           <div class="double-border center bold">REQUESTS / AUTHORIZATIONS</div>
@@ -129,36 +137,24 @@ export class EfaceDetails extends LitElement {
             </div>
           </div>
         </div>
-        <div class="row">
-          <div class="item">1.1 Organize training of 500 health workers in community nutrition in 10 districts</div>
-          <div class="item"></div>
-          <div class="item reporting-grid">
-            <div>11.10</div>
-            <div>11.10</div>
-            <div>11.10</div>
-            <div>11.10</div>
-          </div>
-          <div class="item requests-grid">
-            <div>12.00</div>
-            <div>12.00</div>
-            <div>12.00</div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="item">1.1 Organize training of 500 health workers in community nutrition in 10 districts</div>
-          <div class="item"></div>
-          <div class="item reporting-grid">
-            <div>42.90</div>
-            <div>42.90</div>
-            <div>42.90</div>
-            <div>42.90</div>
-          </div>
-          <div class="item requests-grid">
-            <div>52.11</div>
-            <div>52.11</div>
-            <div>52.11</div>
-          </div>
-        </div>
+        ${[1, 2].map(
+          (_item: any) => html`<div class="row">
+            <div class="item">1.1 Organize training of 500 health workers in community nutrition in 10 districts</div>
+            <div class="item"></div>
+            <div class="item reporting-grid">
+              <div>11.10</div>
+              <div>11.10</div>
+              <div>11.10</div>
+              <div>11.10</div>
+            </div>
+            <div class="item requests-grid">
+              <div>12.00</div>
+              <div>12.00</div>
+              <div>12.00</div>
+            </div>
+          </div>`
+        )}
+
         <div class="row totals">
           <div style="padding: 6px;">Total</div>
           <div></div>
@@ -174,15 +170,20 @@ export class EfaceDetails extends LitElement {
             <div>10.00</div>
           </div>
         </div>
+
+        <div style="padding-top: 26px;">${this.renderActions(true, true)}</div>
       </section>
     `;
   }
   connectedCallback() {
     super.connectedCallback();
     // Disable loading message for tab load, triggered by parent element on stamp or by tap event on tabs
-    // fireEvent(this, 'global-loading', {
-    //   active: false,
-    //   loadingSource: 'interv-page'
-    // });
+    fireEvent(this, 'global-loading', {
+      active: false,
+      loadingSource: 'interv-page'
+    });
   }
+
+  cancel() {}
+  save() {}
 }
