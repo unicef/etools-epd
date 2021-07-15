@@ -64,6 +64,7 @@ import '../env-flags/environment-flags';
 import {setStore} from '../pages/common/utils/redux-store-access';
 import {registerTranslateConfig, use} from 'lit-translate';
 import {EtoolsUser, RouteDetails} from '@unicef-polymer/etools-types';
+import {efaceInterventions} from '../../redux/reducers/eface-interventions';
 declare const dayjs: any;
 declare const dayjs_plugin_utc: any;
 declare const dayjs_plugin_isSameOrBefore: any;
@@ -90,7 +91,8 @@ setStore(store as any);
 
 store.addReducers({
   user,
-  commonData
+  commonData,
+  efaceInterventions
 });
 
 /**
@@ -172,6 +174,11 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
               ?active="${this.isActivePage(this.mainPage, 'eface', this.subPage, 'details')}"
               ?hidden="${!this.isActivePage(this.mainPage, 'eface', this.subPage, 'details')}"
             ></eface-tabs>
+            <new-eface-form
+              class="page"
+              ?active="${this.isActivePage(this.mainPage, 'eface', this.subPage, 'new')}"
+              ?hidden="${!this.isActivePage(this.mainPage, 'eface', this.subPage, 'new')}"
+            ></new-eface-form>
             <page-not-found
               class="page"
               ?active="${this.isActivePage(this.mainPage, 'page-not-found')}"

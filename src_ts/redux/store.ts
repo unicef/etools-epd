@@ -1,3 +1,5 @@
+import {EfaceInterventionsState} from './reducers/eface-interventions';
+
 declare global {
   interface Window {
     process?: Record<string, any>;
@@ -28,6 +30,7 @@ export interface RootState {
   commonData?: CommonDataState;
   interventions?: any;
   activeLanguage?: ActiveLanguageState;
+  efaceInterventions: EfaceInterventionsState;
 }
 
 // could be more than one action AppAction | OtherAppAction ...

@@ -16,6 +16,8 @@ export interface EtoolsEndpoints {
   agreements: EtoolsEndpoint;
   environmentFlags: EtoolsEndpoint;
   countryProgrammes: EtoolsEndpoint;
+  efaceForms: EtoolsEndpoint;
+  efaceForm: EtoolsEndpoint;
 }
 
 export const etoolsEndpoints: EtoolsEndpoints = {
@@ -63,5 +65,11 @@ export const etoolsEndpoints: EtoolsEndpoints = {
   },
   environmentFlags: {
     url: '/api/v2/environment/flags/'
+  },
+  efaceForms: {
+    url: '/api/eface/v1/forms/'
+  },
+  efaceForm: {
+    template: '/api/eface/v1/forms/<%=id%>/'
   }
 };
