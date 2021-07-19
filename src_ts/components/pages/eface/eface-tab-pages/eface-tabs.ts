@@ -7,17 +7,10 @@ import '../../../common/layout/page-content-header/page-content-header';
 import '../../common/layout/status/etools-status';
 import '../eface-actions/eface-actions';
 import {pageContentHeaderSlottedStyles} from '../../common/layout/page-content-header/page-content-header-slotted-styles';
-import {
-  currentPage,
-  currentSubpage,
-  currentSubSubpage,
-  currentUser
-} from '../../interventions/intervention-tab-pages/common/selectors';
+import {currentPage, currentSubpage} from '../../interventions/intervention-tab-pages/common/selectors';
 import get from 'lodash-es/get';
 import {isJsonStrMatch} from '../../common/utils/utils';
 import cloneDeep from 'lodash-es/cloneDeep';
-import {getStore} from '../../common/utils/redux-store-access';
-import {enableCommentMode} from '../../interventions/intervention-tab-pages/common/components/comments/comments.actions';
 import {getEfaceForm} from '../../../../redux/actions/eface-forms';
 import {RootState, store} from '../../../../redux/store';
 import {connect} from 'pwa-helpers/connect-mixin';
@@ -93,7 +86,7 @@ export class EfaceTabs extends connect(store)(LitElement) {
 
     // check if we need to load eface
     if (Number(currentEfaceId) !== Number(this.eface?.id)) {
-      getEfaceForm(currentEfaceId)!.catch(() => this.goToPageNotFound());
+      // getEfaceForm(currentEfaceId)!.catch(() => this.goToPageNotFound());
     }
   }
 
@@ -102,7 +95,7 @@ export class EfaceTabs extends connect(store)(LitElement) {
   }
 
   goToPageNotFound() {
-    history.pushState(window.history.state, '', 'page-not-found');
-    window.dispatchEvent(new CustomEvent('popstate'));
+    // history.pushState(window.history.state, '', 'page-not-found');
+    // window.dispatchEvent(new CustomEvent('popstate'));
   }
 }
