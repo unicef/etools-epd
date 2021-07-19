@@ -9,6 +9,7 @@ import {RootState, store} from '../../../../redux/store';
 import {etoolsEndpoints} from '../../../../endpoints/endpoints-list';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {ROOT_PATH} from '../../../../config/config';
+import {setEfaceForm} from '../../../../redux/actions/eface-forms';
 
 @customElement('new-eface-form')
 export class NewEfaceForm extends connect(store)(LitElement) {
@@ -123,6 +124,7 @@ export class NewEfaceForm extends connect(store)(LitElement) {
       body: this.newForm,
       method: 'POST'
     }).then((form) => {
+      store.dispatch(setEfaceForm(form));
       history.pushState(window.history.state, '', `${ROOT_PATH}eface/${form.id}/details`);
       window.dispatchEvent(new CustomEvent('popstate'));
     });

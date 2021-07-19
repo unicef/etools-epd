@@ -65,6 +65,7 @@ import {setStore} from '../pages/common/utils/redux-store-access';
 import {registerTranslateConfig, use} from 'lit-translate';
 import {EtoolsUser, RouteDetails} from '@unicef-polymer/etools-types';
 import {efaceInterventions} from '../../redux/reducers/eface-interventions';
+import {eface} from '../../redux/reducers/eface-forms';
 declare const dayjs: any;
 declare const dayjs_plugin_utc: any;
 declare const dayjs_plugin_isSameOrBefore: any;
@@ -92,7 +93,8 @@ setStore(store as any);
 store.addReducers({
   user,
   commonData,
-  efaceInterventions
+  efaceInterventions,
+  eface
 });
 
 /**

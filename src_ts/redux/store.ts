@@ -21,6 +21,7 @@ import {UserAction} from './actions/user.js';
 import {UserState} from './reducers/user.js';
 import {CommonDataAction} from './actions/common-data';
 import {CommonDataState} from './reducers/common-data';
+import {EfaceFormsState} from './reducers/eface-forms';
 
 // Overall state extends static states and partials lazy states.
 export interface RootState {
@@ -31,6 +32,7 @@ export interface RootState {
   interventions?: any;
   activeLanguage?: ActiveLanguageState;
   efaceInterventions: EfaceInterventionsState;
+  eface: EfaceFormsState;
 }
 
 // could be more than one action AppAction | OtherAppAction ...
