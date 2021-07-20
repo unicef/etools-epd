@@ -3,7 +3,8 @@ import '@polymer/paper-menu-button/paper-menu-button';
 import '@polymer/paper-listbox/paper-listbox';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@unicef-polymer/etools-currency-amount-input/etools-currency-amount-input';
-import {translate} from 'lit-translate';
+import '@polymer/paper-input/paper-textarea';
+import {translate, get as getTranslation} from 'lit-translate';
 import {pageLayoutStyles} from '../../../../styles/page-layout-styles';
 import ComponentBaseMixin from '../../../common/mixins/component-base-mixin';
 import {buttonsStyles} from '../../../common/styles/button-styles';
@@ -14,12 +15,16 @@ import {fireEvent} from '../../../common/utils/fire-custom-event';
 import {EfaceItemTypes_Short} from '../../../interventions/intervention-tab-pages/common/constants';
 import {EfaceItem} from '../types';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
+import {connectStore} from '../../../common/mixins/connect-store-mixin';
+import {RootState} from '../../../../../redux/store';
+import {ExpectedResult, Intervention, InterventionActivity, ResultLinkLowerResult} from '@unicef-polymer/etools-types';
+import {currentPage, currentSubpage} from '../../../interventions/intervention-tab-pages/common/selectors';
 
 /**
  * @customElement
  */
 @customElement('eface-details')
-export class EfaceDetails extends ComponentBaseMixin(LitElement) {
+export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
   static get styles() {
     return [elevationStyles, sharedStyles, pageLayoutStyles, buttonsStyles, gridLayoutStylesLit];
   }
@@ -32,7 +37,7 @@ export class EfaceDetails extends ComponentBaseMixin(LitElement) {
         }
         .row {
           display: grid;
-          grid-template-columns: minmax(auto, 25%) 10% 35% 30%;
+          grid-template-columns: minmax(25%, 25%) 10% 35% 30%;
           column-gap: 5px;
         }
 
@@ -267,6 +272,33 @@ export class EfaceDetails extends ComponentBaseMixin(LitElement) {
       active: false,
       loadingSource: 'interv-page'
     });
+
+    this.eepms = [
+      {value: 'in_country', label: getTranslation('DESCRIPTION_1')},
+      {value: 'operational', label: getTranslation('DESCRIPTION_2')},
+      {value: 'planning', label: getTranslation('DESCRIPTION_3')}
+    ];
+  }
+
+  stateChanged(state: RootState) {
+    if (currentPage(state) !== 'eface' || currentSubpage(state) !== 'details') {
+      return;
+    }
+    let eface = state.eface.current;
+    // this.invoiceItems = eface.activities;
+    this.pdOutputActivities = this.getPdOutputActivities(eface.intervention);
+  }
+
+  getPdOutputActivities(intervention: Intervention) {
+    // get activities array
+    const pdOutputs: ResultLinkLowerResult[] = intervention.result_links
+      .map(({ll_results}: ExpectedResult) => ll_results)
+      .flat();
+    const activities: InterventionActivity[] = pdOutputs
+      .map(({activities}: ResultLinkLowerResult) => activities)
+      .flat();
+
+    return activities;
   }
 
   addNewLine(type: string) {
@@ -307,7 +339,7 @@ export class EfaceDetails extends ComponentBaseMixin(LitElement) {
         return html`<etools-dropdown
           .selected="${item.eepm_kind}"
           .options="${this.eepms}"
-          option-label="name"
+          option-label="label"
           option-value="value"
           @etools-selected-item-changed="${({detail}: CustomEvent) =>
             this.selectedItemChanged(detail.selectedItem, 'eepm_kind')}"

@@ -86,7 +86,7 @@ export class EfaceTabs extends connect(store)(LitElement) {
 
     // check if we need to load eface
     if (Number(currentEfaceId) !== Number(this.eface?.id)) {
-      // getEfaceForm(currentEfaceId)!.catch(() => this.goToPageNotFound());
+      getEfaceForm(currentEfaceId)!.catch(() => this.goToPageNotFound());
     }
   }
 
