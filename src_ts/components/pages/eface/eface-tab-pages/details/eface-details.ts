@@ -20,6 +20,7 @@ import {RootState} from '../../../../../redux/store';
 import {ExpectedResult, Intervention, InterventionActivity, ResultLinkLowerResult} from '@unicef-polymer/etools-types';
 import {currentPage, currentSubpage} from '../../../interventions/intervention-tab-pages/common/selectors';
 import {cloneDeep} from '../../../common/utils/utils';
+import {EtoolsCurrencyAmountInput} from '@unicef-polymer/etools-currency-amount-input/etools-currency-amount-input';
 
 /**
  * @customElement
@@ -82,6 +83,7 @@ export class EfaceDetails extends connectStore(LitElement) {
           display: flex;
           align-items: center;
           justify-content: flex-end;
+          overflow: hidden;
         }
 
         .reporting-grid > div:nth-child(3),
@@ -184,8 +186,12 @@ export class EfaceDetails extends connectStore(LitElement) {
             <div class="item reporting-grid">
               <div>
                 <etools-currency-amount-input
+                  id="reporting-a"
                   .value="${item.reporting_authorized_amount || 0}"
                   no-label-float
+                  required
+                  auto-validate
+                  errror-message="Invalid"
                   ?readonly="${this.readonly}"
                   @value-changed="${({detail}: CustomEvent) =>
                     this.updateField(item, 'reporting_authorized_amount', detail.value)}"
@@ -193,8 +199,12 @@ export class EfaceDetails extends connectStore(LitElement) {
               </div>
               <div>
                 <etools-currency-amount-input
+                  id="reporting-b"
                   .value="${item.reporting_actual_project_expenditure || 0}"
                   no-label-float
+                  required
+                  auto-validate
+                  errror-message="Invalid"
                   ?readonly="${this.readonly}"
                   @value-changed="${({detail}: CustomEvent) =>
                     this.updateField(item, 'reporting_actual_project_expenditure', detail.value)}"
@@ -206,9 +216,13 @@ export class EfaceDetails extends connectStore(LitElement) {
             <div class="item requests-grid">
               <div>
                 <etools-currency-amount-input
+                  id="requests-e"
                   .value="${item.requested_amount || 0}"
                   no-label-float
+                  required
+                  auto-validate
                   ?readonly="${this.readonly}"
+                  errror-message="Invalid"
                   @value-changed="${({detail}: CustomEvent) =>
                     this.updateField(item, 'requested_amount', detail.value)}"
                 ></etools-currency-amount-input>
@@ -385,13 +399,13 @@ export class EfaceDetails extends connectStore(LitElement) {
         pd_activity: '',
         eepm_kind: '',
         description: '',
-        reporting_authorized_amount: 0,
-        reporting_actual_project_expenditure: 0,
-        reporting_expenditures_accepted_by_agency: 0,
-        reporting_balance: 0,
-        requested_amount: 0,
-        requested_authorized_amount: 0,
-        requested_outstanding_authorized_amount: 0,
+        reporting_authorized_amount: null,
+        reporting_actual_project_expenditure: null,
+        reporting_expenditures_accepted_by_agency: null,
+        reporting_balance: null,
+        requested_amount: null,
+        requested_authorized_amount: null,
+        requested_outstanding_authorized_amount: null,
         kind: type
       }
     ];
@@ -401,10 +415,13 @@ export class EfaceDetails extends connectStore(LitElement) {
     switch (item.kind) {
       case EfaceItemTypes_Short.activity:
         return html` <etools-dropdown
+          id="activity"
           .selected="${item.pd_activity}"
           .options="${this.pdOutputActivities}"
           option-label="name"
           option-value="id"
+          required
+          auto-validate
           @etools-selected-item-changed="${({detail}: CustomEvent) => {
             if (!detail.selectedItem) {
               return;
@@ -418,8 +435,11 @@ export class EfaceDetails extends connectStore(LitElement) {
         ></etools-dropdown>`;
       case EfaceItemTypes_Short.eepm:
         return html`<etools-dropdown
+          id="eepm"
           .selected="${item.eepm_kind}"
           .options="${this.eepms}"
+          required
+          auto-validate
           option-label="label"
           option-value="value"
           @etools-selected-item-changed="${({detail}: CustomEvent) =>
@@ -434,10 +454,12 @@ export class EfaceDetails extends connectStore(LitElement) {
           id="custom"
           .value="${item.description}"
           required
+          auto-validate
           no-label-float
           placeholder="—"
           @value-changed="${({detail}: CustomEvent) => this.selectedCustomTextChanged(detail.value, item)}"
           max-rows="3"
+          error-message="This field is required"
         ></paper-textarea>`;
 
       default:
@@ -499,7 +521,62 @@ export class EfaceDetails extends connectStore(LitElement) {
   }
 
   cancel() {}
-  save() {}
+
+  validateLineAmounts() {
+    const fields = this.getFieldsByIds(['reporting-a', 'reporting-b', 'requests-e']);
+    const validations = {required: true, greaterThan0: true};
+    fields.forEach((f) => {
+      if (!f.validate()) {
+        validations.required = false;
+      } else {
+        if (Number(f.value) <= 0) {
+          validations.greaterThan0 = false;
+          f.errorMessage = 'Invalid';
+          f.invalid = false; // TODO
+        }
+      }
+    });
+    return validations;
+  }
+
+  validateDescriptions() {
+    const fields = this.getFieldsByIds(['activity', 'eepm', 'custom']);
+    const validations = {required: true};
+    fields.forEach((f) => {
+      if (!f.validate()) {
+        validations.required = false;
+      }
+    });
+    return validations;
+  }
+
+  private getFieldsByIds(fieldIds: string[]) {
+    const fields: EtoolsCurrencyAmountInput[] = [];
+    fieldIds.forEach((f: string) => {
+      const elems = this.shadowRoot?.querySelectorAll('#' + f);
+      [].push.apply(fields, elems);
+    });
+    return fields;
+  }
+
+  validate() {
+    const validations = {...this.validateLineAmounts(), ...this.validateDescriptions()};
+    if (!validations.required || !validations.greaterThan0) {
+      fireEvent(this, 'toast', {
+        text: !validations.required
+          ? getTranslation('PLS_FILL_IN_ALL_REQUIRED_FIELDS')
+          : getTranslation('MAKE_SURE_AMOUNTS_GREATER_THAN_0')
+      });
+      return false;
+    }
+    return true;
+  }
+
+  save() {
+    if (!this.validate()) {
+      return;
+    }
+  }
 
   renderActions(editMode: boolean, canEditAnyFields: boolean) {
     return this.hideActionButtons(editMode, canEditAnyFields)
