@@ -200,6 +200,9 @@ export class EfaceDetails extends connectStore(LitElement) {
                   auto-validate
                   errror-message="Invalid"
                   ?readonly="${this.readonly}"
+                  @blur="${() => {
+                    this.calculateTotalAuthorizedAmount();
+                  }}"
                   @value-changed="${({detail}: CustomEvent) =>
                     this.updateField(item, 'reporting_authorized_amount', detail.value)}"
                 ></etools-currency-amount-input>
@@ -213,6 +216,9 @@ export class EfaceDetails extends connectStore(LitElement) {
                   auto-validate
                   errror-message="Invalid"
                   ?readonly="${this.readonly}"
+                  @blur="${() => {
+                    this.calculateTotalActualExpenditure();
+                  }}"
                   @value-changed="${({detail}: CustomEvent) =>
                     this.updateField(item, 'reporting_actual_project_expenditure', detail.value)}"
                 ></etools-currency-amount-input>
@@ -230,6 +236,9 @@ export class EfaceDetails extends connectStore(LitElement) {
                   auto-validate
                   ?readonly="${this.readonly}"
                   errror-message="Invalid"
+                  @blur="${() => {
+                    this.calculateTotalRequestedAmount();
+                  }}"
                   @value-changed="${({detail}: CustomEvent) =>
                     this.updateField(item, 'requested_amount', detail.value)}"
                 ></etools-currency-amount-input>
@@ -276,15 +285,15 @@ export class EfaceDetails extends connectStore(LitElement) {
           <div style="padding: 6px;">Total</div>
           <div></div>
           <div class="reporting-grid">
-            <div>10.00</div>
-            <div>10.00</div>
-            <div>10.00</div>
-            <div>10.00</div>
+            <div>${displayCurrencyAmount(this.eface.total_reporting_authorized_amount, '0')}</div>
+            <div>${displayCurrencyAmount(this.eface.total_reporting_actual_project_expenditure, '0')}</div>
+            <div>${displayCurrencyAmount(this.eface.total_reporting_expenditures_accepted_by_agency, '0')}</div>
+            <div>${displayCurrencyAmount(this.eface.total_reporting_balance, '0')}</div>
           </div>
           <div class="requests-grid">
-            <div>22.30</div>
-            <div>10.00</div>
-            <div>10.00</div>
+            <div>${displayCurrencyAmount(this.eface.total_requested_amount, '0')}</div>
+            <div>${displayCurrencyAmount(this.eface.total_requested_authorized_amount, '0')}</div>
+            <div>${displayCurrencyAmount(this.eface.total_requested_outstanding_authorized_amount, '0')}</div>
           </div>
         </div>
 
@@ -358,6 +367,9 @@ export class EfaceDetails extends connectStore(LitElement) {
   @property({type: Object})
   originalEface!: Eface;
 
+  @property({type: Object})
+  eface!: Eface;
+
   connectedCallback() {
     super.connectedCallback();
     // Disable loading message for tab load, triggered by parent element on stamp or by tap event on tabs
@@ -380,11 +392,11 @@ export class EfaceDetails extends connectStore(LitElement) {
     if (!state.eface.current) {
       return;
     }
-    const eface: Eface = state.eface.current;
-    this.originalEface = cloneDeep(eface);
-    this.intervention = eface.intervention;
+    this.eface = state.eface.current;
+    this.originalEface = cloneDeep(this.eface);
+    this.intervention = this.eface.intervention;
     // this.invoiceItems = eface.activities;
-    this.pdOutputActivities = this.getPdOutputActivities(eface.intervention);
+    this.pdOutputActivities = this.getPdOutputActivities(this.eface.intervention);
   }
 
   getPdOutputActivities(intervention: Intervention) {
@@ -597,6 +609,27 @@ export class EfaceDetails extends connectStore(LitElement) {
       .catch((error) => {
         fireEvent(this, 'toast', {text: formatServerErrorAsText(error)});
       });
+  }
+
+  calculateTotalAuthorizedAmount() {
+    this.eface.total_reporting_authorized_amount = this.invoiceLines
+      .map((i: EfaceItem) => i.reporting_authorized_amount)
+      .reduce((a, b) => Number(a) + Number(b));
+    this.requestUpdate();
+  }
+
+  calculateTotalActualExpenditure() {
+    this.eface.total_reporting_actual_project_expenditure = this.invoiceLines
+      .map((i: EfaceItem) => i.reporting_actual_project_expenditure)
+      .reduce((a, b) => Number(a) + Number(b));
+    this.requestUpdate();
+  }
+
+  calculateTotalRequestedAmount() {
+    this.eface.total_requested_amount = this.invoiceLines
+      .map((i: EfaceItem) => i.requested_amount)
+      .reduce((a, b) => Number(a) + Number(b));
+    this.requestUpdate();
   }
 
   renderActions(editMode: boolean, canEditAnyFields: boolean) {
