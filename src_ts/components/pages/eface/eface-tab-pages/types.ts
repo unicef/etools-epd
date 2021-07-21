@@ -1,5 +1,7 @@
+import {Intervention} from '@unicef-polymer/etools-types';
+
 export class EfaceItem {
-  pd_activity = '';
+  pd_activity: string | null = '';
   eepm_kind = '';
   description = '';
   reporting_authorized_amount = '0';
@@ -10,4 +12,8 @@ export class EfaceItem {
   requested_authorized_amount = '0';
   requested_outstanding_authorized_amount = '0';
   kind = '';
+}
+export class Eface {
+  activities: EfaceItem[] = [];
+  intervention!: Intervention;
 }

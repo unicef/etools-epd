@@ -13,18 +13,19 @@ import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit
 import {sharedStyles} from '../../../common/styles/shared-styles-lit';
 import {fireEvent} from '../../../common/utils/fire-custom-event';
 import {EfaceItemTypes_Short} from '../../../interventions/intervention-tab-pages/common/constants';
-import {EfaceItem} from '../types';
+import {Eface, EfaceItem} from '../types';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {connectStore} from '../../../common/mixins/connect-store-mixin';
 import {RootState} from '../../../../../redux/store';
 import {ExpectedResult, Intervention, InterventionActivity, ResultLinkLowerResult} from '@unicef-polymer/etools-types';
 import {currentPage, currentSubpage} from '../../../interventions/intervention-tab-pages/common/selectors';
+import {cloneDeep} from '../../../common/utils/utils';
 
 /**
  * @customElement
  */
 @customElement('eface-details')
-export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
+export class EfaceDetails extends connectStore(LitElement) {
   static get styles() {
     return [elevationStyles, sharedStyles, pageLayoutStyles, buttonsStyles, gridLayoutStylesLit];
   }
@@ -34,6 +35,9 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
       <style>
         :host {
           display: block;
+        }
+        paper-textarea {
+          width: 100%;
         }
         .row {
           display: grid;
@@ -102,17 +106,27 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
           text-align: center;
         }
         .item {
-          border-bottom: 1px solid var(--dark-divider-color);
+          min-height: 60px;
         }
+
         .month-year {
           display: block;
           width: 115px;
           max-width: 100%;
         }
+        #add-invoice-line {
+          color: var(--primary-color);
+          padding-inline-start: 0;
+        }
+
+        paper-menu-button {
+          padding: 0;
+          padding-bottom: 8px;
+        }
       </style>
       <section class="elevation page-content" elevation="1">
         <div class="paper-label">For Programme Document:</div>
-        <div class="input-label">My PD title that will be readonly once the eface Form is Saved</div>
+        <div class="input-label">${this.intervention?.title}</div>
       </section>
       <section class="elevation page-content" elevation="1">
         <div class="row center" style="margin-bottom: 4px;">
@@ -138,7 +152,7 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
               <div class="center">B</div>
             </div>
             <div class="space-between h">
-              <div>Expenditures accepted by</div>
+              <div>Expenditures accepted by agency</div>
               <div class="center">C</div>
             </div>
             <div class="space-between h">
@@ -148,7 +162,7 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
           </div>
           <div class="requests-grid">
             <div class="space-between h">
-              <div>New Request Perios & Amount</div>
+              <div>New Request Periods & Amount</div>
               <div>Oct -Jan 2021</div>
               <div class="center">E</div>
             </div>
@@ -165,7 +179,7 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
         </div>
         ${this.invoiceItems?.map(
           (item: EfaceItem) => html`<div class="row">
-            <div class="item">${this.getInvoiceItemDescription(item)}</div>
+            <div class="item layout-horizontal align-items-center">${this.getInvoiceItemDescription(item)}</div>
             <div class="item"></div>
             <div class="item reporting-grid">
               <div>
@@ -173,6 +187,8 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
                   .value="${item.reporting_authorized_amount || 0}"
                   no-label-float
                   ?readonly="${this.readonly}"
+                  @value-changed="${({detail}: CustomEvent) =>
+                    this.updateField(item, 'reporting_authorized_amount', detail.value)}"
                 ></etools-currency-amount-input>
               </div>
               <div>
@@ -180,6 +196,8 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
                   .value="${item.reporting_actual_project_expenditure || 0}"
                   no-label-float
                   ?readonly="${this.readonly}"
+                  @value-changed="${({detail}: CustomEvent) =>
+                    this.updateField(item, 'reporting_actual_project_expenditure', detail.value)}"
                 ></etools-currency-amount-input>
               </div>
               <div>${displayCurrencyAmount(item.reporting_expenditures_accepted_by_agency, '-')}</div>
@@ -191,6 +209,8 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
                   .value="${item.requested_amount || 0}"
                   no-label-float
                   ?readonly="${this.readonly}"
+                  @value-changed="${({detail}: CustomEvent) =>
+                    this.updateField(item, 'requested_amount', detail.value)}"
                 ></etools-currency-amount-input>
               </div>
               <div>${displayCurrencyAmount(item.requested_authorized_amount, '-')}</div>
@@ -199,16 +219,36 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
           </div>`
         )}
 
-        <div class="add-row">
-          <paper-menu-button id="add" close-on-activate>
-            <paper-icon-button slot="dropdown-trigger" icon="add-box" title=${translate('GENERAL.ADD')}>
-            </paper-icon-button>
-            <paper-listbox slot="dropdown-content">
-              ${this.invoiceItemTypes.map(
-                (item) => html` <paper-item @tap="${() => this.addNewLine(item.value)}">${item.label}</paper-item>`
-              )}
-            </paper-listbox>
-          </paper-menu-button>
+        <div class="row">
+          <div class="item layout-horizontal align-items-center">
+            <paper-menu-button id="add" close-on-activate>
+              <paper-icon-button
+                id="add-invoice-line"
+                slot="dropdown-trigger"
+                icon="add-box"
+                title=${translate('GENERAL.ADD')}
+              >
+              </paper-icon-button
+              ><label class="paper-label" slot="dropdown-trigger">Add New Invoice Line</label>
+              <paper-listbox slot="dropdown-content">
+                ${this.invoiceItemTypes.map(
+                  (item) => html` <paper-item @tap="${() => this.addNewLine(item.value)}">${item.label}</paper-item>`
+                )}
+              </paper-listbox>
+            </paper-menu-button>
+          </div>
+          <div class="item"></div>
+          <div class="item reporting-grid">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+          <div class="item requests-grid">
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
         </div>
 
         <div class="row totals">
@@ -238,7 +278,7 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
   @property({type: Array})
   invoiceItems: any[] = [
     {
-      pd_activity: '1',
+      pd_activity: 5,
       eepm_kind: '',
       description: '',
       reporting_authorized_amount: '0',
@@ -249,6 +289,32 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
       requested_authorized_amount: '0',
       requested_outstanding_authorized_amount: '0',
       kind: EfaceItemTypes_Short.activity
+    },
+    {
+      pd_activity: '',
+      eepm_kind: 'operational',
+      description: '',
+      reporting_authorized_amount: '0',
+      reporting_actual_project_expenditure: '0',
+      reporting_expenditures_accepted_by_agency: '0',
+      reporting_balance: '0',
+      requested_amount: '0',
+      requested_authorized_amount: '0',
+      requested_outstanding_authorized_amount: '0',
+      kind: EfaceItemTypes_Short.eepm
+    },
+    {
+      pd_activity: '',
+      eepm_kind: '',
+      description: 'custom text',
+      reporting_authorized_amount: '0',
+      reporting_actual_project_expenditure: '0',
+      reporting_expenditures_accepted_by_agency: '0',
+      reporting_balance: '0',
+      requested_amount: '0',
+      requested_authorized_amount: '0',
+      requested_outstanding_authorized_amount: '0',
+      kind: EfaceItemTypes_Short.custom
     }
   ];
 
@@ -264,6 +330,12 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
     {value: 'eepm', label: 'Effective and Efficient Programme Management'},
     {value: 'custom', label: 'Custom'}
   ];
+
+  @property({type: Object})
+  intervention!: Intervention;
+
+  @property({type: Object})
+  originalEface!: Eface;
 
   connectedCallback() {
     super.connectedCallback();
@@ -284,7 +356,12 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
     if (currentPage(state) !== 'eface' || currentSubpage(state) !== 'details') {
       return;
     }
-    let eface = state.eface.current;
+    if (!state.eface.current) {
+      return;
+    }
+    const eface: Eface = state.eface.current;
+    this.originalEface = cloneDeep(eface);
+    this.intervention = eface.intervention;
     // this.invoiceItems = eface.activities;
     this.pdOutputActivities = this.getPdOutputActivities(eface.intervention);
   }
@@ -327,9 +404,13 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
           .selected="${item.pd_activity}"
           .options="${this.pdOutputActivities}"
           option-label="name"
-          option-value="value"
-          @etools-selected-item-changed="${({detail}: CustomEvent) =>
-            this.selectedItemChanged(detail.selectedItem, 'pd_activity')}"
+          option-value="id"
+          @etools-selected-item-changed="${({detail}: CustomEvent) => {
+            if (!detail.selectedItem) {
+              return;
+            }
+            this.selectedActivityChanged(detail.selectedItem, item);
+          }}"
           trigger-value-change-event
           allow-outside-scroll
           no-label-float
@@ -342,7 +423,7 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
           option-label="label"
           option-value="value"
           @etools-selected-item-changed="${({detail}: CustomEvent) =>
-            this.selectedItemChanged(detail.selectedItem, 'eepm_kind')}"
+            this.selectedEEPMChanged(detail.selectedItem, item)}"
           trigger-value-change-event
           allow-outside-scroll
           no-label-float
@@ -355,7 +436,7 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
           required
           no-label-float
           placeholder="—"
-          @value-changed="${({detail}: CustomEvent) => (item.description = detail.value)}"
+          @value-changed="${({detail}: CustomEvent) => this.selectedCustomTextChanged(detail.value, item)}"
           max-rows="3"
         ></paper-textarea>`;
 
@@ -364,6 +445,78 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
     }
   }
 
+  selectedActivityChanged(selectedItem: any, item: EfaceItem) {
+    if (!selectedItem) {
+      return;
+    }
+
+    if (selectedItem.id == item.pd_activity) {
+      return;
+    }
+
+    item.pd_activity = selectedItem.id;
+    item.kind = EfaceItemTypes_Short.activity;
+    item.eepm_kind = '';
+    item.description = '';
+  }
+
+  selectedEEPMChanged(selectedItem: any, item: EfaceItem) {
+    if (!selectedItem) {
+      return;
+    }
+
+    if (selectedItem.value == item.eepm_kind) {
+      return;
+    }
+
+    item.eepm_kind = selectedItem.value;
+    item.kind = EfaceItemTypes_Short.eepm;
+    item.pd_activity = null;
+    item.description = '';
+  }
+
+  selectedCustomTextChanged(value: string, item: EfaceItem) {
+    if (!value) {
+      return;
+    }
+
+    if (value == item.description) {
+      return;
+    }
+
+    item.description = value;
+    item.kind = EfaceItemTypes_Short.custom;
+    item.pd_activity = null;
+    item.eepm_kind = '';
+  }
+
+  updateField(item: EfaceItem, key: string, value: any): void {
+    if (item[key] === value) {
+      return;
+    }
+    item[key] = value;
+    this.requestUpdate();
+  }
+
   cancel() {}
   save() {}
+
+  renderActions(editMode: boolean, canEditAnyFields: boolean) {
+    return this.hideActionButtons(editMode, canEditAnyFields)
+      ? html``
+      : html`
+          <div class="layout-horizontal right-align row-padding-v">
+            <paper-button class="default" @click="${this.cancel}">${translate('GENERAL.CANCEL')}</paper-button>
+            <paper-button class="primary" @click="${this.save}"> ${translate('GENERAL.SAVE')} </paper-button>
+          </div>
+        `;
+  }
+
+  hideActionButtons(editMode: boolean, canEdit: boolean) {
+    if (!canEdit) {
+      return true;
+    }
+
+    return !editMode;
+  }
 }
