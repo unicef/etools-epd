@@ -12,7 +12,6 @@ import {elevationStyles} from '../../../common/styles/elevation-styles';
 import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
 import {sharedStyles} from '../../../common/styles/shared-styles-lit';
 import {fireEvent} from '../../../common/utils/fire-custom-event';
-import {EfaceItemTypes_Short} from '../../../interventions/intervention-tab-pages/common/constants';
 import {Eface, EfaceItem} from '../types';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {connectStore} from '../../../common/mixins/connect-store-mixin';
@@ -21,6 +20,10 @@ import {ExpectedResult, Intervention, InterventionActivity, ResultLinkLowerResul
 import {currentPage, currentSubpage} from '../../../interventions/intervention-tab-pages/common/selectors';
 import {cloneDeep} from '../../../common/utils/utils';
 import {EtoolsCurrencyAmountInput} from '@unicef-polymer/etools-currency-amount-input/etools-currency-amount-input';
+import {getEndpoint} from '../../../../../endpoints/endpoints';
+import {sendRequest} from '@unicef-polymer/etools-ajax';
+import {interventionEndpoints} from '../../../common/utils/intervention-endpoints';
+import {EfaceItemTypes_Short} from '../../../common/utils/constants';
 
 /**
  * @customElement
@@ -576,6 +579,21 @@ export class EfaceDetails extends connectStore(LitElement) {
     if (!this.validate()) {
       return;
     }
+
+    // sendRequest({
+    //   endpoint: getEndpoint(interventionEndpoints.efa),
+    //   method: 'PATCH',
+    //   body: this.isEditDialog ? {id: this.editedData.id, ...diff} : diff
+    // })
+    //   .then((response: any) => getStore().dispatch(updateCurrentIntervention(response.intervention)))
+    //   .then(() => {
+    //     fireEvent(this, 'dialog-closed', {confirmed: true});
+    //   })
+    //   .catch((error) => {
+    //     this.loadingInProcess = false;
+    //     this.errors = (error && error.response) || {};
+    //     fireEvent(this, 'toast', {text: formatServerErrorAsText(error)});
+    //   });
   }
 
   renderActions(editMode: boolean, canEditAnyFields: boolean) {
