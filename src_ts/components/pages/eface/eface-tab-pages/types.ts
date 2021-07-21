@@ -14,6 +14,7 @@ export class EfaceItem {
   kind = '';
 }
 export class Eface {
+  id: string | null = null;
   activities: EfaceItem[] = [];
   intervention!: Intervention;
 }

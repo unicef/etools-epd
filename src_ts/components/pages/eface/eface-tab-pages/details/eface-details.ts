@@ -24,6 +24,10 @@ import {getEndpoint} from '../../../../../endpoints/endpoints';
 import {sendRequest} from '@unicef-polymer/etools-ajax';
 import {interventionEndpoints} from '../../../common/utils/intervention-endpoints';
 import {EfaceItemTypes_Short} from '../../../common/utils/constants';
+import {efaceEndpoints} from '../../../common/utils/eface-endpoints';
+import {getStore} from '../../../common/utils/redux-store-access';
+import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {setEfaceForm} from '../../../../../redux/actions/eface-forms';
 
 /**
  * @customElement
@@ -182,7 +186,7 @@ export class EfaceDetails extends connectStore(LitElement) {
             </div>
           </div>
         </div>
-        ${this.invoiceItems?.map(
+        ${this.invoiceLines?.map(
           (item: EfaceItem) => html`<div class="row">
             <div class="item layout-horizontal align-items-center">${this.getInvoiceItemDescription(item)}</div>
             <div class="item"></div>
@@ -293,7 +297,7 @@ export class EfaceDetails extends connectStore(LitElement) {
   readonly = false;
 
   @property({type: Array})
-  invoiceItems: any[] = [
+  invoiceLines: any[] = [
     {
       pd_activity: 5,
       eepm_kind: '',
@@ -396,8 +400,8 @@ export class EfaceDetails extends connectStore(LitElement) {
   }
 
   addNewLine(type: string) {
-    this.invoiceItems = [
-      ...this.invoiceItems,
+    this.invoiceLines = [
+      ...this.invoiceLines,
       {
         pd_activity: '',
         eepm_kind: '',
@@ -580,20 +584,19 @@ export class EfaceDetails extends connectStore(LitElement) {
       return;
     }
 
-    // sendRequest({
-    //   endpoint: getEndpoint(interventionEndpoints.efa),
-    //   method: 'PATCH',
-    //   body: this.isEditDialog ? {id: this.editedData.id, ...diff} : diff
-    // })
-    //   .then((response: any) => getStore().dispatch(updateCurrentIntervention(response.intervention)))
-    //   .then(() => {
-    //     fireEvent(this, 'dialog-closed', {confirmed: true});
-    //   })
-    //   .catch((error) => {
-    //     this.loadingInProcess = false;
-    //     this.errors = (error && error.response) || {};
-    //     fireEvent(this, 'toast', {text: formatServerErrorAsText(error)});
-    //   });
+    fireEvent(this, 'global-loading', {
+      active: true,
+      loadingSource: this.localName
+    });
+    sendRequest({
+      endpoint: getEndpoint(efaceEndpoints.efaceForm, {id: this.originalEface.id}),
+      method: 'PATCH',
+      body: {activities: this.invoiceLines}
+    })
+      .then((response: any) => getStore().dispatch(setEfaceForm(response)))
+      .catch((error) => {
+        fireEvent(this, 'toast', {text: formatServerErrorAsText(error)});
+      });
   }
 
   renderActions(editMode: boolean, canEditAnyFields: boolean) {
