@@ -49,7 +49,7 @@ export class EfaceDetails extends connectStore(LitElement) {
         }
         .row {
           display: grid;
-          grid-template-columns: minmax(25%, 25%) 10% 35% 30%;
+          grid-template-columns: 25% 10% 35% 28% auto;
           column-gap: 5px;
         }
 
@@ -132,6 +132,11 @@ export class EfaceDetails extends connectStore(LitElement) {
           padding: 0;
           padding-bottom: 8px;
         }
+
+        paper-icon-button#del {
+          color: var(--dark-icon-color);
+          width: 37px;
+        }
       </style>
       <section class="elevation page-content" elevation="1">
         <div class="paper-label">For Programme Document:</div>
@@ -185,6 +190,7 @@ export class EfaceDetails extends connectStore(LitElement) {
               <div>G = D + F</div>
             </div>
           </div>
+          <div></div>
         </div>
         ${this.invoiceLines?.map(
           (item: EfaceItem) => html`<div class="row">
@@ -246,6 +252,9 @@ export class EfaceDetails extends connectStore(LitElement) {
               <div>${displayCurrencyAmount(item.requested_authorized_amount, '-')}</div>
               <div>${displayCurrencyAmount(item.requested_outstanding_authorized_amount, '-')}</div>
             </div>
+            <div class="layout-horizontal align-items-center">
+              <paper-icon-button id="del" icon="delete" title="Delete"> </paper-icon-button>
+            </div>
           </div>`
         )}
 
@@ -295,6 +304,7 @@ export class EfaceDetails extends connectStore(LitElement) {
             <div>${displayCurrencyAmount(this.eface.total_requested_authorized_amount, '0')}</div>
             <div>${displayCurrencyAmount(this.eface.total_requested_outstanding_authorized_amount, '0')}</div>
           </div>
+          <div></div>
         </div>
 
         <div style="padding-top: 26px;">${this.renderActions(true, true)}</div>
