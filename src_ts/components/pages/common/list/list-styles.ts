@@ -67,4 +67,8 @@ export const InterventionsTableStyles: CSSResult = css`
   td[data-label='Partner Org Name'] {
     width: 27%;
   }
+  td[data-label='Form Title'],
+  td[data-label='Reference No.'] {
+    width: 33%;
+  }
 `;

@@ -168,6 +168,7 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
             >
             </intervention-tabs>
             <eface-list
+              class="page"
               ?active="${this.isActivePage(this.mainPage, 'eface', this.subPage, 'list')}"
               ?hidden="${!this.isActivePage(this.mainPage, 'eface', this.subPage, 'list')}"
             ></eface-list>
