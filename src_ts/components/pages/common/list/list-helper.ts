@@ -2,31 +2,32 @@ import {EtoolsPaginator} from '@unicef-polymer/etools-table/pagination/etools-pa
 import {isEqual, sortBy} from 'lodash-es';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {getEndpoint} from '../../../../endpoints/endpoints';
-import {etoolsEndpoints} from '../../../../endpoints/endpoints-list';
 import {abortRequestByKey} from '@unicef-polymer/etools-ajax/etools-iron-request';
-import {InterventionListData, GenericObject} from '@unicef-polymer/etools-types';
+import {EtoolsEndpoint, GenericObject} from '@unicef-polymer/etools-types';
 import {store} from '../../../../redux/store';
-import {setShouldReGetList} from '../intervention-tab-pages/common/actions/interventions';
+import {setShouldReGetList} from '../../interventions/intervention-tab-pages/common/actions/interventions';
 
 export type ListHelperResponse<T> = {
   list: T[];
   paginator: EtoolsPaginator;
 };
 
-export class InterventionsListHelper {
-  private listData: InterventionListData[] = [];
+export class ListHelper<T> {
+  private listData: T[] = [];
   private lastParams!: GenericObject<string>;
   private requestInProcess = false;
   private readonly requestUid = 'INTERVENTIONS_REQUEST';
 
-  async getList(params: GenericObject<string>, forceReGet: boolean): Promise<ListHelperResponse<InterventionListData>> {
+  constructor(public endpoint: EtoolsEndpoint) {}
+
+  async getList(params: GenericObject<string>, forceReGet: boolean): Promise<ListHelperResponse<T>> {
     const {page = 1, page_size: pageSize = this.listData.length, sort, ...filters} = params;
     // checks if filters was changed and returns interventions list
-    const filteredList: InterventionListData[] = await this.getFilteredList(filters, forceReGet);
+    const filteredList: T[] = await this.getFilteredList(filters, forceReGet);
     // returns sorted list if sort param exists
-    const sortedList: InterventionListData[] = this.sortList(filteredList, sort);
+    const sortedList: T[] = this.sortList(filteredList, sort);
     // paginates list depending on provided params
-    const list: InterventionListData[] = this.paginate(Number(page), Number(pageSize), sortedList);
+    const list: T[] = this.paginate(Number(page), Number(pageSize), sortedList);
     const paginator: EtoolsPaginator = this.getPaginationData(Number(page), Number(pageSize), filteredList.length);
     return {
       list,
@@ -34,10 +35,7 @@ export class InterventionsListHelper {
     };
   }
 
-  private async getFilteredList(
-    filtersParams: GenericObject<string>,
-    forceReGet: boolean
-  ): Promise<InterventionListData[]> {
+  private async getFilteredList(filtersParams: GenericObject<string>, forceReGet: boolean): Promise<T[]> {
     if (isEqual(filtersParams, this.lastParams) && !forceReGet) {
       // return cached list if params wasn't changed
       return this.listData;
@@ -49,7 +47,7 @@ export class InterventionsListHelper {
       // save last params
       this.lastParams = filtersParams;
       // make request
-      const list: InterventionListData[] = await this.listRequest(filtersParams);
+      const list: T[] = await this.listRequest(filtersParams);
       this.requestInProcess = false;
       // cache response
       this.listData = list;
@@ -57,10 +55,10 @@ export class InterventionsListHelper {
     }
   }
 
-  private listRequest(filtersParams: GenericObject<string>): Promise<InterventionListData[]> {
+  private listRequest(filtersParams: GenericObject<string>): Promise<T[]> {
     return sendRequest(
       {
-        endpoint: getEndpoint(etoolsEndpoints.interventions),
+        endpoint: getEndpoint(this.endpoint),
         params: filtersParams
       },
       this.requestUid
@@ -79,14 +77,14 @@ export class InterventionsListHelper {
       });
   }
 
-  private sortList(list: InterventionListData[], sort = ''): InterventionListData[] {
-    const [field, direction] = sort.split('.') as [keyof InterventionListData, string];
+  private sortList(list: T[], sort = ''): T[] {
+    const [field, direction] = sort.split('.') as [keyof T, string];
     if (!field || !direction || !list.length || !Object.hasOwnProperty.call(list[0], field)) {
       return list;
     }
-    const sorted: InterventionListData[] = sortBy(list, (intervention: InterventionListData) => {
+    const sorted: T[] = sortBy(list, (intervention: T) => {
       if (field === 'end' || field === 'start') {
-        const stringDate: string | null = intervention[field];
+        const stringDate: string | null = (intervention[field] as unknown) as string;
         return stringDate ? new Date(stringDate).getTime() : 0;
       } else {
         return intervention[field];
@@ -95,7 +93,7 @@ export class InterventionsListHelper {
     return direction === 'asc' ? sorted : sorted.reverse();
   }
 
-  private paginate(page: number, pageSize: number, data: InterventionListData[]): InterventionListData[] {
+  private paginate(page: number, pageSize: number, data: T[]): T[] {
     const fromIndex: number = (page - 1) * pageSize;
     const toIndex: number = fromIndex + pageSize;
     return data.slice(fromIndex, toIndex);

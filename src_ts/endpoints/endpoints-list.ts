@@ -67,7 +67,7 @@ export const etoolsEndpoints: EtoolsEndpoints = {
     url: '/api/v2/environment/flags/'
   },
   efaceForms: {
-    url: '/api/eface/v1/forms/'
+    url: '/api/eface/v1/forms/?page_size=all'
   },
   efaceForm: {
     template: '/api/eface/v1/forms/<%=id%>/'
