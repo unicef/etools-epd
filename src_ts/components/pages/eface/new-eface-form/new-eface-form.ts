@@ -10,6 +10,7 @@ import {etoolsEndpoints} from '../../../../endpoints/endpoints-list';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {ROOT_PATH} from '../../../../config/config';
 import {setEfaceForm} from '../../../../redux/actions/eface-forms';
+import {EfaceFormTypes} from '../../common/utils/constants';
 
 @customElement('new-eface-form')
 export class NewEfaceForm extends connect(store)(LitElement) {
@@ -80,11 +81,7 @@ export class NewEfaceForm extends connect(store)(LitElement) {
 
   @property() newForm: GenericObject = {};
 
-  types: GenericObject[] = [
-    {label: 'Direct Cash Transfer', value: 'dct'},
-    {label: 'Reimbursement', value: 'rmb'},
-    {label: 'Direct Payment', value: 'dp'}
-  ];
+  types: GenericObject[] = Array.from(EfaceFormTypes.values());
 
   @property() interventions: Intervention[] = [];
 

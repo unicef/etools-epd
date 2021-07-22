@@ -1,9 +1,9 @@
 import {ActionCreator, Action} from 'redux';
-import {Intervention} from '@unicef-polymer/etools-types';
 import {sendRequest} from '@unicef-polymer/etools-ajax';
 import {etoolsEndpoints} from '../../endpoints/endpoints-list';
 import {store} from '../store';
 import {getEndpoint} from '../../endpoints/endpoints';
+import {Eface} from '../../components/pages/eface/eface-tab-pages/types';
 
 export const SET_CURRENT_EFACE_FORM = 'SET_CURRENT_EFACE_FORM';
 export const EFACE_FORM_LOADING = 'EFACE_FORM_LOADING';
@@ -15,7 +15,7 @@ export interface EfaceFormLoadingAction extends Action<'EFACE_FORM_LOADING'> {
   state: boolean;
 }
 
-export const setEfaceForm: ActionCreator<EfaceFormSetAction> = (current: any) => {
+export const setEfaceForm: ActionCreator<EfaceFormSetAction> = (current: Eface) => {
   return {
     type: SET_CURRENT_EFACE_FORM,
     current

@@ -20,10 +20,8 @@ import {ExpectedResult, Intervention, InterventionActivity, ResultLinkLowerResul
 import {currentPage, currentSubpage} from '../../../interventions/intervention-tab-pages/common/selectors';
 import {cloneDeep} from '../../../common/utils/utils';
 import {EtoolsCurrencyAmountInput} from '@unicef-polymer/etools-currency-amount-input/etools-currency-amount-input';
-import {getEndpoint} from '../../../../../endpoints/endpoints';
-import {sendRequest} from '@unicef-polymer/etools-ajax';
-import {interventionEndpoints} from '../../../common/utils/intervention-endpoints';
-import {EfaceItemTypes_Short} from '../../../common/utils/constants';
+import './eface-additional-details';
+import {EfaceFormTypes, EfaceItemTypes_Short} from '../../../common/utils/constants';
 import {efaceEndpoints} from '../../../common/utils/eface-endpoints';
 import {getStore} from '../../../common/utils/redux-store-access';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
@@ -133,6 +131,9 @@ export class EfaceDetails extends connectStore(LitElement) {
           padding: 0;
           padding-bottom: 8px;
         }
+        section.form-info {
+          display: flex;
+        }
 
         paper-icon-button#del {
           padding: 0;
@@ -140,9 +141,15 @@ export class EfaceDetails extends connectStore(LitElement) {
           width: 20px;
         }
       </style>
-      <section class="elevation page-content" elevation="1">
-        <div class="paper-label">For Programme Document:</div>
-        <div class="input-label">${this.intervention?.title}</div>
+      <section class="elevation page-content form-info" elevation="1">
+        <div class="flex-1">
+          <div class="paper-label">For Programme Document:</div>
+          <div class="input-label">${this.intervention?.title}</div>
+        </div>
+        <div class="flex-1">
+          <div class="paper-label">Form Type</div>
+          <div class="input-label">${EfaceFormTypes.get(this.originalEface?.request_type)?.label}</div>
+        </div>
       </section>
       <section class="elevation page-content" elevation="1">
         <div class="row center" style="margin-bottom: 4px;">
@@ -315,6 +322,8 @@ export class EfaceDetails extends connectStore(LitElement) {
 
         <div style="padding-top: 26px;">${this.renderActions(true, true)}</div>
       </section>
+
+      <eface-additional-details></eface-additional-details>
     `;
   }
 
