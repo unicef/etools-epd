@@ -73,7 +73,7 @@ export class NewEfaceForm extends connect(store)(LitElement) {
           </etools-dropdown>
         </div>
         <div class="row buttons">
-          <paper-button class="primary-btn" @click="${() => this.createForm()}"> Create </paper-button>
+          <paper-button class="primary-btn" @click="${() => this.save()}"> Create </paper-button>
         </div>
       </main>
     `;
@@ -112,13 +112,13 @@ export class NewEfaceForm extends connect(store)(LitElement) {
     this.requestUpdate();
   }
 
-  createForm() {
+  save() {
     if (!this.validate()) {
       return;
     }
     sendRequest({
       endpoint: {url: etoolsEndpoints.efaceForms.url!},
-      body: this.newForm,
+      body: {...this.newForm, activities: []},
       method: 'POST'
     }).then((form) => {
       store.dispatch(setEfaceForm(form));

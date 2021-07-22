@@ -12,6 +12,7 @@ export class EfaceItem {
   requested_authorized_amount = null;
   requested_outstanding_authorized_amount = null;
   kind = '';
+  [key: string]: any;
 }
 export class Eface {
   activities: EfaceItem[] = [];
@@ -48,4 +49,5 @@ export class Eface {
   submitted_by_unicef_date!: null | string;
   title!: string;
   transaction_rejection_reason!: string;
+  [key: string]: any;
 }

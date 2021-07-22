@@ -29,6 +29,8 @@ import {setEfaceForm} from '../../../../../redux/actions/eface-forms';
 import {openDialog} from '../../../common/utils/dialog';
 import {getEndpoint} from '../../../common/utils/endpoint-helper';
 import {sendRequest} from '@unicef-polymer/etools-ajax';
+import {PaperInputElement} from '@polymer/paper-input/paper-input';
+import {pick} from 'lodash-es';
 
 /**
  * @customElement
@@ -36,14 +38,39 @@ import {sendRequest} from '@unicef-polymer/etools-ajax';
 @customElement('eface-details')
 export class EfaceDetails extends connectStore(LitElement) {
   static get styles() {
-    return [elevationStyles, sharedStyles, pageLayoutStyles, buttonsStyles, gridLayoutStylesLit];
+    return [elevationStyles, pageLayoutStyles, buttonsStyles, gridLayoutStylesLit];
   }
   render() {
+    if (!this.eface) {
+      return;
+    }
     // language=HTML
     return html`
       <style>
         :host {
           display: block;
+          box-sizing: border-box;
+        }
+        section {
+          background-color: var(--primary-background-color);
+        }
+        .paper-label {
+          font-size: 12px;
+          color: var(--secondary-text-color);
+          padding-top: 6px;
+        }
+
+        .input-label {
+          min-height: 24px;
+          padding-top: 4px;
+          padding-bottom: 6px;
+          min-width: 0;
+          font-size: 16px;
+        }
+
+        .input-label[empty]::after {
+          content: '—';
+          color: var(--secondary-text-color);
         }
         paper-textarea {
           width: 100%;
@@ -90,8 +117,15 @@ export class EfaceDetails extends connectStore(LitElement) {
           padding-right: 2px;
           display: flex;
           align-items: center;
-          justify-content: flex-end;
           overflow: hidden;
+          justify-content: flex-end;
+          min-height: 60px;
+        }
+
+        .reporting-grid > div.h,
+        .requests-grid > div.h {
+          flex-direction: column;
+          justify-content: space-between;
         }
 
         .reporting-grid > div:nth-child(3),
@@ -107,15 +141,11 @@ export class EfaceDetails extends connectStore(LitElement) {
         .center {
           text-align: center;
         }
-        .space-between {
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-        }
+
         .h > div {
           text-align: center;
         }
-        .item {
+        .item-del {
           min-height: 60px;
         }
 
@@ -126,7 +156,7 @@ export class EfaceDetails extends connectStore(LitElement) {
         }
         #add-invoice-line {
           color: var(--primary-color);
-          padding-inline-start: 0;
+          margin-inline-start: -10px;
         }
 
         paper-menu-button {
@@ -140,7 +170,10 @@ export class EfaceDetails extends connectStore(LitElement) {
         paper-icon-button#del {
           padding: 0;
           color: var(--dark-icon-color);
-          width: 20px;
+          width: 18px;
+        }
+        .periods {
+          max-width: 80px;
         }
       </style>
       <section class="elevation page-content form-info" elevation="1">
@@ -156,7 +189,7 @@ export class EfaceDetails extends connectStore(LitElement) {
       <section class="elevation page-content" elevation="1">
         <div class="row center" style="margin-bottom: 4px;">
           <div></div>
-          <div class="currency">Currency: US</div>
+          <div class="currency"><b>Currency</b>: US</div>
           <div></div>
           <div class="double-border center bold">REPORTING</div>
           <div class="double-border center bold">REQUESTS / AUTHORIZATIONS</div>
@@ -166,40 +199,92 @@ export class EfaceDetails extends connectStore(LitElement) {
           <div>Activity description from AWP with Duration</div>
           <div>Coding for UNDP, UNFPA and WFP</div>
           <div class="reporting-grid">
-            <div class="space-between h">
+            <div class="h">
               <div>Authorized Amount</div>
               <div>
-                <input type="month" class="month-year" value="2021-02" />
-                -
-                <input type="month" class="month-year" value="2021-08" />
+                <paper-input
+                  id="auth-amt-date-start"
+                  class="periods"
+                  pattern="\\d{1,2}/\\d{4}"
+                  no-label-float
+                  placeholder="mm/yyyy"
+                  required
+                  .value="${this.eface?.authorized_amount_date_start}"
+                  error-message="Invalid Format"
+                  @blur="${(ev: CustomEvent) => this.validateMonthYearFormat(ev)}"
+                  @value-changed="${({detail}: CustomEvent) =>
+                    this.updateEfaceField('authorized_amount_date_start', detail.value)}"
+                ></paper-input>
+                —
+                <paper-input
+                  id="auth-amt-date-end"
+                  class="periods"
+                  pattern="\\d{1,2}/\\d{4}"
+                  no-label-float
+                  placeholder="mm/yyyy"
+                  required
+                  .value="${this.eface?.authorized_amount_date_end}"
+                  error-message="Invalid Format"
+                  @blur="${(ev: CustomEvent) => this.validateMonthYearFormat(ev)}"
+                  @value-changed="${({detail}: CustomEvent) =>
+                    this.updateEfaceField('authorized_amount_date_end', detail.value)}"
+                ></paper-input>
               </div>
               <div class="center">A</div>
             </div>
-            <div class="space-between h">
+            <div class="h">
               <div>Actual Project Expenditure</div>
               <div class="center">B</div>
             </div>
-            <div class="space-between h">
+            <div class="h">
               <div>Expenditures accepted by agency</div>
               <div class="center">C</div>
             </div>
-            <div class="space-between h">
+            <div class="h">
               <div>Balance</div>
               <div class="center">D = A - C</div>
             </div>
           </div>
           <div class="requests-grid">
-            <div class="space-between h">
+            <div class="h">
               <div>New Request Periods & Amount</div>
-              <div>Oct -Jan 2021</div>
+              <div>
+                <paper-input
+                  id="req-date-start"
+                  class="periods"
+                  pattern="\\d{1,2}/\\d{4}"
+                  no-label-float
+                  placeholder="mm/yyyy"
+                  required
+                  .value="${this.eface?.requested_amount_date_start}"
+                  error-message="Invalid Format"
+                  @blur="${(ev: CustomEvent) => this.validateMonthYearFormat(ev)}"
+                  @value-changed="${({detail}: CustomEvent) =>
+                    this.updateEfaceField('requested_amount_date_start', detail.value)}"
+                ></paper-input>
+                —
+                <paper-input
+                  id="req-date-end"
+                  class="periods"
+                  pattern="\\d{1,2}/\\d{4}"
+                  no-label-float
+                  placeholder="mm/yyyy"
+                  required
+                  .value="${this.eface?.requested_amount_date_end}"
+                  error-message="Invalid Format"
+                  @blur="${(ev: CustomEvent) => this.validateMonthYearFormat(ev)}"
+                  @value-changed="${({detail}: CustomEvent) =>
+                    this.updateEfaceField('requested_amount_date_end', detail.value)}"
+                ></paper-input>
+              </div>
               <div class="center">E</div>
             </div>
 
-            <div class="space-between h">
+            <div class="h">
               <div>Authorized Amount</div>
               <div>F</div>
             </div>
-            <div class="space-between h">
+            <div class="h">
               <div>Outstanding Authorized Amount</div>
               <div>G = D + F</div>
             </div>
@@ -213,7 +298,7 @@ export class EfaceDetails extends connectStore(LitElement) {
             </div>
             <div class="item layout-horizontal align-items-center">${this.getInvoiceItemDescription(item)}</div>
             <div class="item"></div>
-            <div class="item reporting-grid">
+            <div class="item reporting-grid right">
               <div>
                 <etools-currency-amount-input
                   id="reporting-a"
@@ -227,7 +312,7 @@ export class EfaceDetails extends connectStore(LitElement) {
                     this.calculateTotalAuthorizedAmount();
                   }}"
                   @value-changed="${({detail}: CustomEvent) =>
-                    this.updateField(item, 'reporting_authorized_amount', detail.value)}"
+                    this.updateItem(item, 'reporting_authorized_amount', detail.value)}"
                 ></etools-currency-amount-input>
               </div>
               <div>
@@ -243,7 +328,7 @@ export class EfaceDetails extends connectStore(LitElement) {
                     this.calculateTotalActualExpenditure();
                   }}"
                   @value-changed="${({detail}: CustomEvent) =>
-                    this.updateField(item, 'reporting_actual_project_expenditure', detail.value)}"
+                    this.updateItem(item, 'reporting_actual_project_expenditure', detail.value)}"
                 ></etools-currency-amount-input>
               </div>
               <div>${displayCurrencyAmount(item.reporting_expenditures_accepted_by_agency, '-')}</div>
@@ -262,8 +347,7 @@ export class EfaceDetails extends connectStore(LitElement) {
                   @blur="${() => {
                     this.calculateTotalRequestedAmount();
                   }}"
-                  @value-changed="${({detail}: CustomEvent) =>
-                    this.updateField(item, 'requested_amount', detail.value)}"
+                  @value-changed="${({detail}: CustomEvent) => this.updateItem(item, 'requested_amount', detail.value)}"
                 ></etools-currency-amount-input>
               </div>
               <div>${displayCurrencyAmount(item.requested_authorized_amount, '-')}</div>
@@ -307,18 +391,18 @@ export class EfaceDetails extends connectStore(LitElement) {
 
         <div class="row totals">
           <div></div>
-          <div style="padding: 6px;">Total</div>
+          <div style="padding: 6px;display:flex;align-items:center;">Total</div>
           <div></div>
           <div class="reporting-grid">
-            <div>${displayCurrencyAmount(this.eface.reporting_authorized_amount, '0')}</div>
-            <div>${displayCurrencyAmount(this.eface.reporting_actual_project_expenditure, '0')}</div>
-            <div>${displayCurrencyAmount(this.eface.reporting_expenditures_accepted_by_agency, '0')}</div>
-            <div>${displayCurrencyAmount(this.eface.reporting_balance, '0')}</div>
+            <div>${displayCurrencyAmount(this.eface?.reporting_authorized_amount, '0')}</div>
+            <div>${displayCurrencyAmount(this.eface?.reporting_actual_project_expenditure, '0')}</div>
+            <div>${displayCurrencyAmount(this.eface?.reporting_expenditures_accepted_by_agency, '0')}</div>
+            <div>${displayCurrencyAmount(this.eface?.reporting_balance, '0')}</div>
           </div>
           <div class="requests-grid">
-            <div>${displayCurrencyAmount(this.eface.requested_amount, '0')}</div>
-            <div>${displayCurrencyAmount(this.eface.requested_authorized_amount, '0')}</div>
-            <div>${displayCurrencyAmount(this.eface.requested_outstanding_authorized_amount, '0')}</div>
+            <div>${displayCurrencyAmount(this.eface?.requested_amount, '0')}</div>
+            <div>${displayCurrencyAmount(this.eface?.requested_authorized_amount, '0')}</div>
+            <div>${displayCurrencyAmount(this.eface?.requested_outstanding_authorized_amount, '0')}</div>
           </div>
         </div>
 
@@ -558,12 +642,19 @@ export class EfaceDetails extends connectStore(LitElement) {
     item.eepm_kind = '';
   }
 
-  updateField(item: EfaceItem, key: string, value: any): void {
+  updateItem(item: any, key: string, value: any): void {
+    if (value == undefined) {
+      return;
+    }
     if (item[key] === value) {
       return;
     }
     item[key] = value;
     this.requestUpdate();
+  }
+
+  updateEfaceField(key: string, value: any): void {
+    this.updateItem(this.eface, key, value);
   }
 
   cancel() {}
@@ -576,7 +667,7 @@ export class EfaceDetails extends connectStore(LitElement) {
         validations.required = false;
       } else {
         if (Number(f.value) <= 0) {
-          validations.greaterThan0 = false;
+          validations.greaterThan0 = true; // TODO
           f.errorMessage = 'Invalid';
           f.invalid = false; // TODO
         }
@@ -605,13 +696,26 @@ export class EfaceDetails extends connectStore(LitElement) {
     return fields;
   }
 
+  validatePeriods() {
+    const fields = this.shadowRoot?.querySelectorAll<PaperInputElement>('paper-input.periods');
+    const validations = {dates: true};
+    fields?.forEach((f) => {
+      f.errorMessage = 'Required';
+      if (!f.validate()) {
+        validations.dates = false;
+      }
+    });
+    return validations;
+  }
+
   validate() {
-    const validations = {...this.validateLineAmounts(), ...this.validateDescriptions()};
-    if (!validations.required || !validations.greaterThan0) {
+    const validations = {...this.validateLineAmounts(), ...this.validateDescriptions(), ...this.validatePeriods()};
+    if (!validations.required || !validations.greaterThan0 || !validations.dates) {
       fireEvent(this, 'toast', {
-        text: !validations.required
-          ? getTranslation('PLS_FILL_IN_ALL_REQUIRED_FIELDS')
-          : getTranslation('MAKE_SURE_AMOUNTS_GREATER_THAN_0')
+        text:
+          !validations.required || !validations.dates
+            ? getTranslation('PLS_FILL_IN_ALL_REQUIRED_FIELDS')
+            : getTranslation('MAKE_SURE_AMOUNTS_GREATER_THAN_0')
       });
       return false;
     }
@@ -630,11 +734,11 @@ export class EfaceDetails extends connectStore(LitElement) {
     sendRequest({
       endpoint: getEndpoint(efaceEndpoints.efaceForm, {id: this.originalEface.id}),
       method: 'PATCH',
-      body: {activities: this.cleanUpInviceLines()}
+      body: {activities: this.cleanUpInviceLines(), ...this.getPeriods()}
     })
       .then((response: any) => getStore().dispatch(setEfaceForm(response)))
       .catch((error) => {
-        fireEvent(this, 'toast', {text: formatServerErrorAsText(error)});
+        fireEvent(this, 'toast', {text: formatServerErrorAsText(error), showCloseBtn: true});
       })
       .finally(() => {
         fireEvent(this, 'global-loading', {
@@ -642,6 +746,15 @@ export class EfaceDetails extends connectStore(LitElement) {
           loadingSource: this.localName
         });
       });
+  }
+
+  getPeriods() {
+    return pick(this.eface, [
+      'authorized_amount_date_start',
+      'authorized_amount_date_end',
+      'requested_amount_date_start',
+      'requested_amount_date_end'
+    ]);
   }
 
   private cleanUpInviceLines() {
@@ -711,5 +824,11 @@ export class EfaceDetails extends connectStore(LitElement) {
       this.invoiceLines.splice(index, 1);
       this.requestUpdate();
     }
+  }
+
+  validateMonthYearFormat(e: CustomEvent) {
+    const elem = e.currentTarget as PaperInputElement;
+    elem.errorMessage = 'Invalid Format';
+    elem.validate();
   }
 }
