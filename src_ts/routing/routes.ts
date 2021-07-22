@@ -59,6 +59,18 @@ EtoolsRouter.addRoute(
     }
   )
   .addRoute(
+    new RegExp('^eface/new$'),
+    (params: RouteCallbackParams): RouteDetails => {
+      return {
+        routeName: 'eface',
+        subRouteName: 'new',
+        path: params.matchDetails[0],
+        queryParams: params.queryParams,
+        params: null
+      };
+    }
+  )
+  .addRoute(
     new RegExp(`^eface\\/${routeParamRegex}\\/${routeParamRegex}$`),
     (params: RouteCallbackParams): RouteDetails => {
       return {
