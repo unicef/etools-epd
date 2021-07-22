@@ -27,6 +27,8 @@ import {getStore} from '../../../common/utils/redux-store-access';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {setEfaceForm} from '../../../../../redux/actions/eface-forms';
 import {openDialog} from '../../../common/utils/dialog';
+import {getEndpoint} from '../../../common/utils/endpoint-helper';
+import {sendRequest} from '@unicef-polymer/etools-ajax';
 
 /**
  * @customElement
@@ -308,15 +310,15 @@ export class EfaceDetails extends connectStore(LitElement) {
           <div style="padding: 6px;">Total</div>
           <div></div>
           <div class="reporting-grid">
-            <div>${displayCurrencyAmount(this.eface.total_reporting_authorized_amount, '0')}</div>
-            <div>${displayCurrencyAmount(this.eface.total_reporting_actual_project_expenditure, '0')}</div>
-            <div>${displayCurrencyAmount(this.eface.total_reporting_expenditures_accepted_by_agency, '0')}</div>
-            <div>${displayCurrencyAmount(this.eface.total_reporting_balance, '0')}</div>
+            <div>${displayCurrencyAmount(this.eface.reporting_authorized_amount, '0')}</div>
+            <div>${displayCurrencyAmount(this.eface.reporting_actual_project_expenditure, '0')}</div>
+            <div>${displayCurrencyAmount(this.eface.reporting_expenditures_accepted_by_agency, '0')}</div>
+            <div>${displayCurrencyAmount(this.eface.reporting_balance, '0')}</div>
           </div>
           <div class="requests-grid">
-            <div>${displayCurrencyAmount(this.eface.total_requested_amount, '0')}</div>
-            <div>${displayCurrencyAmount(this.eface.total_requested_authorized_amount, '0')}</div>
-            <div>${displayCurrencyAmount(this.eface.total_requested_outstanding_authorized_amount, '0')}</div>
+            <div>${displayCurrencyAmount(this.eface.requested_amount, '0')}</div>
+            <div>${displayCurrencyAmount(this.eface.requested_authorized_amount, '0')}</div>
+            <div>${displayCurrencyAmount(this.eface.requested_outstanding_authorized_amount, '0')}</div>
           </div>
         </div>
 
@@ -420,7 +422,7 @@ export class EfaceDetails extends connectStore(LitElement) {
     this.eface = state.eface.current;
     this.originalEface = cloneDeep(this.eface);
     this.intervention = this.eface.intervention;
-    // this.invoiceItems = eface.activities;
+    this.invoiceLines = this.eface.activities;
     this.pdOutputActivities = this.getPdOutputActivities(this.eface.intervention);
   }
 
@@ -655,21 +657,21 @@ export class EfaceDetails extends connectStore(LitElement) {
   }
 
   calculateTotalAuthorizedAmount() {
-    this.eface.total_reporting_authorized_amount = this.invoiceLines
+    this.eface.reporting_authorized_amount = this.invoiceLines
       .map((i: EfaceItem) => i.reporting_authorized_amount)
       .reduce((a, b) => Number(a) + Number(b));
     this.requestUpdate();
   }
 
   calculateTotalActualExpenditure() {
-    this.eface.total_reporting_actual_project_expenditure = this.invoiceLines
+    this.eface.reporting_actual_project_expenditure = this.invoiceLines
       .map((i: EfaceItem) => i.reporting_actual_project_expenditure)
       .reduce((a, b) => Number(a) + Number(b));
     this.requestUpdate();
   }
 
   calculateTotalRequestedAmount() {
-    this.eface.total_requested_amount = this.invoiceLines
+    this.eface.requested_amount = this.invoiceLines
       .map((i: EfaceItem) => i.requested_amount)
       .reduce((a, b) => Number(a) + Number(b));
     this.requestUpdate();

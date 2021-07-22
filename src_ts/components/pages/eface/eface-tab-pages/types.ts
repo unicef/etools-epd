@@ -48,13 +48,4 @@ export class Eface {
   submitted_by_unicef_date!: null | string;
   title!: string;
   transaction_rejection_reason!: string;
-
-  // redundant fields?
-  total_reporting_authorized_amount: number | null = null;
-  total_reporting_actual_project_expenditure: number | null = null;
-  total_reporting_expenditures_accepted_by_agency = null;
-  total_reporting_balance = null;
-  total_requested_amount: number | null = null;
-  total_requested_authorized_amount: string | null = null;
-  total_requested_outstanding_authorized_amount = null;
 }
