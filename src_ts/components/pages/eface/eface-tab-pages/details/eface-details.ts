@@ -28,6 +28,7 @@ import {efaceEndpoints} from '../../../common/utils/eface-endpoints';
 import {getStore} from '../../../common/utils/redux-store-access';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {setEfaceForm} from '../../../../../redux/actions/eface-forms';
+import {openDialog} from '../../../common/utils/dialog';
 
 /**
  * @customElement
@@ -49,7 +50,7 @@ export class EfaceDetails extends connectStore(LitElement) {
         }
         .row {
           display: grid;
-          grid-template-columns: 25% 10% 35% 28% auto;
+          grid-template-columns: 20px 25% 10% 35% calc(30% - 20px);
           column-gap: 5px;
         }
 
@@ -134,8 +135,9 @@ export class EfaceDetails extends connectStore(LitElement) {
         }
 
         paper-icon-button#del {
+          padding: 0;
           color: var(--dark-icon-color);
-          width: 37px;
+          width: 20px;
         }
       </style>
       <section class="elevation page-content" elevation="1">
@@ -144,11 +146,14 @@ export class EfaceDetails extends connectStore(LitElement) {
       </section>
       <section class="elevation page-content" elevation="1">
         <div class="row center" style="margin-bottom: 4px;">
+          <div></div>
           <div class="currency">Currency: US</div>
+          <div></div>
           <div class="double-border center bold">REPORTING</div>
           <div class="double-border center bold">REQUESTS / AUTHORIZATIONS</div>
         </div>
         <div class="row h">
+          <div></div>
           <div>Activity description from AWP with Duration</div>
           <div>Coding for UNDP, UNFPA and WFP</div>
           <div class="reporting-grid">
@@ -190,10 +195,13 @@ export class EfaceDetails extends connectStore(LitElement) {
               <div>G = D + F</div>
             </div>
           </div>
-          <div></div>
         </div>
         ${this.invoiceLines?.map(
-          (item: EfaceItem) => html`<div class="row">
+          (item: EfaceItem, index: number) => html`<div class="row">
+            <div class="layout-horizontal align-items-center">
+              <paper-icon-button id="del" icon="delete" title="Delete" @tap="${() => this.deleteInvoiceLine(index)}">
+              </paper-icon-button>
+            </div>
             <div class="item layout-horizontal align-items-center">${this.getInvoiceItemDescription(item)}</div>
             <div class="item"></div>
             <div class="item reporting-grid">
@@ -252,13 +260,11 @@ export class EfaceDetails extends connectStore(LitElement) {
               <div>${displayCurrencyAmount(item.requested_authorized_amount, '-')}</div>
               <div>${displayCurrencyAmount(item.requested_outstanding_authorized_amount, '-')}</div>
             </div>
-            <div class="layout-horizontal align-items-center">
-              <paper-icon-button id="del" icon="delete" title="Delete"> </paper-icon-button>
-            </div>
           </div>`
         )}
 
         <div class="row">
+          <div></div>
           <div class="item layout-horizontal align-items-center">
             <paper-menu-button id="add" close-on-activate>
               <paper-icon-button
@@ -291,6 +297,7 @@ export class EfaceDetails extends connectStore(LitElement) {
         </div>
 
         <div class="row totals">
+          <div></div>
           <div style="padding: 6px;">Total</div>
           <div></div>
           <div class="reporting-grid">
@@ -304,7 +311,6 @@ export class EfaceDetails extends connectStore(LitElement) {
             <div>${displayCurrencyAmount(this.eface.total_requested_authorized_amount, '0')}</div>
             <div>${displayCurrencyAmount(this.eface.total_requested_outstanding_authorized_amount, '0')}</div>
           </div>
-          <div></div>
         </div>
 
         <div style="padding-top: 26px;">${this.renderActions(true, true)}</div>
@@ -613,12 +619,30 @@ export class EfaceDetails extends connectStore(LitElement) {
     sendRequest({
       endpoint: getEndpoint(efaceEndpoints.efaceForm, {id: this.originalEface.id}),
       method: 'PATCH',
-      body: {activities: this.invoiceLines}
+      body: {activities: this.cleanUpInviceLines()}
     })
       .then((response: any) => getStore().dispatch(setEfaceForm(response)))
       .catch((error) => {
         fireEvent(this, 'toast', {text: formatServerErrorAsText(error)});
+      })
+      .finally(() => {
+        fireEvent(this, 'global-loading', {
+          active: false,
+          loadingSource: this.localName
+        });
       });
+  }
+
+  private cleanUpInviceLines() {
+    let linesForSave = cloneDeep(this.invoiceLines);
+    linesForSave = linesForSave.map((l) => {
+      delete l.reporting_balance;
+      delete l.reporting_expenditures_accepted_by_agency;
+      delete l.requested_authorized_amount;
+      delete l.requested_outstanding_authorized_amount;
+      return l;
+    });
+    return linesForSave;
   }
 
   calculateTotalAuthorizedAmount() {
@@ -659,5 +683,22 @@ export class EfaceDetails extends connectStore(LitElement) {
     }
 
     return !editMode;
+  }
+
+  async deleteInvoiceLine(index: number) {
+    const confirmed = await openDialog({
+      dialog: 'are-you-sure',
+      dialogData: {
+        content: 'Are you sure you want to delete this line?',
+        confirmBtnText: (translate('GENERAL.YES') as unknown) as string
+      }
+    }).then(({confirmed}) => {
+      return confirmed;
+    });
+
+    if (confirmed) {
+      this.invoiceLines.splice(index, 1);
+      this.requestUpdate();
+    }
   }
 }
