@@ -38,5 +38,14 @@
     "ENDS_BEFORE": "Ends Before",
     "STARTS_AFTER": "Starts After",
     "ENDS_AFTER": "Ends After"
+  },
+  "EFACE_ACTIONS_CONFIRMATIONS": {
+    "CANCEL_PROMPT": "Are you sure you want to cancel?",
+    "SUBMIT_PROMPT": "Are you sure you want to submit?",
+    "APPROVE_PROMPT": "Are you sure you want to approve?",
+    "REJECT_PROMPT": "Are you sure you want to reject?",
+    "SEND_TO_VISION": "Are you sure you want to send to vision?",
+    "TRANSACTION_REJECT": "Reject transaction",
+    "TRANSACTION_APPROVE": "Approve transaction"
   }
 }
