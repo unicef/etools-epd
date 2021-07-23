@@ -4,12 +4,12 @@ export class EfaceItem {
   pd_activity: string | null = '';
   eepm_kind = '';
   description = '';
-  reporting_authorized_amount = null;
-  reporting_actual_project_expenditure = null;
-  reporting_expenditures_accepted_by_agency = null;
-  reporting_balance = null;
-  requested_amount = null;
-  requested_authorized_amount = null;
+  reporting_authorized_amount: string | null = null;
+  reporting_actual_project_expenditure: string | null = null;
+  reporting_expenditures_accepted_by_agency: string | null = null;
+  reporting_balance: string | null = null;
+  requested_amount: string | null = null;
+  requested_authorized_amount: string | null = null;
   requested_outstanding_authorized_amount = null;
   kind = '';
   [key: string]: any;
