@@ -31,7 +31,6 @@ export class EfaceAdditionalDetails extends connect(store)(LitElement) {
       elevationStyles,
       pageLayoutStyles,
       buttonsStyles,
-      sharedStyles,
       css`
         h2 {
           display: flex;
@@ -68,12 +67,13 @@ export class EfaceAdditionalDetails extends connect(store)(LitElement) {
           margin: 0 24px;
         }
         etools-dropdown,
-        .static {
+        .flex-1 {
           flex: 1;
         }
-        paper-textarea {
-          flex: 1;
+        .flex-2 {
+          flex: 2;
         }
+
         .buttons {
           display: flex;
           align-items: center;
@@ -87,96 +87,103 @@ export class EfaceAdditionalDetails extends connect(store)(LitElement) {
     ];
   }
   protected render(): TemplateResult {
-    return html`<section class="elevation page-content form-info" elevation="1">
-      <etools-loading .active="${this.loading}"></etools-loading>
-      <h2>
-        Certification
-        <paper-icon-button
-          ?hidden="${this.isReadonly}"
-          icon="create"
-          @click="${() => (this.editMode = true)}"
-        ></paper-icon-button>
-      </h2>
-      <div class="content">
-        <div>
-          The undersigned authorized officer of the above-mentioned implementing institution hereby certifies that:
-        </div>
-        <div class="checkboxes">
-          <paper-checkbox
-            data-field="request_represents_expenditures"
-            ?checked="${this.eface?.request_represents_expenditures}"
-            ?readonly="${!this.editMode || !this.efaceOriginal?.permissions.edit.request_represents_expenditures}"
-            @checked-changed="${({target}: CustomEvent) =>
-              this.setFormField(Boolean((target as PaperCheckboxElement).checked), 'request_represents_expenditures')}"
-          >
-            The funding request shown above represents estimated expenditures as per AWP and itemized cast estimated
-            attached
-          </paper-checkbox>
-          <paper-checkbox
-            data-field="expenditures_disbursed"
-            ?checked="${this.eface?.expenditures_disbursed}"
-            ?readonly="${!this.editMode || !this.efaceOriginal?.permissions.edit.expenditures_disbursed}"
-            @checked-changed="${({target}: CustomEvent) =>
-              this.setFormField(Boolean((target as PaperCheckboxElement).checked), 'expenditures_disbursed')}"
-          >
-            The actual expenditures for the period stated herein has been disbursed in accordance with the AWP and
-            request with itemized cost estimates. The detailed accounting documents for these expenditures can be made
-            available for examination, when required, for the period of five years from the date of the provision of
-            funds.
-          </paper-checkbox>
-        </div>
-        <div class="block">
-          <datepicker-lite
-            data-field="submitted_by_unicef_date"
-            label="Date Submitted"
-            ?readonly="${!this.editMode || !this.efaceOriginal?.permissions.edit.submitted_by_unicef_date}"
-            .value="${this.eface?.submitted_by_unicef_date}"
-            selected-date-display-format="D MMM YYYY"
-            fire-date-has-changed
-            @date-has-changed="${(e: CustomEvent) => this.dateChanged(e)}"
-          >
-          </datepicker-lite>
+    return html` <style>
+        ${sharedStyles}
+      </style>
+      <section class="elevation page-content form-info" elevation="1">
+        <etools-loading .active="${this.loading}"></etools-loading>
+        <h2>
+          Certification
+          <paper-icon-button
+            ?hidden="${this.isReadonly}"
+            icon="create"
+            @click="${() => (this.editMode = true)}"
+          ></paper-icon-button>
+        </h2>
+        <div class="content">
+          <div>
+            The undersigned authorized officer of the above-mentioned implementing institution hereby certifies that:
+          </div>
+          <div class="checkboxes">
+            <paper-checkbox
+              data-field="request_represents_expenditures"
+              ?checked="${this.eface?.request_represents_expenditures}"
+              ?readonly="${!this.editMode || !this.efaceOriginal?.permissions.edit.request_represents_expenditures}"
+              @checked-changed="${({target}: CustomEvent) =>
+                this.setFormField(
+                  Boolean((target as PaperCheckboxElement).checked),
+                  'request_represents_expenditures'
+                )}"
+            >
+              The funding request shown above represents estimated expenditures as per AWP and itemized cast estimated
+              attached
+            </paper-checkbox>
+            <paper-checkbox
+              data-field="expenditures_disbursed"
+              ?checked="${this.eface?.expenditures_disbursed}"
+              ?readonly="${!this.editMode || !this.efaceOriginal?.permissions.edit.expenditures_disbursed}"
+              @checked-changed="${({target}: CustomEvent) =>
+                this.setFormField(Boolean((target as PaperCheckboxElement).checked), 'expenditures_disbursed')}"
+            >
+              The actual expenditures for the period stated herein has been disbursed in accordance with the AWP and
+              request with itemized cost estimates. The detailed accounting documents for these expenditures can be made
+              available for examination, when required, for the period of five years from the date of the provision of
+              funds.
+            </paper-checkbox>
+          </div>
+          <div class="block">
+            <datepicker-lite
+              class="flex-1"
+              data-field="submitted_by_unicef_date"
+              label="Date Submitted"
+              ?readonly="${!this.editMode || !this.efaceOriginal?.permissions.edit.submitted_by_unicef_date}"
+              .value="${this.eface?.submitted_by_unicef_date}"
+              selected-date-display-format="D MMM YYYY"
+              fire-date-has-changed
+              @date-has-changed="${(e: CustomEvent) => this.dateChanged(e)}"
+            >
+            </datepicker-lite>
 
-          <!--   Submitted By   -->
-          <etools-dropdown
-            label="Submitted By"
-            data-field="submitted_by"
-            hide-search
-            ?readonly="${!this.editMode || !this.efaceOriginal?.permissions.edit.submitted_by}"
-            placeholder="&#8212;"
-            .options="${this.users}"
-            .selected="${this.eface?.submitted_by?.id}"
-            ?trigger-value-change-event="${this.editMode}"
-            @etools-selected-item-changed="${({detail}: CustomEvent) =>
-              this.setFormField(detail.selectedItem, 'submitted_by')}"
-            option-value="id"
-            option-label="name"
-          >
-          </etools-dropdown>
-          <div class="static">
-            <div class="paper-label">Title</div>
-            <div class="input-label">${this.eface?.submitted_by?.title || '-'}</div>
+            <!--   Submitted By   -->
+            <etools-dropdown
+              class="flex-2"
+              label="Submitted By"
+              data-field="submitted_by"
+              ?readonly="${!this.editMode || !this.efaceOriginal?.permissions.edit.submitted_by}"
+              placeholder="&#8212;"
+              .options="${this.users}"
+              .selected="${this.eface?.submitted_by?.id}"
+              ?trigger-value-change-event="${this.editMode}"
+              @etools-selected-item-changed="${({detail}: CustomEvent) =>
+                this.setFormField(detail.selectedItem, 'submitted_by')}"
+              option-value="id"
+              option-label="name"
+            >
+            </etools-dropdown>
+            <div class="flex-2">
+              <div class="paper-label">Title</div>
+              <div class="input-label">${this.eface?.submitted_by?.title || '-'}</div>
+            </div>
+          </div>
+          <div class="block">
+            <paper-textarea
+              data-field="notes"
+              label="Notes"
+              ?readonly="${!this.editMode || !this.efaceOriginal?.permissions.edit.notes}"
+              always-float-label
+              class="w100"
+              placeholder="&#8212;"
+              max-rows="4"
+              .value="${this.eface?.notes}"
+              @value-changed="${({detail}: CustomEvent) => this.setFormField(detail.value, 'notes')}"
+            ></paper-textarea>
           </div>
         </div>
-        <div class="block">
-          <paper-textarea
-            data-field="notes"
-            label="Notes"
-            ?readonly="${!this.editMode || !this.efaceOriginal?.permissions.edit.notes}"
-            always-float-label
-            class="w100"
-            placeholder="&#8212;"
-            max-rows="4"
-            .value="${this.eface?.notes}"
-            @value-changed="${({detail}: CustomEvent) => this.setFormField(detail.value, 'notes')}"
-          ></paper-textarea>
+        <div class="buttons" ?hidden="${!this.editMode}">
+          <paper-button class="default" @click="${this.cancel}">${translate('GENERAL.CANCEL')}</paper-button>
+          <paper-button class="primary" @click="${this.save}"> ${translate('GENERAL.SAVE')} </paper-button>
         </div>
-      </div>
-      <div class="buttons" ?hidden="${!this.editMode}">
-        <paper-button class="default" @click="${this.cancel}">${translate('GENERAL.CANCEL')}</paper-button>
-        <paper-button class="primary" @click="${this.save}"> ${translate('GENERAL.SAVE')} </paper-button>
-      </div>
-    </section>`;
+      </section>`;
   }
 
   @property({type: Object}) eface!: Eface;
