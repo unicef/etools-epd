@@ -175,7 +175,7 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
 
         paper-icon-button#del {
           padding: 0;
-          color: var(--dark-icon-color);
+          color: #c59b76;
           width: 18px;
         }
         .periods {
