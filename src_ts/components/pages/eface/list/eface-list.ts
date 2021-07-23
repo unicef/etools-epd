@@ -52,6 +52,12 @@ export class EfaceList extends connect(store)(LitElement) {
       </style>
       <page-content-header>
         <h1 slot="page-title">Eface forms list</h1>
+        <div slot="title-row-actions" class="content-header-actions">
+          <paper-button class="primary" @tap="${this.goToNewEface}">
+            <iron-icon icon="add"></iron-icon>
+            Add New Eface Form
+          </paper-button>
+        </div>
       </page-content-header>
 
       <section class="elevation page-content filters" elevation="1">
@@ -237,5 +243,10 @@ export class EfaceList extends connect(store)(LitElement) {
       this.urlParams = currentParams;
       return true;
     }
+  }
+
+  goToNewEface() {
+    history.pushState(window.history.state, '', `${ROOT_PATH}eface/new/`);
+    window.dispatchEvent(new CustomEvent('popstate'));
   }
 }
