@@ -55,6 +55,12 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
             color: var(--primary-color);
           }
         }
+        paper-textarea {
+          outline: none;
+          --paper-input-container-input: {
+            display: block;
+          }
+        }
         section {
           background-color: var(--primary-background-color);
           margin: 24px;
@@ -478,6 +484,9 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
   @property({type: Object})
   data!: Eface;
 
+  @property({type: Boolean})
+  autoValidate = false;
+
   connectedCallback() {
     super.connectedCallback();
     // Disable loading message for tab load, triggered by parent element on stamp or by tap event on tabs
@@ -584,7 +593,8 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
           id="custom"
           .value="${item.description}"
           required
-          auto-validate
+          .autoValidate="${this.autoValidate}"
+          @focus="${() => (this.autoValidate = true)}"
           ?readonly="${this.isReadonly(this.editMode, this.canEditInvoiceLines)}"
           no-label-float
           placeholder="—"
