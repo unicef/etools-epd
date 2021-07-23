@@ -32,15 +32,16 @@ export class EfaceAdditionalDetails extends connect(store)(LitElement) {
       pageLayoutStyles,
       buttonsStyles,
       css`
-        h2 {
+        .section-header {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          margin: 0;
           height: 47px;
           padding: 0 24px;
-          font-size: 18px;
           border-bottom: 1px groove var(--dark-divider-color);
+        }
+        .section-header > h2 {
+          font-size: 18px;
         }
         :host section.page-content {
           padding: 0;
@@ -92,14 +93,14 @@ export class EfaceAdditionalDetails extends connect(store)(LitElement) {
       </style>
       <section class="elevation page-content form-info" elevation="1">
         <etools-loading .active="${this.loading}"></etools-loading>
-        <h2>
-          Certification
+        <div class="section-header">
+          <h2>Certification</h2>
           <paper-icon-button
             ?hidden="${this.isReadonly}"
             icon="create"
             @click="${() => (this.editMode = true)}"
           ></paper-icon-button>
-        </h2>
+        </div>
         <div class="content">
           <div>
             The undersigned authorized officer of the above-mentioned implementing institution hereby certifies that:
