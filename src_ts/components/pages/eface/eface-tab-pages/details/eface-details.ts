@@ -81,6 +81,11 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
           border-bottom: 1px solid var(--light-divider-color);
         }
 
+        .item {
+          display: flex;
+          align-items: center;
+        }
+
         .header-row > div {
           border-bottom: 1px solid var(--dark-divider-color);
           font-weight: 500;
@@ -120,6 +125,7 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
           overflow: hidden;
           justify-content: flex-end;
           min-height: 55px;
+          height: 100%;
         }
 
         .reporting-grid > div.h,
@@ -212,7 +218,7 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
         </div>
         <div class="section-content">
           <div class="row center" style="margin-bottom: 4px;">
-            <div class="currency"><b>Currency</b>: US</div>
+            <div class="currency"><b>Currency</b>: ${this.intervention?.planned_budget.currency}</div>
             <div class="double-border center bold">REPORTING</div>
             <div class="double-border center bold">REQUESTS / AUTHORIZATIONS</div>
             <div></div>
@@ -325,7 +331,28 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
                   ?last-item="${index == this.data?.activities.length - 1}"
                 >
                   <div class="item layout-horizontal align-items-center">${this.getInvoiceItemDescription(item)}</div>
-                  <div class="item"></div>
+                  <div class="item">
+                    <etools-dropdown
+                      id="coding"
+                      .selected="${item.coding}"
+                      .options="${this.codingOptions}"
+                      option-label="label"
+                      option-value="value"
+                      required
+                      auto-validate
+                      ?readonly="${this.isReadonly(this.editMode, this.canEditInvoiceLines)}"
+                      @etools-selected-item-changed="${({detail}: CustomEvent) => {
+                        if (!detail.selectedItem) {
+                          return;
+                        }
+                        this.updateItem(item, 'coding', detail.selectedItem.value);
+                      }}"
+                      trigger-value-change-event
+                      allow-outside-scroll
+                      no-label-float
+                      .autoWidth="${true}"
+                    ></etools-dropdown>
+                  </div>
                   <div class="item reporting-grid right">
                     <div>
                       <etools-currency-amount-input
@@ -471,6 +498,9 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
     {value: 'eepm', label: 'Effective and Efficient Programme Management'},
     {value: 'custom', label: 'Custom'}
   ];
+
+  @property({type: Array})
+  codingOptions = [{value: 1, label: 'To be provided..'}];
 
   @property({type: Boolean})
   canEditInvoiceLines = false;
