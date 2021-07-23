@@ -92,6 +92,9 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
           color: var(--secondary-text-color);
         }
 
+        .row.totals {
+          background-color: lightyellow;
+        }
         .row.totals > div {
           font-weight: 500;
           border-top: 1px solid var(--dark-divider-color);
