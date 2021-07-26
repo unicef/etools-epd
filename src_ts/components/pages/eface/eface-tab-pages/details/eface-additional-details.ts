@@ -202,7 +202,7 @@ export class EfaceAdditionalDetails extends connect(store)(LitElement) {
     this.eface = cloneDeep(state.eface.current);
     this.efaceOriginal = state.eface.current;
     this.users = state.commonData?.unicefUsersData || [];
-    this.isReadonly = !this.checkTabPermissions();
+    this.isReadonly = !this.canEditAtLeastOneField();
   }
 
   dateChanged({detail}: CustomEvent) {
@@ -249,7 +249,7 @@ export class EfaceAdditionalDetails extends connect(store)(LitElement) {
       });
   }
 
-  private checkTabPermissions(): boolean {
+  private canEditAtLeastOneField(): boolean {
     return Array.from(this.shadowRoot!.querySelectorAll('[data-field]')).some((element: Element) => {
       const fieldKey: keyof Eface = (element as HTMLElement).dataset.field as keyof Eface;
       return Boolean(this.eface?.permissions.edit[fieldKey]);

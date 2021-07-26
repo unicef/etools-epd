@@ -341,7 +341,6 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
                       .options="${this.codingOptions}"
                       option-label="label"
                       option-value="value"
-                      required
                       auto-validate
                       ?readonly="${this.isReadonly(this.editMode, this.canEditInvoiceLines)}"
                       @etools-selected-item-changed="${({detail}: CustomEvent) => {
@@ -821,6 +820,12 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
     this.requestUpdate();
   }
 
+  calculateTotals() {
+    this.calculateTotalAuthorizedAmount();
+    this.calculateTotalActualExpenditure();
+    this.calculateTotalRequestedAmount();
+  }
+
   async deleteInvoiceLine(index: number) {
     const confirmed = await openDialog({
       dialog: 'are-you-sure',
@@ -834,6 +839,7 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
 
     if (confirmed) {
       this.data?.activities.splice(index, 1);
+      this.calculateTotals();
       this.requestUpdate();
     }
   }
