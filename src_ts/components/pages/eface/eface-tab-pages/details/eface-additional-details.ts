@@ -200,6 +200,7 @@ export class EfaceAdditionalDetails extends connect(store)(LitElement) {
       return;
     }
     this.eface = cloneDeep(state.eface.current);
+    this.editMode = false;
     this.efaceOriginal = state.eface.current;
     this.users = state.commonData?.unicefUsersData || [];
     this.isReadonly = !this.canEditAtLeastOneField();

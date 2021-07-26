@@ -341,7 +341,6 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
                       .options="${this.codingOptions}"
                       option-label="label"
                       option-value="value"
-                      auto-validate
                       ?readonly="${this.isReadonly(this.editMode, this.canEditInvoiceLines)}"
                       @etools-selected-item-changed="${({detail}: CustomEvent) => {
                         if (!detail.selectedItem) {
@@ -542,6 +541,7 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
       return;
     }
     this.data = state.eface.current;
+    this.editMode = false;
     this.originalData = cloneDeep(this.data);
     this.intervention = this.data.intervention;
     this.pdOutputActivities = this.getPdOutputActivities(this.data.intervention);
