@@ -1,7 +1,6 @@
 import {LitElement, TemplateResult, html, customElement, css, property} from 'lit-element';
 import '@polymer/paper-checkbox/paper-checkbox';
 import {elevationStyles} from '../../../common/styles/elevation-styles';
-import {pageLayoutStyles} from '../../../../styles/page-layout-styles';
 import '@unicef-polymer/etools-date-time/datepicker-lite';
 import '@polymer/paper-input/paper-textarea';
 import {RootState, store} from '../../../../../redux/store';
@@ -22,6 +21,7 @@ import {setEfaceForm} from '../../../../../redux/actions/eface-forms';
 import {fireEvent} from '../../../common/utils/fire-custom-event';
 import '@unicef-polymer/etools-loading/etools-loading';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {pageLayoutStyles} from '../../../common/styles/page-layout-styles';
 
 @customElement('eface-additional-details')
 export class EfaceAdditionalDetails extends connect(store)(LitElement) {
@@ -29,8 +29,8 @@ export class EfaceAdditionalDetails extends connect(store)(LitElement) {
     // language=css
     return [
       elevationStyles,
-      pageLayoutStyles,
       buttonsStyles,
+      pageLayoutStyles,
       css`
         .section-header {
           display: flex;
@@ -116,7 +116,7 @@ export class EfaceAdditionalDetails extends connect(store)(LitElement) {
                   'request_represents_expenditures'
                 )}"
             >
-              The funding request shown above represents estimated expenditures as per AWP and itemized cast estimated
+              The funding request shown above represents estimated expenditures as per AWP and itemized cost estimated
               attached
             </paper-checkbox>
             <paper-checkbox

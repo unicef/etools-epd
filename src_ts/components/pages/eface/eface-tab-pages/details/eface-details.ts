@@ -5,7 +5,6 @@ import '@polymer/paper-icon-button/paper-icon-button';
 import '@unicef-polymer/etools-currency-amount-input/etools-currency-amount-input';
 import '@polymer/paper-input/paper-textarea';
 import {translate, get as getTranslation} from 'lit-translate';
-import {pageLayoutStyles} from '../../../../styles/page-layout-styles';
 import ComponentBaseMixin from '../../../common/mixins/component-base-mixin';
 import {buttonsStyles} from '../../../common/styles/button-styles';
 import {elevationStyles} from '../../../common/styles/elevation-styles';
@@ -39,7 +38,7 @@ import {labelAndvalueStylesLit} from '../../../common/styles/label-and-value-sty
 @customElement('eface-details')
 export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
   static get styles() {
-    return [elevationStyles, pageLayoutStyles, buttonsStyles, gridLayoutStylesLit, labelAndvalueStylesLit];
+    return [elevationStyles, buttonsStyles, gridLayoutStylesLit, labelAndvalueStylesLit];
   }
   render() {
     if (!this.data) {

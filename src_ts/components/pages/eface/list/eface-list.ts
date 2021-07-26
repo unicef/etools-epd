@@ -1,10 +1,6 @@
 import {LitElement, customElement, html, property} from 'lit-element';
-import {elevationStyles} from '../../../styles/lit-styles/elevation-styles';
-import {buttonsStyles} from '../../../styles/button-styles';
-import {pageLayoutStyles} from '../../../styles/page-layout-styles';
 import {pageContentHeaderSlottedStyles} from '../../../common/layout/page-content-header/page-content-header-slotted-styles';
 import {InterventionsListStyles, InterventionsTableStyles} from '../../common/list/list-styles';
-import {SharedStylesLit} from '../../../styles/shared-styles-lit';
 import {translate} from 'lit-translate';
 import {GenericObject, InterventionListData, RouteDetails, RouteQueryParams} from '@unicef-polymer/etools-types';
 import {defaultPaginator, EtoolsPaginator} from '@unicef-polymer/etools-table/pagination/etools-pagination';
@@ -30,6 +26,10 @@ import {updateFiltersSelectedValues} from '../../common/list/filters';
 import {etoolsEndpoints} from '../../../../endpoints/endpoints-list';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {defaultFilters} from './eface-filters';
+import {elevationStyles} from '../../common/styles/elevation-styles';
+import {buttonsStyles} from '../../common/styles/button-styles';
+import {sharedStyles} from '../../common/styles/shared-styles-lit';
+import {pageLayoutStyles} from '../../common/styles/page-layout-styles';
 
 /**
  * @customElement
@@ -44,18 +44,17 @@ export class EfaceList extends connect(store)(LitElement) {
     // main template
     // language=HTML
     return html`
-      ${SharedStylesLit}
       <style>
-        .col_type {
+        ${sharedStyles} .col_type {
           white-space: pre-line !important;
         }
       </style>
       <page-content-header>
-        <h1 slot="page-title">Eface forms list</h1>
+        <h1 slot="page-title" style="text-transform:none">eFace Forms List</h1>
         <div slot="title-row-actions" class="content-header-actions">
           <paper-button class="primary" @tap="${this.goToNewEface}">
             <iron-icon icon="add"></iron-icon>
-            Add New Eface Form
+            Add New eFace Form
           </paper-button>
         </div>
       </page-content-header>
