@@ -74,6 +74,15 @@ export class EtoolsStatus extends LitElement {
           background-color: var(--success-color);
           fill: #ffffff;
         }
+
+        .status.rejected .icon {
+          background-color: var(--darker-divider-color);
+          fill: #ffffff;
+        }
+
+        .status.rejected .icon iron-icon {
+          color: #ffffff !important;
+        }
       </style>
       ${this.statuses.map((item: any, index: number) => this.getStatusHtml(item, index, activeStatusIndex))}
     `;
@@ -84,6 +93,9 @@ export class EtoolsStatus extends LitElement {
 
   @property({type: Array})
   statuses: EtoolsStatusItem[] = [];
+
+  @property({type: Array})
+  rejectStatuses: string[] = [];
 
   @property({type: Number})
   interventionId!: number;
@@ -102,6 +114,15 @@ export class EtoolsStatus extends LitElement {
           </div>
         `;
       }
+    }
+    if (this.rejectStatuses.includes(item[0])) {
+      return html`
+        <div class="status rejected">
+          <span class="icon"> <iron-icon class="custom-icon" style="color: #ea4022" icon="close"> </iron-icon></span>
+
+          <span class="label">${item[1]}</span>
+        </div>
+      `;
     }
 
     return html`

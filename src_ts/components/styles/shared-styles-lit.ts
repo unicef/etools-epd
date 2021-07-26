@@ -1,4 +1,5 @@
 import {html} from 'lit-element';
+import {ReadonlyStyles} from '../pages/common/styles/readonly-styles';
 
 export const SharedStylesLit = html`
   <style>
@@ -63,40 +64,7 @@ export const SharedStylesLit = html`
       }
     }
 
-    etools-dropdown[readonly],
-    etools-dropdown-multi[readonly],
-    datepicker-lite[readonly],
-    paper-input[readonly],
-    paper-textarea[readonly] {
-      --paper-input-container-underline: {
-        display: none;
-      }
-      --paper-input-container-input-focus: {
-        pointer-events: none;
-      }
-      --paper-input-container-label-focus: {
-        pointer-events: none;
-        color: var(--secondary-text-color);
-      }
-      --paper-input-container-underline-focus: {
-        display: none;
-      }
-      --paper-input-container: {
-        pointer-events: none;
-        cusrsor: text;
-      }
-      --paper-input-container-label: {
-        pointer-events: none;
-        color: var(--secondary-text-color, #737373);
-        cusrsor: text;
-      }
-      --esmm-select-cursor: text;
-      --esmm-external-wrapper: {
-        width: 100%;
-      }
-    }
-
-    etools-dropdown,
+    ${ReadonlyStyles} etools-dropdown,
     etools-dropdown-multi {
       --esmm-external-wrapper: {
         width: auto;
@@ -152,9 +120,6 @@ export const SharedStylesLit = html`
       background: url('./images/required.svg') no-repeat 87% 40%/6px;
     }
 
-    .readonly {
-      pointer-events: none;
-    }
     .font-bold {
       font-weight: bold;
     }

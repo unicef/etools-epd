@@ -7,20 +7,23 @@ import '../../../common/layout/page-content-header/page-content-header';
 import '../../common/layout/status/etools-status';
 import '../eface-actions/eface-actions';
 import {pageContentHeaderSlottedStyles} from '../../common/layout/page-content-header/page-content-header-slotted-styles';
-import {
-  currentPage,
-  currentSubpage,
-  currentSubSubpage,
-  currentUser
-} from '../../interventions/intervention-tab-pages/common/selectors';
+import {currentPage, currentSubpage} from '../../interventions/intervention-tab-pages/common/selectors';
 import get from 'lodash-es/get';
 import {isJsonStrMatch} from '../../common/utils/utils';
 import cloneDeep from 'lodash-es/cloneDeep';
-import {getStore} from '../../common/utils/redux-store-access';
-import {enableCommentMode} from '../../interventions/intervention-tab-pages/common/components/comments/comments.actions';
 import {getEfaceForm} from '../../../../redux/actions/eface-forms';
 import {RootState, store} from '../../../../redux/store';
 import {connect} from 'pwa-helpers/connect-mixin';
+import {
+  BASIC_STATUSES,
+  CANCELLED,
+  CANCELLED_STATUSES,
+  CLOSED,
+  CLOSED_STATUSES,
+  REJECTED,
+  REJECTED_STATUSES
+} from '../eface-actions/actions-and-statuses';
+import {Eface} from './types';
 
 /**
  * @customElement
@@ -35,12 +38,9 @@ export class EfaceTabs extends connect(store)(LitElement) {
     return html`
       <style></style>
       <etools-status-lit
-        .statuses="${this.eface?.status_list || [
-          ['draft', 'Draft'],
-          ['accepted', 'Accepted'],
-          ['submitted', 'Submitted']
-        ]}"
+        .statuses="${this.statuses}"
         .activeStatus="${this.eface?.status || 'draft'}"
+        .rejectStatuses="${[REJECTED, CLOSED, CANCELLED]}"
       ></etools-status-lit>
       <page-content-header with-tabs-visible>
         <span slot="page-title">${this.eface?.title}</span>
@@ -51,7 +51,8 @@ export class EfaceTabs extends connect(store)(LitElement) {
             ${translate('EXPORT')}
           </paper-button>
           <eface-actions
-            .actions="${this.eface?.actions_available || ['Go on Vacation', 'Take a break']}"
+            .entityId="${this.eface?.id}"
+            .actions="${this.eface?.actions_available || []}"
           ></eface-actions>
         </div>
 
@@ -62,7 +63,10 @@ export class EfaceTabs extends connect(store)(LitElement) {
   }
 
   @property({type: Object})
-  eface: any = {};
+  eface: Eface | null = null;
+
+  @property({type: Array})
+  statuses: string[][] = [];
 
   connectedCallback() {
     super.connectedCallback();
@@ -89,6 +93,7 @@ export class EfaceTabs extends connect(store)(LitElement) {
     // check if eface was changed
     if (!isJsonStrMatch(this.eface, currentEface)) {
       this.eface = cloneDeep(currentEface);
+      this.setStatuses(this.eface!.status);
     }
 
     // check if we need to load eface
@@ -102,7 +107,23 @@ export class EfaceTabs extends connect(store)(LitElement) {
   }
 
   goToPageNotFound() {
-    history.pushState(window.history.state, '', 'page-not-found');
-    window.dispatchEvent(new CustomEvent('popstate'));
+    // history.pushState(window.history.state, '', 'page-not-found');
+    // window.dispatchEvent(new CustomEvent('popstate'));
+  }
+
+  private setStatuses(status: string): void {
+    switch (status) {
+      case CANCELLED:
+        this.statuses = CANCELLED_STATUSES;
+        return;
+      case REJECTED:
+        this.statuses = REJECTED_STATUSES;
+        return;
+      case CLOSED:
+        this.statuses = CLOSED_STATUSES;
+        return;
+      default:
+        this.statuses = BASIC_STATUSES;
+    }
   }
 }

@@ -10,6 +10,9 @@ import {etoolsEndpoints} from '../../../../endpoints/endpoints-list';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {ROOT_PATH} from '../../../../config/config';
 import {setEfaceForm} from '../../../../redux/actions/eface-forms';
+import {EfaceFormTypes} from '../../common/utils/constants';
+import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {fireEvent} from '../../common/utils/fire-custom-event';
 
 @customElement('new-eface-form')
 export class NewEfaceForm extends connect(store)(LitElement) {
@@ -72,7 +75,7 @@ export class NewEfaceForm extends connect(store)(LitElement) {
           </etools-dropdown>
         </div>
         <div class="row buttons">
-          <paper-button class="primary-btn" @click="${() => this.createForm()}"> Create </paper-button>
+          <paper-button class="primary-btn" @click="${() => this.save()}"> Create </paper-button>
         </div>
       </main>
     `;
@@ -80,11 +83,7 @@ export class NewEfaceForm extends connect(store)(LitElement) {
 
   @property() newForm: GenericObject = {};
 
-  types: GenericObject[] = [
-    {label: 'Direct Cash Transfer', value: 'dct'},
-    {label: 'Reimbursement', value: 'rmb'},
-    {label: 'Direct Payment', value: 'dp'}
-  ];
+  types: GenericObject[] = Array.from(EfaceFormTypes.values());
 
   @property() interventions: Intervention[] = [];
 
@@ -115,19 +114,21 @@ export class NewEfaceForm extends connect(store)(LitElement) {
     this.requestUpdate();
   }
 
-  createForm() {
+  save() {
     if (!this.validate()) {
       return;
     }
     sendRequest({
       endpoint: {url: etoolsEndpoints.efaceForms.url!},
-      body: this.newForm,
+      body: {...this.newForm, activities: []},
       method: 'POST'
-    }).then((form) => {
-      store.dispatch(setEfaceForm(form));
-      history.pushState(window.history.state, '', `${ROOT_PATH}eface/${form.id}/details`);
-      window.dispatchEvent(new CustomEvent('popstate'));
-    });
+    })
+      .then((form) => {
+        store.dispatch(setEfaceForm(form));
+        history.pushState(window.history.state, '', `${ROOT_PATH}eface/${form.id}/details`);
+        window.dispatchEvent(new CustomEvent('popstate'));
+      })
+      .catch((error) => fireEvent(this, 'toast', {text: formatServerErrorAsText(error)}));
   }
 
   private validate(): boolean {
