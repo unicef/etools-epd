@@ -70,11 +70,6 @@ export class EfaceTabs extends connect(store)(LitElement) {
 
   connectedCallback() {
     super.connectedCallback();
-    // Disable loading message for tab load, triggered by parent element on stamp or by tap event on tabs
-    fireEvent(this, 'global-loading', {
-      active: true,
-      loadingSource: 'eface-page'
-    });
   }
 
   public stateChanged(state: RootState) {
@@ -98,7 +93,19 @@ export class EfaceTabs extends connect(store)(LitElement) {
 
     // check if we need to load eface
     if (Number(currentEfaceId) !== Number(this.eface?.id)) {
-      getEfaceForm(currentEfaceId)!.catch(() => this.goToPageNotFound());
+      fireEvent(this, 'global-loading', {
+        active: true,
+        loadingSource: 'get-eface'
+      });
+
+      getEfaceForm(currentEfaceId)!
+        .catch(() => this.goToPageNotFound())
+        .finally(() =>
+          fireEvent(this, 'global-loading', {
+            active: false,
+            loadingSource: 'get-eface'
+          })
+        );
     }
   }
 
