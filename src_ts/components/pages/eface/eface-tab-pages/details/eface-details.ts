@@ -43,7 +43,12 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
   render() {
     if (!this.data) {
       return html`<style>
-        ${ReadonlyStyles}
+        ${ReadonlyStyles} paper-textarea {
+          outline: none;
+          --paper-input-container-input: {
+            display: block;
+          }
+        }
       </style>`;
     }
     // language=HTML
