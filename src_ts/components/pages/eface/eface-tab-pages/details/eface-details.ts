@@ -31,6 +31,7 @@ import {PaperInputElement} from '@polymer/paper-input/paper-input';
 import {pick} from 'lodash-es';
 import {ReadonlyStyles} from '../../../common/styles/readonly-styles';
 import {labelAndvalueStylesLit} from '../../../common/styles/label-and-value-styles-lit';
+import {repeat} from 'lit-html/directives/repeat';
 
 /**
  * @customElement
@@ -333,108 +334,111 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
             </div>
             <div></div>
           </div>
-          ${this.data?.activities?.length
-            ? this.data?.activities.map(
-                (item: EfaceItem, index: number) => html`<div
-                  class="item-row"
+          ${repeat(
+            this.data?.activities,
+            (act) => act.id,
+            (item: EfaceItem, index: number) => html`<div
+              class="item-row"
+              ?readonly="${this.isReadonly(this.editMode, this.canEditInvoiceLines)}"
+              ?last-item="${index == this.data?.activities?.length - 1}"
+            >
+              <div class="item layout-horizontal align-items-center">${this.getInvoiceItemDescription(item)}</div>
+              <div class="item">
+                <etools-dropdown
+                  id="coding"
+                  .selected="${item.coding}"
+                  .options="${this.codingOptions}"
+                  option-label="label"
+                  option-value="value"
                   ?readonly="${this.isReadonly(this.editMode, this.canEditInvoiceLines)}"
-                  ?last-item="${index == this.data?.activities.length - 1}"
+                  @etools-selected-item-changed="${({detail}: CustomEvent) => {
+                    if (!detail.selectedItem) {
+                      return;
+                    }
+                    this.updateItem(item, 'coding', detail.selectedItem.value);
+                  }}"
+                  trigger-value-change-event
+                  allow-outside-scroll
+                  no-label-float
+                  .autoWidth="${true}"
+                ></etools-dropdown>
+              </div>
+              <div class="item reporting-grid right">
+                <div>
+                  <etools-currency-amount-input
+                    id="reporting-a"
+                    .value="${item.reporting_authorized_amount || 0}"
+                    no-label-float
+                    required
+                    auto-validate
+                    errror-message="Invalid"
+                    ?readonly="${this.isReadonly(this.editMode, this.canEditInvoiceLines)}"
+                    @blur="${() => {
+                      this.calculateTotalAuthorizedAmount();
+                    }}"
+                    @value-changed="${({detail}: CustomEvent) =>
+                      this.updateItem(item, 'reporting_authorized_amount', detail.value)}"
+                  ></etools-currency-amount-input>
+                </div>
+                <div>
+                  <etools-currency-amount-input
+                    id="reporting-b"
+                    .value="${item.reporting_actual_project_expenditure || 0}"
+                    no-label-float
+                    required
+                    auto-validate
+                    ?readonly="${this.isReadonly(this.editMode, this.canEditInvoiceLines)}"
+                    errror-message="Invalid"
+                    @blur="${() => {
+                      this.calculateTotalActualExpenditure();
+                    }}"
+                    @value-changed="${({detail}: CustomEvent) =>
+                      this.updateItem(item, 'reporting_actual_project_expenditure', detail.value)}"
+                  ></etools-currency-amount-input>
+                </div>
+                <div>${displayCurrencyAmount(item.reporting_expenditures_accepted_by_agency!, '-')}</div>
+                <div>${displayCurrencyAmount(item.reporting_balance!, '-')}</div>
+              </div>
+              <div class="item requests-grid">
+                <div>
+                  <etools-currency-amount-input
+                    id="requests-e"
+                    .value="${item.requested_amount || 0}"
+                    no-label-float
+                    required
+                    auto-validate
+                    ?readonly="${this.isReadonly(this.editMode, this.canEditInvoiceLines)}"
+                    errror-message="Invalid"
+                    @blur="${() => {
+                      this.calculateTotalRequestedAmount();
+                    }}"
+                    @value-changed="${({detail}: CustomEvent) =>
+                      this.updateItem(item, 'requested_amount', detail.value)}"
+                  ></etools-currency-amount-input>
+                </div>
+                <div>${displayCurrencyAmount(item.requested_authorized_amount!, '-')}</div>
+                <div>${displayCurrencyAmount(item.requested_outstanding_authorized_amount!, '-')}</div>
+              </div>
+              <div class="layout-horizontal align-items-center">
+                <paper-icon-button
+                  id="del"
+                  ?hidden="${this.isReadonly(this.editMode, this.canEditInvoiceLines)}"
+                  icon="delete"
+                  title="Delete"
+                  @tap="${() => this.deleteInvoiceLine(index)}"
                 >
-                  <div class="item layout-horizontal align-items-center">${this.getInvoiceItemDescription(item)}</div>
-                  <div class="item">
-                    <etools-dropdown
-                      id="coding"
-                      .selected="${item.coding}"
-                      .options="${this.codingOptions}"
-                      option-label="label"
-                      option-value="value"
-                      ?readonly="${this.isReadonly(this.editMode, this.canEditInvoiceLines)}"
-                      @etools-selected-item-changed="${({detail}: CustomEvent) => {
-                        if (!detail.selectedItem) {
-                          return;
-                        }
-                        this.updateItem(item, 'coding', detail.selectedItem.value);
-                      }}"
-                      trigger-value-change-event
-                      allow-outside-scroll
-                      no-label-float
-                      .autoWidth="${true}"
-                    ></etools-dropdown>
-                  </div>
-                  <div class="item reporting-grid right">
-                    <div>
-                      <etools-currency-amount-input
-                        id="reporting-a"
-                        .value="${item.reporting_authorized_amount || 0}"
-                        no-label-float
-                        required
-                        auto-validate
-                        errror-message="Invalid"
-                        ?readonly="${this.isReadonly(this.editMode, this.canEditInvoiceLines)}"
-                        @blur="${() => {
-                          this.calculateTotalAuthorizedAmount();
-                        }}"
-                        @value-changed="${({detail}: CustomEvent) =>
-                          this.updateItem(item, 'reporting_authorized_amount', detail.value)}"
-                      ></etools-currency-amount-input>
-                    </div>
-                    <div>
-                      <etools-currency-amount-input
-                        id="reporting-b"
-                        .value="${item.reporting_actual_project_expenditure || 0}"
-                        no-label-float
-                        required
-                        auto-validate
-                        ?readonly="${this.isReadonly(this.editMode, this.canEditInvoiceLines)}"
-                        errror-message="Invalid"
-                        @blur="${() => {
-                          this.calculateTotalActualExpenditure();
-                        }}"
-                        @value-changed="${({detail}: CustomEvent) =>
-                          this.updateItem(item, 'reporting_actual_project_expenditure', detail.value)}"
-                      ></etools-currency-amount-input>
-                    </div>
-                    <div>${displayCurrencyAmount(item.reporting_expenditures_accepted_by_agency!, '-')}</div>
-                    <div>${displayCurrencyAmount(item.reporting_balance!, '-')}</div>
-                  </div>
-                  <div class="item requests-grid">
-                    <div>
-                      <etools-currency-amount-input
-                        id="requests-e"
-                        .value="${item.requested_amount || 0}"
-                        no-label-float
-                        required
-                        auto-validate
-                        ?readonly="${this.isReadonly(this.editMode, this.canEditInvoiceLines)}"
-                        errror-message="Invalid"
-                        @blur="${() => {
-                          this.calculateTotalRequestedAmount();
-                        }}"
-                        @value-changed="${({detail}: CustomEvent) =>
-                          this.updateItem(item, 'requested_amount', detail.value)}"
-                      ></etools-currency-amount-input>
-                    </div>
-                    <div>${displayCurrencyAmount(item.requested_authorized_amount!, '-')}</div>
-                    <div>${displayCurrencyAmount(item.requested_outstanding_authorized_amount!, '-')}</div>
-                  </div>
-                  <div class="layout-horizontal align-items-center">
-                    <paper-icon-button
-                      id="del"
-                      ?hidden="${this.isReadonly(this.editMode, this.canEditInvoiceLines)}"
-                      icon="delete"
-                      title="Delete"
-                      @tap="${() => this.deleteInvoiceLine(index)}"
-                    >
-                    </paper-icon-button>
-                  </div>
-                </div>`
-              )
-            : html`${!this.editMode
+                </paper-icon-button>
+              </div>
+            </div>`
+          )}
+          ${!this.data?.activities.length
+            ? html`${!this.editMode
                 ? html`<div class="no-items">
                     No Items added yet.
                     ${this.canEditInvoiceLines ? ' Click the edit icon on the top-right to add.' : ''}
                   </div>`
-                : ''}`}
+                : ''}`
+            : ''}
 
           <div class="row" ?hidden="${this.isReadonly(this.editMode, this.canEditInvoiceLines)}">
             <div class="item layout-horizontal align-items-center">
@@ -542,8 +546,11 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
 
   stateChanged(state: RootState) {
     if (currentPage(state) !== 'eface' || currentSubpage(state) !== 'details') {
-      this.data = null;
-      this.originalData = null;
+      if (this.data) {
+        this.data = {activities: []};
+        this.originalData = {};
+        this.requestUpdate();
+      }
       return;
     }
     if (!state.eface.current) {
@@ -554,7 +561,7 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
     this.originalData = cloneDeep(this.data);
     this.intervention = this.data.intervention;
     this.pdOutputActivities = this.getPdOutputActivities(this.data.intervention);
-    this.canEditInvoiceLines = this.data.permissions.edit.activities || true; // TODO
+    this.canEditInvoiceLines = this.data.permissions.edit.activities;
   }
 
   getPdOutputActivities(intervention: Intervention) {
