@@ -66,7 +66,7 @@ export class NewEfaceForm extends connect(store)(LitElement) {
             .selected="${this.newForm.type}"
             trigger-value-change-event
             @etools-selected-item-changed="${({detail}: CustomEvent) =>
-              this.setFormField('request_type', detail.selectedItem && detail.selectedItem.value)}"
+              this.setFormField('request_type', detail.selectedItem.value)}"
             option-value="value"
             option-label="label"
             @focus="${this.resetError}"
@@ -96,7 +96,7 @@ export class NewEfaceForm extends connect(store)(LitElement) {
     const mainPage = state.app!.routeDetails!.routeName;
     const subPage = state.app!.routeDetails!.subRouteName;
     if (mainPage !== 'eface' || subPage !== 'new') {
-      this.newForm = {};
+      this.newForm = {type: null};
     } else {
       this.interventions = state.efaceInterventions?.list || [];
     }
