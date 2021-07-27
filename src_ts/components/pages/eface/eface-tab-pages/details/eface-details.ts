@@ -42,7 +42,9 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
   }
   render() {
     if (!this.data) {
-      return;
+      return html`<style>
+        ${ReadonlyStyles}
+      </style>`;
     }
     // language=HTML
     return html`
@@ -510,10 +512,10 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
   intervention!: Intervention;
 
   @property({type: Object})
-  originalData!: Eface;
+  originalData: Eface | null = null;
 
   @property({type: Object})
-  data!: Eface;
+  data: Eface | null = null;
 
   @property({type: Boolean})
   autoValidate = false;
@@ -535,6 +537,8 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
 
   stateChanged(state: RootState) {
     if (currentPage(state) !== 'eface' || currentSubpage(state) !== 'details') {
+      this.data = null;
+      this.originalData = null;
       return;
     }
     if (!state.eface.current) {
@@ -653,6 +657,7 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
     item.kind = EfaceItemTypes_Short.activity;
     item.eepm_kind = '';
     item.description = '';
+    this.requestUpdate();
   }
 
   selectedEEPMChanged(selectedItem: any, item: EfaceItem) {
@@ -668,6 +673,7 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
     item.kind = EfaceItemTypes_Short.eepm;
     item.pd_activity = null;
     item.description = '';
+    this.requestUpdate();
   }
 
   selectedCustomTextChanged(value: string, item: EfaceItem) {
@@ -683,6 +689,7 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
     item.kind = EfaceItemTypes_Short.custom;
     item.pd_activity = null;
     item.eepm_kind = '';
+    this.requestUpdate();
   }
 
   updateItem(item: any, key: string, value: any): void {
@@ -800,23 +807,30 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
   }
 
   calculateTotalAuthorizedAmount() {
-    this.data.reporting_authorized_amount = this.data?.activities
-      .map((i: EfaceItem) => i.reporting_authorized_amount!)
-      .reduce((a, b) => Number(a) + Number(b));
+    this.data.reporting_authorized_amount =
+      this.data?.activities && this.data.activities.length
+        ? this.data?.activities
+            .map((i: EfaceItem) => i.reporting_authorized_amount!)
+            .reduce((a, b) => Number(a) + Number(b))
+        : 0;
     this.requestUpdate();
   }
 
   calculateTotalActualExpenditure() {
-    this.data.reporting_actual_project_expenditure = this.data?.activities
-      .map((i: EfaceItem) => i.reporting_actual_project_expenditure!)
-      .reduce((a, b) => Number(a) + Number(b));
+    this.data.reporting_actual_project_expenditure =
+      this.data?.activities && this.data.activities.length
+        ? this.data?.activities
+            .map((i: EfaceItem) => i.reporting_actual_project_expenditure!)
+            .reduce((a, b) => Number(a) + Number(b))
+        : 0;
     this.requestUpdate();
   }
 
   calculateTotalRequestedAmount() {
-    this.data.requested_amount = this.data?.activities
-      .map((i: EfaceItem) => i.requested_amount)
-      .reduce((a, b) => Number(a) + Number(b))!;
+    this.data.requested_amount =
+      this.data?.activities && this.data.activities.length
+        ? this.data?.activities.map((i: EfaceItem) => i.requested_amount).reduce((a, b) => Number(a) + Number(b))
+        : 0;
     this.requestUpdate();
   }
 

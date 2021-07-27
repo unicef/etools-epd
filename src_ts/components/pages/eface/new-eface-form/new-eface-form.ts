@@ -118,6 +118,10 @@ export class NewEfaceForm extends connect(store)(LitElement) {
     if (!this.validate()) {
       return;
     }
+    fireEvent(this, 'global-loading', {
+      active: true,
+      loadingSource: this.localName
+    });
     sendRequest({
       endpoint: {url: etoolsEndpoints.efaceForms.url!},
       body: {...this.newForm, activities: []},
@@ -128,7 +132,13 @@ export class NewEfaceForm extends connect(store)(LitElement) {
         history.pushState(window.history.state, '', `${ROOT_PATH}eface/${form.id}/details`);
         window.dispatchEvent(new CustomEvent('popstate'));
       })
-      .catch((error) => fireEvent(this, 'toast', {text: formatServerErrorAsText(error)}));
+      .catch((error) => fireEvent(this, 'toast', {text: formatServerErrorAsText(error)}))
+      .finally(() =>
+        fireEvent(this, 'global-loading', {
+          active: false,
+          loadingSource: this.localName
+        })
+      );
   }
 
   private validate(): boolean {
