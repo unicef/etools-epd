@@ -103,8 +103,8 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
           grid-column-start: 1;
           grid-column-end: 3;
         }
-        .double-border {
-          border: 4px double var(--dark-divider-color);
+        .border {
+          border: 1px solid var(--dark-divider-color);
         }
         .bold {
           font-weight: bold;
@@ -176,6 +176,7 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
           padding: 0;
           color: #c59b76;
           width: 18px;
+          height: 18px;
         }
         .periods {
           max-width: 80px;
@@ -221,8 +222,8 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
         <div class="section-content">
           <div class="row center" style="margin-bottom: 4px;">
             <div class="currency"><b>Currency</b>: ${this.intervention?.planned_budget.currency}</div>
-            <div class="double-border center bold">REPORTING</div>
-            <div class="double-border center bold">REQUESTS / AUTHORIZATIONS</div>
+            <div class="border center bold">REPORTING</div>
+            <div class="border center bold">REQUESTS / AUTHORIZATIONS</div>
             <div></div>
           </div>
           <div class="header-row">
