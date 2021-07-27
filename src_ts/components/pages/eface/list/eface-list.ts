@@ -52,7 +52,7 @@ export class EfaceList extends connect(store)(LitElement) {
       <page-content-header>
         <h1 slot="page-title" style="text-transform:none">eFace Forms List</h1>
         <div slot="title-row-actions" class="content-header-actions">
-          <paper-button class="primary" @tap="${this.goToNewEface}">
+          <paper-button class="primary" @tap="${this.goToNewEface}" ?hidden="${this.isUnicefUser}">
             <iron-icon icon="add"></iron-icon>
             Add New eFace Form
           </paper-button>
@@ -94,6 +94,9 @@ export class EfaceList extends connect(store)(LitElement) {
   @property({type: Object})
   urlParams!: GenericObject;
 
+  @property({type: Boolean})
+  isUnicefUser?: boolean;
+
   listColumns: EtoolsTableColumn[] = [
     {
       label: 'Reference No.',
@@ -129,6 +132,8 @@ export class EfaceList extends connect(store)(LitElement) {
       this.routeDetails = null;
       return; // Avoid code execution while on a different page
     }
+
+    this.isUnicefUser = state.user?.data?.is_unicef_user;
 
     const stateRouteDetails = {...state.app!.routeDetails};
     if (

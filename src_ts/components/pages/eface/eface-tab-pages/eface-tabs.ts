@@ -72,8 +72,8 @@ export class EfaceTabs extends connect(store)(LitElement) {
     super.connectedCallback();
     // Disable loading message for tab load, triggered by parent element on stamp or by tap event on tabs
     fireEvent(this, 'global-loading', {
-      active: false,
-      loadingSource: 'interv-page'
+      active: true,
+      loadingSource: 'eface-page'
     });
   }
 
@@ -107,8 +107,8 @@ export class EfaceTabs extends connect(store)(LitElement) {
   }
 
   goToPageNotFound() {
-    // history.pushState(window.history.state, '', 'page-not-found');
-    // window.dispatchEvent(new CustomEvent('popstate'));
+    history.pushState(window.history.state, '', 'page-not-found');
+    window.dispatchEvent(new CustomEvent('popstate'));
   }
 
   private setStatuses(status: string): void {
