@@ -279,7 +279,7 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
                 <div class="center">B</div>
               </div>
               <div class="h">
-                <div>Expenditures accepted by agency</div>
+                <div>Expenditures Accepted by Agency</div>
                 <div class="center">C</div>
               </div>
               <div class="h">
