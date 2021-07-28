@@ -13,11 +13,89 @@ import {setEfaceForm} from '../../../../redux/actions/eface-forms';
 import {EfaceFormTypes} from '../../common/utils/constants';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {fireEvent} from '../../common/utils/fire-custom-event';
+import {RequiredFieldsStyles} from '../../common/styles/required-fields-styles';
 
 @customElement('new-eface-form')
 export class NewEfaceForm extends connect(store)(LitElement) {
+  static get styles(): CSSResultArray {
+    // language=css
+    return [
+      css`
+        :host {
+          position: relative;
+          display: flex;
+          flex-direction: column;
+        }
+        header {
+          flex: none;
+          padding: 30px 48px;
+          background-color: var(--primary-background-color);
+          border-bottom: 1px solid var(--darker-divider-color);
+        }
+        h1 {
+          font-size: 24px;
+          font-weight: normal;
+          margin: 0;
+        }
+        main {
+          flex: 1;
+          min-width: 0;
+          position: relative;
+          display: block;
+          background-color: var(--primary-background-color);
+          box-shadow: 0 2px 2px rgba(0, 0, 0, 0.24), 0 0 2px rgba(0, 0, 0, 0.12);
+          border-radius: 2px;
+          padding-bottom: 24px;
+          margin: 24px;
+        }
+        .row {
+          position: relative;
+          display: flex;
+          padding: 3px 24px;
+        }
+        .row:first-child {
+          padding-top: 0;
+        }
+        .row:last-child {
+          padding-bottom: 0;
+        }
+        paper-input {
+          width: 100%;
+        }
+        etools-dropdown:not(:first-child) {
+          margin-left: 24px;
+        }
+        .title {
+          height: 50px;
+          padding: 0px 35px;
+          border-bottom: 1px solid var(--dark-divider-color);
+          font-weight: 500;
+          font-size: 18px;
+          line-height: 50px;
+          color: var(--dark-primary-text-color);
+        }
+        .buttons {
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+          padding: 10px;
+        }
+        paper-button {
+          background-color: var(--light-disabled-text-color);
+          padding: 8px 20px;
+          margin-left: 24px;
+        }
+
+        .primary-btn {
+          background-color: var(--default-primary-color);
+          color: #ffffff;
+        }
+      `
+    ];
+  }
   protected render(): unknown {
     return html`
+      ${RequiredFieldsStyles}
       <header><h1>Add new EFace Form</h1></header>
       <main>
         <div class="title">Enter initial details</div>
@@ -30,6 +108,7 @@ export class NewEfaceForm extends connect(store)(LitElement) {
             maxlength="256"
             placeholder="&#8212;"
             required
+            error-message="This field is required"
             .value="${this.newForm?.title}"
             @value-changed="${({detail}: CustomEvent) => this.setFormField('title', detail && detail.value)}"
             @focus="${this.resetError}"
@@ -148,82 +227,5 @@ export class NewEfaceForm extends connect(store)(LitElement) {
       valid = valid && fieldValid;
     });
     return valid;
-  }
-
-  static get styles(): CSSResultArray {
-    // language=css
-    return [
-      css`
-        :host {
-          position: relative;
-          display: flex;
-          flex-direction: column;
-        }
-        header {
-          flex: none;
-          padding: 30px 48px;
-          background-color: var(--primary-background-color);
-          border-bottom: 1px solid var(--darker-divider-color);
-        }
-        h1 {
-          font-size: 24px;
-          font-weight: normal;
-          margin: 0;
-        }
-        main {
-          flex: 1;
-          min-width: 0;
-          position: relative;
-          display: block;
-          background-color: var(--primary-background-color);
-          box-shadow: 0 2px 2px rgba(0, 0, 0, 0.24), 0 0 2px rgba(0, 0, 0, 0.12);
-          border-radius: 2px;
-          padding-bottom: 24px;
-          margin: 24px;
-        }
-        .row {
-          position: relative;
-          display: flex;
-          padding: 3px 24px;
-        }
-        .row:first-child {
-          padding-top: 0;
-        }
-        .row:last-child {
-          padding-bottom: 0;
-        }
-        paper-input {
-          width: 100%;
-        }
-        etools-dropdown:not(:first-child) {
-          margin-left: 24px;
-        }
-        .title {
-          height: 50px;
-          padding: 0px 35px;
-          border-bottom: 1px solid var(--dark-divider-color);
-          font-weight: 500;
-          font-size: 18px;
-          line-height: 50px;
-          color: var(--dark-primary-text-color);
-        }
-        .buttons {
-          display: flex;
-          align-items: center;
-          justify-content: flex-end;
-          padding: 10px;
-        }
-        paper-button {
-          background-color: var(--light-disabled-text-color);
-          padding: 8px 20px;
-          margin-left: 24px;
-        }
-
-        .primary-btn {
-          background-color: var(--default-primary-color);
-          color: #ffffff;
-        }
-      `
-    ];
   }
 }
