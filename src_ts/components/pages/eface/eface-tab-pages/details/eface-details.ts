@@ -160,13 +160,11 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
         .h > div {
           text-align: center;
         }
-
-        .month-year {
-          display: block;
-          width: 115px;
-          max-width: 100%;
+        .h {
+          box-sizing: border-box;
+          padding-top: 8px;
         }
-        #add-invoice-line {
+        #add-line-btn {
           color: var(--primary-color);
           margin-inline-start: -10px;
         }
@@ -227,15 +225,15 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
           ${this.renderEditBtn(this.editMode, true)}
         </div>
         <div class="section-content">
-          <div class="row center" style="margin-bottom: 4px;">
+          <div class="row center">
             <div class="currency"><b>Currency</b>: ${this.intervention?.planned_budget.currency}</div>
             <div class="border center bold">REPORTING</div>
             <div class="border center bold">REQUESTS / AUTHORIZATIONS</div>
             <div></div>
           </div>
           <div class="header-row">
-            <div>Activity description from AWP with Duration</div>
-            <div>Coding for UNDP, UNFPA and WFP</div>
+            <div class="h">Activity description from AWP with Duration</div>
+            <div class="h">Coding for UNDP, UNFPA and WFP</div>
             <div class="reporting-container">
               <div class="h">
                 <div>Authorized Amount</div>
@@ -447,7 +445,7 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
             <div class="item layout-horizontal align-items-center">
               <paper-menu-button id="add" close-on-activate>
                 <paper-icon-button
-                  id="add-invoice-line"
+                  id="add-line-btn"
                   slot="dropdown-trigger"
                   icon="add-box"
                   title=${translate('GENERAL.ADD')}
@@ -549,6 +547,7 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
   stateChanged(state: RootState) {
     if (currentPage(state) !== 'eface' || currentSubpage(state) !== 'details') {
       if (this.data) {
+        this.editMode = false;
         this.data = {activities: []};
         this.originalData = {};
         this.requestUpdate();
@@ -559,7 +558,6 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
       return;
     }
     this.data = state.eface.current;
-    this.editMode = false;
     this.originalData = cloneDeep(this.data);
     this.intervention = this.data.intervention;
     this.pdOutputActivities = this.getPdOutputActivities(this.data.intervention);
@@ -801,7 +799,10 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
       method: 'PATCH',
       body: {activities: this.cleanUpInviceLines(), ...this.getPeriods()}
     })
-      .then((response: any) => getStore().dispatch(setEfaceForm(response)))
+      .then((response: any) => {
+        getStore().dispatch(setEfaceForm(response));
+        this.editMode = false;
+      })
       .catch((error) => {
         fireEvent(this, 'toast', {text: formatServerErrorAsText(error), showCloseBtn: true});
       });
