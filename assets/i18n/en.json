@@ -47,5 +47,6 @@
     "SEND_TO_VISION": "Are you sure you want to send to vision?",
     "TRANSACTION_REJECT": "Reject transaction",
     "TRANSACTION_APPROVE": "Approve transaction"
-  }
+  },
+  "SUBMIT": "Submit"
 }

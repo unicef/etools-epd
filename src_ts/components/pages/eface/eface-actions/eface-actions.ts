@@ -27,6 +27,7 @@ import {PaperMenuButton} from '@polymer/paper-menu-button/paper-menu-button';
 import {getStore} from '../../common/utils/redux-store-access';
 import {Eface} from '../eface-tab-pages/types';
 import {setEfaceForm} from '../../../../redux/actions/eface-forms';
+import {capitalizeFirstLetter} from '../../common/utils/utils';
 
 @customElement('eface-actions')
 export class EfaceActions extends LitElement {
@@ -187,8 +188,8 @@ export class EfaceActions extends LitElement {
     return openDialog({
       dialog: 'reason-popup',
       dialogData: {
-        popupTitle: `${this.actionsNamesMap[action]} reason`,
-        label: `${this.actionsNamesMap[action]} comment`
+        popupTitle: `${capitalizeFirstLetter(this.actionsNamesMap[action])} Reason`,
+        label: `${capitalizeFirstLetter(this.actionsNamesMap[action])} Comment`
       }
     }).then(({confirmed, response}) => {
       if (!confirmed || !response) {
@@ -201,7 +202,7 @@ export class EfaceActions extends LitElement {
         return {rejection_reason: response.comment};
       }
       if (action === TRANSACTION_REJECT) {
-        return {transaction_rejection_reason: response.comment};
+        return {rejection_reason: response.comment};
       }
       return null;
     });

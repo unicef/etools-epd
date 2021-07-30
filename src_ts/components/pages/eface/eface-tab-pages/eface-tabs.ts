@@ -24,6 +24,8 @@ import {
   REJECTED_STATUSES
 } from '../eface-actions/actions-and-statuses';
 import {Eface} from './types';
+import {pageLayoutStyles} from '../../common/styles/page-layout-styles';
+import '../../common/layout/cancel/cancel-justification';
 
 /**
  * @customElement
@@ -31,7 +33,7 @@ import {Eface} from './types';
 @customElement('eface-tabs')
 export class EfaceTabs extends connect(store)(LitElement) {
   static get styles() {
-    return [pageContentHeaderSlottedStyles];
+    return [pageContentHeaderSlottedStyles, pageLayoutStyles];
   }
   render() {
     // language=HTML
@@ -58,7 +60,15 @@ export class EfaceTabs extends connect(store)(LitElement) {
 
         <div slot="tabs"></div>
       </page-content-header>
-      <eface-details></eface-details>
+      <div class="page-content">
+        ${this.eface?.cancel_reason ||
+        (this.eface?.rejection_reason && ['rejected', 'closed'].includes(this.eface.status))
+          ? html`<cancel-justification
+              .justification=${this.eface?.cancel_reason ? this.eface.cancel_reason : this.eface?.rejection_reason}
+            ></cancel-justification>`
+          : ''}
+        <eface-details></eface-details>
+      </div>
     `;
   }
 

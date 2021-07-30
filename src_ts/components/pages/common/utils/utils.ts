@@ -129,3 +129,7 @@ export const buildUrlQueryString = (params: AnyObject): string => {
 export function decimalFractionEquals0(val: string) {
   return val.lastIndexOf('.') > 0 && Number(val.substring(val.lastIndexOf('.') + 1)) === 0;
 }
+
+export function capitalizeFirstLetter(str: string) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}

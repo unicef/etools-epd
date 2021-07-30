@@ -70,7 +70,7 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
         }
         section {
           background-color: var(--primary-background-color);
-          margin: 24px;
+          margin-bottom: 24px;
         }
 
         ${ReadonlyStyles} paper-textarea {
@@ -117,17 +117,15 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
         .bold {
           font-weight: bold;
         }
-        .reporting-grid {
-          display: grid;
-          grid-template-columns: repeat(4, 1fr);
+        .reporting-container {
+          display: flex;
         }
-        .requests-grid {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
+        .requests-container {
+          display: flex;
         }
 
-        .reporting-grid > div,
-        .requests-grid > div {
+        .reporting-container > div,
+        .requests-container > div {
           text-align: right;
           padding-right: 2px;
           display: flex;
@@ -136,21 +134,22 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
           justify-content: flex-end;
           min-height: 55px;
           height: 100%;
+          flex: 1;
         }
 
-        .reporting-grid > div.h,
-        .requests-grid > div.h {
+        .reporting-container > div.h,
+        .requests-container > div.h {
           flex-direction: column;
           justify-content: space-between;
         }
 
-        .reporting-grid > div:nth-child(3),
-        .reporting-grid > div:nth-child(4) {
+        .reporting-container > div:nth-child(3),
+        .reporting-container > div:nth-child(4) {
           background-color: lightyellow;
         }
 
-        .requests-grid > div:nth-child(2),
-        .requests-grid > div:nth-child(3) {
+        .requests-container > div:nth-child(2),
+        .requests-container > div:nth-child(3) {
           background-color: lightyellow;
         }
 
@@ -161,13 +160,11 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
         .h > div {
           text-align: center;
         }
-
-        .month-year {
-          display: block;
-          width: 115px;
-          max-width: 100%;
+        .h {
+          box-sizing: border-box;
+          padding-top: 8px;
         }
-        #add-invoice-line {
+        #add-line-btn {
           color: var(--primary-color);
           margin-inline-start: -10px;
         }
@@ -176,9 +173,6 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
           padding: 0;
           padding-bottom: 8px;
         }
-        section.form-info {
-          display: flex;
-        }
 
         paper-icon-button#del {
           padding: 0;
@@ -186,7 +180,7 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
           width: 18px;
           height: 18px;
         }
-        .periods {
+        .timeframes {
           max-width: 80px;
         }
         .section-header {
@@ -224,26 +218,26 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
       </section>
       <section class="elevation" elevation="1">
         <div class="section-header">
-          <h2>Invoice Lines & Periods</h2>
-          ${this.renderEditBtn(this.editMode, true)}
+          <h2>Invoice Lines & Timeframes</h2>
+          ${this.renderEditBtn(this.editMode, this.canEditInvoiceLines)}
         </div>
         <div class="section-content">
-          <div class="row center" style="margin-bottom: 4px;">
+          <div class="row center">
             <div class="currency"><b>Currency</b>: ${this.intervention?.planned_budget.currency}</div>
             <div class="border center bold">REPORTING</div>
             <div class="border center bold">REQUESTS / AUTHORIZATIONS</div>
             <div></div>
           </div>
           <div class="header-row">
-            <div>Activity description from AWP with Duration</div>
-            <div>Coding for UNDP, UNFPA and WFP</div>
-            <div class="reporting-grid">
+            <div class="h">Activity description from AWP with Duration</div>
+            <div class="h">Coding for UNDP, UNFPA and WFP</div>
+            <div class="reporting-container">
               <div class="h">
                 <div>Authorized Amount</div>
                 <div>
                   <paper-input
                     id="auth-amt-date-start"
-                    class="periods"
+                    class="timeframes"
                     pattern="\\d{1,2}/\\d{4}"
                     no-label-float
                     placeholder="mm/yyyy"
@@ -252,13 +246,17 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
                     .value="${this.data?.authorized_amount_date_start}"
                     error-message="Invalid Format"
                     @blur="${(ev: CustomEvent) => this.validateMonthYearFormat(ev)}"
-                    @value-changed="${({detail}: CustomEvent) =>
-                      this.updateEfaceField('authorized_amount_date_start', detail.value)}"
+                    @value-changed="${(e: CustomEvent) => {
+                      if (e.detail.value?.length >= 6) {
+                        this.validateMonthYearElement(e.currentTarget);
+                      }
+                      this.updateEfaceField('authorized_amount_date_start', e.detail.value);
+                    }}"
                   ></paper-input>
                   —
                   <paper-input
                     id="auth-amt-date-end"
-                    class="periods"
+                    class="timeframes"
                     pattern="\\d{1,2}/\\d{4}"
                     no-label-float
                     placeholder="mm/yyyy"
@@ -278,7 +276,7 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
                 <div class="center">B</div>
               </div>
               <div class="h">
-                <div>Expenditures accepted by agency</div>
+                <div>Expenditures Accepted by Agency</div>
                 <div class="center">C</div>
               </div>
               <div class="h">
@@ -286,13 +284,13 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
                 <div class="center">D = A - C</div>
               </div>
             </div>
-            <div class="requests-grid">
+            <div class="requests-container">
               <div class="h">
-                <div>New Request Periods & Amount</div>
+                <div>New Request Timeframes & Amount</div>
                 <div>
                   <paper-input
                     id="req-date-start"
-                    class="periods"
+                    class="timeframes"
                     pattern="\\d{1,2}/\\d{4}"
                     no-label-float
                     placeholder="mm/yyyy"
@@ -307,7 +305,7 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
                   —
                   <paper-input
                     id="req-date-end"
-                    class="periods"
+                    class="timeframes"
                     pattern="\\d{1,2}/\\d{4}"
                     no-label-float
                     placeholder="mm/yyyy"
@@ -363,7 +361,7 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
                   .autoWidth="${true}"
                 ></etools-dropdown>
               </div>
-              <div class="item reporting-grid right">
+              <div class="item reporting-container right">
                 <div>
                   <etools-currency-amount-input
                     id="reporting-a"
@@ -371,7 +369,7 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
                     no-label-float
                     required
                     auto-validate
-                    errror-message="Invalid"
+                    error-message="Invalid"
                     ?readonly="${this.isReadonly(this.editMode, this.canEditInvoiceLines)}"
                     @blur="${() => {
                       this.calculateTotalAuthorizedAmount();
@@ -388,7 +386,7 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
                     required
                     auto-validate
                     ?readonly="${this.isReadonly(this.editMode, this.canEditInvoiceLines)}"
-                    errror-message="Invalid"
+                    error-message="Invalid"
                     @blur="${() => {
                       this.calculateTotalActualExpenditure();
                     }}"
@@ -399,7 +397,7 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
                 <div>${displayCurrencyAmount(item.reporting_expenditures_accepted_by_agency!, '-')}</div>
                 <div>${displayCurrencyAmount(item.reporting_balance!, '-')}</div>
               </div>
-              <div class="item requests-grid">
+              <div class="item requests-container">
                 <div>
                   <etools-currency-amount-input
                     id="requests-e"
@@ -408,7 +406,7 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
                     required
                     auto-validate
                     ?readonly="${this.isReadonly(this.editMode, this.canEditInvoiceLines)}"
-                    errror-message="Invalid"
+                    error-message="Invalid"
                     @blur="${() => {
                       this.calculateTotalRequestedAmount();
                     }}"
@@ -444,7 +442,7 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
             <div class="item layout-horizontal align-items-center">
               <paper-menu-button id="add" close-on-activate>
                 <paper-icon-button
-                  id="add-invoice-line"
+                  id="add-line-btn"
                   slot="dropdown-trigger"
                   icon="add-box"
                   title=${translate('GENERAL.ADD')}
@@ -459,13 +457,13 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
               </paper-menu-button>
             </div>
             <div class="item"></div>
-            <div class="item reporting-grid">
+            <div class="item reporting-container">
               <div></div>
               <div></div>
               <div></div>
               <div></div>
             </div>
-            <div class="item requests-grid">
+            <div class="item requests-container">
               <div></div>
               <div></div>
               <div></div>
@@ -476,18 +474,17 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
           <div class="row totals">
             <div style="padding: 6px;display:flex;align-items:center;">Total</div>
             <div></div>
-            <div class="reporting-grid">
+            <div class="reporting-container">
               <div>${displayCurrencyAmount(this.data?.reporting_authorized_amount, '0')}</div>
               <div>${displayCurrencyAmount(this.data?.reporting_actual_project_expenditure, '0')}</div>
               <div>${displayCurrencyAmount(this.data?.reporting_expenditures_accepted_by_agency, '0')}</div>
               <div>${displayCurrencyAmount(this.data?.reporting_balance, '0')}</div>
             </div>
-            <div class="requests-grid">
+            <div class="requests-container">
               <div>${displayCurrencyAmount(this.data?.requested_amount, '0')}</div>
               <div>${displayCurrencyAmount(this.data?.requested_authorized_amount, '0')}</div>
               <div>${displayCurrencyAmount(this.data?.requested_outstanding_authorized_amount, '0')}</div>
             </div>
-            <div></div>
           </div>
 
           <div style="padding-top: 26px;">${this.renderActions(this.editMode, true)}</div>
@@ -547,6 +544,7 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
   stateChanged(state: RootState) {
     if (currentPage(state) !== 'eface' || currentSubpage(state) !== 'details') {
       if (this.data) {
+        this.editMode = false;
         this.data = {activities: []};
         this.originalData = {};
         this.requestUpdate();
@@ -557,7 +555,6 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
       return;
     }
     this.data = state.eface.current;
-    this.editMode = false;
     this.originalData = cloneDeep(this.data);
     this.intervention = this.data.intervention;
     this.pdOutputActivities = this.getPdOutputActivities(this.data.intervention);
@@ -723,14 +720,15 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
     const fields = this.getFieldsByIds(['reporting-a', 'reporting-b', 'requests-e']);
     const validations = {required: true, greaterThan0: true};
     fields.forEach((f) => {
+      f.errorMessage = 'Required';
       if (!f.validate()) {
         validations.required = false;
       } else {
-        if (Number(f.value) <= 0) {
-          validations.greaterThan0 = true; // TODO
-          f.errorMessage = 'Invalid';
-          f.invalid = false; // TODO
-        }
+        // if (Number(f.value) <= 0) {
+        //   validations.greaterThan0 = true; // TODO
+        //   f.errorMessage = 'Invalid';
+        //   f.invalid = false; // TODO
+        // }
       }
     });
     return validations;
@@ -756,11 +754,15 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
     return fields;
   }
 
-  validatePeriods() {
-    const fields = this.shadowRoot?.querySelectorAll<PaperInputElement>('paper-input.periods');
+  validateTimeframes() {
+    const fields = this.shadowRoot?.querySelectorAll<PaperInputElement>('paper-input.timeframes');
     const validations = {dates: true};
     fields?.forEach((f) => {
-      f.errorMessage = 'Required';
+      if (!f.value) {
+        f.errorMessage = 'Required';
+      } else {
+        f.errorMessage = 'Invalid Format';
+      }
       if (!f.validate()) {
         validations.dates = false;
       }
@@ -769,16 +771,19 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
   }
 
   validate() {
-    const validations = {...this.validateLineAmounts(), ...this.validateDescriptions(), ...this.validatePeriods()};
-    if (!validations.required || !validations.greaterThan0 || !validations.dates) {
+    const validations = [this.validateLineAmounts(), this.validateDescriptions(), this.validateTimeframes()];
+    if (validations.some((v) => v.required === false) || validations.some((v) => v.dates === false)) {
       fireEvent(this, 'toast', {
-        text:
-          !validations.required || !validations.dates
-            ? getTranslation('PLS_FILL_IN_ALL_REQUIRED_FIELDS')
-            : getTranslation('MAKE_SURE_AMOUNTS_GREATER_THAN_0')
+        text: getTranslation('PLS_FILL_IN_ALL_REQUIRED_FIELDS')
       });
       return false;
     }
+    // if (validations.some((v) => !v.greaterThan0)) {
+    //   fireEvent(this, 'toast', {
+    //     text: getTranslation('MAKE_SURE_AMOUNTS_GREATER_THAN_0')
+    //   });
+    //   return false;
+    // }
     return true;
   }
 
@@ -789,15 +794,18 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
     return sendRequest({
       endpoint: getEndpoint(efaceEndpoints.efaceForm, {id: this.originalData.id}),
       method: 'PATCH',
-      body: {activities: this.cleanUpInviceLines(), ...this.getPeriods()}
+      body: {activities: this.cleanUpInviceLines(), ...this.getTimeframes()}
     })
-      .then((response: any) => getStore().dispatch(setEfaceForm(response)))
+      .then((response: any) => {
+        getStore().dispatch(setEfaceForm(response));
+        this.editMode = false;
+      })
       .catch((error) => {
         fireEvent(this, 'toast', {text: formatServerErrorAsText(error), showCloseBtn: true});
       });
   }
 
-  getPeriods() {
+  getTimeframes() {
     return pick(this.data, [
       'authorized_amount_date_start',
       'authorized_amount_date_end',
@@ -872,7 +880,16 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
 
   validateMonthYearFormat(e: CustomEvent) {
     const elem = e.currentTarget as PaperInputElement;
-    elem.errorMessage = 'Invalid Format';
+    this.validateMonthYearElement(elem);
+  }
+
+  validateMonthYearElement(elem: PaperInputElement) {
+    if (!elem.value) {
+      elem.errorMessage = 'Required';
+    } else {
+      elem.errorMessage = 'Invalid Format';
+    }
+
     elem.validate();
   }
 }

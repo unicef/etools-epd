@@ -21,7 +21,6 @@ import {setEfaceForm} from '../../../../../redux/actions/eface-forms';
 import {fireEvent} from '../../../common/utils/fire-custom-event';
 import '@unicef-polymer/etools-loading/etools-loading';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {pageLayoutStyles} from '../../../common/styles/page-layout-styles';
 
 @customElement('eface-additional-details')
 export class EfaceAdditionalDetails extends connect(store)(LitElement) {
@@ -30,7 +29,6 @@ export class EfaceAdditionalDetails extends connect(store)(LitElement) {
     return [
       elevationStyles,
       buttonsStyles,
-      pageLayoutStyles,
       css`
         .section-header {
           display: flex;
@@ -43,7 +41,7 @@ export class EfaceAdditionalDetails extends connect(store)(LitElement) {
         .section-header > h2 {
           font-size: 18px;
         }
-        :host section.page-content {
+        :host section {
           padding: 0;
           background-color: var(--primary-background-color);
           position: relative;
@@ -91,7 +89,7 @@ export class EfaceAdditionalDetails extends connect(store)(LitElement) {
     return html` <style>
         ${sharedStyles}
       </style>
-      <section class="elevation page-content form-info" elevation="1">
+      <section class="elevation form-info" elevation="1">
         <etools-loading .active="${this.loading}"></etools-loading>
         <div class="section-header">
           <h2>Certification</h2>
