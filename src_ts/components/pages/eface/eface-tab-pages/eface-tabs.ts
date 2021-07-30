@@ -61,7 +61,8 @@ export class EfaceTabs extends connect(store)(LitElement) {
         <div slot="tabs"></div>
       </page-content-header>
       <div class="page-content">
-        ${this.eface?.cancel_reason || (this.eface?.rejection_reason && this.eface.status == 'rejected')
+        ${this.eface?.cancel_reason ||
+        (this.eface?.rejection_reason && ['rejected', 'closed'].includes(this.eface.status))
           ? html`<cancel-justification
               .justification=${this.eface?.cancel_reason ? this.eface.cancel_reason : this.eface?.rejection_reason}
             ></cancel-justification>`

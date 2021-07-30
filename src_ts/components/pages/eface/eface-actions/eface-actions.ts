@@ -202,7 +202,7 @@ export class EfaceActions extends LitElement {
         return {rejection_reason: response.comment};
       }
       if (action === TRANSACTION_REJECT) {
-        return {transaction_rejection_reason: response.comment};
+        return {rejection_reason: response.comment};
       }
       return null;
     });
