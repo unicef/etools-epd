@@ -2,6 +2,3 @@
 	path = src_ts/components/pages/interventions/intervention-tab-pages
 	url = https://github.com/unicef/intervention-tab-pages.git
 	branch = master
-[submodule "src_ts/components/pages/etools-pages-common"]
-	path = src_ts/components/pages/etools-pages-common
-	url = git@github.com:unicef/etools-pages-common.git
