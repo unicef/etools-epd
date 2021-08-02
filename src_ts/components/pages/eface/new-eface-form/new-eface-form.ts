@@ -100,22 +100,6 @@ export class NewEfaceForm extends connect(store)(LitElement) {
       <main>
         <div class="title">Enter initial details</div>
         <div class="row">
-          <!--   Form Title   -->
-          <paper-input
-            id="title"
-            label="Form Title"
-            char-counter
-            maxlength="256"
-            placeholder="&#8212;"
-            required
-            error-message="This field is required"
-            .value="${this.newForm?.title}"
-            @value-changed="${({detail}: CustomEvent) => this.setFormField('title', detail && detail.value)}"
-            @focus="${this.resetError}"
-            @click="${this.resetError}"
-          ></paper-input>
-        </div>
-        <div class="row">
           <!--   Intervention   -->
           <etools-dropdown
             id="intervention"

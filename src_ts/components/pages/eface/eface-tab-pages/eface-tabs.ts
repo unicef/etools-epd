@@ -45,7 +45,7 @@ export class EfaceTabs extends connect(store)(LitElement) {
         .rejectStatuses="${[REJECTED, CLOSED, CANCELLED]}"
       ></etools-status-lit>
       <page-content-header with-tabs-visible>
-        <span slot="page-title">${this.eface?.title}</span>
+        <span slot="page-title">${this.eface?.reference_number}</span>
 
         <div slot="title-row-actions" class="content-header-actions">
           <paper-button @click="${this.export}" id="export">

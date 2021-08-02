@@ -180,7 +180,7 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
           width: 18px;
           height: 18px;
         }
-        .timeframes {
+        .periods {
           max-width: 80px;
         }
         .section-header {
@@ -218,7 +218,7 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
       </section>
       <section class="elevation" elevation="1">
         <div class="section-header">
-          <h2>Invoice Lines & Timeframes</h2>
+          <h2>Invoice Lines & Periods</h2>
           ${this.renderEditBtn(this.editMode, this.canEditInvoiceLines)}
         </div>
         <div class="section-content">
@@ -237,7 +237,7 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
                 <div>
                   <paper-input
                     id="auth-amt-date-start"
-                    class="timeframes"
+                    class="periods"
                     pattern="\\d{1,2}/\\d{4}"
                     no-label-float
                     placeholder="mm/yyyy"
@@ -256,7 +256,7 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
                   —
                   <paper-input
                     id="auth-amt-date-end"
-                    class="timeframes"
+                    class="periods"
                     pattern="\\d{1,2}/\\d{4}"
                     no-label-float
                     placeholder="mm/yyyy"
@@ -286,11 +286,11 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
             </div>
             <div class="requests-container">
               <div class="h">
-                <div>New Request Timeframes & Amount</div>
+                <div>New Request Periods & Amount</div>
                 <div>
                   <paper-input
                     id="req-date-start"
-                    class="timeframes"
+                    class="periods"
                     pattern="\\d{1,2}/\\d{4}"
                     no-label-float
                     placeholder="mm/yyyy"
@@ -305,7 +305,7 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
                   —
                   <paper-input
                     id="req-date-end"
-                    class="timeframes"
+                    class="periods"
                     pattern="\\d{1,2}/\\d{4}"
                     no-label-float
                     placeholder="mm/yyyy"
@@ -755,7 +755,7 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
   }
 
   validateTimeframes() {
-    const fields = this.shadowRoot?.querySelectorAll<PaperInputElement>('paper-input.timeframes');
+    const fields = this.shadowRoot?.querySelectorAll<PaperInputElement>('paper-input.periods');
     const validations = {dates: true};
     fields?.forEach((f) => {
       if (!f.value) {
