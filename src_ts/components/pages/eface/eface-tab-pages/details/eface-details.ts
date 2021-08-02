@@ -205,14 +205,23 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
         <div class="section-header">
           <h2>Header</h2>
         </div>
-        <div class="layout-horizontal section-content">
-          <div class="flex-1">
-            <div class="paper-label">For Programme Document:</div>
-            <div class="input-label">${this.intervention?.title}</div>
+        <div class="section-content">
+          <div>
+            <div class="paper-label">Partner</div>
+            <div class="input-label">${this.intervention?.partner}</div>
           </div>
-          <div class="flex-1">
-            <div class="paper-label">Form Type</div>
-            <div class="input-label">${EfaceFormTypes.get(this.originalData?.request_type)?.label}</div>
+          <div class="layout-horizontal">
+            <div class="flex-1">
+              <div class="paper-label">Programme Document</div>
+              <div class="input-label">
+                ${this.intervention?.number} <br />
+                ${this.intervention?.title}
+              </div>
+            </div>
+            <div class="flex-1">
+              <div class="paper-label">Form Type</div>
+              <div class="input-label">${EfaceFormTypes.get(this.originalData?.request_type)?.label}</div>
+            </div>
           </div>
         </div>
       </section>
