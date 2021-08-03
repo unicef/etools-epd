@@ -28,6 +28,7 @@ export class Eface {
   date_rejected!: string;
   date_submitted!: string;
   expenditures_disbursed!: boolean;
+  currency!: string;
   id!: number;
   notes!: string;
   permissions!: any;

@@ -14,7 +14,13 @@ import {Eface, EfaceItem} from '../types';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {connectStore} from '../../../common/mixins/connect-store-mixin';
 import {RootState} from '../../../../../redux/store';
-import {ExpectedResult, Intervention, InterventionActivity, ResultLinkLowerResult} from '@unicef-polymer/etools-types';
+import {
+  ExpectedResult,
+  Intervention,
+  InterventionActivity,
+  LabelAndValue,
+  ResultLinkLowerResult
+} from '@unicef-polymer/etools-types';
 import {currentPage, currentSubpage} from '../../../interventions/intervention-tab-pages/common/selectors';
 import {cloneDeep} from '../../../common/utils/utils';
 import {EtoolsCurrencyAmountInput} from '@unicef-polymer/etools-currency-amount-input/etools-currency-amount-input';
@@ -32,6 +38,7 @@ import {pick} from 'lodash-es';
 import {ReadonlyStyles} from '../../../common/styles/readonly-styles';
 import {labelAndvalueStylesLit} from '../../../common/styles/label-and-value-styles-lit';
 import {repeat} from 'lit-html/directives/repeat';
+import {EtoolsDropdownEl} from '@unicef-polymer/etools-dropdown/etools-dropdown';
 
 /**
  * @customElement
@@ -180,7 +187,7 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
           width: 18px;
           height: 18px;
         }
-        .timeframes {
+        .periods {
           max-width: 80px;
         }
         .section-header {
@@ -205,27 +212,59 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
         <div class="section-header">
           <h2>Header</h2>
         </div>
-        <div class="layout-horizontal section-content">
-          <div class="flex-1">
-            <div class="paper-label">For Programme Document:</div>
-            <div class="input-label">${this.intervention?.title}</div>
+        <div class="section-content">
+          <div>
+            <div class="paper-label">Partner</div>
+            <div class="input-label">${this.intervention?.partner}</div>
           </div>
-          <div class="flex-1">
-            <div class="paper-label">Form Type</div>
-            <div class="input-label">${EfaceFormTypes.get(this.originalData?.request_type)?.label}</div>
+          <div class="layout-horizontal">
+            <div class="flex-1">
+              <div class="paper-label">Programme Document</div>
+              <div class="input-label">
+                ${this.intervention?.number} <br />
+                ${this.intervention?.title}
+              </div>
+            </div>
+            <div class="flex-1">
+              <div class="paper-label">Form Type</div>
+              <div class="input-label">${EfaceFormTypes.get(this.originalData?.request_type)?.label}</div>
+            </div>
           </div>
         </div>
       </section>
       <section class="elevation" elevation="1">
         <div class="section-header">
-          <h2>Invoice Lines & Timeframes</h2>
+          <h2>Invoice Lines & Periods</h2>
           ${this.renderEditBtn(this.editMode, this.canEditInvoiceLines)}
         </div>
         <div class="section-content">
-          <div class="row center">
-            <div class="currency"><b>Currency</b>: ${this.intervention?.planned_budget.currency}</div>
-            <div class="border center bold">REPORTING</div>
-            <div class="border center bold">REQUESTS / AUTHORIZATIONS</div>
+          <div class="row">
+            <div class="currency layout-horizontal align-items-center">
+              <b>Currency</b>: &nbsp;&nbsp;
+              <etools-dropdown
+                style="max-width: 120px;"
+                id="currency"
+                .selected="${this.data.currency}"
+                .options="${this.currencies}"
+                required
+                auto-validate
+                option-label="label"
+                option-value="value"
+                ?readonly="${this.isReadonly(this.editMode, this.canEditInvoiceLines)}"
+                @etools-selected-item-changed="${({detail}: CustomEvent) => {
+                  if (!detail.selectedItem) {
+                    return;
+                  }
+                  this.updateEfaceField('currency', detail.value);
+                }}"
+                trigger-value-change-event
+                allow-outside-scroll
+                no-label-float
+                .autoWidth="${true}"
+              ></etools-dropdown>
+            </div>
+            <div class="border layout-horizontal center-align bold">REPORTING</div>
+            <div class="border layout-horizontal center-align bold">REQUESTS / AUTHORIZATIONS</div>
             <div></div>
           </div>
           <div class="header-row">
@@ -237,7 +276,7 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
                 <div>
                   <paper-input
                     id="auth-amt-date-start"
-                    class="timeframes"
+                    class="periods"
                     pattern="\\d{1,2}/\\d{4}"
                     no-label-float
                     placeholder="mm/yyyy"
@@ -256,7 +295,7 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
                   —
                   <paper-input
                     id="auth-amt-date-end"
-                    class="timeframes"
+                    class="periods"
                     pattern="\\d{1,2}/\\d{4}"
                     no-label-float
                     placeholder="mm/yyyy"
@@ -286,11 +325,11 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
             </div>
             <div class="requests-container">
               <div class="h">
-                <div>New Request Timeframes & Amount</div>
+                <div>New Request Periods & Amount</div>
                 <div>
                   <paper-input
                     id="req-date-start"
-                    class="timeframes"
+                    class="periods"
                     pattern="\\d{1,2}/\\d{4}"
                     no-label-float
                     placeholder="mm/yyyy"
@@ -305,7 +344,7 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
                   —
                   <paper-input
                     id="req-date-end"
-                    class="timeframes"
+                    class="periods"
                     pattern="\\d{1,2}/\\d{4}"
                     no-label-float
                     placeholder="mm/yyyy"
@@ -499,6 +538,9 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
   pdOutputActivities!: any[];
 
   @property({type: Array})
+  currencies!: LabelAndValue[];
+
+  @property({type: Array})
   eepms!: any[];
 
   @property({type: Array})
@@ -554,6 +596,7 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
     if (!state.eface.current) {
       return;
     }
+    this.currencies = state.commonData?.currencies;
     this.data = state.eface.current;
     this.originalData = cloneDeep(this.data);
     this.intervention = this.data.intervention;
@@ -755,7 +798,7 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
   }
 
   validateTimeframes() {
-    const fields = this.shadowRoot?.querySelectorAll<PaperInputElement>('paper-input.timeframes');
+    const fields = this.shadowRoot?.querySelectorAll<PaperInputElement>('paper-input.periods');
     const validations = {dates: true};
     fields?.forEach((f) => {
       if (!f.value) {
@@ -771,7 +814,12 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
   }
 
   validate() {
-    const validations = [this.validateLineAmounts(), this.validateDescriptions(), this.validateTimeframes()];
+    const validations = [
+      this.validateLineAmounts(),
+      this.validateDescriptions(),
+      this.validateTimeframes(),
+      {required: this.shadowRoot!.querySelector<EtoolsDropdownEl>('#currency')!.validate()}
+    ];
     if (validations.some((v) => v.required === false) || validations.some((v) => v.dates === false)) {
       fireEvent(this, 'toast', {
         text: getTranslation('PLS_FILL_IN_ALL_REQUIRED_FIELDS')

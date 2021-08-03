@@ -106,8 +106,8 @@ export class EfaceList extends connect(store)(LitElement) {
       sort: null
     },
     {
-      label: 'Form Title',
-      name: 'title',
+      label: 'PD/SPD',
+      name: 'intervention',
       type: EtoolsTableColumnType.Text,
       sort: null
     },
