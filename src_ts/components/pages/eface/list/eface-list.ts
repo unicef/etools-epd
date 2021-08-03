@@ -107,8 +107,9 @@ export class EfaceList extends connect(store)(LitElement) {
     },
     {
       label: 'PD/SPD',
-      name: 'intervention',
-      type: EtoolsTableColumnType.Text,
+      name: 'intervention_reference_number',
+      link_tmpl: `${ROOT_PATH}interventions/:intervention/metadata`,
+      type: EtoolsTableColumnType.Link,
       sort: null
     },
     {
