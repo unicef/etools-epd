@@ -4,4 +4,4 @@
 	branch = master
 [submodule "src_ts/components/pages/etools-pages-common"]
 	path = src_ts/components/pages/etools-pages-common
-	url = git@github.com:unicef/etools-pages-common.git
+	url = https://github.com/unicef/etools-pages-common.git
