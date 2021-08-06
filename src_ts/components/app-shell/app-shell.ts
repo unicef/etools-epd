@@ -42,7 +42,6 @@ import './app-theme.js';
 import {ToastNotificationHelper} from '../common/toast-notifications/toast-notification-helper';
 import user from '../../redux/reducers/user';
 import commonData, {CommonDataState} from '../../redux/reducers/common-data';
-import {SMALL_MENU_ACTIVE_LOCALSTORAGE_KEY} from '../../config/config';
 import {getCurrentUser} from '../user/user-actions';
 import {EtoolsRouter} from '../../routing/routes';
 import {
@@ -59,12 +58,13 @@ import {
 } from '../../redux/actions/common-data';
 import {getAgreements, SET_AGREEMENTS} from '../../redux/actions/agreements';
 import isEmpty from 'lodash-es/isEmpty';
-import {fireEvent} from '../utils/fire-custom-event';
 import get from 'lodash-es/get';
 import '../env-flags/environment-flags';
-import {setStore} from '../pages/interventions/intervention-tab-pages/utils/redux-store-access';
 import {registerTranslateConfig, use} from 'lit-translate';
 import {EtoolsUser, RouteDetails} from '@unicef-polymer/etools-types';
+import {setStore} from '../pages/etools-pages-common/utils/redux-store-access';
+import {SMALL_MENU_ACTIVE_LOCALSTORAGE_KEY} from '../../config/config';
+import {fireEvent} from '../utils/fire-custom-event';
 declare const dayjs: any;
 declare const dayjs_plugin_utc: any;
 declare const dayjs_plugin_isSameOrBefore: any;
