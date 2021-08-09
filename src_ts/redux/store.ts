@@ -1,4 +1,4 @@
-import {EfaceInterventionsState} from './reducers/eface-interventions';
+import {EfaceInterventionsState} from '../components/pages/eface/redux/reducers/eface-interventions';
 
 declare global {
   interface Window {
@@ -21,7 +21,7 @@ import {UserAction} from './actions/user.js';
 import {UserState} from './reducers/user.js';
 import {CommonDataAction} from './actions/common-data';
 import {CommonDataState} from './reducers/common-data';
-import {EfaceFormsState} from './reducers/eface-forms';
+import {EfaceFormsState} from '../components/pages/eface/redux/reducers/eface-forms';
 
 // Overall state extends static states and partials lazy states.
 export interface RootState {

@@ -1,6 +1,6 @@
-import {EtoolsFilter, EtoolsFilterTypes} from '../../../common/layout/filters/etools-filters';
 import {translate} from 'lit-translate';
-import {FilterKeys} from '../../common/list/filters';
+import {EtoolsFilter, EtoolsFilterTypes} from '../../etools-pages-common/layout/filters/etools-filters';
+import {FilterKeys} from '../../etools-pages-common/list/filters';
 
 export const defaultFilters: EtoolsFilter[] = [
   {

@@ -1,35 +1,41 @@
 import {LitElement, customElement, html, property} from 'lit-element';
-import {pageContentHeaderSlottedStyles} from '../../../common/layout/page-content-header/page-content-header-slotted-styles';
-import {InterventionsListStyles, InterventionsTableStyles} from '../../common/list/list-styles';
 import {translate} from 'lit-translate';
 import {GenericObject, InterventionListData, RouteDetails, RouteQueryParams} from '@unicef-polymer/etools-types';
 import {defaultPaginator, EtoolsPaginator} from '@unicef-polymer/etools-table/pagination/etools-pagination';
-import {EtoolsFilter} from '../../../common/layout/filters/etools-filters';
+
 import {
   EtoolsTableColumn,
   EtoolsTableColumnSort,
   EtoolsTableColumnType
 } from '@unicef-polymer/etools-table/etools-table';
-import {ROOT_PATH} from '../../../../config/config';
-import {ListHelper, ListHelperResponse} from '../../common/list/list-helper';
 import {RootState, store} from '../../../../redux/store';
 import get from 'lodash-es/get';
-import '../../../common/layout/page-content-header/page-content-header';
+import '../../etools-pages-common/layout/page-content-header/page-content-header';
 import {
   buildUrlQueryString,
   getSortFields,
   getUrlQueryStringSort
-} from '../../../common/layout/etools-table/etools-table-utility';
+} from '../../etools-pages-common/layout/etools-table/etools-table-utility';
 import pick from 'lodash-es/pick';
 import {replaceAppLocation} from '../../../../routing/routes';
-import {updateFiltersSelectedValues} from '../../common/list/filters';
 import {etoolsEndpoints} from '../../../../endpoints/endpoints-list';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {defaultFilters} from './eface-filters';
-import {elevationStyles} from '../../common/styles/elevation-styles';
-import {buttonsStyles} from '../../common/styles/button-styles';
-import {sharedStyles} from '../../common/styles/shared-styles-lit';
-import {pageLayoutStyles} from '../../common/styles/page-layout-styles';
+import {elevationStyles} from '../../etools-pages-common/styles/elevation-styles';
+import {buttonsStyles} from '../../etools-pages-common/styles/button-styles';
+import {pageLayoutStyles} from '../../../styles/page-layout-styles';
+import {pageContentHeaderSlottedStyles} from '../../etools-pages-common/layout/page-content-header/page-content-header-slotted-styles';
+import {InterventionsListStyles, InterventionsTableStyles} from '../../etools-pages-common/list/list-styles';
+import {sharedStyles} from '../../etools-pages-common/styles/shared-styles-lit';
+import {ListHelper, ListHelperResponse} from '../../etools-pages-common/list/list-helper';
+import {updateFiltersSelectedValues} from '../../etools-pages-common/list/filters';
+import {getStoreAsync} from '../../etools-pages-common/utils/redux-store-access';
+import {efaceInterventions} from '../redux/reducers/eface-interventions';
+import {eface} from '../redux/reducers/eface-forms';
+import {Store} from 'redux';
+import {EtoolsFilter} from '../../etools-pages-common/layout/filters/etools-filters';
+import '../../etools-pages-common/layout/filters/etools-filters';
+import {ROOT_PATH} from '../../etools-pages-common/config/config';
 
 /**
  * @customElement
@@ -121,8 +127,17 @@ export class EfaceList extends connect(store)(LitElement) {
       cssClass: 'col_type'
     }
   ];
+  connectedCallback() {
+    super.connectedCallback();
+    getStoreAsync().then((store: Store<RootState>) => {
+      (store as any).addReducers({
+        efaceInterventions,
+        eface
+      });
+    });
+  }
 
-  private listHelper = new ListHelper(etoolsEndpoints.efaceForms);
+  private listHelper = new ListHelper(etoolsEndpoints.efaceForms, store);
   private routeDetails!: RouteDetails | null;
   private paramsInitialized = false;
 

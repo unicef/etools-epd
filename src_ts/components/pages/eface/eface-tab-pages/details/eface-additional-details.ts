@@ -1,6 +1,5 @@
 import {LitElement, TemplateResult, html, customElement, css, property} from 'lit-element';
 import '@polymer/paper-checkbox/paper-checkbox';
-import {elevationStyles} from '../../../common/styles/elevation-styles';
 import '@unicef-polymer/etools-date-time/datepicker-lite';
 import '@polymer/paper-input/paper-textarea';
 import {RootState, store} from '../../../../../redux/store';
@@ -8,19 +7,21 @@ import {currentPage, currentSubpage} from '../../../interventions/intervention-t
 import {Eface} from '../types';
 import {User} from '@unicef-polymer/etools-types';
 import {PaperCheckboxElement} from '@polymer/paper-checkbox/paper-checkbox';
-import {areEqual, cloneDeep} from '../../../common/utils/utils';
 import {connect} from 'pwa-helpers/connect-mixin';
-import {formatDate} from '../../../common/utils/date-utils';
 import {translate} from 'lit-translate';
-import {getEndpoint} from '../../../common/utils/endpoint-helper';
 import {etoolsEndpoints} from '../../../../../endpoints/endpoints-list';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {buttonsStyles} from '../../../common/styles/button-styles';
-import {sharedStyles} from '../../../common/styles/shared-styles-lit';
-import {setEfaceForm} from '../../../../../redux/actions/eface-forms';
-import {fireEvent} from '../../../common/utils/fire-custom-event';
+import {setEfaceForm} from '../../redux/actions/eface-forms';
 import '@unicef-polymer/etools-loading/etools-loading';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {elevationStyles} from '../../../etools-pages-common/styles/elevation-styles';
+import {buttonsStyles} from '../../../etools-pages-common/styles/button-styles';
+import {sharedStyles} from '../../../etools-pages-common/styles/shared-styles-lit';
+import cloneDeep from 'lodash-es/cloneDeep';
+import {formatDate} from '../../../etools-pages-common/utils/date-utils';
+import {areEqual} from '../../../etools-pages-common/utils/utils';
+import {getEndpoint} from '../../../etools-pages-common/utils/endpoint-helper';
+import {fireEvent} from '../../../etools-pages-common/utils/fire-custom-event';
 
 @customElement('eface-additional-details')
 export class EfaceAdditionalDetails extends connect(store)(LitElement) {
@@ -86,9 +87,7 @@ export class EfaceAdditionalDetails extends connect(store)(LitElement) {
     ];
   }
   protected render(): TemplateResult {
-    return html` <style>
-        ${sharedStyles}
-      </style>
+    return html` ${sharedStyles}
       <section class="elevation form-info" elevation="1">
         <etools-loading .active="${this.loading}"></etools-loading>
         <div class="section-header">

@@ -1,9 +1,9 @@
 import {ActionCreator, Action} from 'redux';
 import {sendRequest} from '@unicef-polymer/etools-ajax';
-import {etoolsEndpoints} from '../../endpoints/endpoints-list';
-import {store} from '../store';
-import {getEndpoint} from '../../endpoints/endpoints';
-import {Eface} from '../../components/pages/eface/eface-tab-pages/types';
+import {etoolsEndpoints} from '../../../../../endpoints/endpoints-list';
+import {store} from '../../../../../redux/store';
+import {getEndpoint} from '../../../../../endpoints/endpoints';
+import {Eface} from '../../eface-tab-pages/types';
 
 export const SET_CURRENT_EFACE_FORM = 'SET_CURRENT_EFACE_FORM';
 export const EFACE_FORM_LOADING = 'EFACE_FORM_LOADING';

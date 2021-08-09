@@ -1,8 +1,6 @@
 import {ActionCreator, Action} from 'redux';
 import {Intervention} from '@unicef-polymer/etools-types';
 import {sendRequest} from '@unicef-polymer/etools-ajax';
-import {etoolsEndpoints} from '../../endpoints/endpoints-list';
-import {store} from '../store';
 
 export const SET_EFACE_INTERVENTIONS = 'SET_EFACE_INTERVENTIONS';
 export const EFACE_INTERVENTIONS_LOADING = 'EFACE_INTERVENTIONS_LOADING';
@@ -30,14 +28,14 @@ export const setEfaceInterventionsLoading: ActionCreator<EfaceInterventionsLoadi
 
 export type EfaceInterventionsAction = EfaceInterventionsSetAction | EfaceInterventionsLoadingAction;
 
-export const getEfaceInterventions = () => {
-  if ((store.getState() as any)?.efaceInterventions?.loading) {
+export const getEfaceInterventions = () => (dispatch: any, getState: any) => {
+  if ((getState() as any)?.efaceInterventions?.loading) {
     return;
   }
-  store.dispatch(setEfaceInterventionsLoading(true));
+  dispatch(setEfaceInterventionsLoading(true));
   return sendRequest({
-    endpoint: {url: etoolsEndpoints.interventions.url!}
+    endpoint: {url: '/api/pmp/v3/interventions/?show_amendments=true'} // etoolsEndpoints.interventions.url! TODO
   })
-    .then((interventions) => store.dispatch(setEfaceInterventions(interventions)))
-    .finally(() => store.dispatch(setEfaceInterventionsLoading(false)));
+    .then((interventions) => dispatch(setEfaceInterventions(interventions)))
+    .finally(() => dispatch(setEfaceInterventionsLoading(false)));
 };

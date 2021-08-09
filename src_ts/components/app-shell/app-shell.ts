@@ -24,6 +24,7 @@ import '@polymer/app-layout/app-drawer/app-drawer.js';
 import '@polymer/app-layout/app-header-layout/app-header-layout.js';
 import '@polymer/app-layout/app-header/app-header.js';
 import '@polymer/app-layout/app-toolbar/app-toolbar.js';
+import {createDynamicDialog} from '@unicef-polymer/etools-dialog/dynamic-dialog';
 
 import {AppDrawerLayoutElement} from '@polymer/app-layout/app-drawer-layout/app-drawer-layout';
 import {AppHeaderLayoutElement} from '@polymer/app-layout/app-header-layout/app-header-layout';
@@ -41,7 +42,6 @@ import './app-theme.js';
 import {ToastNotificationHelper} from '../common/toast-notifications/toast-notification-helper';
 import user from '../../redux/reducers/user';
 import commonData, {CommonDataState} from '../../redux/reducers/common-data';
-import {SMALL_MENU_ACTIVE_LOCALSTORAGE_KEY} from '../../config/config';
 import {getCurrentUser} from '../user/user-actions';
 import {EtoolsRouter} from '../../routing/routes';
 import {
@@ -58,14 +58,13 @@ import {
 } from '../../redux/actions/common-data';
 import {getAgreements, SET_AGREEMENTS} from '../../redux/actions/agreements';
 import isEmpty from 'lodash-es/isEmpty';
-import {fireEvent} from '../utils/fire-custom-event';
 import get from 'lodash-es/get';
 import '../env-flags/environment-flags';
-import {setStore} from '../pages/common/utils/redux-store-access';
 import {registerTranslateConfig, use} from 'lit-translate';
 import {EtoolsUser, RouteDetails} from '@unicef-polymer/etools-types';
-import {efaceInterventions} from '../../redux/reducers/eface-interventions';
-import {eface} from '../../redux/reducers/eface-forms';
+import {setStore} from '../pages/etools-pages-common/utils/redux-store-access';
+import {SMALL_MENU_ACTIVE_LOCALSTORAGE_KEY} from '../../config/config';
+import {fireEvent} from '../utils/fire-custom-event';
 declare const dayjs: any;
 declare const dayjs_plugin_utc: any;
 declare const dayjs_plugin_isSameOrBefore: any;
@@ -92,9 +91,7 @@ setStore(store as any);
 
 store.addReducers({
   user,
-  commonData,
-  efaceInterventions,
-  eface
+  commonData
 });
 
 /**
@@ -241,6 +238,7 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
   async connectedCallback() {
     super.connectedCallback();
 
+    this.checkAppVersion();
     installRouter((location) => store.dispatch(navigate(decodeURIComponent(location.pathname + location.search))));
     this.addEventListener('scroll-up', () => {
       if (this.appHeaderLayout) {
@@ -280,6 +278,43 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
       window.EtoolsEsmmFitIntoEl = this.appHeaderLayout!.shadowRoot!.querySelector('#contentContainer');
       this.etoolsLoadingContainer = window.EtoolsEsmmFitIntoEl;
     }, 100);
+  }
+
+  checkAppVersion() {
+    fetch('version.json')
+      .then((res) => res.json())
+      .then((version) => {
+        if (version.revision != document.getElementById('buildRevNo')!.innerText) {
+          console.log('version.json', version.revision);
+          console.log('buildRevNo ', document.getElementById('buildRevNo')!.innerText);
+          this._showConfirmNewVersionDialog();
+        }
+      });
+  }
+
+  private _showConfirmNewVersionDialog() {
+    const msg = document.createElement('span');
+    msg.innerText = 'A new version of the app is available. Refresh page?';
+    const conf: any = {
+      size: 'md',
+      closeCallback: this._onConfirmNewVersion.bind(this),
+      content: msg
+    };
+    const confirmNewVersionDialog = createDynamicDialog(conf);
+    confirmNewVersionDialog.opened = true;
+  }
+
+  private _onConfirmNewVersion(e: CustomEvent) {
+    if (e.detail.confirmed) {
+      if (navigator.serviceWorker) {
+        caches.keys().then((cacheNames) => {
+          cacheNames.forEach((cacheName) => {
+            caches.delete(cacheName);
+          });
+          location.reload();
+        });
+      }
+    }
   }
 
   private formatResponse(response: any[]) {
