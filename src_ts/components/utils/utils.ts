@@ -13,3 +13,7 @@ export const getFileNameFromURL = (url: string) => {
   // @ts-ignore
   return url.split('?').shift().split('/').pop();
 };
+
+export function capitalizeFirstLetter(str: string) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}

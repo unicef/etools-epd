@@ -3,14 +3,18 @@ import {customElement, html, LitElement, property, TemplateResult} from 'lit-ele
 import {connect} from 'pwa-helpers/connect-mixin';
 import {RootState, store} from '../../../redux/store';
 
-import '../../common/layout/page-content-header/page-content-header';
+import '../etools-pages-common/layout/page-content-header/page-content-header';
 // eslint-disable-next-line max-len
-import {pageContentHeaderSlottedStyles} from '../../common/layout/page-content-header/page-content-header-slotted-styles';
+import {pageContentHeaderSlottedStyles} from '../etools-pages-common/layout/page-content-header/page-content-header-slotted-styles';
 
-import '../../common/layout/filters/etools-filters';
-import {defaultFilters, updateFilterSelectionOptions, updateFiltersSelectedValues} from './list/filters';
+import '../etools-pages-common/layout/filters/etools-filters';
+import {
+  defaultFilters,
+  updateFilterSelectionOptions,
+  updateFiltersSelectedValues
+} from '../etools-pages-common/list/filters';
 import {ROOT_PATH} from '../../../config/config';
-import {EtoolsFilter} from '../../common/layout/filters/etools-filters';
+import {EtoolsFilter} from '../etools-pages-common/layout/filters/etools-filters';
 import {pageLayoutStyles} from '../../styles/page-layout-styles';
 import {buttonsStyles} from '../../styles/button-styles';
 import {elevationStyles} from '../../styles/lit-styles/elevation-styles';
@@ -25,15 +29,15 @@ import {
   buildUrlQueryString,
   getSortFields,
   getUrlQueryStringSort
-} from '../../common/layout/etools-table/etools-table-utility';
+} from '../etools-pages-common/layout/etools-table/etools-table-utility';
 import {replaceAppLocation} from '../../../routing/routes';
 import {SharedStylesLit} from '../../styles/shared-styles-lit';
 
 import '@unicef-polymer/etools-loading';
 import get from 'lodash-es/get';
-import '../../common/layout/export-data';
-import {InterventionsListHelper, ListHelperResponse} from './list/list-helper';
-import {InterventionsListStyles, InterventionsTableStyles} from './list/list-styles';
+import '../etools-pages-common/layout/export-data';
+import {ListHelper, ListHelperResponse} from '../etools-pages-common/list/list-helper';
+import {InterventionsListStyles, InterventionsTableStyles} from '../etools-pages-common/list/list-styles';
 import {isJsonStrMatch} from '../../utils/utils';
 import {addCurrencyAmountDelimiter} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {notHiddenPartnersSelector} from '../../../redux/reducers/common-data';
@@ -46,6 +50,7 @@ import {
   RouteQueryParams
 } from '@unicef-polymer/etools-types';
 import pick from 'lodash-es/pick';
+import {etoolsEndpoints} from '../../../endpoints/endpoints-list';
 
 /**
  * @LitElement
@@ -197,7 +202,7 @@ export class InterventionList extends connect(store)(LitElement) {
     }
   ];
 
-  private listHelper = new InterventionsListHelper();
+  private listHelper = new ListHelper<InterventionListData>(etoolsEndpoints.interventions, store);
   private routeDetails!: RouteDetails | null;
   private paramsInitialized = false;
 
