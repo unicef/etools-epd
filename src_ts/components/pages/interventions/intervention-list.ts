@@ -3,17 +3,10 @@ import {customElement, html, LitElement, property, TemplateResult} from 'lit-ele
 import {connect} from 'pwa-helpers/connect-mixin';
 import {RootState, store} from '../../../redux/store';
 
-import '../../common/layout/page-content-header/page-content-header';
-// eslint-disable-next-line max-len
-import {pageContentHeaderSlottedStyles} from '../../common/layout/page-content-header/page-content-header-slotted-styles';
+import '../etools-pages-common/layout/page-content-header/page-content-header';
+// // eslint-disable-next-line max-len
 
-import '../../common/layout/filters/etools-filters';
-import {updateFilterSelectionOptions, updateFiltersSelectedValues} from '../common/list/filters';
-import {ROOT_PATH} from '../../../config/config';
-import {EtoolsFilter} from '../../common/layout/filters/etools-filters';
-import {pageLayoutStyles} from '../../styles/page-layout-styles';
-import {buttonsStyles} from '../../styles/button-styles';
-import {elevationStyles} from '../../styles/lit-styles/elevation-styles';
+// import '../etools-pages-common/layout/filters/etools-filters';
 import '@unicef-polymer/etools-table/etools-table';
 import {
   EtoolsTableColumn,
@@ -25,16 +18,13 @@ import {
   buildUrlQueryString,
   getSortFields,
   getUrlQueryStringSort
-} from '../../common/layout/etools-table/etools-table-utility';
+} from '../etools-pages-common/layout/etools-table/etools-table-utility';
 import {replaceAppLocation} from '../../../routing/routes';
-import {SharedStylesLit} from '../../styles/shared-styles-lit';
 
 import '@unicef-polymer/etools-loading';
 import get from 'lodash-es/get';
-import '../../common/layout/export-data';
-import {ListHelper, ListHelperResponse} from '../common/list/list-helper';
-import {InterventionsListStyles, InterventionsTableStyles} from '../common/list/list-styles';
-import {isJsonStrMatch} from '../../utils/utils';
+// import '../etools-pages-common/layout/export-data';
+import {isJsonStrMatch} from '../etools-pages-common/utils/utils';
 import {addCurrencyAmountDelimiter} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {notHiddenPartnersSelector} from '../../../redux/reducers/common-data';
 import {translate} from 'lit-translate';
@@ -48,6 +38,16 @@ import {
 import pick from 'lodash-es/pick';
 import {etoolsEndpoints} from '../../../endpoints/endpoints-list';
 import {defaultFilters} from './interventions-filters';
+import {InterventionsListStyles, InterventionsTableStyles} from '../etools-pages-common/list/list-styles';
+import {ListHelper, ListHelperResponse} from '../etools-pages-common/list/list-helper';
+import {updateFilterSelectionOptions, updateFiltersSelectedValues} from '../etools-pages-common/list/filters';
+import {pageContentHeaderSlottedStyles} from '../etools-pages-common/layout/page-content-header/page-content-header-slotted-styles';
+import {elevationStyles} from '../etools-pages-common/styles/elevation-styles';
+import {buttonsStyles} from '../etools-pages-common/styles/button-styles';
+import {pageLayoutStyles} from '../../styles/page-layout-styles';
+import {EtoolsFilter} from '../etools-pages-common/layout/filters/etools-filters';
+import {ROOT_PATH} from '../etools-pages-common/config/config';
+import {sharedStyles} from '../etools-pages-common/styles/shared-styles-lit';
 
 /**
  * @LitElement
@@ -63,7 +63,7 @@ export class InterventionList extends connect(store)(LitElement) {
     // main template
     // language=HTML
     return html`
-      ${SharedStylesLit}
+      ${sharedStyles}
       <style>
         .col_type {
           white-space: pre-line !important;
@@ -199,7 +199,7 @@ export class InterventionList extends connect(store)(LitElement) {
     }
   ];
 
-  private listHelper: ListHelper<InterventionListData> = new ListHelper(etoolsEndpoints.interventions);
+  private listHelper: ListHelper<InterventionListData> = new ListHelper(etoolsEndpoints.interventions, store);
   private routeDetails!: RouteDetails | null;
   private paramsInitialized = false;
 

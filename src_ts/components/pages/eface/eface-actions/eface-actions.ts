@@ -1,11 +1,8 @@
 import {customElement, html, LitElement, property} from 'lit-element';
 import {getEndpoint} from '../../../../endpoints/endpoints';
 import {get as getTranslation} from 'lit-translate';
-import '../../common/layout/are-you-sure';
-import '../../common/layout/reason-popup';
-import {efaceEndpoints} from '../../common/utils/eface-endpoints.js';
-import {ActionsStyles} from '../../common/layout/available-actions/actions-styles';
-import {arrowLeftIcon} from '../../common/styles/app-icons';
+import '../../etools-pages-common/layout/are-you-sure';
+import '../../etools-pages-common/components/cancel/reason-popup';
 import {
   ACTIONS_WITH_INPUT,
   ActionToStatus,
@@ -22,12 +19,15 @@ import {GenericObject} from '@unicef-polymer/etools-types/dist/global.types';
 import {fireEvent} from '../../../utils/fire-custom-event';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {openDialog} from '../../common/utils/dialog';
 import {PaperMenuButton} from '@polymer/paper-menu-button/paper-menu-button';
-import {getStore} from '../../common/utils/redux-store-access';
 import {Eface} from '../eface-tab-pages/types';
-import {setEfaceForm} from '../../../../redux/actions/eface-forms';
-import {capitalizeFirstLetter} from '../../common/utils/utils';
+import {setEfaceForm} from '../redux/actions/eface-forms';
+import {arrowLeftIcon} from '../../etools-pages-common/styles/app-icons';
+import {efaceEndpoints} from '../eface-utils/eface-endpoints';
+import {openDialog} from '../../etools-pages-common/utils/dialog';
+import {ActionsStyles} from '../../etools-pages-common/available-actions/actions-styles';
+import {getStore} from '../../etools-pages-common/utils/redux-store-access';
+import {capitalizeFirstLetter} from '../../etools-pages-common/utils/utils';
 
 @customElement('eface-actions')
 export class EfaceActions extends LitElement {

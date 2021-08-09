@@ -5,14 +5,8 @@ import '@polymer/paper-icon-button/paper-icon-button';
 import '@unicef-polymer/etools-currency-amount-input/etools-currency-amount-input';
 import '@polymer/paper-input/paper-textarea';
 import {translate, get as getTranslation} from 'lit-translate';
-import ComponentBaseMixin from '../../../common/mixins/component-base-mixin';
-import {buttonsStyles} from '../../../common/styles/button-styles';
-import {elevationStyles} from '../../../common/styles/elevation-styles';
-import {gridLayoutStylesLit} from '../../../common/styles/grid-layout-styles-lit';
-import {fireEvent} from '../../../common/utils/fire-custom-event';
 import {Eface, EfaceItem} from '../types';
 import {displayCurrencyAmount} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
-import {connectStore} from '../../../common/mixins/connect-store-mixin';
 import {RootState} from '../../../../../redux/store';
 import {
   ExpectedResult,
@@ -22,23 +16,29 @@ import {
   ResultLinkLowerResult
 } from '@unicef-polymer/etools-types';
 import {currentPage, currentSubpage} from '../../../interventions/intervention-tab-pages/common/selectors';
-import {cloneDeep} from '../../../common/utils/utils';
 import {EtoolsCurrencyAmountInput} from '@unicef-polymer/etools-currency-amount-input/etools-currency-amount-input';
 import './eface-additional-details';
-import {EfaceFormTypes, EfaceItemTypes_Short} from '../../../common/utils/constants';
-import {efaceEndpoints} from '../../../common/utils/eface-endpoints';
-import {getStore} from '../../../common/utils/redux-store-access';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {setEfaceForm} from '../../../../../redux/actions/eface-forms';
-import {openDialog} from '../../../common/utils/dialog';
-import {getEndpoint} from '../../../common/utils/endpoint-helper';
+import {setEfaceForm} from '../../redux/actions/eface-forms';
 import {sendRequest} from '@unicef-polymer/etools-ajax';
 import {PaperInputElement} from '@polymer/paper-input/paper-input';
 import {pick} from 'lodash-es';
-import {ReadonlyStyles} from '../../../common/styles/readonly-styles';
-import {labelAndvalueStylesLit} from '../../../common/styles/label-and-value-styles-lit';
 import {repeat} from 'lit-html/directives/repeat';
 import {EtoolsDropdownEl} from '@unicef-polymer/etools-dropdown/etools-dropdown';
+import {connectStore} from '../../../etools-pages-common/mixins/connect-store-mixin';
+import ComponentBaseMixin from '../../../etools-pages-common/mixins/component-base-mixin';
+import {elevationStyles} from '../../../etools-pages-common/styles/elevation-styles';
+import {buttonsStyles} from '../../../etools-pages-common/styles/button-styles';
+import {gridLayoutStylesLit} from '../../../etools-pages-common/styles/grid-layout-styles-lit';
+import {labelAndvalueStylesLit} from '../../../etools-pages-common/styles/label-and-value-styles-lit';
+import {ReadonlyStyles} from '../../../etools-pages-common/styles/readonly-styles';
+import {EfaceFormTypes, EfaceItemTypes_Short} from '../../eface-utils/eface.constants';
+import {fireEvent} from '../../../etools-pages-common/utils/fire-custom-event';
+import {cloneDeep} from '../../../etools-pages-common/utils/utils';
+import {openDialog} from '../../../etools-pages-common/utils/dialog';
+import {getStore} from '../../../etools-pages-common/utils/redux-store-access';
+import {getEndpoint} from '../../../etools-pages-common/utils/endpoint-helper';
+import {efaceEndpoints} from '../../eface-utils/eface-endpoints';
 
 /**
  * @customElement
@@ -49,7 +49,7 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
     return [elevationStyles, buttonsStyles, gridLayoutStylesLit, labelAndvalueStylesLit];
   }
   render() {
-    if (!this.data) {
+    if (!this.data || !this.originalData) {
       return html`<style>
         ${ReadonlyStyles} paper-textarea {
           outline: none;
@@ -227,7 +227,7 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
             </div>
             <div class="flex-1">
               <div class="paper-label">Form Type</div>
-              <div class="input-label">${EfaceFormTypes.get(this.originalData?.request_type)?.label}</div>
+              <div class="input-label">${EfaceFormTypes.get(this.originalData!.request_type)?.label}</div>
             </div>
           </div>
         </div>
@@ -287,7 +287,7 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
                     @blur="${(ev: CustomEvent) => this.validateMonthYearFormat(ev)}"
                     @value-changed="${(e: CustomEvent) => {
                       if (e.detail.value?.length >= 6) {
-                        this.validateMonthYearElement(e.currentTarget);
+                        this.validateMonthYearElement(e.currentTarget as PaperInputElement);
                       }
                       this.updateEfaceField('authorized_amount_date_start', e.detail.value);
                     }}"
@@ -377,7 +377,7 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
             (item: EfaceItem, index: number) => html`<div
               class="item-row"
               ?readonly="${this.isReadonly(this.editMode, this.canEditInvoiceLines)}"
-              ?last-item="${index == this.data?.activities?.length - 1}"
+              ?last-item="${index == this.data!.activities?.length - 1}"
             >
               <div class="item layout-horizontal align-items-center">${this.getInvoiceItemDescription(item)}</div>
               <div class="item">
@@ -538,7 +538,7 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
   pdOutputActivities!: any[];
 
   @property({type: Array})
-  currencies!: LabelAndValue[];
+  currencies!: LabelAndValue<string>[];
 
   @property({type: Array})
   eepms!: any[];
@@ -587,7 +587,9 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
     if (currentPage(state) !== 'eface' || currentSubpage(state) !== 'details') {
       if (this.data) {
         this.editMode = false;
+        // @ts-ignore
         this.data = {activities: []};
+        // @ts-ignore
         this.originalData = {};
         this.requestUpdate();
       }
@@ -596,12 +598,12 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
     if (!state.eface.current) {
       return;
     }
-    this.currencies = state.commonData?.currencies;
+    this.currencies = state.commonData?.currencies!;
     this.data = state.eface.current;
     this.originalData = cloneDeep(this.data);
-    this.intervention = this.data.intervention;
-    this.pdOutputActivities = this.getPdOutputActivities(this.data.intervention);
-    this.canEditInvoiceLines = this.data.permissions.edit.activities;
+    this.intervention = this.data!.intervention;
+    this.pdOutputActivities = this.getPdOutputActivities(this.data!.intervention);
+    this.canEditInvoiceLines = this.data!.permissions.edit.activities;
   }
 
   getPdOutputActivities(intervention: Intervention) {
@@ -617,8 +619,8 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
   }
 
   addNewLine(type: string) {
-    this.data.activities = [
-      ...this.data.activities,
+    this.data!.activities = [
+      ...this.data!.activities,
       {
         pd_activity: '',
         eepm_kind: '',
@@ -814,7 +816,7 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
   }
 
   validate() {
-    const validations = [
+    const validations: any[] = [
       this.validateLineAmounts(),
       this.validateDescriptions(),
       this.validateTimeframes(),
@@ -840,7 +842,7 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
       return Promise.resolve(false);
     }
     return sendRequest({
-      endpoint: getEndpoint(efaceEndpoints.efaceForm, {id: this.originalData.id}),
+      endpoint: getEndpoint(efaceEndpoints.efaceForm, {id: this.originalData!.id}),
       method: 'PATCH',
       body: {activities: this.cleanUpInviceLines(), ...this.getTimeframes()}
     })
@@ -863,8 +865,8 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
   }
 
   private cleanUpInviceLines() {
-    let linesForSave = cloneDeep(this.data.activities);
-    linesForSave = linesForSave.map((l) => {
+    let linesForSave = cloneDeep(this.data!.activities);
+    linesForSave = linesForSave.map((l: any) => {
       delete l.reporting_balance;
       delete l.reporting_expenditures_accepted_by_agency;
       delete l.requested_authorized_amount;
@@ -875,30 +877,32 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
   }
 
   calculateTotalAuthorizedAmount() {
-    this.data.reporting_authorized_amount =
+    this.data!.reporting_authorized_amount =
       this.data?.activities && this.data.activities.length
         ? this.data?.activities
             .map((i: EfaceItem) => i.reporting_authorized_amount!)
-            .reduce((a, b) => Number(a) + Number(b))
-        : 0;
+            .reduce((a, b) => String(Number(a) + Number(b)))!
+        : '0';
     this.requestUpdate();
   }
 
   calculateTotalActualExpenditure() {
-    this.data.reporting_actual_project_expenditure =
+    this.data!.reporting_actual_project_expenditure =
       this.data?.activities && this.data.activities.length
         ? this.data?.activities
             .map((i: EfaceItem) => i.reporting_actual_project_expenditure!)
-            .reduce((a, b) => Number(a) + Number(b))
-        : 0;
+            .reduce((a, b) => String(Number(a) + Number(b)))
+        : '0';
     this.requestUpdate();
   }
 
   calculateTotalRequestedAmount() {
-    this.data.requested_amount =
+    this.data!.requested_amount =
       this.data?.activities && this.data.activities.length
-        ? this.data?.activities.map((i: EfaceItem) => i.requested_amount).reduce((a, b) => Number(a) + Number(b))
-        : 0;
+        ? this.data?.activities
+            .map((i: EfaceItem) => i.requested_amount)
+            .reduce((a, b) => String(Number(a) + Number(b)))!
+        : '0';
     this.requestUpdate();
   }
 

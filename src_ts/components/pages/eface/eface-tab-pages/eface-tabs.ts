@@ -1,17 +1,14 @@
 import {LitElement, customElement, html, property} from 'lit-element';
 import '@polymer/paper-button/paper-button';
 import {translate} from 'lit-translate';
-import {fireEvent} from '../../common/utils/fire-custom-event';
 import './details/eface-details';
-import '../../../common/layout/page-content-header/page-content-header';
-import '../../common/layout/status/etools-status';
+import '../../etools-pages-common/layout/page-content-header/page-content-header';
+import '../../etools-pages-common/layout/status/etools-status';
 import '../eface-actions/eface-actions';
-import {pageContentHeaderSlottedStyles} from '../../common/layout/page-content-header/page-content-header-slotted-styles';
 import {currentPage, currentSubpage} from '../../interventions/intervention-tab-pages/common/selectors';
 import get from 'lodash-es/get';
-import {isJsonStrMatch} from '../../common/utils/utils';
 import cloneDeep from 'lodash-es/cloneDeep';
-import {getEfaceForm} from '../../../../redux/actions/eface-forms';
+import {getEfaceForm} from '../redux/actions/eface-forms';
 import {RootState, store} from '../../../../redux/store';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {
@@ -24,8 +21,15 @@ import {
   REJECTED_STATUSES
 } from '../eface-actions/actions-and-statuses';
 import {Eface} from './types';
-import {pageLayoutStyles} from '../../common/styles/page-layout-styles';
-import '../../common/layout/cancel/cancel-justification';
+import '../../etools-pages-common/components/cancel/cancel-justification';
+import {pageLayoutStyles} from '../../../styles/page-layout-styles';
+import {isJsonStrMatch} from '../../etools-pages-common/utils/utils';
+import {fireEvent} from '../../etools-pages-common/utils/fire-custom-event';
+import {pageContentHeaderSlottedStyles} from '../../etools-pages-common/layout/page-content-header/page-content-header-slotted-styles';
+import {getStoreAsync} from '../../etools-pages-common/utils/redux-store-access';
+import {Store} from 'redux';
+import {efaceInterventions} from '../redux/reducers/eface-interventions';
+import {eface} from '../redux/reducers/eface-forms';
 
 /**
  * @customElement
@@ -80,6 +84,12 @@ export class EfaceTabs extends connect(store)(LitElement) {
 
   connectedCallback() {
     super.connectedCallback();
+    getStoreAsync().then((store: Store<RootState>) => {
+      (store as any).addReducers({
+        efaceInterventions,
+        eface
+      });
+    });
   }
 
   public stateChanged(state: RootState) {

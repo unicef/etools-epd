@@ -1,19 +1,23 @@
 import {customElement, LitElement, html, CSSResultArray, css, property} from 'lit-element';
 import {GenericObject, Intervention} from '@unicef-polymer/etools-types';
-import {areEqual} from '../../common/utils/utils';
 import '@unicef-polymer/etools-dropdown';
 import '@polymer/paper-input/paper-input';
-import {getEfaceInterventions} from '../../../../redux/actions/eface-interventions';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {RootState, store} from '../../../../redux/store';
 import {etoolsEndpoints} from '../../../../endpoints/endpoints-list';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {ROOT_PATH} from '../../../../config/config';
-import {setEfaceForm} from '../../../../redux/actions/eface-forms';
-import {EfaceFormTypes} from '../../common/utils/constants';
+import {setEfaceForm} from '../redux/actions/eface-forms';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {fireEvent} from '../../common/utils/fire-custom-event';
-import {RequiredFieldsStyles} from '../../common/styles/required-fields-styles';
+import {RequiredFieldsStyles} from '../../etools-pages-common/styles/required-fields-styles';
+import {areEqual} from '../../etools-pages-common/utils/utils';
+import {fireEvent} from '../../etools-pages-common/utils/fire-custom-event';
+import {EfaceFormTypes} from '../eface-utils/eface.constants';
+import {efaceInterventions} from '../redux/reducers/eface-interventions';
+import {eface} from '../redux/reducers/eface-forms';
+import {Store} from 'redux';
+import {getStoreAsync} from '../../etools-pages-common/utils/redux-store-access';
+import {getEfaceInterventions} from '../redux/actions/eface-interventions';
 
 @customElement('new-eface-form')
 export class NewEfaceForm extends connect(store)(LitElement) {
@@ -152,7 +156,13 @@ export class NewEfaceForm extends connect(store)(LitElement) {
 
   connectedCallback(): void {
     super.connectedCallback();
-    getEfaceInterventions();
+    getStoreAsync().then((store: Store<RootState>) => {
+      (store as any).addReducers({
+        efaceInterventions,
+        eface
+      });
+      store.dispatch(getEfaceInterventions());
+    });
   }
 
   stateChanged(state: RootState) {
