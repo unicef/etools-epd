@@ -9,9 +9,9 @@ import {pageContentHeaderSlottedStyles} from '../etools-pages-common/layout/page
 
 import '../etools-pages-common/layout/filters/etools-filters';
 import {
-  defaultFilters,
+  defaultFilters, FilterKeys,
   updateFilterSelectionOptions,
-  updateFiltersSelectedValues
+  updateFiltersSelectedValues,
 } from '../etools-pages-common/list/filters';
 import {ROOT_PATH} from '../../../config/config';
 import {EtoolsFilter} from '../etools-pages-common/layout/filters/etools-filters';
@@ -347,6 +347,7 @@ export class InterventionList extends connect(store)(LitElement) {
   private populateDropdownFilterOptionsFromCommonData(state: RootState, currentFilters: EtoolsFilter[]) {
     updateFilterSelectionOptions(currentFilters, 'partners', notHiddenPartnersSelector(state));
     updateFilterSelectionOptions(currentFilters, 'status', state.commonData!.interventionStatuses);
+    updateFilterSelectionOptions(currentFilters, FilterKeys.budget_owner, state.commonData!.unicefUsersData);
     updateFilterSelectionOptions(currentFilters, 'document_type', state.commonData!.documentTypes);
   }
 
