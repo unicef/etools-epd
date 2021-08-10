@@ -1,7 +1,6 @@
 import {ActionCreator, Action} from 'redux';
 import {sendRequest} from '@unicef-polymer/etools-ajax';
 import {etoolsEndpoints} from '../../../../../endpoints/endpoints-list';
-import {store} from '../../../../../redux/store';
 import {getEndpoint} from '../../../../../endpoints/endpoints';
 import {Eface} from '../../eface-tab-pages/types';
 
@@ -31,15 +30,19 @@ export const setEfaceFormLoading: ActionCreator<EfaceFormLoadingAction> = (state
 
 export type EfaceInterventionsAction = EfaceFormSetAction | EfaceFormLoadingAction;
 
-export const getEfaceForm = (id: number | string) => {
-  if ((store.getState() as any)?.eface?.formLoading) {
-    return;
+export const getEfaceForm = (id: number | string) => (dispatch: any, getState: any) => {
+  if ((getState() as any)?.eface?.formLoading) {
+    return Promise.resolve(false);
   }
-  store.dispatch(setEfaceFormLoading(true));
+  dispatch(setEfaceFormLoading(true));
   const endpoint = getEndpoint(etoolsEndpoints.efaceForm, {id});
   return sendRequest({
     endpoint: {url: endpoint.url}
   })
-    .then((form) => store.dispatch(setEfaceForm(form)))
-    .finally(() => store.dispatch(setEfaceFormLoading(false)));
+    .then((form) => {
+      dispatch(setEfaceForm(form));
+    })
+    .finally(() => {
+      dispatch(setEfaceFormLoading(false));
+    });
 };

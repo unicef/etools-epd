@@ -37,5 +37,7 @@ export const getEfaceInterventions = () => (dispatch: any, getState: any) => {
     endpoint: {url: '/api/pmp/v3/interventions/?show_amendments=true'} // etoolsEndpoints.interventions.url! TODO
   })
     .then((interventions) => dispatch(setEfaceInterventions(interventions)))
-    .finally(() => dispatch(setEfaceInterventionsLoading(false)));
+    .finally(() => {
+      dispatch(setEfaceInterventionsLoading(false));
+    });
 };

@@ -129,12 +129,6 @@ export class EfaceList extends connect(store)(LitElement) {
   ];
   connectedCallback() {
     super.connectedCallback();
-    getStoreAsync().then((store: Store<RootState>) => {
-      (store as any).addReducers({
-        efaceInterventions,
-        eface
-      });
-    });
   }
 
   private listHelper = new ListHelper(etoolsEndpoints.efaceForms, store);

@@ -2,7 +2,6 @@ import {customElement, LitElement, html, CSSResultArray, css, property} from 'li
 import {GenericObject, Intervention} from '@unicef-polymer/etools-types';
 import '@unicef-polymer/etools-dropdown';
 import '@polymer/paper-input/paper-input';
-import {connect} from 'pwa-helpers/connect-mixin';
 import {RootState, store} from '../../../../redux/store';
 import {etoolsEndpoints} from '../../../../endpoints/endpoints-list';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
@@ -18,9 +17,10 @@ import {eface} from '../redux/reducers/eface-forms';
 import {Store} from 'redux';
 import {getStoreAsync} from '../../etools-pages-common/utils/redux-store-access';
 import {getEfaceInterventions} from '../redux/actions/eface-interventions';
+import {connectStore} from '../../etools-pages-common/mixins/connect-store-mixin';
 
 @customElement('new-eface-form')
-export class NewEfaceForm extends connect(store)(LitElement) {
+export class NewEfaceForm extends connectStore(LitElement) {
   static get styles(): CSSResultArray {
     // language=css
     return [
@@ -133,7 +133,7 @@ export class NewEfaceForm extends connect(store)(LitElement) {
             .selected="${this.newForm.type}"
             trigger-value-change-event
             @etools-selected-item-changed="${({detail}: CustomEvent) =>
-              this.setFormField('request_type', detail.selectedItem.value)}"
+              this.setFormField('request_type', detail.selectedItem?.value)}"
             option-value="value"
             option-label="label"
             @focus="${this.resetError}"
@@ -157,12 +157,14 @@ export class NewEfaceForm extends connect(store)(LitElement) {
   connectedCallback(): void {
     super.connectedCallback();
     getStoreAsync().then((store: Store<RootState>) => {
-      (store as any).addReducers({
-        efaceInterventions,
-        eface
-      });
       store.dispatch(getEfaceInterventions());
     });
+  }
+  getLazyReducers() {
+    return {
+      efaceInterventions,
+      eface
+    };
   }
 
   stateChanged(state: RootState) {
@@ -170,6 +172,7 @@ export class NewEfaceForm extends connect(store)(LitElement) {
     const subPage = state.app!.routeDetails!.subRouteName;
     if (mainPage !== 'eface' || subPage !== 'new') {
       this.newForm = {type: null};
+      return;
     } else {
       this.interventions = state.efaceInterventions?.list || [];
     }

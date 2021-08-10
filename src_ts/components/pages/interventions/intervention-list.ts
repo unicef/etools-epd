@@ -4,9 +4,8 @@ import {connect} from 'pwa-helpers/connect-mixin';
 import {RootState, store} from '../../../redux/store';
 
 import '../etools-pages-common/layout/page-content-header/page-content-header';
-// // eslint-disable-next-line max-len
 
-// import '../etools-pages-common/layout/filters/etools-filters';
+import '../etools-pages-common/layout/filters/etools-filters';
 import '@unicef-polymer/etools-table/etools-table';
 import {
   EtoolsTableColumn,
@@ -23,7 +22,7 @@ import {replaceAppLocation} from '../../../routing/routes';
 
 import '@unicef-polymer/etools-loading';
 import get from 'lodash-es/get';
-// import '../etools-pages-common/layout/export-data';
+import '../etools-pages-common/layout/export-data';
 import {isJsonStrMatch} from '../etools-pages-common/utils/utils';
 import {addCurrencyAmountDelimiter} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {notHiddenPartnersSelector} from '../../../redux/reducers/common-data';
@@ -41,6 +40,7 @@ import {defaultFilters} from './interventions-filters';
 import {InterventionsListStyles, InterventionsTableStyles} from '../etools-pages-common/list/list-styles';
 import {ListHelper, ListHelperResponse} from '../etools-pages-common/list/list-helper';
 import {updateFilterSelectionOptions, updateFiltersSelectedValues} from '../etools-pages-common/list/filters';
+// eslint-disable-next-line max-len
 import {pageContentHeaderSlottedStyles} from '../etools-pages-common/layout/page-content-header/page-content-header-slotted-styles';
 import {elevationStyles} from '../etools-pages-common/styles/elevation-styles';
 import {buttonsStyles} from '../etools-pages-common/styles/button-styles';
@@ -199,7 +199,7 @@ export class InterventionList extends connect(store)(LitElement) {
     }
   ];
 
-  private listHelper: ListHelper<InterventionListData> = new ListHelper(etoolsEndpoints.interventions, store);
+  private listHelper = new ListHelper<InterventionListData>(etoolsEndpoints.interventions, store);
   private routeDetails!: RouteDetails | null;
   private paramsInitialized = false;
 

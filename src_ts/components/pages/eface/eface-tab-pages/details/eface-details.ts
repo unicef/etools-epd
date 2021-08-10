@@ -252,10 +252,10 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
                 option-value="value"
                 ?readonly="${this.isReadonly(this.editMode, this.canEditInvoiceLines)}"
                 @etools-selected-item-changed="${({detail}: CustomEvent) => {
-                  if (!detail.selectedItem) {
+                  if (!detail.selectedItem?.value) {
                     return;
                   }
-                  this.updateEfaceField('currency', detail.value);
+                  this.updateEfaceField('currency', detail.selectedItem.value);
                 }}"
                 trigger-value-change-event
                 allow-outside-scroll
@@ -595,7 +595,7 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
       }
       return;
     }
-    if (!state.eface.current) {
+    if (!state.eface || !state.eface.current) {
       return;
     }
     this.currencies = state.commonData?.currencies!;
@@ -844,7 +844,7 @@ export class EfaceDetails extends connectStore(ComponentBaseMixin(LitElement)) {
     return sendRequest({
       endpoint: getEndpoint(efaceEndpoints.efaceForm, {id: this.originalData!.id}),
       method: 'PATCH',
-      body: {activities: this.cleanUpInviceLines(), ...this.getTimeframes()}
+      body: {activities: this.cleanUpInviceLines(), ...this.getTimeframes(), currency: this.data?.currency}
     })
       .then((response: any) => {
         getStore().dispatch(setEfaceForm(response));

@@ -9,8 +9,7 @@ import {currentPage, currentSubpage} from '../../interventions/intervention-tab-
 import get from 'lodash-es/get';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {getEfaceForm} from '../redux/actions/eface-forms';
-import {RootState, store} from '../../../../redux/store';
-import {connect} from 'pwa-helpers/connect-mixin';
+import {RootState} from '../../../../redux/store';
 import {
   BASIC_STATUSES,
   CANCELLED,
@@ -26,16 +25,16 @@ import {pageLayoutStyles} from '../../../styles/page-layout-styles';
 import {isJsonStrMatch} from '../../etools-pages-common/utils/utils';
 import {fireEvent} from '../../etools-pages-common/utils/fire-custom-event';
 import {pageContentHeaderSlottedStyles} from '../../etools-pages-common/layout/page-content-header/page-content-header-slotted-styles';
-import {getStoreAsync} from '../../etools-pages-common/utils/redux-store-access';
-import {Store} from 'redux';
+import {getStore} from '../../etools-pages-common/utils/redux-store-access';
 import {efaceInterventions} from '../redux/reducers/eface-interventions';
 import {eface} from '../redux/reducers/eface-forms';
+import {connectStore} from '../../etools-pages-common/mixins/connect-store-mixin';
 
 /**
  * @customElement
  */
 @customElement('eface-tabs')
-export class EfaceTabs extends connect(store)(LitElement) {
+export class EfaceTabs extends connectStore(LitElement) {
   static get styles() {
     return [pageContentHeaderSlottedStyles, pageLayoutStyles];
   }
@@ -84,12 +83,13 @@ export class EfaceTabs extends connect(store)(LitElement) {
 
   connectedCallback() {
     super.connectedCallback();
-    getStoreAsync().then((store: Store<RootState>) => {
-      (store as any).addReducers({
-        efaceInterventions,
-        eface
-      });
-    });
+  }
+
+  getLazyReducers() {
+    return {
+      efaceInterventions,
+      eface
+    };
   }
 
   public stateChanged(state: RootState) {
@@ -106,7 +106,7 @@ export class EfaceTabs extends connect(store)(LitElement) {
     const currentEface = get(state, 'eface.current');
 
     // check if eface was changed
-    if (!isJsonStrMatch(this.eface, currentEface)) {
+    if (currentEface && !isJsonStrMatch(this.eface, currentEface)) {
       this.eface = cloneDeep(currentEface);
       this.setStatuses(this.eface!.status);
     }
@@ -118,14 +118,15 @@ export class EfaceTabs extends connect(store)(LitElement) {
         loadingSource: 'get-eface'
       });
 
-      getEfaceForm(currentEfaceId)!
+      getStore()
+        .dispatch(getEfaceForm(currentEfaceId))
         .catch(() => this.goToPageNotFound())
-        .finally(() =>
+        .finally(() => {
           fireEvent(this, 'global-loading', {
             active: false,
             loadingSource: 'get-eface'
-          })
-        );
+          });
+        });
     }
   }
 
