@@ -48,5 +48,7 @@
     "TRANSACTION_REJECT": "Reject transaction",
     "TRANSACTION_APPROVE": "Approve transaction"
   },
-  "SUBMIT": "Submit"
+  "SUBMIT": "Submit",
+  "ENDS_AFTER": "Ends After",
+  "BUDGET_OWNER": "UNICEF Budget Owner"
 }

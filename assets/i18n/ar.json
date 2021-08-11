@@ -39,5 +39,7 @@
     "STARTS_AFTER": "يبدأ بعد",
     "ENDS_AFTER": "ينتهي بعد"
   },
-  "SUBMIT": "Submit"
+  "SUBMIT": "Submit",
+  "ENDS_AFTER": "ينتهي بعد",
+  "BUDGET_OWNER": "UNICEF Budget Owner"
 }

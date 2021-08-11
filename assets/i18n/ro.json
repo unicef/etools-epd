@@ -39,5 +39,7 @@
     "STARTS_AFTER": "Incepe dupa",
     "ENDS_AFTER": "Finalizat dupa"
   },
-  "SUBMIT": "Submit"
+  "SUBMIT": "Submit",
+  "ENDS_AFTER": "Finalizat dupa",
+  "BUDGET_OWNER": "Responsabil UNICEF al Bugetului"
 }
