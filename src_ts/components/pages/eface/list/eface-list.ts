@@ -29,10 +29,6 @@ import {InterventionsListStyles, InterventionsTableStyles} from '../../etools-pa
 import {sharedStyles} from '../../etools-pages-common/styles/shared-styles-lit';
 import {ListHelper, ListHelperResponse} from '../../etools-pages-common/list/list-helper';
 import {updateFiltersSelectedValues} from '../../etools-pages-common/list/filters';
-import {getStoreAsync} from '../../etools-pages-common/utils/redux-store-access';
-import {efaceInterventions} from '../redux/reducers/eface-interventions';
-import {eface} from '../redux/reducers/eface-forms';
-import {Store} from 'redux';
 import {EtoolsFilter} from '../../etools-pages-common/layout/filters/etools-filters';
 import '../../etools-pages-common/layout/filters/etools-filters';
 import {ROOT_PATH} from '../../etools-pages-common/config/config';

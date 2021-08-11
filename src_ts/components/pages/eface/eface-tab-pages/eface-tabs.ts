@@ -20,7 +20,7 @@ import {
   REJECTED_STATUSES
 } from '../eface-actions/actions-and-statuses';
 import {Eface} from './types';
-import '../../etools-pages-common/components/cancel/cancel-justification';
+import '../../etools-pages-common/components/cancel/reason-display';
 import {pageLayoutStyles} from '../../../styles/page-layout-styles';
 import {isJsonStrMatch} from '../../etools-pages-common/utils/utils';
 import {fireEvent} from '../../etools-pages-common/utils/fire-custom-event';
@@ -66,9 +66,10 @@ export class EfaceTabs extends connectStore(LitElement) {
       <div class="page-content">
         ${this.eface?.cancel_reason ||
         (this.eface?.rejection_reason && ['rejected', 'closed'].includes(this.eface.status))
-          ? html`<cancel-justification
+          ? html`<reason-display
               .justification=${this.eface?.cancel_reason ? this.eface.cancel_reason : this.eface?.rejection_reason}
-            ></cancel-justification>`
+              .title="${this.eface.rejection_reason ? translate('REJECTION_NOTE') : translate('CANCELLATION_NOTE')}"
+            ></reason-display>`
           : ''}
         <eface-details></eface-details>
       </div>
