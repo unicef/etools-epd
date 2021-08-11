@@ -8,11 +8,7 @@ import '../etools-pages-common/layout/page-content-header/page-content-header';
 import {pageContentHeaderSlottedStyles} from '../etools-pages-common/layout/page-content-header/page-content-header-slotted-styles';
 
 import '../etools-pages-common/layout/filters/etools-filters';
-import {
-  defaultFilters, FilterKeys,
-  updateFilterSelectionOptions,
-  updateFiltersSelectedValues,
-} from '../etools-pages-common/list/filters';
+import {updateFilterSelectionOptions, updateFiltersSelectedValues} from '../etools-pages-common/list/filters';
 import {ROOT_PATH} from '../../../config/config';
 import {EtoolsFilter} from '../etools-pages-common/layout/filters/etools-filters';
 import {pageLayoutStyles} from '../../styles/page-layout-styles';
@@ -51,6 +47,7 @@ import {
 } from '@unicef-polymer/etools-types';
 import pick from 'lodash-es/pick';
 import {etoolsEndpoints} from '../../../endpoints/endpoints-list';
+import {defaultFilters, InterventionFilterKeys} from './interventions-filters';
 
 /**
  * @LitElement
@@ -347,7 +344,11 @@ export class InterventionList extends connect(store)(LitElement) {
   private populateDropdownFilterOptionsFromCommonData(state: RootState, currentFilters: EtoolsFilter[]) {
     updateFilterSelectionOptions(currentFilters, 'partners', notHiddenPartnersSelector(state));
     updateFilterSelectionOptions(currentFilters, 'status', state.commonData!.interventionStatuses);
-    updateFilterSelectionOptions(currentFilters, FilterKeys.budget_owner, state.commonData!.unicefUsersData);
+    updateFilterSelectionOptions(
+      currentFilters,
+      InterventionFilterKeys.budget_owner,
+      state.commonData!.unicefUsersData
+    );
     updateFilterSelectionOptions(currentFilters, 'document_type', state.commonData!.documentTypes);
   }
 
