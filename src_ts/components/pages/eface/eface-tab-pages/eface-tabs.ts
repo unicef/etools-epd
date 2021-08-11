@@ -68,6 +68,7 @@ export class EfaceTabs extends connectStore(LitElement) {
         (this.eface?.rejection_reason && ['rejected', 'closed'].includes(this.eface.status))
           ? html`<reason-display
               .justification=${this.eface?.cancel_reason ? this.eface.cancel_reason : this.eface?.rejection_reason}
+              .title="${this.eface.rejection_reason ? translate('REJECTION_NOTE') : translate('CANCELLATION_NOTE')}"
             ></reason-display>`
           : ''}
         <eface-details></eface-details>
