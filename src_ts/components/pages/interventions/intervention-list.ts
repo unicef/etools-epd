@@ -27,7 +27,6 @@ import {
   getUrlQueryStringSort
 } from '../etools-pages-common/layout/etools-table/etools-table-utility';
 import {replaceAppLocation} from '../../../routing/routes';
-import {SharedStylesLit} from '../../styles/shared-styles-lit';
 
 import '@unicef-polymer/etools-loading';
 import get from 'lodash-es/get';
@@ -48,6 +47,7 @@ import {
 import pick from 'lodash-es/pick';
 import {etoolsEndpoints} from '../../../endpoints/endpoints-list';
 import {defaultFilters, InterventionFilterKeys} from './interventions-filters';
+import { sharedStyles } from '../etools-pages-common/styles/shared-styles-lit';
 
 /**
  * @LitElement
@@ -63,7 +63,7 @@ export class InterventionList extends connect(store)(LitElement) {
     // main template
     // language=HTML
     return html`
-      ${SharedStylesLit}
+      ${sharedStyles}
       <style>
         .col_type {
           white-space: pre-line !important;
