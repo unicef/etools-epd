@@ -1,18 +1,22 @@
 import {translate} from 'lit-translate';
 import {EtoolsFilter, EtoolsFilterTypes} from '../../etools-pages-common/layout/filters/etools-filters';
-import {FilterKeys} from '../../etools-pages-common/list/filters';
+
+export enum EfaceFilterKeys {
+  search = 'search',
+  status = 'status'
+}
 
 export const defaultFilters: EtoolsFilter[] = [
   {
     filterName: translate('INTERVENTIONS_LIST.SEARCH_RECORDS'),
-    filterKey: FilterKeys.search,
+    filterKey: EfaceFilterKeys.search,
     type: EtoolsFilterTypes.Search,
     selectedValue: '',
     selected: true
   },
   {
     filterName: translate('INTERVENTIONS_LIST.STATUS'),
-    filterKey: FilterKeys.status,
+    filterKey: EfaceFilterKeys.status,
     type: EtoolsFilterTypes.DropdownMulti,
     selectionOptions: [
       {label: 'Draft', value: 'draft'},

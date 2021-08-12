@@ -4,8 +4,16 @@ import {connect} from 'pwa-helpers/connect-mixin';
 import {RootState, store} from '../../../redux/store';
 
 import '../etools-pages-common/layout/page-content-header/page-content-header';
+// eslint-disable-next-line max-len
+import {pageContentHeaderSlottedStyles} from '../etools-pages-common/layout/page-content-header/page-content-header-slotted-styles';
 
 import '../etools-pages-common/layout/filters/etools-filters';
+import {updateFilterSelectionOptions, updateFiltersSelectedValues} from '../etools-pages-common/list/filters';
+import {ROOT_PATH} from '../../../config/config';
+import {EtoolsFilter} from '../etools-pages-common/layout/filters/etools-filters';
+import {pageLayoutStyles} from '../../styles/page-layout-styles';
+import {buttonsStyles} from '../../styles/button-styles';
+import {elevationStyles} from '../../styles/lit-styles/elevation-styles';
 import '@unicef-polymer/etools-table/etools-table';
 import {
   EtoolsTableColumn,
@@ -23,7 +31,9 @@ import {replaceAppLocation} from '../../../routing/routes';
 import '@unicef-polymer/etools-loading';
 import get from 'lodash-es/get';
 import '../etools-pages-common/layout/export-data';
-import {isJsonStrMatch} from '../etools-pages-common/utils/utils';
+import {ListHelper, ListHelperResponse} from '../etools-pages-common/list/list-helper';
+import {InterventionsListStyles, InterventionsTableStyles} from '../etools-pages-common/list/list-styles';
+import {isJsonStrMatch} from '../../utils/utils';
 import {addCurrencyAmountDelimiter} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {notHiddenPartnersSelector} from '../../../redux/reducers/common-data';
 import {translate} from 'lit-translate';
@@ -36,17 +46,7 @@ import {
 } from '@unicef-polymer/etools-types';
 import pick from 'lodash-es/pick';
 import {etoolsEndpoints} from '../../../endpoints/endpoints-list';
-import {defaultFilters} from './interventions-filters';
-import {InterventionsListStyles, InterventionsTableStyles} from '../etools-pages-common/list/list-styles';
-import {ListHelper, ListHelperResponse} from '../etools-pages-common/list/list-helper';
-import {updateFilterSelectionOptions, updateFiltersSelectedValues} from '../etools-pages-common/list/filters';
-// eslint-disable-next-line max-len
-import {pageContentHeaderSlottedStyles} from '../etools-pages-common/layout/page-content-header/page-content-header-slotted-styles';
-import {elevationStyles} from '../etools-pages-common/styles/elevation-styles';
-import {buttonsStyles} from '../etools-pages-common/styles/button-styles';
-import {pageLayoutStyles} from '../../styles/page-layout-styles';
-import {EtoolsFilter} from '../etools-pages-common/layout/filters/etools-filters';
-import {ROOT_PATH} from '../etools-pages-common/config/config';
+import {defaultFilters, InterventionFilterKeys} from './interventions-filters';
 import {sharedStyles} from '../etools-pages-common/styles/shared-styles-lit';
 
 /**
@@ -344,7 +344,11 @@ export class InterventionList extends connect(store)(LitElement) {
   private populateDropdownFilterOptionsFromCommonData(state: RootState, currentFilters: EtoolsFilter[]) {
     updateFilterSelectionOptions(currentFilters, 'partners', notHiddenPartnersSelector(state));
     updateFilterSelectionOptions(currentFilters, 'status', state.commonData!.interventionStatuses);
-    updateFilterSelectionOptions(currentFilters, FilterKeys.budget_owner, state.commonData!.unicefUsersData);
+    updateFilterSelectionOptions(
+      currentFilters,
+      InterventionFilterKeys.budget_owner,
+      state.commonData!.unicefUsersData
+    );
     updateFilterSelectionOptions(currentFilters, 'document_type', state.commonData!.documentTypes);
   }
 

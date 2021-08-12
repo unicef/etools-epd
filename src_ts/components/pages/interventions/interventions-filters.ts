@@ -1,18 +1,59 @@
+import {AnyObject} from '@unicef-polymer/etools-types/dist/global.types';
 import {translate} from 'lit-translate';
 import {EtoolsFilter, EtoolsFilterTypes} from '../etools-pages-common/layout/filters/etools-filters';
-import {FilterKeys} from '../etools-pages-common/list/filters';
+import {setselectedValueTypeByFilterKey} from '../etools-pages-common/list/filters';
+
+export enum InterventionFilterKeys {
+  search = 'search',
+  status = 'status',
+  document_type = 'document_type',
+  partners = 'partners',
+  start = 'start',
+  end = 'end',
+  end_after = 'end_after',
+  contingency_pd = 'contingency_pd',
+  budget_owner = 'budget_owner__in'
+}
+
+export type FilterKeysAndTheirSelectedValues = {[key in InterventionFilterKeys]?: any};
+
+export const defaultSelectedFilters: FilterKeysAndTheirSelectedValues = {
+  search: '',
+  status: [],
+  document_type: [],
+  partners: [],
+  start: null,
+  end: null,
+  end_after: null,
+  contingency_pd: false,
+  budget_owner__in: []
+};
+
+export const selectedValueTypeByFilterKey: AnyObject = {
+  [InterventionFilterKeys.search]: 'string',
+  [InterventionFilterKeys.status]: 'Array',
+  [InterventionFilterKeys.document_type]: 'Array',
+  [InterventionFilterKeys.partners]: 'Array',
+  [InterventionFilterKeys.start]: 'string',
+  [InterventionFilterKeys.end]: 'string',
+  [InterventionFilterKeys.end_after]: 'string',
+  [InterventionFilterKeys.contingency_pd]: 'boolean',
+  [InterventionFilterKeys.budget_owner]: 'Array'
+};
+
+setselectedValueTypeByFilterKey(selectedValueTypeByFilterKey);
 
 export const defaultFilters: EtoolsFilter[] = [
   {
     filterName: translate('INTERVENTIONS_LIST.SEARCH_RECORDS'),
-    filterKey: FilterKeys.search,
+    filterKey: InterventionFilterKeys.search,
     type: EtoolsFilterTypes.Search,
     selectedValue: '',
     selected: true
   },
   {
     filterName: translate('INTERVENTIONS_LIST.STATUS'),
-    filterKey: FilterKeys.status,
+    filterKey: InterventionFilterKeys.status,
     type: EtoolsFilterTypes.DropdownMulti,
     selectionOptions: [],
     optionValue: 'value',
@@ -25,7 +66,7 @@ export const defaultFilters: EtoolsFilter[] = [
   },
   {
     filterName: translate('INTERVENTIONS_LIST.PD_TYPE'),
-    filterKey: FilterKeys.document_type,
+    filterKey: InterventionFilterKeys.document_type,
     type: EtoolsFilterTypes.DropdownMulti,
     selectionOptions: [],
     optionValue: 'value',
@@ -38,7 +79,20 @@ export const defaultFilters: EtoolsFilter[] = [
   },
   {
     filterName: translate('INTERVENTIONS_LIST.PARTNER_ORG'),
-    filterKey: FilterKeys.partners,
+    filterKey: InterventionFilterKeys.partners,
+    type: EtoolsFilterTypes.DropdownMulti,
+    selectionOptions: [],
+    selectedValue: [],
+    selected: false,
+    minWidth: '350px',
+    hideSearch: false,
+    disabled: false,
+    optionValue: 'id',
+    optionLabel: 'name'
+  },
+  {
+    filterName: translate('INTERVENTIONS_LIST.BUDGET_OWNER'),
+    filterKey: InterventionFilterKeys.budget_owner,
     type: EtoolsFilterTypes.DropdownMulti,
     selectionOptions: [],
     selectedValue: [],
@@ -52,20 +106,20 @@ export const defaultFilters: EtoolsFilter[] = [
   {
     filterName: translate('INTERVENTIONS_LIST.CONTINGENCY_PD'),
     type: EtoolsFilterTypes.Toggle,
-    filterKey: FilterKeys.contingency_pd,
+    filterKey: InterventionFilterKeys.contingency_pd,
     selectedValue: false,
     selected: true
   },
   {
     filterName: translate('INTERVENTIONS_LIST.ENDS_BEFORE'),
     type: EtoolsFilterTypes.Date,
-    filterKey: FilterKeys.end,
+    filterKey: InterventionFilterKeys.end,
     selectedValue: '',
     selected: false
   },
   {
     filterName: translate('INTERVENTIONS_LIST.STARTS_AFTER'),
-    filterKey: FilterKeys.start,
+    filterKey: InterventionFilterKeys.start,
     type: EtoolsFilterTypes.Date,
     selectedValue: null,
     selected: false
@@ -73,7 +127,7 @@ export const defaultFilters: EtoolsFilter[] = [
   {
     filterName: translate('INTERVENTIONS_LIST.ENDS_AFTER'),
     type: EtoolsFilterTypes.Date,
-    filterKey: FilterKeys.end_after,
+    filterKey: InterventionFilterKeys.end_after,
     selectedValue: '',
     selected: false
   }
