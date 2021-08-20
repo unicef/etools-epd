@@ -8,6 +8,7 @@ import {
   EnvFlags,
   LabelAndValue,
   LocationObject,
+  Site,
   Section,
   CpOutput
 } from '@unicef-polymer/etools-types';
