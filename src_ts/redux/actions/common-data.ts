@@ -42,6 +42,12 @@ export const getLocations = () => {
   });
 };
 
+export const getSites = () => {
+  return sendRequest({
+    endpoint: {url: etoolsEndpoints.sites.url!}
+  });
+};
+
 export const getSections = () => {
   return sendRequest({
     endpoint: {url: etoolsEndpoints.sections.url!}
