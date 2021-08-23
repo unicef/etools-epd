@@ -14,14 +14,14 @@ import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {setEfaceForm} from '../../redux/actions/eface-forms';
 import '@unicef-polymer/etools-loading/etools-loading';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {elevationStyles} from '../../../etools-pages-common/styles/elevation-styles';
-import {buttonsStyles} from '../../../etools-pages-common/styles/button-styles';
-import {sharedStyles} from '../../../etools-pages-common/styles/shared-styles-lit';
+import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
+import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import cloneDeep from 'lodash-es/cloneDeep';
-import {formatDate} from '../../../etools-pages-common/utils/date-utils';
-import {areEqual} from '../../../etools-pages-common/utils/utils';
-import {getEndpoint} from '../../../etools-pages-common/utils/endpoint-helper';
-import {fireEvent} from '../../../etools-pages-common/utils/fire-custom-event';
+import {formatDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
+import {areEqual} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {getEndpoint} from '@unicef-polymer/etools-modules-common/dist/utils/endpoint-helper';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 
 @customElement('eface-additional-details')
 export class EfaceAdditionalDetails extends connect(store)(LitElement) {

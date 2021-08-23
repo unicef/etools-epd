@@ -3,14 +3,17 @@ import {customElement, html, LitElement, property, TemplateResult} from 'lit-ele
 import {connect} from 'pwa-helpers/connect-mixin';
 import {RootState, store} from '../../../redux/store';
 
-import '../etools-pages-common/layout/page-content-header/page-content-header';
+import '@unicef-polymer/etools-modules-common/dist/layout/page-content-header/page-content-header';
 // eslint-disable-next-line max-len
-import {pageContentHeaderSlottedStyles} from '../etools-pages-common/layout/page-content-header/page-content-header-slotted-styles';
+import {pageContentHeaderSlottedStyles} from '@unicef-polymer/etools-modules-common/dist/layout/page-content-header/page-content-header-slotted-styles';
 
-import '../etools-pages-common/layout/filters/etools-filters';
-import {updateFilterSelectionOptions, updateFiltersSelectedValues} from '../etools-pages-common/list/filters';
+import '@unicef-polymer/etools-modules-common/dist/layout/filters/etools-filters';
+import {
+  updateFilterSelectionOptions,
+  updateFiltersSelectedValues
+} from '@unicef-polymer/etools-modules-common/dist/list/filters';
 import {ROOT_PATH} from '../../../config/config';
-import {EtoolsFilter} from '../etools-pages-common/layout/filters/etools-filters';
+import {EtoolsFilter} from '@unicef-polymer/etools-modules-common/dist/layout/filters/etools-filters';
 import {pageLayoutStyles} from '../../styles/page-layout-styles';
 import {buttonsStyles} from '../../styles/button-styles';
 import {elevationStyles} from '../../styles/lit-styles/elevation-styles';
@@ -25,14 +28,17 @@ import {
   buildUrlQueryString,
   getSortFields,
   getUrlQueryStringSort
-} from '../etools-pages-common/layout/etools-table/etools-table-utility';
+} from '@unicef-polymer/etools-modules-common/dist/layout/etools-table/etools-table-utility';
 import {replaceAppLocation} from '../../../routing/routes';
 
 import '@unicef-polymer/etools-loading';
 import get from 'lodash-es/get';
-import '../etools-pages-common/layout/export-data';
-import {ListHelper, ListHelperResponse} from '../etools-pages-common/list/list-helper';
-import {InterventionsListStyles, InterventionsTableStyles} from '../etools-pages-common/list/list-styles';
+import '@unicef-polymer/etools-modules-common/dist/layout/export-data';
+import {ListHelper, ListHelperResponse} from '@unicef-polymer/etools-modules-common/dist/list/list-helper';
+import {
+  InterventionsListStyles,
+  InterventionsTableStyles
+} from '@unicef-polymer/etools-modules-common/dist/list/list-styles';
 import {isJsonStrMatch} from '../../utils/utils';
 import {addCurrencyAmountDelimiter} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {notHiddenPartnersSelector} from '../../../redux/reducers/common-data';
@@ -47,7 +53,7 @@ import {
 import pick from 'lodash-es/pick';
 import {etoolsEndpoints} from '../../../endpoints/endpoints-list';
 import {defaultFilters, InterventionFilterKeys} from './interventions-filters';
-import {sharedStyles} from '../etools-pages-common/styles/shared-styles-lit';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 
 /**
  * @LitElement

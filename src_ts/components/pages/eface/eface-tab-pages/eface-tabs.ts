@@ -2,8 +2,8 @@ import {LitElement, customElement, html, property} from 'lit-element';
 import '@polymer/paper-button/paper-button';
 import {translate} from 'lit-translate';
 import './details/eface-details';
-import '../../etools-pages-common/layout/page-content-header/page-content-header';
-import '../../etools-pages-common/layout/status/etools-status';
+import '@unicef-polymer/etools-modules-common/dist/layout/page-content-header/page-content-header';
+import '@unicef-polymer/etools-modules-common/dist/layout/status/etools-status';
 import '../eface-actions/eface-actions';
 import {currentPage, currentSubpage} from '../../interventions/intervention-tab-pages/common/selectors';
 import get from 'lodash-es/get';
@@ -20,15 +20,15 @@ import {
   REJECTED_STATUSES
 } from '../eface-actions/actions-and-statuses';
 import {Eface} from './types';
-import '../../etools-pages-common/components/cancel/reason-display';
+import '@unicef-polymer/etools-modules-common/dist/components/cancel/reason-display';
 import {pageLayoutStyles} from '../../../styles/page-layout-styles';
-import {isJsonStrMatch} from '../../etools-pages-common/utils/utils';
-import {fireEvent} from '../../etools-pages-common/utils/fire-custom-event';
-import {pageContentHeaderSlottedStyles} from '../../etools-pages-common/layout/page-content-header/page-content-header-slotted-styles';
-import {getStore} from '../../etools-pages-common/utils/redux-store-access';
+import {isJsonStrMatch} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {pageContentHeaderSlottedStyles} from '@unicef-polymer/etools-modules-common/dist/layout/page-content-header/page-content-header-slotted-styles';
+import {getStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import {efaceInterventions} from '../redux/reducers/eface-interventions';
 import {eface} from '../redux/reducers/eface-forms';
-import {connectStore} from '../../etools-pages-common/mixins/connect-store-mixin';
+import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 
 /**
  * @customElement
