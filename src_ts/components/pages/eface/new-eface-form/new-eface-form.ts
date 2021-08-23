@@ -8,16 +8,16 @@ import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {ROOT_PATH} from '../../../../config/config';
 import {setEfaceForm} from '../redux/actions/eface-forms';
 import {formatServerErrorAsText} from '@unicef-polymer/etools-ajax/ajax-error-parser';
-import {RequiredFieldsStyles} from '../../etools-pages-common/styles/required-fields-styles';
-import {areEqual} from '../../etools-pages-common/utils/utils';
-import {fireEvent} from '../../etools-pages-common/utils/fire-custom-event';
+import {RequiredFieldsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/required-fields-styles';
+import {areEqual} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {EfaceFormTypes} from '../eface-utils/eface.constants';
 import {efaceInterventions} from '../redux/reducers/eface-interventions';
 import {eface} from '../redux/reducers/eface-forms';
 import {Store} from 'redux';
-import {getStoreAsync} from '../../etools-pages-common/utils/redux-store-access';
+import {getStoreAsync} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import {getEfaceInterventions} from '../redux/actions/eface-interventions';
-import {connectStore} from '../../etools-pages-common/mixins/connect-store-mixin';
+import {connectStore} from '@unicef-polymer/etools-modules-common/dist/mixins/connect-store-mixin';
 
 @customElement('new-eface-form')
 export class NewEfaceForm extends connectStore(LitElement) {

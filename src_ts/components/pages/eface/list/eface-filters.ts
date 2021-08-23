@@ -1,10 +1,21 @@
 import {translate} from 'lit-translate';
-import {EtoolsFilter, EtoolsFilterTypes} from '../../etools-pages-common/layout/filters/etools-filters';
+import {
+  EtoolsFilter,
+  EtoolsFilterTypes
+} from '@unicef-polymer/etools-modules-common/dist/layout/filters/etools-filters';
+import {AnyObject} from '@unicef-polymer/etools-types/dist/global.types';
+import {setselectedValueTypeByFilterKey} from '@unicef-polymer/etools-modules-common/dist/list/filters';
 
 export enum EfaceFilterKeys {
   search = 'search',
   status = 'status'
 }
+export const selectedValueTypeByFilterKey: AnyObject = {
+  [EfaceFilterKeys.search]: 'string',
+  [EfaceFilterKeys.status]: 'Array'
+};
+
+setselectedValueTypeByFilterKey(selectedValueTypeByFilterKey);
 
 export const defaultFilters: EtoolsFilter[] = [
   {

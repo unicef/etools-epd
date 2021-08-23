@@ -10,28 +10,31 @@ import {
 } from '@unicef-polymer/etools-table/etools-table';
 import {RootState, store} from '../../../../redux/store';
 import get from 'lodash-es/get';
-import '../../etools-pages-common/layout/page-content-header/page-content-header';
+import '@unicef-polymer/etools-modules-common/dist/layout/page-content-header/page-content-header';
 import {
   buildUrlQueryString,
   getSortFields,
   getUrlQueryStringSort
-} from '../../etools-pages-common/layout/etools-table/etools-table-utility';
+} from '@unicef-polymer/etools-modules-common/dist/layout/etools-table/etools-table-utility';
 import pick from 'lodash-es/pick';
 import {replaceAppLocation} from '../../../../routing/routes';
 import {etoolsEndpoints} from '../../../../endpoints/endpoints-list';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {defaultFilters} from './eface-filters';
-import {elevationStyles} from '../../etools-pages-common/styles/elevation-styles';
-import {buttonsStyles} from '../../etools-pages-common/styles/button-styles';
+import {elevationStyles} from '@unicef-polymer/etools-modules-common/dist/styles/elevation-styles';
+import {buttonsStyles} from '@unicef-polymer/etools-modules-common/dist/styles/button-styles';
 import {pageLayoutStyles} from '../../../styles/page-layout-styles';
-import {pageContentHeaderSlottedStyles} from '../../etools-pages-common/layout/page-content-header/page-content-header-slotted-styles';
-import {InterventionsListStyles, InterventionsTableStyles} from '../../etools-pages-common/list/list-styles';
-import {sharedStyles} from '../../etools-pages-common/styles/shared-styles-lit';
-import {ListHelper, ListHelperResponse} from '../../etools-pages-common/list/list-helper';
-import {updateFiltersSelectedValues} from '../../etools-pages-common/list/filters';
-import {EtoolsFilter} from '../../etools-pages-common/layout/filters/etools-filters';
-import '../../etools-pages-common/layout/filters/etools-filters';
-import {ROOT_PATH} from '../../etools-pages-common/config/config';
+import {pageContentHeaderSlottedStyles} from '@unicef-polymer/etools-modules-common/dist/layout/page-content-header/page-content-header-slotted-styles';
+import {
+  InterventionsListStyles,
+  InterventionsTableStyles
+} from '@unicef-polymer/etools-modules-common/dist/list/list-styles';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
+import {ListHelper, ListHelperResponse} from '@unicef-polymer/etools-modules-common/dist/list/list-helper';
+import {updateFiltersSelectedValues} from '@unicef-polymer/etools-modules-common/dist/list/filters';
+import {EtoolsFilter} from '@unicef-polymer/etools-modules-common/dist/layout/filters/etools-filters';
+import '@unicef-polymer/etools-modules-common/dist/layout/filters/etools-filters';
+import {ROOT_PATH} from '@unicef-polymer/etools-modules-common/dist/config/config';
 
 /**
  * @customElement
