@@ -247,7 +247,8 @@ export class EfaceList extends connect(store)(LitElement) {
         this.urlParams
           ? this.urlParams
           : {
-              page_size: '20'
+              page_size: '20',
+              sort: 'id.desc'
             }
       );
       return false;
