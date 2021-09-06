@@ -67,7 +67,8 @@ export const SharedStylesLit = html`
     etools-dropdown-multi[readonly],
     datepicker-lite[readonly],
     paper-input[readonly],
-    paper-textarea[readonly] {
+    paper-textarea[readonly],
+    etools-currency-amount-input[readonly] {
       --paper-input-container-underline: {
         display: none;
       }
@@ -94,6 +95,9 @@ export const SharedStylesLit = html`
       --esmm-external-wrapper: {
         width: 100%;
       }
+    }
+    .readonly {
+      pointer-events: none;
     }
 
     etools-dropdown,
@@ -152,9 +156,6 @@ export const SharedStylesLit = html`
       background: url('./images/required.svg') no-repeat 87% 40%/6px;
     }
 
-    .readonly {
-      pointer-events: none;
-    }
     .font-bold {
       font-weight: bold;
     }

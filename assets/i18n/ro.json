@@ -37,7 +37,9 @@
     "CONTINGENCY_PD": "PD de contingenta",
     "ENDS_BEFORE": "Finalizat inainte de",
     "STARTS_AFTER": "Incepe dupa",
-    "ENDS_AFTER": "Finalizat dupa",
-    "BUDGET_OWNER": "Responsabil UNICEF al Bugetului"
-  }
+    "ENDS_AFTER": "Finalizat dupa"
+  },
+  "SUBMIT": "Submit",
+  "ENDS_AFTER": "Finalizat dupa",
+  "BUDGET_OWNER": "Responsabil UNICEF al Bugetului"
 }

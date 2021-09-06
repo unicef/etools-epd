@@ -37,7 +37,9 @@
     "CONTINGENCY_PD": "طارئ PD",
     "ENDS_BEFORE": "ينتهي قبل",
     "STARTS_AFTER": "يبدأ بعد",
-    "ENDS_AFTER": "ينتهي بعد",
-    "BUDGET_OWNER": "UNICEF Budget Owner"
-  }
+    "ENDS_AFTER": "ينتهي بعد"
+  },
+  "SUBMIT": "Submit",
+  "ENDS_AFTER": "ينتهي بعد",
+  "BUDGET_OWNER": "UNICEF Budget Owner"
 }

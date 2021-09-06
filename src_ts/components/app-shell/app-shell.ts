@@ -164,6 +164,21 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
               )}"
             >
             </intervention-tabs>
+            <eface-list
+              class="page"
+              ?active="${this.isActivePage(this.mainPage, 'eface', this.subPage, 'list')}"
+              ?hidden="${!this.isActivePage(this.mainPage, 'eface', this.subPage, 'list')}"
+            ></eface-list>
+            <eface-tabs
+              class="page"
+              ?active="${this.isActivePage(this.mainPage, 'eface', this.subPage, 'details')}"
+              ?hidden="${!this.isActivePage(this.mainPage, 'eface', this.subPage, 'details')}"
+            ></eface-tabs>
+            <new-eface-form
+              class="page"
+              ?active="${this.isActivePage(this.mainPage, 'eface', this.subPage, 'new')}"
+              ?hidden="${!this.isActivePage(this.mainPage, 'eface', this.subPage, 'new')}"
+            ></new-eface-form>
             <page-not-found
               class="page"
               ?active="${this.isActivePage(this.mainPage, 'page-not-found')}"
