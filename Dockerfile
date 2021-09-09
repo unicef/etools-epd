@@ -24,12 +24,11 @@ WORKDIR /code
 RUN git submodule init && git submodule update --checkout
 
 # Exporting revision number
+WORKDIR /code
 RUN REVNO=$(git rev-parse --short HEAD) && \
   BUILDDATE=$(date -u +%F_%T) && \
-  sed -i "0,/revNo/s//$REVNO/" package.json && \
   sed -i "0,/revNo/s//$REVNO/" index.html && \
   sed -i "0,/revNo/s//$REVNO/" version.json && \
-  sed -i "0,/bDate/s//$BUILDDATE/" package.json && \
   sed -i "0,/bDate/s//$BUILDDATE/" version.json
 
 RUN npm run build
