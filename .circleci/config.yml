@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  test:
+  lint:
     working_directory: ~/code
     # The primary container is an instance of the first list image listed. Your build commands run in this container.
     docker:
@@ -8,7 +8,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: "Pull Submodule"
+          name: 'Pull Submodule'
           command: |
             git submodule init
             git submodule update --checkout
@@ -22,9 +22,13 @@ jobs:
           paths:
             - node_modules
       - run:
-          name: Polymer3 Build
-          command: npm run build
-          no_output_timeout: 15m
+          name: TsLint
+          command: npm run tsToJs
+          no_output_timeout: 5m
+      - run:
+          name: EsLint
+          command: npm run lint
+          no_output_timeout: 5m
 
   build_and_deploy:
     working_directory: ~/code
@@ -52,7 +56,7 @@ jobs:
             curl -L -o /tmp/docker-$VER.tgz https://get.docker.com/builds/Linux/x86_64/docker-$VER.tgz
             tar -xz -C /tmp -f /tmp/docker-$VER.tgz
             mv /tmp/docker/* /usr/bin
-           # build and push Docker image
+          # build and push Docker image
       - run:
           name: Building the image
           command: |
@@ -70,7 +74,7 @@ workflows:
   version: 2
   build_and_test:
     jobs:
-      - test:
+      - lint:
           filters:
             branches:
               ignore:
