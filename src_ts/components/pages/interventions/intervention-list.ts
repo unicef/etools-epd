@@ -54,6 +54,7 @@ import pick from 'lodash-es/pick';
 import {etoolsEndpoints} from '../../../endpoints/endpoints-list';
 import {defaultFilters, InterventionFilterKeys} from './interventions-filters';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
+import {debounce} from '../../utils/debouncer';
 
 /**
  * @LitElement
@@ -209,6 +210,11 @@ export class InterventionList extends connect(store)(LitElement) {
   private routeDetails!: RouteDetails | null;
   private paramsInitialized = false;
 
+  connectedCallback(): void {
+    super.connectedCallback();
+    this.getListData = debounce(this.getListData.bind(this), 400);
+  }
+
   stateChanged(state: RootState) {
     const routeDetails = get(state, 'app.routeDetails');
     if (!(routeDetails.routeName === 'interventions' && routeDetails.subRouteName === 'list')) {
@@ -252,6 +258,7 @@ export class InterventionList extends connect(store)(LitElement) {
 
     if (paramsValid) {
       // get data as params are valid
+      this.showLoading = true;
       this.getListData(forceReGet);
     }
   }
@@ -304,7 +311,6 @@ export class InterventionList extends connect(store)(LitElement) {
   private async getListData(forceReGet: boolean) {
     const currentParams: GenericObject<any> = this.routeDetails!.queryParams || {};
     try {
-      this.showLoading = true;
       const {list, paginator}: ListHelperResponse<InterventionListData> = await this.listHelper.getList(
         currentParams,
         forceReGet
