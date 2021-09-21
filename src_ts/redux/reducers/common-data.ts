@@ -8,6 +8,7 @@ import {
   EnvFlags,
   LabelAndValue,
   LocationObject,
+  Site,
   Section,
   CpOutput
 } from '@unicef-polymer/etools-types';
@@ -16,6 +17,7 @@ export interface CommonDataState {
   unicefUsersData: [];
   partners: [];
   locations: LocationObject[];
+  sites: Site[];
   sections: Section[];
   disaggregations: Disaggregation[];
   cpOutputs: CpOutput[];
@@ -39,6 +41,7 @@ const INITIAL_COMMON_DATA: CommonDataState = {
   unicefUsersData: [],
   partners: [],
   locations: [],
+  sites: [],
   sections: [],
   disaggregations: [],
   locationTypes: [],
@@ -65,6 +68,7 @@ const commonData: Reducer<CommonDataState, RootAction> = (state = INITIAL_COMMON
         ...state,
         partners: action.staticData.partners,
         locations: action.staticData.locations,
+        sites: action.staticData.sites,
         sections: action.staticData.sections,
         disaggregations: action.staticData.disaggregations,
         locationTypes: action.staticData.locationTypes,

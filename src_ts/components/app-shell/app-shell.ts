@@ -47,6 +47,7 @@ import {EtoolsRouter} from '../../routing/routes';
 import {
   getPartners,
   getLocations,
+  getSites,
   getSections,
   getDisaggregations,
   getOffices,
@@ -245,7 +246,8 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
           getStaticData(),
           getDropdownsData(),
           getAgreements(),
-          getCountryProgrammes(user.is_unicef_user)
+          getCountryProgrammes(user.is_unicef_user),
+          getSites()
         ]).then((response: any[]) => {
           store.dispatch({
             type: SET_ALL_STATIC_DATA,
@@ -314,6 +316,7 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
     data.fileTypes = this.getValue(response[7]).file_types || [];
     const staticData = this.getValue(response[6], {});
     data.countryProgrammes = this.getValue(response[9]);
+    data.sites = this.getValue(response[10]);
     data.locationTypes = isEmpty(staticData.location_types) ? [] : staticData.location_types;
     data.documentTypes = isEmpty(staticData.intervention_doc_type) ? [] : staticData.intervention_doc_type;
     data.genderEquityRatings = staticData.gender_equity_sustainability_ratings || [];

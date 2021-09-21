@@ -6,6 +6,7 @@ export interface EtoolsEndpoints {
   interventions: EtoolsEndpoint;
   intervention: EtoolsEndpoint;
   locations: EtoolsEndpoint;
+  sites: EtoolsEndpoint;
   static: EtoolsEndpoint;
   partners: EtoolsEndpoint;
   sections: EtoolsEndpoint;
@@ -36,6 +37,9 @@ export const etoolsEndpoints: EtoolsEndpoints = {
   },
   locations: {
     url: '/api/locations-light/'
+  },
+  sites: {
+    url: '/api/v1/field-monitoring/settings/sites/?page_size=all'
   },
   static: {
     url: '/api/v2/dropdowns/static/'
