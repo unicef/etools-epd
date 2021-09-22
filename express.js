@@ -14,7 +14,7 @@ function getSourcesPath(request, filePath = '') {
   return needToUpgrade ? `${basedir}esm-bundled/upgrade-browser.html` : `${basedir}esm-bundled/${filePath}`;
 }
 
-app.use('/pmp/', (req, res, next) => {
+app.use('/epd/', (req, res, next) => {
   express.static(getSourcesPath(req))(req, res, next);
 });
 
