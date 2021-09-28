@@ -27,7 +27,9 @@
     "src_ts/components/pages/interventions/intervention-tab-pages/assets/i18n/en.json",
     "src_ts/components/pages/interventions/intervention-tab-pages/assets/i18n/ro.json",
     "src_ts/components/pages/interventions/intervention-tab-pages/assets/i18n/ar.json",
-    "src_ts/components/pages/interventions/intervention-tab-pages/assets/images/*"
+    "src_ts/components/pages/interventions/intervention-tab-pages/assets/images/marker-icon.png",
+    "src_ts/components/pages/interventions/intervention-tab-pages/assets/images/marker-icon-2x.png",
+    "src_ts/components/pages/interventions/intervention-tab-pages/assets/images/marker-icon-yellow.png"
   ],
   "exclude": []
 }
