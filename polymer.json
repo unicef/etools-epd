@@ -17,8 +17,7 @@
     "src/**/*",
     "images/**/*",
     "assets/**",
-    "package.json",
-    "src_ts/components/pages/interventions/intervention-tab-pages/assets/images/*"
+    "package.json"
   ],
   "extraDependencies": [
     "manifest.json",
