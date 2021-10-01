@@ -312,6 +312,7 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
     data.disaggregations = this.getValue(response[3]);
     data.offices = this.getValue(response[4]);
     data.unicefUsersData = this.getValue(response[5]);
+    data.providedBy = this.getValue(response[7]).supply_item_provided_by || [];
     data.cpOutputs = this.getValue(response[7]).cp_outputs || [];
     data.fileTypes = this.getValue(response[7]).file_types || [];
     const staticData = this.getValue(response[6], {});
