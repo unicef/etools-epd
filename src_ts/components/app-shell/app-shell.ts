@@ -42,12 +42,12 @@ import './app-theme.js';
 import {ToastNotificationHelper} from '../common/toast-notifications/toast-notification-helper';
 import user from '../../redux/reducers/user';
 import commonData, {CommonDataState} from '../../redux/reducers/common-data';
-import {SMALL_MENU_ACTIVE_LOCALSTORAGE_KEY} from '../../config/config';
 import {getCurrentUser} from '../user/user-actions';
 import {EtoolsRouter} from '../../routing/routes';
 import {
   getPartners,
   getLocations,
+  getSites,
   getSections,
   getDisaggregations,
   getOffices,
@@ -59,12 +59,13 @@ import {
 } from '../../redux/actions/common-data';
 import {getAgreements, SET_AGREEMENTS} from '../../redux/actions/agreements';
 import isEmpty from 'lodash-es/isEmpty';
-import {fireEvent} from '../utils/fire-custom-event';
 import get from 'lodash-es/get';
 import '../env-flags/environment-flags';
-import {setStore} from '../pages/interventions/intervention-tab-pages/utils/redux-store-access';
 import {registerTranslateConfig, use} from 'lit-translate';
 import {EtoolsUser, RouteDetails} from '@unicef-polymer/etools-types';
+import {setStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {SMALL_MENU_ACTIVE_LOCALSTORAGE_KEY} from '../../config/config';
+import {fireEvent} from '../utils/fire-custom-event';
 declare const dayjs: any;
 declare const dayjs_plugin_utc: any;
 declare const dayjs_plugin_isSameOrBefore: any;
@@ -245,7 +246,8 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
           getStaticData(),
           getDropdownsData(),
           getAgreements(),
-          getCountryProgrammes(user.is_unicef_user)
+          getCountryProgrammes(user.is_unicef_user),
+          getSites()
         ]).then((response: any[]) => {
           store.dispatch({
             type: SET_ALL_STATIC_DATA,
@@ -310,10 +312,12 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
     data.disaggregations = this.getValue(response[3]);
     data.offices = this.getValue(response[4]);
     data.unicefUsersData = this.getValue(response[5]);
+    data.providedBy = this.getValue(response[7]).supply_item_provided_by || [];
     data.cpOutputs = this.getValue(response[7]).cp_outputs || [];
     data.fileTypes = this.getValue(response[7]).file_types || [];
     const staticData = this.getValue(response[6], {});
     data.countryProgrammes = this.getValue(response[9]);
+    data.sites = this.getValue(response[10]);
     data.locationTypes = isEmpty(staticData.location_types) ? [] : staticData.location_types;
     data.documentTypes = isEmpty(staticData.intervention_doc_type) ? [] : staticData.intervention_doc_type;
     data.genderEquityRatings = staticData.gender_equity_sustainability_ratings || [];
