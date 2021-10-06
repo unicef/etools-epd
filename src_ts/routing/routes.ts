@@ -47,10 +47,10 @@ EtoolsRouter.addRoute(
     }
   )
   .addRoute(
-    new RegExp(`^page-not-found$`),
+    new RegExp(`^not-found$`),
     (params: RouteCallbackParams): RouteDetails => {
       return {
-        routeName: 'page-not-found',
+        routeName: 'not-found',
         subRouteName: null,
         path: params.matchDetails[0],
         queryParams: null,
@@ -84,5 +84,5 @@ export const replaceAppLocation = (newLocation: string): void => {
   window.dispatchEvent(new CustomEvent('popstate'));
 };
 
-export const ROUTE_404 = '/page-not-found';
+export const ROUTE_404 = '/not-found';
 export const DEFAULT_ROUTE = '/interventions/list';
