@@ -12,7 +12,7 @@ WORKDIR /tmp
 ADD package.json /tmp/
 ADD package-lock.json /tmp/
 
-RUN npm install --no-save --only=prod
+RUN npm ci --only=prod
 
 ADD . /code/
 WORKDIR /code
