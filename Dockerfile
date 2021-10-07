@@ -1,4 +1,4 @@
-FROM node:14.15.1-alpine3.12 as builder
+FROM node:12-alpine3.12 as builder
 RUN apk update
 RUN apk add --update bash
 
@@ -23,18 +23,10 @@ RUN cp -a /tmp/node_modules /code/node_modules
 WORKDIR /code
 RUN git submodule init && git submodule update --checkout
 
-# Exporting revision number
-# WORKDIR /code
-# RUN REVNO=$(git rev-parse --short HEAD) && \
-#   BUILDDATE=$(date -u +%F_%T) && \
-#   sed -i "0,/revNo/s//$REVNO/" index.html && \
-#   sed -i "0,/revNo/s//$REVNO/" version.json && \
-#   sed -i "0,/bDate/s//$BUILDDATE/" version.json
-
 RUN npm run build
 
 
-FROM node:14.15.1-alpine3.12
+FROM node:12-alpine3.12
 RUN apk update
 RUN apk add --update bash
 
