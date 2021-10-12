@@ -166,10 +166,7 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
               )}"
             >
             </intervention-tabs>
-            <page-not-found
-              class="page"
-              ?active="${this.isActivePage(this.mainPage, 'page-not-found')}"
-            ></page-not-found>
+            <not-found class="page" ?active="${this.isActivePage(this.mainPage, 'not-found')}"></not-found>
           </main>
 
           <page-footer></page-footer>
