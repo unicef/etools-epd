@@ -11,7 +11,7 @@ import {fireEvent} from '../utils/fire-custom-event';
  * @customElement
  * @LitElement
  */
-@customElement('page-not-found')
+@customElement('not-found')
 export class PageNotFound extends LitElement {
   static get styles() {
     return [elevationStyles, pageLayoutStyles];
