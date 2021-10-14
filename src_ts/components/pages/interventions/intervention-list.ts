@@ -212,6 +212,7 @@ export class InterventionList extends connect(store)(LitElement) {
 
   connectedCallback(): void {
     super.connectedCallback();
+    // @ts-ignore TODO
     this.getListData = debounce(this.getListData.bind(this), 400);
   }
 
