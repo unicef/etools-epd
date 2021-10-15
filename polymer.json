@@ -2,7 +2,7 @@
   "entrypoint": "index.html",
   "shell": "src/components/app-shell/app-shell.js",
   "fragments": [
-    "src/components/pages/page-not-found.js",
+    "src/components/pages/not-found.js",
     "src/components/pages/interventions/intervention-list.js",
     "src/components/pages/interventions/intervention-tab-pages/intervention-tabs.js",
     "src/components/pages/interventions/intervention-tab-pages/intervention-metadata/intervention-metadata.js",
@@ -13,12 +13,7 @@
     "src/components/pages/interventions/intervention-tab-pages/intervention-timing/intervention-timing.js",
     "src/components/pages/interventions/intervention-tab-pages/intervention-review/intervention-review.js"
   ],
-  "sources": [
-    "src/**/*",
-    "images/**/*",
-    "assets/**",
-    "package.json"
-  ],
+  "sources": ["src/**/*", "images/**/*", "assets/**", "package.json"],
   "extraDependencies": [
     "manifest.json",
     "version.json",
@@ -37,21 +32,13 @@
     "node_modules/focus-visible/dist/focus-visible.min.js"
   ],
   "lint": {
-    "rules": [
-      "polymer-3"
-    ],
-    "ignoreWarnings": [
-      "could-not-resolve-reference",
-      "non-literal-import"
-    ]
+    "rules": ["polymer-3"],
+    "ignoreWarnings": ["could-not-resolve-reference", "non-literal-import"]
   },
   "builds": [
     {
       "name": "esm-bundled",
-      "browserCapabilities": [
-        "es2015",
-        "modules"
-      ],
+      "browserCapabilities": ["es2015", "modules"],
       "js": {
         "minify": true
       },

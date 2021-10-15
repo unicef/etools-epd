@@ -100,6 +100,7 @@ store.addReducers({
  * @LitElement
  */
 @customElement('app-shell')
+// @ts-ignore TODO
 export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
   static get styles() {
     return [AppShellStyles];
@@ -165,10 +166,7 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
               )}"
             >
             </intervention-tabs>
-            <page-not-found
-              class="page"
-              ?active="${this.isActivePage(this.mainPage, 'page-not-found')}"
-            ></page-not-found>
+            <not-found class="page" ?active="${this.isActivePage(this.mainPage, 'not-found')}"></not-found>
           </main>
 
           <page-footer></page-footer>
