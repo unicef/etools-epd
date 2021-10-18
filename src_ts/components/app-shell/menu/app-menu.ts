@@ -64,13 +64,13 @@ export class AppMenu extends LitElement {
         </iron-selector>
 
         <div class="nav-menu-item section-title">
-          <span>${translate('NAV_BAR.COMMUNITY_CHANNELS')}</span>
+          <span>${translate('COMMUNITY_CHANNELS')}</span>
         </div>
 
         <a class="nav-menu-item lighter-item" href="http://etools.zendesk.com" target="_blank">
           <iron-icon id="knoledge-icon" icon="maps:local-library"></iron-icon>
-          <paper-tooltip for="knoledge-icon" position="right">${translate('NAV_BAR.KNOLEDGE_BASE')}</paper-tooltip>
-          <div class="name">${translate('NAV_BAR.KNOLEDGE_BASE')}</div>
+          <paper-tooltip for="knoledge-icon" position="right">${translate('KNOLEDGE_BASE')}</paper-tooltip>
+          <div class="name">${translate('KNOLEDGE_BASE')}</div>
         </a>
 
         <a
@@ -79,14 +79,14 @@ export class AppMenu extends LitElement {
           target="_blank"
         >
           <iron-icon id="discussion-icon" icon="icons:question-answer"></iron-icon>
-          <paper-tooltip for="discussion-icon" position="right">${translate('NAV_BAR.DISCUSSION')}</paper-tooltip>
-          <div class="name">${translate('NAV_BAR.DISCUSSION')}</div>
+          <paper-tooltip for="discussion-icon" position="right">${translate('DISCUSSION')}</paper-tooltip>
+          <div class="name">${translate('DISCUSSION')}</div>
         </a>
 
         <a class="nav-menu-item lighter-item last-one" href="http://etoolsinfo.unicef.org" target="_blank">
           <iron-icon id="information-icon" icon="icons:info"></iron-icon>
-          <paper-tooltip for="information-icon" position="right">${translate('NAV_BAR.INFORMATION')}</paper-tooltip>
-          <div class="name">${translate('NAV_BAR.INFORMATION')}</div>
+          <paper-tooltip for="information-icon" position="right">${translate('INFORMATION')}</paper-tooltip>
+          <div class="name">${translate('INFORMATION')}</div>
         </a>
       </div>
     `;

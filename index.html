@@ -12,10 +12,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>eTools ePD</title>
+    <title>eTools | ePD</title>
     <meta name="generator" content="PWA Starter Kit">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Etools Frontend Template description">
+    <meta name="description" content="Partner facing module that makes the process of signing PDs more efficient">
 
     <!--
       The `<base>` tag below is present to support two advanced deployment options:
@@ -37,12 +37,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <!-- Add to homescreen for Chrome on Android. Fallback for manifest.json -->
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="My App">
+    <meta name="application-name" content="eTools - ePD">
 
     <!-- Add to homescreen for Safari on iOS -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="My App">
+    <meta name="apple-mobile-web-app-title" content="eTools - ePD">
 
     <!-- Homescreen icons -->
     <link rel="apple-touch-icon" href="images/manifest/icon-48x48.png">
@@ -60,11 +60,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <meta name="twitter:card" content="summary">
     <meta name="twitter:site" content="@username">
     <meta property="og:type" content="website">
-    <meta property="og:site_name" content="my-app">
+    <meta property="og:site_name" content="eTools ePD">
     <meta property="og:image" content="images/manifest/icon-144x144.png" />
 
     <!-- Performance tip: hint to the browser to start the handshake for the fonts site -->
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <link rel="stylesheet" type="text/css" href="node_modules/leaflet/dist/leaflet.css">
     <script>
       // Load and register pre-caching Service Worker
       if ('serviceWorker' in navigator) {
@@ -136,7 +137,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </style>
   </head>
   <body>
-    <app-shell appTitle="my app">
+    <div id="buildRevNo" style="display: none">revNo</div>
+    <app-shell>
       <div id="loading-animation">
         <span>
           <img src="images/etools-logo-color-white.svg" alt="UNICEF Logo">
@@ -150,7 +152,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <!-- Load webcomponents-loader.js to check and load any polyfills your browser needs -->
     <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
     <script src="node_modules/web-animations-js/web-animations-next-lite.min.js"></script>
-    <script src="node_modules/moment/min/moment.min.js"></script>
+    <script src="node_modules/leaflet/dist/leaflet.js"></script>
+    <script src="node_modules/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
+    <script src="node_modules/dayjs/dayjs.min.js"></script>
+    <script src="node_modules/dayjs/plugin/utc.js"></script>
+    <script src="node_modules/dayjs/plugin/isBetween.js"></script>
+    <script src="node_modules/dayjs/plugin/isSameOrBefore.js"></script>
+    <script src="node_modules/focus-visible/dist/focus-visible.min.js"></script>
     <!-- Built with love using PWA Starter Kit -->
     <script type="module" src="src/components/app-shell/app-shell.js"></script>
   </body>

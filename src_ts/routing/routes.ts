@@ -1,6 +1,4 @@
 import {Router} from './router';
-import {store} from '../redux/store';
-import {navigate} from '../redux/actions/app';
 import {ROOT_PATH} from '../config/config';
 import {RouteCallbackParams, RouteDetails} from '@unicef-polymer/etools-types';
 
@@ -34,10 +32,25 @@ EtoolsRouter.addRoute(
     }
   )
   .addRoute(
-    new RegExp(`^page-not-found$`),
+    new RegExp(`^interventions\\/${routeParamRegex}\\/${routeParamRegex}\\/${routeParamRegex}$`),
     (params: RouteCallbackParams): RouteDetails => {
       return {
-        routeName: 'page-not-found',
+        routeName: 'interventions',
+        subRouteName: params.matchDetails[2], // tab name
+        subSubRouteName: params.matchDetails[3], // sub tab name
+        path: params.matchDetails[0],
+        queryParams: params.queryParams,
+        params: {
+          interventionId: params.matchDetails[1]
+        }
+      };
+    }
+  )
+  .addRoute(
+    new RegExp(`^not-found$`),
+    (params: RouteCallbackParams): RouteDetails => {
+      return {
+        routeName: 'not-found',
         subRouteName: null,
         path: params.matchDetails[0],
         queryParams: null,
@@ -49,25 +62,27 @@ EtoolsRouter.addRoute(
 /**
  * Utility used to update location based on routes and dispatch navigate action (optional)
  */
-export const updateAppLocation = (newLocation: string, dispatchNavigation = true): void => {
+export const updateAppLocation = (newLocation: string): void => {
   const _newLocation = EtoolsRouter.prepareLocationPath(newLocation);
 
   EtoolsRouter.pushState(_newLocation);
 
-  if (dispatchNavigation) {
-    store.dispatch(navigate(decodeURIComponent(_newLocation)));
-  }
+  window.dispatchEvent(new CustomEvent('popstate'));
 };
 
-export const replaceAppLocation = (newLocation: string, dispatchNavigation = true): void => {
+export const replaceAppLocation = (newLocation: string): void => {
   const _newLocation = EtoolsRouter.prepareLocationPath(newLocation);
 
   EtoolsRouter.replaceState(_newLocation);
 
-  if (dispatchNavigation) {
-    store.dispatch(navigate(decodeURIComponent(_newLocation)));
-  }
+  /**
+   * Note that just calling history.pushState() or history.replaceState()
+   * won't trigger a popstate event.
+   * The popstate event is only triggered by doing a browser action
+   * such as a click on the back button (or calling history.back() in JavaScript).
+   */
+  window.dispatchEvent(new CustomEvent('popstate'));
 };
 
-export const ROUTE_404 = '/page-not-found';
+export const ROUTE_404 = '/not-found';
 export const DEFAULT_ROUTE = '/interventions/list';

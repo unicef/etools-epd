@@ -13,6 +13,7 @@
     "REQUIRED_FIELD": "Camp necesar",
     "CANCEL": "Anuleaza",
     "YES": "Da",
+    "NO": "Nu",
     "FILTERS": "Filtre",
     "CLEAR_ALL": "ELIMINA TOT",
     "COMMENT_MODE": "Mod Comentariu",
@@ -21,26 +22,22 @@
     "ENTER_MESSAGE_HERE": "Introduceti Mesajul Aici"
   },
   "INTERVENTIONS_LIST": {
-    "TITLE": "Lista PD/SPD",
+    "PD_LIST": "Lista PD/SPD",
     "TABLE_TITLE": "PD/SPD",
-    "COLUMNS": {
-      "REFERENCE_NO": "Num. Referinta",
-      "PARTNER_ORG_NAME": "Nume Org Partener",
-      "DOC_TYPE": "Tip Doc",
-      "STATUS": "Status",
-      "TITLE": "Titlu",
-      "START_DATE": "Data Start",
-      "END_DATE": "Data Finalizat"
-    },
-    "FILTERS": {
-      "SEARCH_RECORDS": "Cauta inregistrari",
-      "STATUS": "Status",
-      "PD_TYPE": "Tip PD/SPD",
-      "PARTNER_ORG": "Org Partener",
-      "CONTINGENCY_PD": "PD de contingenta",
-      "ENDS_BEFORE": "Finalizat inainte de",
-      "STARTS_AFTER": "Incepe dupa",
-      "ENDS_AFTER": "Finalizat dupa"
-    }
+    "REFERENCE_NO": "Num. Referinta",
+    "PARTNER_ORG_NAME": "Nume Org Partener",
+    "DOC_TYPE": "Tip Doc",
+    "STATUS": "Status",
+    "TITLE": "Titlu",
+    "START_DATE": "Data Start",
+    "END_DATE": "Data Finalizat",
+    "SEARCH_RECORDS": "Cauta inregistrari",
+    "PD_TYPE": "Tip PD/SPD",
+    "PARTNER_ORG": "Org Partener",
+    "CONTINGENCY_PD": "PD de contingenta",
+    "ENDS_BEFORE": "Finalizat inainte de",
+    "STARTS_AFTER": "Incepe dupa",
+    "ENDS_AFTER": "Finalizat dupa",
+    "BUDGET_OWNER": "Responsabil UNICEF al Bugetului"
   }
 }

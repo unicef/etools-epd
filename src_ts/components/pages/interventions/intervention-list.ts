@@ -3,14 +3,17 @@ import {customElement, html, LitElement, property, TemplateResult} from 'lit-ele
 import {connect} from 'pwa-helpers/connect-mixin';
 import {RootState, store} from '../../../redux/store';
 
-import '../../common/layout/page-content-header/page-content-header';
+import '@unicef-polymer/etools-modules-common/dist/layout/page-content-header/page-content-header';
 // eslint-disable-next-line max-len
-import {pageContentHeaderSlottedStyles} from '../../common/layout/page-content-header/page-content-header-slotted-styles';
+import {pageContentHeaderSlottedStyles} from '@unicef-polymer/etools-modules-common/dist/layout/page-content-header/page-content-header-slotted-styles';
 
-import '../../common/layout/filters/etools-filters';
-import {defaultFilters, updateFilterSelectionOptions, updateFiltersSelectedValues} from './list/filters';
+import '@unicef-polymer/etools-modules-common/dist/layout/filters/etools-filters';
+import {
+  updateFilterSelectionOptions,
+  updateFiltersSelectedValues
+} from '@unicef-polymer/etools-modules-common/dist/list/filters';
 import {ROOT_PATH} from '../../../config/config';
-import {EtoolsFilter} from '../../common/layout/filters/etools-filters';
+import {EtoolsFilter} from '@unicef-polymer/etools-modules-common/dist/layout/filters/etools-filters';
 import {pageLayoutStyles} from '../../styles/page-layout-styles';
 import {buttonsStyles} from '../../styles/button-styles';
 import {elevationStyles} from '../../styles/lit-styles/elevation-styles';
@@ -25,15 +28,17 @@ import {
   buildUrlQueryString,
   getSortFields,
   getUrlQueryStringSort
-} from '../../common/layout/etools-table/etools-table-utility';
+} from '@unicef-polymer/etools-modules-common/dist/layout/etools-table/etools-table-utility';
 import {replaceAppLocation} from '../../../routing/routes';
-import {SharedStylesLit} from '../../styles/shared-styles-lit';
 
 import '@unicef-polymer/etools-loading';
 import get from 'lodash-es/get';
-import '../../common/layout/export-data';
-import {InterventionsListHelper, ListHelperResponse} from './list/list-helper';
-import {InterventionsListStyles, InterventionsTableStyles} from './list/list-styles';
+import '@unicef-polymer/etools-modules-common/dist/layout/export-data';
+import {ListHelper, ListHelperResponse} from '@unicef-polymer/etools-modules-common/dist/list/list-helper';
+import {
+  InterventionsListStyles,
+  InterventionsTableStyles
+} from '@unicef-polymer/etools-modules-common/dist/list/list-styles';
 import {isJsonStrMatch} from '../../utils/utils';
 import {addCurrencyAmountDelimiter} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {notHiddenPartnersSelector} from '../../../redux/reducers/common-data';
@@ -45,6 +50,11 @@ import {
   RouteDetails,
   RouteQueryParams
 } from '@unicef-polymer/etools-types';
+import pick from 'lodash-es/pick';
+import {etoolsEndpoints} from '../../../endpoints/endpoints-list';
+import {defaultFilters, InterventionFilterKeys} from './interventions-filters';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
+import {debounce} from '../../utils/debouncer';
 
 /**
  * @LitElement
@@ -60,14 +70,14 @@ export class InterventionList extends connect(store)(LitElement) {
     // main template
     // language=HTML
     return html`
-      ${SharedStylesLit}
+      ${sharedStyles}
       <style>
         .col_type {
           white-space: pre-line !important;
         }
       </style>
       <page-content-header>
-        <h1 slot="page-title">${translate('INTERVENTIONS_LIST.TITLE')}</h1>
+        <h1 slot="page-title">${translate('INTERVENTIONS_LIST.PD_LIST')}</h1>
 
         <div slot="title-row-actions" class="content-header-actions">
           <div class="action">
@@ -123,26 +133,26 @@ export class InterventionList extends connect(store)(LitElement) {
 
   listColumns: EtoolsTableColumn[] = [
     {
-      label: (translate('INTERVENTIONS_LIST.COLUMNS.REFERENCE_NO') as unknown) as string,
+      label: (translate('INTERVENTIONS_LIST.REFERENCE_NO') as unknown) as string,
       name: 'number',
-      link_tmpl: `${ROOT_PATH}interventions/:id/details`,
+      link_tmpl: `${ROOT_PATH}interventions/:id/metadata`,
       type: EtoolsTableColumnType.Link,
       sort: null
     },
     {
-      label: (translate('INTERVENTIONS_LIST.COLUMNS.PARTNER_ORG_NAME') as unknown) as string,
+      label: (translate('INTERVENTIONS_LIST.PARTNER_ORG_NAME') as unknown) as string,
       name: 'partner_name',
       type: EtoolsTableColumnType.Text,
       sort: null
     },
     {
-      label: (translate('INTERVENTIONS_LIST.COLUMNS.DOC_TYPE') as unknown) as string,
+      label: (translate('INTERVENTIONS_LIST.DOC_TYPE') as unknown) as string,
       name: 'document_type',
       type: EtoolsTableColumnType.Text,
       sort: null
     },
     {
-      label: (translate('INTERVENTIONS_LIST.COLUMNS.STATUS') as unknown) as string,
+      label: (translate('INTERVENTIONS_LIST.STATUS') as unknown) as string,
       name: 'status',
       type: EtoolsTableColumnType.Custom,
       capitalize: true,
@@ -153,52 +163,58 @@ export class InterventionList extends connect(store)(LitElement) {
         }
         if (item.partner_accepted && item.unicef_accepted) {
           return html`${item.status} <br />
-            IP & Unicef Accepted`;
+            ${translate('PARTNER_AND_UNICEF_ACCEPTED')}`;
         }
         if (!item.partner_accepted && item.unicef_accepted) {
           return html`${item.status} <br />
-            Unicef Accepted`;
+            ${translate('UNICEF_ACCEPTED')}`;
         }
         if (item.partner_accepted && !item.unicef_accepted) {
           return html`${item.status} <br />
-            IP Accepted`;
+            ${translate('PARTNER_ACCEPTED')}`;
         }
         if (!item.unicef_court && !!item.date_sent_to_partner) {
           return html`${item.status} <br />
-            Sent to Partner`;
+            ${translate('SENT_TO_PARTNER')}`;
         }
 
         if (item.unicef_court && !!item.submission_date && !!item.date_sent_to_partner) {
           return html`${item.status} <br />
-            Sent to Unicef`;
+            ${translate('SENT_TO_UNICEF')}`;
         }
         return item.status;
       },
       cssClass: 'col_type'
     },
     {
-      label: (translate('INTERVENTIONS_LIST.COLUMNS.TITLE') as unknown) as string,
+      label: (translate('INTERVENTIONS_LIST.TITLE') as unknown) as string,
       name: 'title',
       type: EtoolsTableColumnType.Text,
       sort: null
     },
     {
-      label: (translate('INTERVENTIONS_LIST.COLUMNS.START_DATE') as unknown) as string,
+      label: (translate('INTERVENTIONS_LIST.START_DATE') as unknown) as string,
       name: 'start',
       type: EtoolsTableColumnType.Date,
       sort: null
     },
     {
-      label: (translate('INTERVENTIONS_LIST.COLUMNS.END_DATE') as unknown) as string,
+      label: (translate('INTERVENTIONS_LIST.END_DATE') as unknown) as string,
       name: 'end',
       type: EtoolsTableColumnType.Date,
       sort: null
     }
   ];
 
-  private listHelper = new InterventionsListHelper();
+  private listHelper = new ListHelper<InterventionListData>(etoolsEndpoints.interventions, store);
   private routeDetails!: RouteDetails | null;
   private paramsInitialized = false;
+
+  connectedCallback(): void {
+    super.connectedCallback();
+    // @ts-ignore TODO
+    this.getListData = debounce(this.getListData.bind(this), 400);
+  }
 
   stateChanged(state: RootState) {
     const routeDetails = get(state, 'app.routeDetails');
@@ -209,7 +225,10 @@ export class InterventionList extends connect(store)(LitElement) {
     }
 
     const stateRouteDetails = {...state.app!.routeDetails};
-    if (JSON.stringify(stateRouteDetails) !== JSON.stringify(this.routeDetails)) {
+    if (
+      JSON.stringify(stateRouteDetails) !== JSON.stringify(this.routeDetails) ||
+      state.interventions?.shouldReGetList
+    ) {
       if (
         (!stateRouteDetails.queryParams || Object.keys(stateRouteDetails.queryParams).length === 0) &&
         this.urlParams
@@ -218,7 +237,8 @@ export class InterventionList extends connect(store)(LitElement) {
         this.updateCurrentParams(this.urlParams);
         return;
       }
-      this.onParamsChange(stateRouteDetails);
+
+      this.onParamsChange(stateRouteDetails, state.interventions?.shouldReGetList);
     }
 
     if (!isJsonStrMatch(this.interventionStatuses, state.commonData!.interventionStatuses)) {
@@ -232,15 +252,15 @@ export class InterventionList extends connect(store)(LitElement) {
     this.initFiltersForDisplay(state);
   }
 
-  onParamsChange(routeDetails: RouteDetails): void {
+  onParamsChange(routeDetails: RouteDetails, forceReGet: boolean): void {
     this.routeDetails = routeDetails;
-
-    const currentParams: GenericObject<any> = this.routeDetails.queryParams || {};
+    const currentParams: GenericObject<any> = this.routeDetails?.queryParams || {};
     const paramsValid: boolean = this.paramsInitialized || this.initializeAndValidateParams(currentParams);
 
     if (paramsValid) {
       // get data as params are valid
-      this.getListData();
+      this.showLoading = true;
+      this.getListData(forceReGet);
     }
   }
 
@@ -264,7 +284,7 @@ export class InterventionList extends connect(store)(LitElement) {
   }
 
   filtersChange(e: CustomEvent) {
-    this.updateCurrentParams({...e.detail, page: 1});
+    this.updateCurrentParams({...e.detail, page: 1}, true);
   }
 
   paginatorChange(e: CustomEvent) {
@@ -277,20 +297,25 @@ export class InterventionList extends connect(store)(LitElement) {
     this.updateCurrentParams({sort: getUrlQueryStringSort(sort)});
   }
 
-  private updateCurrentParams(paramsToUpdate: GenericObject<any>): void {
-    const currentParams: RouteQueryParams = this.routeDetails!.queryParams || {};
+  private updateCurrentParams(paramsToUpdate: GenericObject<any>, reset = false): void {
+    let currentParams: RouteQueryParams = this.routeDetails!.queryParams || {};
+    if (reset) {
+      currentParams = pick(currentParams, ['sort', 'page_size']);
+    }
     const newParams: RouteQueryParams = {...currentParams, ...paramsToUpdate};
     this.urlParams = newParams;
     const stringParams: string = buildUrlQueryString(newParams);
     this.exportParams = stringParams;
-    replaceAppLocation(`${this.routeDetails!.path}?${stringParams}`, true);
+    replaceAppLocation(`${this.routeDetails!.path}?${stringParams}`);
   }
 
-  private async getListData() {
+  private async getListData(forceReGet: boolean) {
     const currentParams: GenericObject<any> = this.routeDetails!.queryParams || {};
     try {
-      this.showLoading = true;
-      const {list, paginator}: ListHelperResponse<InterventionListData> = await this.listHelper.getList(currentParams);
+      const {list, paginator}: ListHelperResponse<InterventionListData> = await this.listHelper.getList(
+        currentParams,
+        forceReGet
+      );
       this.listData = list;
       // remove this after status draft comes as development
       this.mapDraftToDevelop(this.listData);
@@ -324,14 +349,19 @@ export class InterventionList extends connect(store)(LitElement) {
   private dataRequiredByFiltersHasBeenLoaded(state: RootState): boolean {
     return !!(
       state.commonData?.commonDataIsLoaded &&
-      this.routeDetails!.queryParams &&
-      Object.keys(this.routeDetails!.queryParams).length > 0
+      this.routeDetails?.queryParams &&
+      Object.keys(this.routeDetails?.queryParams).length > 0
     );
   }
 
   private populateDropdownFilterOptionsFromCommonData(state: RootState, currentFilters: EtoolsFilter[]) {
     updateFilterSelectionOptions(currentFilters, 'partners', notHiddenPartnersSelector(state));
     updateFilterSelectionOptions(currentFilters, 'status', state.commonData!.interventionStatuses);
+    updateFilterSelectionOptions(
+      currentFilters,
+      InterventionFilterKeys.budget_owner,
+      state.commonData!.unicefUsersData
+    );
     updateFilterSelectionOptions(currentFilters, 'document_type', state.commonData!.documentTypes);
   }
 

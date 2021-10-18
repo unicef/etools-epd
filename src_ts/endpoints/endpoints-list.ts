@@ -6,6 +6,7 @@ export interface EtoolsEndpoints {
   interventions: EtoolsEndpoint;
   intervention: EtoolsEndpoint;
   locations: EtoolsEndpoint;
+  sites: EtoolsEndpoint;
   static: EtoolsEndpoint;
   partners: EtoolsEndpoint;
   sections: EtoolsEndpoint;
@@ -29,13 +30,16 @@ export const etoolsEndpoints: EtoolsEndpoints = {
     url: '/api/v2/reports/countryprogramme/'
   },
   interventions: {
-    url: '/api/pmp/v3/interventions/'
+    url: '/api/pmp/v3/interventions/?show_amendments=true'
   },
   intervention: {
     template: '/api/pmp/v3/interventions/<%=interventionId%>/'
   },
   locations: {
     url: '/api/locations-light/'
+  },
+  sites: {
+    url: '/api/v1/field-monitoring/settings/sites/?page_size=all'
   },
   static: {
     url: '/api/v2/dropdowns/static/'

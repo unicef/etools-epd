@@ -1,6 +1,7 @@
 import '@polymer/app-layout/app-toolbar/app-toolbar';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@unicef-polymer/etools-profile-dropdown/etools-profile-dropdown';
+import '@unicef-polymer/etools-dropdown/etools-dropdown.js';
 import {customElement, LitElement, html, property} from 'lit-element';
 
 import '../../common/layout/support-btn';
@@ -49,7 +50,6 @@ export class PageHeader extends connect(store)(LitElement) {
         .dropdowns {
           display: flex;
           margin-right: 5px;
-          max-width: 280px;
         }
         .header {
           flex-wrap: wrap;
@@ -111,11 +111,10 @@ export class PageHeader extends connect(store)(LitElement) {
               hide-search
               allow-outside-scroll
               no-label-float
-              .minWidth="160px"
               .autoWidth="${true}"
             ></etools-dropdown>
 
-            <countries-dropdown></countries-dropdown>
+            <countries-dropdown dir="${this.dir}"></countries-dropdown>
           </div>
 
           <support-btn></support-btn>
@@ -173,6 +172,9 @@ export class PageHeader extends connect(store)(LitElement) {
   @property({type: String})
   environment = 'LOCAL';
 
+  @property({type: String})
+  dir = '';
+
   languages: GenericObject<string>[] = [
     {value: 'en', display_name: 'English'},
     {value: 'ro', display_name: 'Romanian'},
@@ -193,11 +195,15 @@ export class PageHeader extends connect(store)(LitElement) {
       if (state.activeLanguage && state.activeLanguage.activeLanguage !== this.selectedLanguage) {
         this.selectedLanguage = state.activeLanguage!.activeLanguage;
         setTimeout(() => {
-          const body = document.querySelector('body');
+          const htmlTag = document.querySelector('html');
           if (this.selectedLanguage === 'ar') {
-            body!.setAttribute('dir', 'rtl');
-          } else if (body!.getAttribute('dir')) {
-            body!.removeAttribute('dir');
+            htmlTag!.setAttribute('dir', 'rtl');
+            this.setAttribute('dir', 'rtl');
+            this.dir = 'rtl';
+          } else if (htmlTag!.getAttribute('dir')) {
+            htmlTag!.removeAttribute('dir');
+            this.removeAttribute('dir');
+            this.dir = '';
           }
         });
       }
