@@ -4,7 +4,6 @@ import '@unicef-polymer/etools-profile-dropdown/etools-profile-dropdown';
 import '@unicef-polymer/etools-dropdown/etools-dropdown.js';
 import {customElement, LitElement, html, property} from 'lit-element';
 
-import '../../common/layout/support-btn';
 import './countries-dropdown';
 
 import {connect} from 'pwa-helpers/connect-mixin.js';
@@ -116,8 +115,6 @@ export class PageHeader extends connect(store)(LitElement) {
 
             <countries-dropdown dir="${this.dir}"></countries-dropdown>
           </div>
-
-          <support-btn></support-btn>
 
           <etools-profile-dropdown
             .sections="${this.profileDrSections}"
