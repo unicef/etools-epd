@@ -121,7 +121,6 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
       >
       </etools-piwik-analytics>
 
-
       <app-drawer-layout
         id="layout"
         responsive-width="850px"
