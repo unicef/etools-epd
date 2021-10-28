@@ -100,7 +100,6 @@ store.addReducers({
  * @LitElement
  */
 @customElement('app-shell')
-// @ts-ignore TODO
 export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
   static get styles() {
     return [AppShellStyles];
