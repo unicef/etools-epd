@@ -3,6 +3,7 @@ import './etools-toast'; // element loaded (if not, etools-toast will not render
 import {store} from '../../../redux/store';
 import get from 'lodash-es/get';
 import {AnyObject} from '@unicef-polymer/etools-types';
+import {AppShell} from '../../app-shell/app-shell';
 
 /**
  * Toasts notification messages queue utility class
@@ -11,8 +12,10 @@ export class ToastNotificationHelper {
   private readonly _toast: EtoolsToast;
   private _toastQueue: AnyObject[] = [];
   private TOAST_EL_ID = 'toastNotificationQueueEl';
+  private appShellEl!: AppShell;
 
-  constructor() {
+  constructor(appShellEl: AppShell) {
+    this.appShellEl = appShellEl;
     const toast = document.querySelector(this.TOAST_EL_ID) as EtoolsToast;
     this._toast = toast ? toast : this.createToastNotificationElement();
   }
@@ -97,7 +100,7 @@ export class ToastNotificationHelper {
 
   protected _showToast(toastProperties: AnyObject) {
     // TODO: currentToastMessage is used by piwik elem; use it or remove it :)
-    // this.appShellEl.set('currentToastMessage', toastProperties.text);
+    this.appShellEl.currentToastMessage = toastProperties.text;
     this._toast.show(toastProperties);
   }
 }
