@@ -115,7 +115,7 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
       <environment-flags></environment-flags>
 
       <etools-piwik-analytics
-        .page="$${ROOT_PATH + this.mainPage}"
+        .page="${ROOT_PATH + this.mainPage}"
         .user="${this.user}"
         .toast="${this.currentToastMessage}"
       >
