@@ -174,7 +174,6 @@ export class PageHeader extends connect(store)(LitElement) {
 
   languages: GenericObject<string>[] = [
     {value: 'en', display_name: 'English'},
-    {value: 'ro', display_name: 'Romanian'},
     {value: 'ar', display_name: 'Arabic'}
   ];
 
@@ -293,7 +292,11 @@ export class PageHeader extends connect(store)(LitElement) {
   }
 
   protected checkEnvironment() {
-    this.isStaging = !isProductionServer();
-    this.environment = isProductionServer() ? 'DEMO' : 'LOCAL';
+    const isProdServer = isProductionServer();
+    if (!isProdServer) {
+      this.languages.splice(1, 0, {value: 'ro', display_name: 'Romanian'});
+    }
+    this.isStaging = !isProdServer;
+    this.environment = isProdServer ? 'DEMO' : 'LOCAL';
   }
 }
