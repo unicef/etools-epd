@@ -295,7 +295,7 @@ export class PageHeader extends connect(store)(LitElement) {
     if (!appIsInProduction()) {
       this.languages.splice(1, 0, {value: 'ro', display_name: 'Romanian'});
     }
-    this.isStaging = isProductionServer();
+    this.isStaging = !isProductionServer();
     this.environment = isProductionServer() ? 'DEMO' : 'LOCAL';
   }
 }
