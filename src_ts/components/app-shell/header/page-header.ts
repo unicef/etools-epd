@@ -8,7 +8,7 @@ import './countries-dropdown';
 
 import {connect} from 'pwa-helpers/connect-mixin.js';
 import {RootState, store} from '../../../redux/store';
-import {isProductionServer, ROOT_PATH} from '../../../config/config';
+import {isProductionServer, appIsInProduction, ROOT_PATH} from '../../../config/config';
 import {updateDrawerState} from '../../../redux/actions/app';
 import {fireEvent} from '../../utils/fire-custom-event';
 import isEmpty from 'lodash-es/isEmpty';
@@ -292,11 +292,10 @@ export class PageHeader extends connect(store)(LitElement) {
   }
 
   protected checkEnvironment() {
-    const isProdServer = isProductionServer();
-    if (!isProdServer) {
+    if (!appIsInProduction()) {
       this.languages.splice(1, 0, {value: 'ro', display_name: 'Romanian'});
     }
-    this.isStaging = !isProdServer;
-    this.environment = isProdServer ? 'DEMO' : 'LOCAL';
+    this.isStaging = isProductionServer();
+    this.environment = isProductionServer() ? 'DEMO' : 'LOCAL';
   }
 }
