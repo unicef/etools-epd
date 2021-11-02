@@ -292,9 +292,7 @@ export class PageHeader extends connect(store)(LitElement) {
   }
 
   protected checkEnvironment() {
-    if (this.showDevLanguages()) {
-      this.languages.splice(1, 0, {value: 'ro', display_name: 'Romanian'});
-    }
+    this.showDevLanguages();
     this.isStaging = !isProductionServer();
     this.environment = isProductionServer() ? 'DEMO' : 'LOCAL';
   }
@@ -302,6 +300,8 @@ export class PageHeader extends connect(store)(LitElement) {
   protected showDevLanguages() {
     const location = window.location.host;
     const domainsNotInProduction = ['localhost', 'etools-dev', 'etools-test'];
-    return domainsNotInProduction.some((x) => location.indexOf(x) > -1);
+    if (domainsNotInProduction.some((x) => location.indexOf(x) > -1)) {
+      this.languages.splice(1, 0, {value: 'ro', display_name: 'Romanian'});
+    }
   }
 }
