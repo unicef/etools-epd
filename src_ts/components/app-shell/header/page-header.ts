@@ -292,10 +292,16 @@ export class PageHeader extends connect(store)(LitElement) {
   }
 
   protected checkEnvironment() {
-    if (!appIsInProduction()) {
+    if (this.showDevLanguages()) {
       this.languages.splice(1, 0, {value: 'ro', display_name: 'Romanian'});
     }
     this.isStaging = !isProductionServer();
     this.environment = isProductionServer() ? 'DEMO' : 'LOCAL';
+  }
+
+  protected showDevLanguages() {
+    const location = window.location.host;
+    const domainsNotInProduction = ['localhost', 'etools-dev', 'etools-test'];
+    return domainsNotInProduction.some((x) => location.indexOf(x) > -1);
   }
 }

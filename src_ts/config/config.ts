@@ -23,12 +23,6 @@ export const getDomainByEnv = () => {
   return getBasePath().slice(0, -1);
 };
 
-export const appIsInProduction = () => {
-  const location = window.location.host;
-  const domainsNotInProduction = ['localhost', 'etools-dev', 'etools-test'];
-  return !domainsNotInProduction.some((x) => location.indexOf(x) > -1);
-};
-
 export const isProductionServer = () => {
   const location = window.location.host;
   return location.indexOf('demo.unicef.io') > -1;
