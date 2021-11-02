@@ -292,12 +292,12 @@ export class PageHeader extends connect(store)(LitElement) {
   }
 
   protected checkEnvironment() {
-    this.showDevLanguages();
+    this.showLanguagesForDevDomains();
     this.isStaging = !isProductionServer();
     this.environment = isProductionServer() ? 'DEMO' : 'LOCAL';
   }
 
-  protected showDevLanguages() {
+  protected showLanguagesForDevDomains() {
     const location = window.location.host;
     const domainsNotInProduction = ['localhost', 'etools-dev', 'etools-test'];
     if (domainsNotInProduction.some((x) => location.indexOf(x) > -1)) {
