@@ -8,7 +8,7 @@ import './countries-dropdown';
 
 import {connect} from 'pwa-helpers/connect-mixin.js';
 import {RootState, store} from '../../../redux/store';
-import {isProductionServer, appIsInProduction, ROOT_PATH} from '../../../config/config';
+import {isProductionServer, ROOT_PATH} from '../../../config/config';
 import {updateDrawerState} from '../../../redux/actions/app';
 import {fireEvent} from '../../utils/fire-custom-event';
 import isEmpty from 'lodash-es/isEmpty';
