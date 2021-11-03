@@ -299,8 +299,8 @@ export class PageHeader extends connect(store)(LitElement) {
 
   protected showLanguagesForDevDomains() {
     const location = window.location.host;
-    const domainsNotInProduction = ['localhost', 'etools-dev', 'etools-test'];
-    if (domainsNotInProduction.some((x) => location.indexOf(x) > -1)) {
+    const devDomains = ['localhost', 'etools-dev', 'etools-test'];
+    if (devDomains.some((x) => location.indexOf(x) > -1)) {
       this.languages.splice(1, 0, {value: 'ro', display_name: 'Romanian'});
     }
   }
