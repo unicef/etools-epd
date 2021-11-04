@@ -174,7 +174,6 @@ export class PageHeader extends connect(store)(LitElement) {
 
   languages: GenericObject<string>[] = [
     {value: 'en', display_name: 'English'},
-    {value: 'ro', display_name: 'Romanian'},
     {value: 'ar', display_name: 'Arabic'}
   ];
 
@@ -293,7 +292,16 @@ export class PageHeader extends connect(store)(LitElement) {
   }
 
   protected checkEnvironment() {
+    this.showLanguagesForDevDomains();
     this.isStaging = !isProductionServer();
     this.environment = isProductionServer() ? 'DEMO' : 'LOCAL';
+  }
+
+  protected showLanguagesForDevDomains() {
+    const location = window.location.host;
+    const devDomains = ['localhost', 'etools-dev', 'etools-test'];
+    if (devDomains.some((x) => location.indexOf(x) > -1)) {
+      this.languages.splice(1, 0, {value: 'ro', display_name: 'Romanian'});
+    }
   }
 }
