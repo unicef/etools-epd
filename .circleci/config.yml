@@ -88,4 +88,4 @@ workflows:
                 - master
                 - staging
                 - develop
-                - circleci-config
+                - migrations
