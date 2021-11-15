@@ -42,7 +42,7 @@ import {
 import {isJsonStrMatch} from '../../utils/utils';
 import {addCurrencyAmountDelimiter} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {notHiddenPartnersSelector} from '../../../redux/reducers/common-data';
-import {translate} from 'lit-translate';
+import {translate, get as getTranslation} from 'lit-translate';
 import {
   InterventionListData,
   LabelAndValue,
@@ -362,6 +362,10 @@ export class InterventionList extends connect(store)(LitElement) {
       state.commonData!.unicefUsersData
     );
     updateFilterSelectionOptions(currentFilters, 'document_type', state.commonData!.documentTypes);
+    updateFilterSelectionOptions(currentFilters, InterventionFilterKeys.editable_by, [
+      {label: 'UNICEF', value: 'unicef'},
+      {label: getTranslation('PARTNER'), value: 'partner'}
+    ]);
   }
 
   private initializeAndValidateParams(currentParams: GenericObject<any>): boolean {
