@@ -4,7 +4,6 @@ import '@unicef-polymer/etools-profile-dropdown/etools-profile-dropdown';
 import '@unicef-polymer/etools-dropdown/etools-dropdown.js';
 import {customElement, LitElement, html, property} from 'lit-element';
 
-import '../../common/layout/support-btn';
 import './countries-dropdown';
 
 import {connect} from 'pwa-helpers/connect-mixin.js';
@@ -117,8 +116,6 @@ export class PageHeader extends connect(store)(LitElement) {
             <countries-dropdown dir="${this.dir}"></countries-dropdown>
           </div>
 
-          <support-btn></support-btn>
-
           <etools-profile-dropdown
             .sections="${this.profileDrSections}"
             .offices="${this.profileDrOffices}"
@@ -177,7 +174,6 @@ export class PageHeader extends connect(store)(LitElement) {
 
   languages: GenericObject<string>[] = [
     {value: 'en', display_name: 'English'},
-    {value: 'ro', display_name: 'Romanian'},
     {value: 'ar', display_name: 'Arabic'}
   ];
 
@@ -296,7 +292,16 @@ export class PageHeader extends connect(store)(LitElement) {
   }
 
   protected checkEnvironment() {
+    this.showLanguagesForDevDomains();
     this.isStaging = !isProductionServer();
     this.environment = isProductionServer() ? 'DEMO' : 'LOCAL';
+  }
+
+  protected showLanguagesForDevDomains() {
+    const location = window.location.host;
+    const devDomains = ['localhost', 'etools-dev', 'etools-test'];
+    if (devDomains.some((x) => location.indexOf(x) > -1)) {
+      this.languages.splice(1, 0, {value: 'ro', display_name: 'Romanian'});
+    }
   }
 }

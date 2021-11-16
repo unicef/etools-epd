@@ -39,5 +39,6 @@
     "STARTS_AFTER": "يبدأ بعد",
     "ENDS_AFTER": "ينتهي بعد",
     "BUDGET_OWNER": "UNICEF Budget Owner"
-  }
+  },
+  "EDITABLE_BY": "Editable By"
 }

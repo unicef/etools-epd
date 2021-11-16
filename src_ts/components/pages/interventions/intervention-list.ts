@@ -42,7 +42,7 @@ import {
 import {isJsonStrMatch} from '../../utils/utils';
 import {addCurrencyAmountDelimiter} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {notHiddenPartnersSelector} from '../../../redux/reducers/common-data';
-import {translate} from 'lit-translate';
+import {translate, get as getTranslation} from 'lit-translate';
 import {
   InterventionListData,
   LabelAndValue,
@@ -133,26 +133,26 @@ export class InterventionList extends connect(store)(LitElement) {
 
   listColumns: EtoolsTableColumn[] = [
     {
-      label: (translate('INTERVENTIONS_LIST.REFERENCE_NO') as unknown) as string,
+      label: translate('INTERVENTIONS_LIST.REFERENCE_NO') as unknown as string,
       name: 'number',
       link_tmpl: `${ROOT_PATH}interventions/:id/metadata`,
       type: EtoolsTableColumnType.Link,
       sort: null
     },
     {
-      label: (translate('INTERVENTIONS_LIST.PARTNER_ORG_NAME') as unknown) as string,
+      label: translate('INTERVENTIONS_LIST.PARTNER_ORG_NAME') as unknown as string,
       name: 'partner_name',
       type: EtoolsTableColumnType.Text,
       sort: null
     },
     {
-      label: (translate('INTERVENTIONS_LIST.DOC_TYPE') as unknown) as string,
+      label: translate('INTERVENTIONS_LIST.DOC_TYPE') as unknown as string,
       name: 'document_type',
       type: EtoolsTableColumnType.Text,
       sort: null
     },
     {
-      label: (translate('INTERVENTIONS_LIST.STATUS') as unknown) as string,
+      label: translate('INTERVENTIONS_LIST.STATUS') as unknown as string,
       name: 'status',
       type: EtoolsTableColumnType.Custom,
       capitalize: true,
@@ -187,19 +187,19 @@ export class InterventionList extends connect(store)(LitElement) {
       cssClass: 'col_type'
     },
     {
-      label: (translate('INTERVENTIONS_LIST.TITLE') as unknown) as string,
+      label: translate('INTERVENTIONS_LIST.TITLE') as unknown as string,
       name: 'title',
       type: EtoolsTableColumnType.Text,
       sort: null
     },
     {
-      label: (translate('INTERVENTIONS_LIST.START_DATE') as unknown) as string,
+      label: translate('INTERVENTIONS_LIST.START_DATE') as unknown as string,
       name: 'start',
       type: EtoolsTableColumnType.Date,
       sort: null
     },
     {
-      label: (translate('INTERVENTIONS_LIST.END_DATE') as unknown) as string,
+      label: translate('INTERVENTIONS_LIST.END_DATE') as unknown as string,
       name: 'end',
       type: EtoolsTableColumnType.Date,
       sort: null
@@ -212,8 +212,7 @@ export class InterventionList extends connect(store)(LitElement) {
 
   connectedCallback(): void {
     super.connectedCallback();
-    // @ts-ignore TODO
-    this.getListData = debounce(this.getListData.bind(this), 400);
+    this.getListData = debounce(this.getListData.bind(this), 400) as any;
   }
 
   stateChanged(state: RootState) {
@@ -363,6 +362,10 @@ export class InterventionList extends connect(store)(LitElement) {
       state.commonData!.unicefUsersData
     );
     updateFilterSelectionOptions(currentFilters, 'document_type', state.commonData!.documentTypes);
+    updateFilterSelectionOptions(currentFilters, InterventionFilterKeys.editable_by, [
+      {label: 'UNICEF', value: 'unicef'},
+      {label: getTranslation('PARTNER'), value: 'partner'}
+    ]);
   }
 
   private initializeAndValidateParams(currentParams: GenericObject<any>): boolean {
