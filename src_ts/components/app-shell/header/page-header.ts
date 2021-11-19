@@ -95,7 +95,7 @@ export class PageHeader extends connect(store)(LitElement) {
           <img id="app-logo" class="logo" src="images/etools-logo-color-white.svg" alt="eTools" />
           ${this.isStaging
             ? html`<div class="envWarning">
-           <span class='envLong'> - </span>${this.environment} <span class='envLong'>  TESTING ENVIRONMENT</div>`
+           <span class='envLong'> - </span>${this.environment}AA <span class='envLong'>  TESTING ENVIRONMENT</div>`
             : ''}
         </div>
         <div class="header__item header__right-group">
