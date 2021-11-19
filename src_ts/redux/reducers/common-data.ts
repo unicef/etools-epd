@@ -8,6 +8,7 @@ import {
   EnvFlags,
   LabelAndValue,
   LocationObject,
+  Site,
   Section,
   CpOutput
 } from '@unicef-polymer/etools-types';
@@ -16,6 +17,7 @@ export interface CommonDataState {
   unicefUsersData: [];
   partners: [];
   locations: LocationObject[];
+  sites: Site[];
   sections: Section[];
   disaggregations: Disaggregation[];
   cpOutputs: CpOutput[];
@@ -33,12 +35,14 @@ export interface CommonDataState {
   PRPCountryData: any[];
   countryProgrammes: CountryProgram[];
   commonDataIsLoaded: boolean;
+  providedBy: LabelAndValue[];
 }
 
 const INITIAL_COMMON_DATA: CommonDataState = {
   unicefUsersData: [],
   partners: [],
   locations: [],
+  sites: [],
   sections: [],
   disaggregations: [],
   locationTypes: [],
@@ -55,7 +59,8 @@ const INITIAL_COMMON_DATA: CommonDataState = {
   cashTransferModalities: [],
   PRPCountryData: [],
   countryProgrammes: [],
-  commonDataIsLoaded: false
+  commonDataIsLoaded: false,
+  providedBy: []
 };
 
 const commonData: Reducer<CommonDataState, RootAction> = (state = INITIAL_COMMON_DATA, action) => {
@@ -65,6 +70,7 @@ const commonData: Reducer<CommonDataState, RootAction> = (state = INITIAL_COMMON
         ...state,
         partners: action.staticData.partners,
         locations: action.staticData.locations,
+        sites: action.staticData.sites,
         sections: action.staticData.sections,
         disaggregations: action.staticData.disaggregations,
         locationTypes: action.staticData.locationTypes,
@@ -80,7 +86,8 @@ const commonData: Reducer<CommonDataState, RootAction> = (state = INITIAL_COMMON
         fileTypes: action.staticData.fileTypes,
         cashTransferModalities: action.staticData.cashTransferModalities,
         countryProgrammes: action.staticData.countryProgrammes,
-        commonDataIsLoaded: true
+        commonDataIsLoaded: true,
+        providedBy: action.staticData.providedBy
       };
     case UPDATE_ENV_FLAGS:
       return {

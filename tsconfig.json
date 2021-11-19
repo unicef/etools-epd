@@ -3,7 +3,11 @@
     "target": "es2018",
     "module": "esnext",
     "moduleResolution": "node",
-    "lib": ["es2018", "dom", "esnext"],
+    "lib": [
+      "es2018",
+      "dom",
+      "esnext"
+    ],
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -12,7 +16,9 @@
     "experimentalDecorators": true,
     "esModuleInterop": true,
     "outDir": "src",
-    "typeRoots": ["./src_ts/types"],
+    "typeRoots": [
+      "./src_ts/types"
+    ],
     "skipLibCheck": true,
     "resolveJsonModule": true
   },

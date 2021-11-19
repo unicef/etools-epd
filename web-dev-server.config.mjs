@@ -27,7 +27,7 @@ export default /** @type {import('@web/dev-server').DevServerConfig} */ ({
   appIndex: 'index.html',
   middleware: [
     function rewrite(context, next) {
-      if (context.url.includes('/wsd')) {
+      if (context.url.includes('/wds')) {
         console.log('HERE ---', context);
         context.url = 'ws://localhost:8082/wds';
       }

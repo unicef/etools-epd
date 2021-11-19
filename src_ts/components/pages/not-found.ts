@@ -5,13 +5,13 @@ import {ROOT_PATH} from '../../config/config';
 import {elevationStyles} from '../styles/lit-styles/elevation-styles';
 import {pageLayoutStyles} from '../styles/page-layout-styles';
 import {SharedStylesLit} from '../styles/shared-styles-lit';
-import {fireEvent} from './interventions/intervention-tab-pages/utils/fire-custom-event';
+import {fireEvent} from '../utils/fire-custom-event';
 
 /**
  * @customElement
  * @LitElement
  */
-@customElement('page-not-found')
+@customElement('not-found')
 export class PageNotFound extends LitElement {
   static get styles() {
     return [elevationStyles, pageLayoutStyles];

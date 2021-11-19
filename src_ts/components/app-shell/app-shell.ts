@@ -24,6 +24,8 @@ import '@polymer/app-layout/app-drawer/app-drawer.js';
 import '@polymer/app-layout/app-header-layout/app-header-layout.js';
 import '@polymer/app-layout/app-header/app-header.js';
 import '@polymer/app-layout/app-toolbar/app-toolbar.js';
+import '@unicef-polymer/etools-piwik-analytics/etools-piwik-analytics';
+import {createDynamicDialog} from '@unicef-polymer/etools-dialog/dynamic-dialog';
 
 import {AppDrawerLayoutElement} from '@polymer/app-layout/app-drawer-layout/app-drawer-layout';
 import {AppHeaderLayoutElement} from '@polymer/app-layout/app-header-layout/app-header-layout';
@@ -41,12 +43,12 @@ import './app-theme.js';
 import {ToastNotificationHelper} from '../common/toast-notifications/toast-notification-helper';
 import user from '../../redux/reducers/user';
 import commonData, {CommonDataState} from '../../redux/reducers/common-data';
-import {SMALL_MENU_ACTIVE_LOCALSTORAGE_KEY} from '../../config/config';
 import {getCurrentUser} from '../user/user-actions';
 import {EtoolsRouter} from '../../routing/routes';
 import {
   getPartners,
   getLocations,
+  getSites,
   getSections,
   getDisaggregations,
   getOffices,
@@ -58,12 +60,14 @@ import {
 } from '../../redux/actions/common-data';
 import {getAgreements, SET_AGREEMENTS} from '../../redux/actions/agreements';
 import isEmpty from 'lodash-es/isEmpty';
-import {fireEvent} from '../utils/fire-custom-event';
 import get from 'lodash-es/get';
 import '../env-flags/environment-flags';
-import {setStore} from '../pages/interventions/intervention-tab-pages/utils/redux-store-access';
 import {registerTranslateConfig, use} from 'lit-translate';
 import {EtoolsUser, RouteDetails} from '@unicef-polymer/etools-types';
+import {setStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {SMALL_MENU_ACTIVE_LOCALSTORAGE_KEY} from '../../config/config';
+import {fireEvent} from '../utils/fire-custom-event';
+import {ROOT_PATH} from '@unicef-polymer/etools-modules-common/dist/config/config';
 declare const dayjs: any;
 declare const dayjs_plugin_utc: any;
 declare const dayjs_plugin_isSameOrBefore: any;
@@ -109,6 +113,13 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
     return html`
       <environment-flags></environment-flags>
 
+      <etools-piwik-analytics
+        .page="${ROOT_PATH + this.mainPage}"
+        .user="${this.user}"
+        .toast="${this.currentToastMessage}"
+      >
+      </etools-piwik-analytics>
+
       <app-drawer-layout
         id="layout"
         responsive-width="850px"
@@ -153,20 +164,17 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
                 this.mainPage,
                 'interventions',
                 this.subPage,
-                'overview|metadata|strategy|results|timing|review|attachments|info'
+                'overview|metadata|strategy|workplan|timing|review|attachments|info'
               )}"
               ?hidden="${!this.isActivePage(
                 this.mainPage,
                 'interventions',
                 this.subPage,
-                'overview|metadata|strategy|results|timing|review|attachments|info'
+                'overview|metadata|strategy|workplan|timing|review|attachments|info'
               )}"
             >
             </intervention-tabs>
-            <page-not-found
-              class="page"
-              ?active="${this.isActivePage(this.mainPage, 'page-not-found')}"
-            ></page-not-found>
+            <not-found class="page" ?active="${this.isActivePage(this.mainPage, 'not-found')}"></not-found>
           </main>
 
           <page-footer></page-footer>
@@ -196,6 +204,12 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
   @property({type: String})
   selectedLanguage!: string;
 
+  @property({type: Object})
+  user!: EtoolsUser;
+
+  @property({type: String})
+  currentToastMessage!: string;
+
   @query('#layout') private drawerLayout!: AppDrawerLayoutElement;
   @query('#drawer') private drawer!: AppDrawerElement;
   @query('#appHeadLayout') private appHeaderLayout!: AppHeaderLayoutElement;
@@ -208,7 +222,7 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
     // preventable, allowing for better scrolling performance.
     setPassiveTouchGestures(true);
     // init toasts notifications queue
-    this.appToastsNotificationsHelper = new ToastNotificationHelper();
+    this.appToastsNotificationsHelper = new ToastNotificationHelper(this);
     this.appToastsNotificationsHelper.addToastNotificationListeners();
 
     const menuTypeStoredVal: string | null = localStorage.getItem(SMALL_MENU_ACTIVE_LOCALSTORAGE_KEY);
@@ -217,12 +231,12 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
     } else {
       this.smallMenu = !!parseInt(menuTypeStoredVal, 10);
     }
-    
   }
 
   async connectedCallback() {
     super.connectedCallback();
 
+    this.checkAppVersion();
     installRouter((location) => store.dispatch(navigate(decodeURIComponent(location.pathname + location.search))));
     this.addEventListener('scroll-up', () => {
       if (this.appHeaderLayout) {
@@ -233,6 +247,7 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
 
     getCurrentUser().then((user: EtoolsUser) => {
       if (user) {
+        this.user = user;
         // @ts-ignore
         Promise.allSettled([
           getPartners(),
@@ -244,7 +259,8 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
           getStaticData(),
           getDropdownsData(),
           getAgreements(),
-          getCountryProgrammes(user.is_unicef_user)
+          getCountryProgrammes(user.is_unicef_user),
+          getSites()
         ]).then((response: any[]) => {
           store.dispatch({
             type: SET_ALL_STATIC_DATA,
@@ -264,6 +280,43 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
     }, 100);
   }
 
+  checkAppVersion() {
+    fetch('version.json')
+      .then((res) => res.json())
+      .then((version) => {
+        if (version.revision != document.getElementById('buildRevNo')!.innerText) {
+          console.log('version.json', version.revision);
+          console.log('buildRevNo ', document.getElementById('buildRevNo')!.innerText);
+          this._showConfirmNewVersionDialog();
+        }
+      });
+  }
+
+  private _showConfirmNewVersionDialog() {
+    const msg = document.createElement('span');
+    msg.innerText = 'A new version of the app is available. Refresh page?';
+    const conf: any = {
+      size: 'md',
+      closeCallback: this._onConfirmNewVersion.bind(this),
+      content: msg
+    };
+    const confirmNewVersionDialog = createDynamicDialog(conf);
+    confirmNewVersionDialog.opened = true;
+  }
+
+  private _onConfirmNewVersion(e: CustomEvent) {
+    if (e.detail.confirmed) {
+      if (navigator.serviceWorker) {
+        caches.keys().then((cacheNames) => {
+          cacheNames.forEach((cacheName) => {
+            caches.delete(cacheName);
+          });
+          location.reload();
+        });
+      }
+    }
+  }
+
   private formatResponse(response: any[]) {
     const data: Partial<CommonDataState> = {};
     data.partners = this.getValue(response[0]);
@@ -272,10 +325,12 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
     data.disaggregations = this.getValue(response[3]);
     data.offices = this.getValue(response[4]);
     data.unicefUsersData = this.getValue(response[5]);
+    data.providedBy = this.getValue(response[7]).supply_item_provided_by || [];
     data.cpOutputs = this.getValue(response[7]).cp_outputs || [];
     data.fileTypes = this.getValue(response[7]).file_types || [];
     const staticData = this.getValue(response[6], {});
     data.countryProgrammes = this.getValue(response[9]);
+    data.sites = this.getValue(response[10]);
     data.locationTypes = isEmpty(staticData.location_types) ? [] : staticData.location_types;
     data.documentTypes = isEmpty(staticData.intervention_doc_type) ? [] : staticData.intervention_doc_type;
     data.genderEquityRatings = staticData.gender_equity_sustainability_ratings || [];

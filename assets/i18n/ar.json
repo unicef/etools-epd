@@ -20,8 +20,8 @@
     "SAVING_DATA": "Saving data...",
     "ENTER_MESSAGE_HERE": "Enter Message Here",
     "CREATE": "Create"
-  }, 
-  "INTERVENTIONS_LIST": {  
+  },
+  "INTERVENTIONS_LIST": {
     "PD_LIST": "PDs/SPDs قائمة",
     "TABLE_TITLE": "PDs/SPDs",
     "REFERENCE_NO": "رقم المرجع",
@@ -37,6 +37,8 @@
     "CONTINGENCY_PD": "طارئ PD",
     "ENDS_BEFORE": "ينتهي قبل",
     "STARTS_AFTER": "يبدأ بعد",
-    "ENDS_AFTER": "ينتهي بعد"
-  }
+    "ENDS_AFTER": "ينتهي بعد",
+    "BUDGET_OWNER": "UNICEF Budget Owner"
+  },
+  "EDITABLE_BY": "Editable By"
 }

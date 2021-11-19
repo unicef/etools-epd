@@ -7,9 +7,9 @@ export const componentsLazyLoadConfig: GenericObject<string[]> = {
     'components/pages/interventions/intervention-tab-pages/intervention-tabs.js',
     'components/pages/interventions/intervention-tab-pages/intervention-metadata/intervention-metadata.js'
   ],
-  interventions_results: [
+  interventions_workplan: [
     'components/pages/interventions/intervention-tab-pages/intervention-tabs.js',
-    'components/pages/interventions/intervention-tab-pages/intervention-results/intervention-results.js'
+    'components/pages/interventions/intervention-tab-pages/intervention-workplan/intervention-workplan.js'
   ],
   interventions_timing: [
     'components/pages/interventions/intervention-tab-pages/intervention-tabs.js',
@@ -27,11 +27,11 @@ export const componentsLazyLoadConfig: GenericObject<string[]> = {
     'components/pages/interventions/intervention-tab-pages/intervention-tabs.js',
     'components/pages/interventions/intervention-tab-pages/intervention-review/intervention-review.js'
   ],
-  interventions_info: [
+  interventions_progress: [
     'components/pages/interventions/intervention-tab-pages/intervention-tabs.js',
-    'components/pages/interventions/intervention-tab-pages/intervention-info/intervention-info.js'
+    'components/pages/interventions/intervention-tab-pages/intervention-progress/intervention-progress.js'
   ],
-  'page-not-found': ['components/pages/page-not-found.js']
+  'not-found': ['components/pages/not-found.js']
 };
 
 export const getFilePathsToImport = (routeDetails: RouteDetails): string[] | undefined => {
