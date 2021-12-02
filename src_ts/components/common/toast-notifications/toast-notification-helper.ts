@@ -3,7 +3,7 @@ import './etools-toast'; // element loaded (if not, etools-toast will not render
 import {store} from '../../../redux/store';
 import get from 'lodash-es/get';
 import {AnyObject} from '@unicef-polymer/etools-types';
-import {AppShell} from '../../app-shell/app-shell';
+import {AppShell} from '../../../app-shell';
 
 /**
  * Toasts notification messages queue utility class
