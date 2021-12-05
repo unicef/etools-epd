@@ -57,7 +57,7 @@ const loadPageComponents: ActionCreator<ThunkResult> = (routeDetails: RouteDetai
   filesToImport.forEach((filePath: string) => {
     import(importBase + filePath)
       .then(() => {
-        // console.info(`component: ${filePath} has been loaded... yey!`);
+        console.info(`component: ${filePath} has been loaded... yey!`);
       })
       .catch((importError: any) => {
         console.info('component import failed...', importError);
