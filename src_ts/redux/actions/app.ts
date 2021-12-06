@@ -45,8 +45,8 @@ const loadPageComponents: ActionCreator<ThunkResult> = (routeDetails: RouteDetai
     return;
   }
 
-  const importBase = '../../'; // relative to current file
-  // start importing components (lazy loading)
+  // const importBase = '../../'; // relative to current file
+  // // start importing components (lazy loading)
   const filesToImport: string[] | undefined = getFilePathsToImport(routeDetails);
   if (!filesToImport) {
     console.log('No file imports configuration found (componentsLazyLoadConfig)!');
@@ -54,15 +54,65 @@ const loadPageComponents: ActionCreator<ThunkResult> = (routeDetails: RouteDetai
     return;
   }
 
+  // filesToImport.forEach((filePath: string) => {
+  //   import(importBase + filePath)
+  //     .then(() => {
+  //       // console.info(`component: ${filePath} has been loaded... yey!`);
+  //     })
+  //     .catch((importError: any) => {
+  //       console.info('component import failed...', importError);
+  //     });
+  // });
   filesToImport.forEach((filePath: string) => {
-    import(importBase + filePath)
-      .then(() => {
-        // console.info(`component: ${filePath} has been loaded... yey!`);
-      })
-      .catch((importError: any) => {
-        console.info('component import failed...', importError);
-      });
+    if (filePath.includes('intervention-list.js')) {
+      import('../../components/pages/interventions/intervention-list.js');
+    }
+    if (filePath.includes('not-found.js')) {
+      import('../../components/pages/not-found.js');
+    }
+    if (filePath.includes('intervention-metadata.js')) {
+      import('../../components/pages/interventions/intervention-tab-pages/intervention-tabs.js');
+      import(
+        '../../components/pages/interventions/intervention-tab-pages/intervention-metadata/intervention-metadata.js'
+      );
+    }
+    if (filePath.includes('intervention-workplan.js')) {
+      import('../../components/pages/interventions/intervention-tab-pages/intervention-tabs.js');
+      import(
+        '../../components/pages/interventions/intervention-tab-pages/intervention-workplan/intervention-workplan.js'
+      );
+    }
+    if (filePath.includes('intervention-timing.js')) {
+      import('../../components/pages/interventions/intervention-tab-pages/intervention-tabs.js');
+      import('../../components/pages/interventions/intervention-tab-pages/intervention-timing/intervention-timing.js');
+    }
+    if (filePath.includes('intervention-strategy.js')) {
+      import('../../components/pages/interventions/intervention-tab-pages/intervention-tabs.js');
+      import(
+        '../../components/pages/interventions/intervention-tab-pages/intervention-strategy/intervention-strategy.js'
+      );
+    }
+    if (filePath.includes('intervention-attachments.js')) {
+      import('../../components/pages/interventions/intervention-tab-pages/intervention-tabs.js');
+      import(
+        '../../components/pages/interventions/intervention-tab-pages/intervention-attachments/intervention-attachments.js'
+      );
+    }
+    if (filePath.includes('intervention-review.js')) {
+      import('../../components/pages/interventions/intervention-tab-pages/intervention-tabs.js');
+      import('../../components/pages/interventions/intervention-tab-pages/intervention-review/intervention-review.js');
+    }
+    if (filePath.includes('intervention-progress.js')) {
+      import('../../components/pages/interventions/intervention-tab-pages/intervention-tabs.js');
+      import(
+        '../../components/pages/interventions/intervention-tab-pages/intervention-progress/intervention-progress.js'
+      );
+    }
+    if (filePath.includes('intervention-review.js')) {
+      import('../../components/pages/interventions/intervention-tab-pages/intervention-review/intervention-review.js');
+    }
   });
+
   // add page details to redux store, to be used in other components
   const prevRouteDetails = getState().app?.routeDetails;
   if (commingFromPDDetailsToList(prevRouteDetails!, routeDetails)) {
