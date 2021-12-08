@@ -14,11 +14,12 @@ import {fireEvent} from '../../utils/fire-custom-event';
 import isEmpty from 'lodash-es/isEmpty';
 import {updateCurrentUser} from '../../user/user-actions';
 import {pageHeaderStyles} from './page-header-styles';
-import {use} from 'lit-translate';
+import {translate, use} from 'lit-translate';
 import {setLanguage} from '../../../redux/actions/active-language';
 import {activeLanguage} from '../../../redux/reducers/active-language';
 import {countriesDropdownStyles} from './countries-dropdown-styles';
 import {AnyObject, EtoolsUser, GenericObject} from '@unicef-polymer/etools-types';
+
 
 store.addReducers({
   activeLanguage
@@ -117,6 +118,7 @@ export class PageHeader extends connect(store)(LitElement) {
           </div>
 
           <etools-profile-dropdown
+            title=${translate('GENERAL.PROFILEANDSIGNOUT')}
             .sections="${this.profileDrSections}"
             .offices="${this.profileDrOffices}"
             .users="${this.profileDrUsers}"
