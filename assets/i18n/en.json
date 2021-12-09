@@ -19,7 +19,8 @@
     "COMMENT_MODE": "Comment Mode",
     "LOADING": "Loading...",
     "SAVING_DATA": "Saving data...",
-    "ENTER_MESSAGE_HERE": "Enter Message Here"
+    "ENTER_MESSAGE_HERE": "Enter Message Here",
+    "PROFILEANDSIGNOUT": "Profile and Sign out"
   },
   "INTERVENTIONS_LIST": {
     "PD_LIST": "PDs/SPDs List",
