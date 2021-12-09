@@ -20,7 +20,6 @@ import {activeLanguage} from '../../../redux/reducers/active-language';
 import {countriesDropdownStyles} from './countries-dropdown-styles';
 import {AnyObject, EtoolsUser, GenericObject} from '@unicef-polymer/etools-types';
 
-
 store.addReducers({
   activeLanguage
 });
