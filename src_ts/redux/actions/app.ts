@@ -4,7 +4,6 @@ import {ThunkAction} from 'redux-thunk';
 import {RootState} from '../store';
 import {ROOT_PATH} from '../../config/config';
 import {DEFAULT_ROUTE, EtoolsRouter, ROUTE_404, updateAppLocation} from '../../routing/routes';
-import {getFilePathsToImport} from '../../routing/component-lazy-load-config';
 import {getRedirectToListPath} from '../../routing/subpage-redirect';
 import {RouteDetails} from '@unicef-polymer/etools-types';
 
@@ -45,24 +44,65 @@ const loadPageComponents: ActionCreator<ThunkResult> = (routeDetails: RouteDetai
     return;
   }
 
-  const importBase = '../../'; // relative to current file
-  // start importing components (lazy loading)
-  const filesToImport: string[] | undefined = getFilePathsToImport(routeDetails);
-  if (!filesToImport) {
-    console.log('No file imports configuration found (componentsLazyLoadConfig)!');
-    updateAppLocation(ROUTE_404);
-    return;
+  console.log(routeDetails);
+
+  if (routeDetails.routeName === 'not-found') {
+    import('../../components/pages/not-found.js');
+  } else {
+    switch (routeDetails.subRouteName) {
+      case 'list':
+        import('../../components/pages/interventions/intervention-list.js');
+        break;
+      case 'metadata':
+        import('../../components/pages/interventions/intervention-tab-pages/intervention-tabs.js');
+        import(
+          '../../components/pages/interventions/intervention-tab-pages/intervention-metadata/intervention-metadata.js'
+        );
+        break;
+      case 'workplan':
+        import('../../components/pages/interventions/intervention-tab-pages/intervention-tabs.js');
+        import(
+          '../../components/pages/interventions/intervention-tab-pages/intervention-workplan/intervention-workplan.js'
+        );
+        break;
+      case 'timing':
+        import('../../components/pages/interventions/intervention-tab-pages/intervention-tabs.js');
+        import(
+          '../../components/pages/interventions/intervention-tab-pages/intervention-timing/intervention-timing.js'
+        );
+        break;
+      case 'strategy':
+        import('../../components/pages/interventions/intervention-tab-pages/intervention-tabs.js');
+        import(
+          '../../components/pages/interventions/intervention-tab-pages/intervention-strategy/intervention-strategy.js'
+        );
+        break;
+      case 'attachments':
+        import('../../components/pages/interventions/intervention-tab-pages/intervention-tabs.js');
+        import(
+          '../../components/pages/interventions/intervention-tab-pages/intervention-attachments/intervention-attachments.js'
+        );
+        break;
+      case 'review':
+        import('../../components/pages/interventions/intervention-tab-pages/intervention-tabs.js');
+        import(
+          '../../components/pages/interventions/intervention-tab-pages/intervention-review/intervention-review.js'
+        );
+        break;
+      case 'progress':
+        import('../../components/pages/interventions/intervention-tab-pages/intervention-tabs.js');
+        import(
+          '../../components/pages/interventions/intervention-tab-pages/intervention-progress/intervention-progress.js'
+        );
+        break;
+
+      default:
+        console.log('No file imports configuration found (componentsLazyLoadConfig)!');
+        updateAppLocation(ROUTE_404);
+        break;
+    }
   }
 
-  filesToImport.forEach((filePath: string) => {
-    import(importBase + filePath)
-      .then(() => {
-        // console.info(`component: ${filePath} has been loaded... yey!`);
-      })
-      .catch((importError: any) => {
-        console.info('component import failed...', importError);
-      });
-  });
   // add page details to redux store, to be used in other components
   const prevRouteDetails = getState().app?.routeDetails;
   if (commingFromPDDetailsToList(prevRouteDetails!, routeDetails)) {
