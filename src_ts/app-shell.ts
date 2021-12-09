@@ -9,14 +9,14 @@ import {installMediaQueryWatcher} from 'pwa-helpers/media-query.js';
 import {installRouter} from 'pwa-helpers/router.js';
 
 // This element is connected to the Redux store.
-import {store, RootState} from '../../redux/store';
+import {store, RootState} from './redux/store';
 
 // These are the actions needed by this element.
 import {
   navigate,
   // updateOffline,
   updateDrawerState
-} from '../../redux/actions/app';
+} from './redux/actions/app';
 
 // These are the elements needed by this element.
 import '@polymer/app-layout/app-drawer-layout/app-drawer-layout.js';
@@ -33,18 +33,18 @@ import {AppDrawerElement} from '@polymer/app-layout/app-drawer/app-drawer';
 import LoadingMixin from '@unicef-polymer/etools-loading/etools-loading-mixin';
 import {customElement, html, LitElement, property, query} from 'lit-element';
 
-import {AppShellStyles} from './app-shell-styles';
+import {AppShellStyles} from './components/app-shell/app-shell-styles';
 
-import './menu/app-menu.js';
-import './header/page-header.js';
-import './footer/page-footer.js';
+import './components/app-shell/menu/app-menu.js';
+import './components/app-shell/header/page-header.js';
+import './components/app-shell/footer/page-footer.js';
 
-import './app-theme.js';
-import {ToastNotificationHelper} from '../common/toast-notifications/toast-notification-helper';
-import user from '../../redux/reducers/user';
-import commonData, {CommonDataState} from '../../redux/reducers/common-data';
-import {getCurrentUser} from '../user/user-actions';
-import {EtoolsRouter} from '../../routing/routes';
+import './components/app-shell/app-theme.js';
+import {ToastNotificationHelper} from './components/common/toast-notifications/toast-notification-helper';
+import user from './redux/reducers/user';
+import commonData, {CommonDataState} from './redux/reducers/common-data';
+import {getCurrentUser} from './components/user/user-actions';
+import {EtoolsRouter} from './routing/routes';
 import {
   getPartners,
   getLocations,
@@ -57,16 +57,16 @@ import {
   getDropdownsData,
   SET_ALL_STATIC_DATA,
   getCountryProgrammes
-} from '../../redux/actions/common-data';
-import {getAgreements, SET_AGREEMENTS} from '../../redux/actions/agreements';
+} from './redux/actions/common-data';
+import {getAgreements, SET_AGREEMENTS} from './redux/actions/agreements';
 import isEmpty from 'lodash-es/isEmpty';
 import get from 'lodash-es/get';
-import '../env-flags/environment-flags';
+import './components/env-flags/environment-flags';
 import {registerTranslateConfig, use} from 'lit-translate';
 import {EtoolsUser, RouteDetails} from '@unicef-polymer/etools-types';
 import {setStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
-import {SMALL_MENU_ACTIVE_LOCALSTORAGE_KEY} from '../../config/config';
-import {fireEvent} from '../utils/fire-custom-event';
+import {SMALL_MENU_ACTIVE_LOCALSTORAGE_KEY} from './config/config';
+import {fireEvent} from './components/utils/fire-custom-event';
 import {ROOT_PATH} from '@unicef-polymer/etools-modules-common/dist/config/config';
 declare const dayjs: any;
 declare const dayjs_plugin_utc: any;
