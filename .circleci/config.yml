@@ -88,5 +88,4 @@ workflows:
                 - master
                 - staging
                 - develop
-                - migrations
                 - use-migrated-components
