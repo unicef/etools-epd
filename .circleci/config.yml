@@ -93,4 +93,3 @@ workflows:
                 - master
                 - staging
                 - develop
-                - 27678_relative_git_submodules

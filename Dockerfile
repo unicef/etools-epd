@@ -22,7 +22,6 @@ RUN cp -a /tmp/node_modules /code/node_modules
 WORKDIR /code
 RUN npm run build
 
-
 FROM node:12.22.7-alpine3.12
 RUN apk update
 RUN apk add --update bash
