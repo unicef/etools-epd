@@ -19,12 +19,8 @@ WORKDIR /code
 RUN rm -rf node_modules
 RUN cp -a /tmp/node_modules /code/node_modules
 
-# Necessary for circle ci
 WORKDIR /code
-RUN git submodule init && git submodule update --checkout
-
 RUN npm run build
-
 
 FROM node:12.22.7-alpine3.12
 RUN apk update
