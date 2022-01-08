@@ -44,8 +44,6 @@ const loadPageComponents: ActionCreator<ThunkResult> = (routeDetails: RouteDetai
     return;
   }
 
-  console.log(routeDetails);
-
   if (routeDetails.routeName === 'not-found') {
     import('../../components/pages/not-found.js');
   } else {

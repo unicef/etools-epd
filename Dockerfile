@@ -5,7 +5,7 @@ RUN apk add --update bash
 RUN apk add git
 RUN npm config set unsafe-perm true
 RUN npm install -g --unsafe-perm polymer-cli
-RUN npm install -g typescript
+RUN npm install -g typescript@4.x
 
 
 WORKDIR /tmp
@@ -19,20 +19,16 @@ WORKDIR /code
 RUN rm -rf node_modules
 RUN cp -a /tmp/node_modules /code/node_modules
 
-# Necessary for circle ci
 WORKDIR /code
-RUN git submodule init && git submodule update --checkout
-
 RUN npm run build
-
 
 FROM node:12.22.7-alpine3.12
 RUN apk update
 RUN apk add --update bash
 
 WORKDIR /code
-RUN npm install express --no-save
-RUN npm install browser-capabilities@1.1.3 --no-save
+RUN npm install express@4.17.x
+RUN npm install browser-capabilities@1.1.x
 COPY --from=builder /code/express.js /code/express.js
 COPY --from=builder /code/build /code/build
 EXPOSE 8080
