@@ -93,3 +93,7 @@ workflows:
                 - master
                 - staging
                 - develop
+<<<<<<< HEAD
+=======
+                - migrations
+>>>>>>> staging
