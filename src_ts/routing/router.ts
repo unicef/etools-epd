@@ -9,12 +9,12 @@ export class Router {
   routes: {regex: RegExp | string; handler: (params: RouteCallbackParams) => RouteDetails}[] = [];
   root = '/';
 
-  static clearSlashes(path: string): string {
+  static clearStartEndSlashes(path: string): string {
     return path.toString().replace(/\/$/, '').replace(/^\//, '');
   }
 
   constructor(rootPath?: string) {
-    this.root = rootPath && rootPath !== '/' ? '/' + Router.clearSlashes(rootPath) + '/' : '/';
+    this.root = rootPath && rootPath !== '/' ? '/' + Router.clearStartEndSlashes(rootPath) + '/' : '/';
   }
 
   getLocationPath(path?: string): string {
@@ -43,16 +43,16 @@ export class Router {
     return this;
   }
 
-  buildQueryParams(paramsStr: string): RouteQueryParams {
-    const qParams: RouteQueryParams = {} as RouteQueryParams;
+  decodeQueryStrToObj(paramsStr: string): RouteQueryParams {
+    const qsObj: RouteQueryParams = {} as RouteQueryParams;
     if (paramsStr) {
       const qs: string[] = paramsStr.split('&');
       qs.forEach((qp: string) => {
         const qParam = qp.split('=');
-        qParams[qParam[0] as string] = qParam[1];
+        qsObj[qParam[0] as string] = qParam[1];
       });
     }
-    return qParams;
+    return qsObj;
   }
 
   /**
@@ -79,7 +79,7 @@ export class Router {
       if (match) {
         const routeParams: RouteCallbackParams = {
           matchDetails: match.slice(0).map((matchVal: string) => decodeURIComponent(matchVal)),
-          queryParams: this.buildQueryParams(qs)
+          queryParams: this.decodeQueryStrToObj(qs)
         };
         routeDetails = this.routes[i].handler.bind({}, routeParams)();
         break;
@@ -89,7 +89,7 @@ export class Router {
   }
 
   prepareLocationPath(path: string): string {
-    return path.indexOf(this.root) === -1 ? this.root + Router.clearSlashes(path) : path;
+    return path.indexOf(this.root) === -1 ? this.root + Router.clearStartEndSlashes(path) : path;
   }
 
   pushState(path?: string) {

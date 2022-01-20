@@ -39,7 +39,6 @@ import {
   InterventionsListStyles,
   InterventionsTableStyles
 } from '@unicef-polymer/etools-modules-common/dist/list/list-styles';
-import {isJsonStrMatch} from '../../utils/utils';
 import {addCurrencyAmountDelimiter} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {notHiddenPartnersSelector} from '../../../redux/reducers/common-data';
 import {translate, get as getTranslation} from 'lit-translate';
@@ -128,8 +127,11 @@ export class InterventionList extends connect(store)(LitElement) {
   @property({type: Array})
   interventionStatuses!: LabelAndValue[];
 
+  /**
+   * Used to preserve previously selected filters and pagination when navigating away from the list and comming back
+   */
   @property({type: Object})
-  urlParams!: GenericObject;
+  prevQueryStringObj!: GenericObject;
 
   listColumns: EtoolsTableColumn[] = [
     {
@@ -230,19 +232,19 @@ export class InterventionList extends connect(store)(LitElement) {
     ) {
       if (
         (!stateRouteDetails.queryParams || Object.keys(stateRouteDetails.queryParams).length === 0) &&
-        this.urlParams
+        this.prevQueryStringObj
       ) {
         this.routeDetails = stateRouteDetails;
-        this.updateCurrentParams(this.urlParams);
+        this.updateCurrentParams(this.prevQueryStringObj);
         return;
       }
 
       this.onParamsChange(stateRouteDetails, state.interventions?.shouldReGetList);
     }
 
-    if (!isJsonStrMatch(this.interventionStatuses, state.commonData!.interventionStatuses)) {
-      this.interventionStatuses = [...state.commonData!.interventionStatuses];
-    }
+    // if (!isJsonStrMatch(this.interventionStatuses, state.commonData!.interventionStatuses)) {
+    //   this.interventionStatuses = [...state.commonData!.interventionStatuses];
+    // }
 
     if (state.user && state.user.permissions) {
       this.canExport = state.user.permissions.canExport;
@@ -302,7 +304,7 @@ export class InterventionList extends connect(store)(LitElement) {
       currentParams = pick(currentParams, ['sort', 'page_size']);
     }
     const newParams: RouteQueryParams = {...currentParams, ...paramsToUpdate};
-    this.urlParams = newParams;
+    this.prevQueryStringObj = newParams;
     const stringParams: string = buildUrlQueryString(newParams);
     this.exportParams = stringParams;
     replaceAppLocation(`${this.routeDetails!.path}?${stringParams}`);
@@ -388,10 +390,10 @@ export class InterventionList extends connect(store)(LitElement) {
 
     // set required params in url
     if (!currentParams.page_size) {
-      // urlParams store page previous filtering params, if set, apply them to preserve user filters selection
+      // prevQueryStringObj store page previous filtering params, if set, apply them to preserve user filters selection
       this.updateCurrentParams(
-        this.urlParams
-          ? this.urlParams
+        this.prevQueryStringObj
+          ? this.prevQueryStringObj
           : {
               page_size: '20',
               status: ['draft', 'active', 'review', 'signed', 'signature']
@@ -399,8 +401,8 @@ export class InterventionList extends connect(store)(LitElement) {
       );
       return false;
     } else {
-      // store existing url params in urlParams property, to be used on navigation to PD list as default params
-      this.urlParams = currentParams;
+      // store existing url params in prevQueryStringObj property, to be used on navigation to PD list as default params
+      this.prevQueryStringObj = currentParams;
       return true;
     }
   }
