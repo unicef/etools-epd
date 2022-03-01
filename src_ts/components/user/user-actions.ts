@@ -10,6 +10,9 @@ export function getCurrentUser() {
     endpoint: {url: getEndpoint(etoolsEndpoints.userProfile).url}
   })
     .then((response: EtoolsUser) => {
+      if (redirectToPMPIfNeccessary(response)) {
+        return;
+      }
       store.dispatch(updateUserData(response));
       return response;
     })
@@ -19,6 +22,17 @@ export function getCurrentUser() {
       }
       throw error;
     });
+}
+
+function redirectToPMPIfNeccessary(user: EtoolsUser) {
+  // eslint-disable-next-line no-extra-boolean-cast
+  if (user.is_superuser.toLocaleLowerCase() === 'false') {
+    if (user.is_unicef_user) {
+      window.location.href = window.location.href.replace('epd', 'pmp');
+      return true;
+    }
+  }
+  return false;
 }
 
 export function updateCurrentUser(profile: AnyObject) {
