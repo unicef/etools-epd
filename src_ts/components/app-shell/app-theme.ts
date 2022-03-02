@@ -57,6 +57,11 @@ documentContainer.innerHTML = `
         --error-box-border-color: #ebccd1;
         --error-box-text-color: var(--error-color);
 
+        --gray-06: rgba(0,0,0,.06);
+        --gray-20: rgba(0,0,0,.20);
+        --gray-50: rgba(0,0,0,.50);
+        --gray-light: rgba(0,0,0,.38);
+
         --ecp-header-color: var(--primary-text-color);
 
         --etools-dialog-primary-color: #FFFFFF;
