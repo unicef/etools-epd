@@ -25,7 +25,7 @@ export function getCurrentUser() {
 }
 
 function redirectToPMPIfNeccessary(user: EtoolsUser) {
-  if (user.is_superuser.toLocaleLowerCase() === 'false') {
+  if (!user.is_superuser) {
     if (user.is_unicef_user) {
       window.location.href = window.location.href.replace('epd', 'pmp');
       return true;
