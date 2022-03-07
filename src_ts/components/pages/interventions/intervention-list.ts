@@ -7,13 +7,10 @@ import '@unicef-polymer/etools-modules-common/dist/layout/page-content-header/pa
 // eslint-disable-next-line max-len
 import {pageContentHeaderSlottedStyles} from '@unicef-polymer/etools-modules-common/dist/layout/page-content-header/page-content-header-slotted-styles';
 
-import '@unicef-polymer/etools-modules-common/dist/layout/filters/etools-filters';
-import {
-  updateFilterSelectionOptions,
-  updateFiltersSelectedValues
-} from '@unicef-polymer/etools-modules-common/dist/list/filters';
+import '@unicef-polymer/etools-filters/src/etools-filters';
+import {updateFilterSelectionOptions, updateFiltersSelectedValues} from '@unicef-polymer/etools-filters/src/filters';
 import {ROOT_PATH} from '../../../config/config';
-import {EtoolsFilter} from '@unicef-polymer/etools-modules-common/dist/layout/filters/etools-filters';
+import {EtoolsFilter} from '@unicef-polymer/etools-filters/src/etools-filters';
 import {pageLayoutStyles} from '../../styles/page-layout-styles';
 import {buttonsStyles} from '../../styles/button-styles';
 import {elevationStyles} from '../../styles/lit-styles/elevation-styles';
