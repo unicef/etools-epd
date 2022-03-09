@@ -40,6 +40,7 @@ import './footer/page-footer.js';
 
 import './app-theme.js';
 import {ToastNotificationHelper} from '../common/toast-notifications/toast-notification-helper';
+import '../common/etools-notifications/etools-notifications';
 import user from '../../redux/reducers/user';
 import commonData, {CommonDataState} from '../../redux/reducers/common-data';
 import {getCurrentUser} from '../user/user-actions';
@@ -210,6 +211,9 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
     // init toasts notifications queue
     this.appToastsNotificationsHelper = new ToastNotificationHelper();
     this.appToastsNotificationsHelper.addToastNotificationListeners();
+
+    const etoolsNotifications = document.createElement('etools-notifications');
+    document.querySelector('body')!.appendChild(etoolsNotifications);
 
     const menuTypeStoredVal: string | null = localStorage.getItem(SMALL_MENU_ACTIVE_LOCALSTORAGE_KEY);
     if (!menuTypeStoredVal) {
