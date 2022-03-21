@@ -51,6 +51,7 @@ import {etoolsEndpoints} from '../../../endpoints/endpoints-list';
 import {defaultFilters, InterventionFilterKeys} from './interventions-filters';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {debounce} from '../../utils/debouncer';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 
 /**
  * @LitElement
@@ -322,6 +323,8 @@ export class InterventionList extends connect(store)(LitElement) {
       this.showLoading = false;
     } catch (error) {
       console.error('[EtoolsInterventionsList]: get Interventions req error...', error);
+      this.showLoading = false;
+      fireEvent(this, 'toast', {text: getTranslation('ERROR_LOADING_DATA')});
     }
   }
 
