@@ -63,6 +63,12 @@ const loadPageComponents: ActionCreator<ThunkResult> = (routeDetails: RouteDetai
           '../../components/pages/interventions/intervention-tab-pages/intervention-workplan/intervention-workplan.js'
         );
         break;
+      case 'workplan-editor':
+        import('../../components/pages/interventions/intervention-tab-pages/intervention-tabs.js');
+        import(
+          '../../components/pages/interventions/intervention-tab-pages/intervention-workplan-editor/intervention-workplan-editor.js'
+        );
+        break;
       case 'timing':
         import('../../components/pages/interventions/intervention-tab-pages/intervention-tabs.js');
         import(
