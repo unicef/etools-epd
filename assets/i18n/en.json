@@ -19,7 +19,8 @@
     "COMMENT_MODE": "Comment Mode",
     "LOADING": "Loading...",
     "SAVING_DATA": "Saving data...",
-    "ENTER_MESSAGE_HERE": "Enter Message Here"
+    "ENTER_MESSAGE_HERE": "Enter Message Here",
+    "PROFILEANDSIGNOUT": "Profile and Sign out"
   },
   "INTERVENTIONS_LIST": {
     "PD_LIST": "PDs/SPDs List",
@@ -39,5 +40,6 @@
     "STARTS_AFTER": "Starts After",
     "ENDS_AFTER": "Ends After",
     "BUDGET_OWNER": "UNICEF Budget Owner"
-  }
+  },
+  "EDITABLE_BY": "Editable By"
 }

@@ -4,7 +4,7 @@ jobs:
     working_directory: ~/code
     # The primary container is an instance of the first list image listed. Your build commands run in this container.
     docker:
-      - image: node:12.18.3
+      - image: node:12.22.7
     steps:
       - checkout
       - run:
@@ -36,7 +36,7 @@ jobs:
     working_directory: ~/code
     # The primary container is an instance of the first list image listed. Your build commands run in this container.
     docker:
-      - image: node:12.18.3
+      - image: node:12.22.7
     steps:
       - checkout
       - setup_remote_docker
@@ -57,6 +57,11 @@ jobs:
             tar -xz -C /tmp -f /tmp/docker-$VER.tgz
             mv /tmp/docker/* /usr/bin
           # build and push Docker image
+      - run:
+          name: 'Pull Submodule'
+          command: |
+            git submodule init
+            git submodule update --checkout
       - run:
           name: Building the image
           command: |
@@ -88,4 +93,3 @@ workflows:
                 - master
                 - staging
                 - develop
-                - circleci-config

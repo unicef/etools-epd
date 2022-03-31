@@ -5,18 +5,15 @@ import {RouteCallbackParams, RouteDetails} from '@unicef-polymer/etools-types';
 export const EtoolsRouter = new Router(ROOT_PATH);
 const routeParamRegex = '([^\\/?#=+]+)';
 
-EtoolsRouter.addRoute(
-  new RegExp('^interventions/list$'),
-  (params: RouteCallbackParams): RouteDetails => {
-    return {
-      routeName: 'interventions',
-      subRouteName: 'list',
-      path: params.matchDetails[0],
-      queryParams: params.queryParams,
-      params: null
-    };
-  }
-)
+EtoolsRouter.addRoute(new RegExp('^interventions/list$'), (params: RouteCallbackParams): RouteDetails => {
+  return {
+    routeName: 'interventions',
+    subRouteName: 'list',
+    path: params.matchDetails[0],
+    queryParams: params.queryParams,
+    params: null
+  };
+})
   .addRoute(
     new RegExp(`^interventions\\/${routeParamRegex}\\/${routeParamRegex}$`),
     (params: RouteCallbackParams): RouteDetails => {
@@ -46,18 +43,15 @@ EtoolsRouter.addRoute(
       };
     }
   )
-  .addRoute(
-    new RegExp(`^not-found$`),
-    (params: RouteCallbackParams): RouteDetails => {
-      return {
-        routeName: 'not-found',
-        subRouteName: null,
-        path: params.matchDetails[0],
-        queryParams: null,
-        params: null
-      };
-    }
-  );
+  .addRoute(new RegExp(`^not-found$`), (params: RouteCallbackParams): RouteDetails => {
+    return {
+      routeName: 'not-found',
+      subRouteName: null,
+      path: params.matchDetails[0],
+      queryParams: null,
+      params: null
+    };
+  });
 
 /**
  * Utility used to update location based on routes and dispatch navigate action (optional)

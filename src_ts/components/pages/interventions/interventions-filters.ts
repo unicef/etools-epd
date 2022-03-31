@@ -15,7 +15,8 @@ export enum InterventionFilterKeys {
   end = 'end',
   end_after = 'end_after',
   contingency_pd = 'contingency_pd',
-  budget_owner = 'budget_owner__in'
+  budget_owner = 'budget_owner__in',
+  editable_by = 'editable_by'
 }
 
 export type FilterKeysAndTheirSelectedValues = {[key in InterventionFilterKeys]?: any};
@@ -41,6 +42,7 @@ export const selectedValueTypeByFilterKey: AnyObject = {
   [InterventionFilterKeys.end]: 'string',
   [InterventionFilterKeys.end_after]: 'string',
   [InterventionFilterKeys.contingency_pd]: 'boolean',
+  [InterventionFilterKeys.editable_by]: 'string',
   [InterventionFilterKeys.budget_owner]: 'Array'
 };
 
@@ -111,6 +113,13 @@ export const defaultFilters: EtoolsFilter[] = [
     type: EtoolsFilterTypes.Toggle,
     filterKey: InterventionFilterKeys.contingency_pd,
     selectedValue: false,
+    selected: true
+  },
+  {
+    filterName: translate('EDITABLE_BY'),
+    type: EtoolsFilterTypes.Dropdown,
+    filterKey: InterventionFilterKeys.editable_by,
+    selectedValue: '',
     selected: true
   },
   {

@@ -19,7 +19,8 @@
     "COMMENT_MODE": "Mod Comentariu",
     "LOADING": "Se incarca...",
     "SAVING_DATA": "Se salveaza datele...",
-    "ENTER_MESSAGE_HERE": "Introduceti Mesajul Aici"
+    "ENTER_MESSAGE_HERE": "Introduceti Mesajul Aici",
+    "PROFILEANDSIGNOUT": "Profil și deconectare"
   },
   "INTERVENTIONS_LIST": {
     "PD_LIST": "Lista PD/SPD",
@@ -39,5 +40,6 @@
     "STARTS_AFTER": "Incepe dupa",
     "ENDS_AFTER": "Finalizat dupa",
     "BUDGET_OWNER": "Responsabil UNICEF al Bugetului"
-  }
+  },
+  "EDITABLE_BY": "Editable By"
 }
