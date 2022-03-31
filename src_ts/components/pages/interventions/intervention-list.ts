@@ -7,13 +7,10 @@ import '@unicef-polymer/etools-modules-common/dist/layout/page-content-header/pa
 // eslint-disable-next-line max-len
 import {pageContentHeaderSlottedStyles} from '@unicef-polymer/etools-modules-common/dist/layout/page-content-header/page-content-header-slotted-styles';
 
-import '@unicef-polymer/etools-modules-common/dist/layout/filters/etools-filters';
-import {
-  updateFilterSelectionOptions,
-  updateFiltersSelectedValues
-} from '@unicef-polymer/etools-modules-common/dist/list/filters';
+import '@unicef-polymer/etools-filters/src/etools-filters';
+import {updateFilterSelectionOptions, updateFiltersSelectedValues} from '@unicef-polymer/etools-filters/src/filters';
 import {ROOT_PATH} from '../../../config/config';
-import {EtoolsFilter} from '@unicef-polymer/etools-modules-common/dist/layout/filters/etools-filters';
+import {EtoolsFilter} from '@unicef-polymer/etools-filters/src/etools-filters';
 import {pageLayoutStyles} from '../../styles/page-layout-styles';
 import {buttonsStyles} from '../../styles/button-styles';
 import {elevationStyles} from '../../styles/lit-styles/elevation-styles';
@@ -39,7 +36,6 @@ import {
   InterventionsListStyles,
   InterventionsTableStyles
 } from '@unicef-polymer/etools-modules-common/dist/list/list-styles';
-import {isJsonStrMatch} from '../../utils/utils';
 import {addCurrencyAmountDelimiter} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {notHiddenPartnersSelector} from '../../../redux/reducers/common-data';
 import {translate, get as getTranslation} from 'lit-translate';
@@ -55,6 +51,7 @@ import {etoolsEndpoints} from '../../../endpoints/endpoints-list';
 import {defaultFilters, InterventionFilterKeys} from './interventions-filters';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {debounce} from '../../utils/debouncer';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 
 /**
  * @LitElement
@@ -128,8 +125,11 @@ export class InterventionList extends connect(store)(LitElement) {
   @property({type: Array})
   interventionStatuses!: LabelAndValue[];
 
+  /**
+   * Used to preserve previously selected filters and pagination when navigating away from the list and comming back
+   */
   @property({type: Object})
-  urlParams!: GenericObject;
+  prevQueryStringObj!: GenericObject;
 
   listColumns: EtoolsTableColumn[] = [
     {
@@ -230,19 +230,19 @@ export class InterventionList extends connect(store)(LitElement) {
     ) {
       if (
         (!stateRouteDetails.queryParams || Object.keys(stateRouteDetails.queryParams).length === 0) &&
-        this.urlParams
+        this.prevQueryStringObj
       ) {
         this.routeDetails = stateRouteDetails;
-        this.updateCurrentParams(this.urlParams);
+        this.updateCurrentParams(this.prevQueryStringObj);
         return;
       }
 
       this.onParamsChange(stateRouteDetails, state.interventions?.shouldReGetList);
     }
 
-    if (!isJsonStrMatch(this.interventionStatuses, state.commonData!.interventionStatuses)) {
-      this.interventionStatuses = [...state.commonData!.interventionStatuses];
-    }
+    // if (!isJsonStrMatch(this.interventionStatuses, state.commonData!.interventionStatuses)) {
+    //   this.interventionStatuses = [...state.commonData!.interventionStatuses];
+    // }
 
     if (state.user && state.user.permissions) {
       this.canExport = state.user.permissions.canExport;
@@ -302,7 +302,7 @@ export class InterventionList extends connect(store)(LitElement) {
       currentParams = pick(currentParams, ['sort', 'page_size']);
     }
     const newParams: RouteQueryParams = {...currentParams, ...paramsToUpdate};
-    this.urlParams = newParams;
+    this.prevQueryStringObj = newParams;
     const stringParams: string = buildUrlQueryString(newParams);
     this.exportParams = stringParams;
     replaceAppLocation(`${this.routeDetails!.path}?${stringParams}`);
@@ -323,6 +323,8 @@ export class InterventionList extends connect(store)(LitElement) {
       this.showLoading = false;
     } catch (error) {
       console.error('[EtoolsInterventionsList]: get Interventions req error...', error);
+      this.showLoading = false;
+      fireEvent(this, 'toast', {text: getTranslation('ERROR_LOADING_DATA')});
     }
   }
 
@@ -388,10 +390,10 @@ export class InterventionList extends connect(store)(LitElement) {
 
     // set required params in url
     if (!currentParams.page_size) {
-      // urlParams store page previous filtering params, if set, apply them to preserve user filters selection
+      // prevQueryStringObj store page previous filtering params, if set, apply them to preserve user filters selection
       this.updateCurrentParams(
-        this.urlParams
-          ? this.urlParams
+        this.prevQueryStringObj
+          ? this.prevQueryStringObj
           : {
               page_size: '20',
               status: ['draft', 'active', 'review', 'signed', 'signature']
@@ -399,8 +401,8 @@ export class InterventionList extends connect(store)(LitElement) {
       );
       return false;
     } else {
-      // store existing url params in urlParams property, to be used on navigation to PD list as default params
-      this.urlParams = currentParams;
+      // store existing url params in prevQueryStringObj property, to be used on navigation to PD list as default params
+      this.prevQueryStringObj = currentParams;
       return true;
     }
   }

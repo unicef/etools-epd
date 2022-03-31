@@ -245,7 +245,7 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
     });
     installMediaQueryWatcher(`(min-width: 460px)`, () => store.dispatch(updateDrawerState(false)));
 
-    getCurrentUser().then((user: EtoolsUser) => {
+    getCurrentUser().then((user?: EtoolsUser) => {
       if (user) {
         this.user = user;
         // @ts-ignore

@@ -20,7 +20,8 @@
     "SAVING_DATA": "Saving data...",
     "ENTER_MESSAGE_HERE": "Enter Message Here",
     "CREATE": "Create",
-    "PROFILEANDSIGNOUT": "Profile and Sign out"
+    "PROFILEANDSIGNOUT": "Profile and Sign out",
+    "ERROR_LOADING_DATA": "Error on loading data"
   },
   "INTERVENTIONS_LIST": {
     "PD_LIST": "PDs/SPDs قائمة",
