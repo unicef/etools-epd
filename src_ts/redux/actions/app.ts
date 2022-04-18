@@ -11,6 +11,7 @@ import {UPDATE_ROUTE_AND_RESET_INTERVENTION} from '../../components/pages/interv
 
 export const UPDATE_ROUTE_DETAILS = 'UPDATE_ROUTE_DETAILS';
 export const UPDATE_DRAWER_STATE = 'UPDATE_DRAWER_STATE';
+export const UPDATE_SMALLMENU_STATE = 'UPDATE_SMALLMENU_STATE';
 
 export interface AppActionUpdateRouteDetails extends Action<'UPDATE_ROUTE_DETAILS'> {
   routeDetails: any;
@@ -121,6 +122,13 @@ export const updateDrawerState: ActionCreator<AppActionUpdateDrawerState> = (ope
   return {
     type: UPDATE_DRAWER_STATE,
     opened
+  };
+};
+
+export const updateSmallMenu: any = (smallMenu: boolean) => {
+  return {
+    type: UPDATE_SMALLMENU_STATE,
+    smallMenu
   };
 };
 

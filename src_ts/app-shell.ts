@@ -359,6 +359,7 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
     this.mainPage = state.app!.routeDetails!.routeName;
     this.subPage = state.app!.routeDetails!.subRouteName;
     this.drawerOpened = state.app!.drawerOpened;
+    this.smallMenu = state.app!.smallMenu;
     if (get(state, 'app.toastNotification.active')) {
       fireEvent(this, 'toast', {
         text: state.app!.toastNotification.message,
