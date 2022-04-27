@@ -11,6 +11,7 @@ import {UPDATE_ROUTE_AND_RESET_INTERVENTION} from '../../components/pages/interv
 
 export const UPDATE_ROUTE_DETAILS = 'UPDATE_ROUTE_DETAILS';
 export const UPDATE_DRAWER_STATE = 'UPDATE_DRAWER_STATE';
+export const UPDATE_SMALLMENU_STATE = 'UPDATE_SMALLMENU_STATE';
 
 export interface AppActionUpdateRouteDetails extends Action<'UPDATE_ROUTE_DETAILS'> {
   routeDetails: any;
@@ -61,6 +62,12 @@ const loadPageComponents: ActionCreator<ThunkResult> = (routeDetails: RouteDetai
         import('../../components/pages/interventions/intervention-tab-pages/intervention-tabs.js');
         import(
           '../../components/pages/interventions/intervention-tab-pages/intervention-workplan/intervention-workplan.js'
+        );
+        break;
+      case 'workplan-editor':
+        import('../../components/pages/interventions/intervention-tab-pages/intervention-tabs.js');
+        import(
+          '../../components/pages/interventions/intervention-tab-pages/intervention-workplan-editor/intervention-workplan-editor.js'
         );
         break;
       case 'timing':
@@ -115,6 +122,13 @@ export const updateDrawerState: ActionCreator<AppActionUpdateDrawerState> = (ope
   return {
     type: UPDATE_DRAWER_STATE,
     opened
+  };
+};
+
+export const updateSmallMenu: any = (smallMenu: boolean) => {
+  return {
+    type: UPDATE_SMALLMENU_STATE,
+    smallMenu
   };
 };
 
