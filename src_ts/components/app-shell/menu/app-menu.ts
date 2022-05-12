@@ -9,6 +9,8 @@ import {fireEvent} from '../../utils/fire-custom-event';
 import {ROOT_PATH, SMALL_MENU_ACTIVE_LOCALSTORAGE_KEY} from '../../../config/config';
 import {customElement, html, LitElement, property} from 'lit-element';
 import {translate} from 'lit-translate';
+import {store} from '../../../redux/store';
+import {updateSmallMenu} from '../../../redux/actions/app';
 
 /**
  * main menu
@@ -105,6 +107,7 @@ export class AppMenu extends LitElement {
     this.smallMenu = !this.smallMenu;
     const localStorageVal: number = this.smallMenu ? 1 : 0;
     localStorage.setItem(SMALL_MENU_ACTIVE_LOCALSTORAGE_KEY, String(localStorageVal));
+    store.dispatch(updateSmallMenu(this.smallMenu));
     fireEvent(this, 'toggle-small-menu', {value: this.smallMenu});
   }
 }
