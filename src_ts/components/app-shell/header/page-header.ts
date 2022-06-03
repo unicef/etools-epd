@@ -278,6 +278,7 @@ export class PageHeader extends connect(store)(LitElement) {
   }
 
   private updateUserPreference(language: string) {
+    // @ts-ignore
     sendRequest({endpoint: etoolsEndpoints.userProfile, method: 'PATCH', body: {preferences: {language: language}}})
       .then((response) => {
         store.dispatch(updateUserData(response));
