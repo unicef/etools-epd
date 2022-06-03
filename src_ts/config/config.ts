@@ -21,5 +21,5 @@ export const getDomainByEnv = () => {
 
 export const isProductionServer = () => {
   const location = window.location.host;
-  return location.indexOf('demo.unicef.io') > -1 || localStorage.indexOf(PROD_DOMAIN);
+  return location.indexOf('demo.unicef.io') > -1 || location.indexOf(PROD_DOMAIN) > -1;
 };
