@@ -14,7 +14,7 @@ import {RootAction} from '../store';
 import {SHOW_TOAST, CLOSE_TOAST} from '../actionsContants';
 import {RouteDetails} from '@unicef-polymer/etools-types';
 // eslint-disable-next-line max-len
-import {UPDATE_ROUTE_AND_RESET_INTERVENTION} from '../../components/pages/interventions/intervention-tab-pages/common/actions/actionsContants';
+import {UPDATE_ROUTE} from '../../components/pages/interventions/intervention-tab-pages/common/actions/actionsContants';
 
 export interface AppState {
   routeDetails: RouteDetails;
@@ -45,7 +45,7 @@ const app: Reducer<AppState, RootAction> = (state = INITIAL_STATE, action) => {
         ...state,
         routeDetails: action.routeDetails
       };
-    case UPDATE_ROUTE_AND_RESET_INTERVENTION:
+    case UPDATE_ROUTE:
       return {
         ...state,
         routeDetails: action.routeDetails
