@@ -10,9 +10,7 @@
     "src/components/pages/interventions/intervention-tab-pages/intervention-strategy/intervention-strategy.js",
     "src/components/pages/interventions/intervention-tab-pages/intervention-workplan/intervention-workplan.js",
     "src/components/pages/interventions/intervention-tab-pages/intervention-workplan-editor/intervention-workplan-editor.js",
-    "src/components/pages/interventions/intervention-tab-pages/intervention-attachments/intervention-attachments.js",
-    "src/components/pages/interventions/intervention-tab-pages/intervention-timing/intervention-timing.js",
-    "src/components/pages/interventions/intervention-tab-pages/intervention-review/intervention-review.js"
+    "src/components/pages/interventions/intervention-tab-pages/intervention-timing/intervention-timing.js"
   ],
   "sources": ["src/**/*", "images/**/*", "assets/**", "package.json"],
   "extraDependencies": [

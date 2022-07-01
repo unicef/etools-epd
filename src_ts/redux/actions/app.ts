@@ -91,18 +91,6 @@ const loadPageComponents: ActionCreator<ThunkResult> = (routeDetails: RouteDetai
           '../../components/pages/interventions/intervention-tab-pages/intervention-strategy/intervention-strategy.js'
         );
         break;
-      case 'attachments':
-        import('../../components/pages/interventions/intervention-tab-pages/intervention-tabs.js');
-        import(
-          '../../components/pages/interventions/intervention-tab-pages/intervention-attachments/intervention-attachments.js'
-        );
-        break;
-      case 'review':
-        import('../../components/pages/interventions/intervention-tab-pages/intervention-tabs.js');
-        import(
-          '../../components/pages/interventions/intervention-tab-pages/intervention-review/intervention-review.js'
-        );
-        break;
       case 'progress':
         import('../../components/pages/interventions/intervention-tab-pages/intervention-tabs.js');
         import(
