@@ -164,13 +164,13 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
                 this.mainPage,
                 'interventions',
                 this.subPage,
-                'overview|metadata|strategy|workplan|timing|review|attachments|info'
+                'overview|metadata|strategy|workplan|workplan-editor|timing|review|attachments|info'
               )}"
               ?hidden="${!this.isActivePage(
                 this.mainPage,
                 'interventions',
                 this.subPage,
-                'overview|metadata|strategy|workplan|timing|review|attachments|info'
+                'overview|metadata|strategy|workplan|workplan-editor|timing|review|attachments|info'
               )}"
             >
             </intervention-tabs>
@@ -359,6 +359,7 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
     this.mainPage = state.app!.routeDetails!.routeName;
     this.subPage = state.app!.routeDetails!.subRouteName;
     this.drawerOpened = state.app!.drawerOpened;
+    this.smallMenu = state.app!.smallMenu;
     if (get(state, 'app.toastNotification.active')) {
       fireEvent(this, 'toast', {
         text: state.app!.toastNotification.message,

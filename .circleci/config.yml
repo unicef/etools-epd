@@ -93,4 +93,3 @@ workflows:
                 - master
                 - staging
                 - develop
-                - use-migrated-components

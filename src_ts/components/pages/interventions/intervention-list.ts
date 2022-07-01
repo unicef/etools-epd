@@ -84,7 +84,12 @@ export class InterventionList extends connect(store)(LitElement) {
       </page-content-header>
 
       <section class="elevation page-content filters" elevation="1">
-        <etools-filters .filters="${this.filters}" @filter-change="${this.filtersChange}"></etools-filters>
+        <etools-filters
+          .filters="${this.filters}"
+          @filter-change="${this.filtersChange}"
+          .textFilters="${translate('GENERAL.FILTERS')}"
+          .textClearAll="${translate('GENERAL.CLEAR_ALL')}"
+        ></etools-filters>
       </section>
 
       <section class="elevation page-content no-padding" elevation="1">
