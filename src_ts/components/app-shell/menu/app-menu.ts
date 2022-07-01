@@ -28,7 +28,7 @@ export class AppMenu extends LitElement {
     // language=HTML
     return html`
       <div class="menu-header">
-        <span id="app-name"> ePD </span>
+        <span id="app-name"> eCN </span>
 
         <span class="ripple-wrapper main">
           <iron-icon
@@ -38,7 +38,7 @@ export class AppMenu extends LitElement {
           ></iron-icon>
           <paper-ripple class="circle" center></paper-ripple>
         </span>
-        <paper-tooltip for="menu-header-top-icon" position="right"> ePD </paper-tooltip>
+        <paper-tooltip for="menu-header-top-icon" position="right"> eCN </paper-tooltip>
 
         <span class="chev-right">
           <iron-icon id="expand-menu" icon="chevron-right" @tap="${() => this._toggleSmallMenu()}"></iron-icon>
