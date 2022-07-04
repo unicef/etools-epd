@@ -68,6 +68,7 @@ import {setStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-s
 import {SMALL_MENU_ACTIVE_LOCALSTORAGE_KEY} from './config/config';
 import {fireEvent} from './components/utils/fire-custom-event';
 import {ROOT_PATH} from '@unicef-polymer/etools-modules-common/dist/config/config';
+import './components/pages/interventions/new-intervention';
 declare const dayjs: any;
 declare const dayjs_plugin_utc: any;
 declare const dayjs_plugin_isSameOrBefore: any;
@@ -111,6 +112,11 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
     // main template
     // language=HTML
     return html`
+      <style>
+        *[hidden] {
+          display: none !important;
+        }
+      </style>
       <environment-flags></environment-flags>
 
       <etools-piwik-analytics
@@ -158,6 +164,11 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
               ?active="${this.isActivePage(this.mainPage, 'interventions', this.subPage, 'list')}"
               ?hidden="${!this.isActivePage(this.mainPage, 'interventions', this.subPage, 'list')}"
             ></intervention-list>
+            <new-intervention
+              ?active="${this.isActivePage(this.mainPage, 'interventions', this.subPage, 'new')}"
+              ?hidden="${!this.isActivePage(this.mainPage, 'interventions', this.subPage, 'new')}"
+            >
+            </new-intervention>
             <intervention-tabs
               class="page"
               ?active="${this.isActivePage(
