@@ -97,7 +97,8 @@ const loadPageComponents: ActionCreator<ThunkResult> = (routeDetails: RouteDetai
           '../../components/pages/interventions/intervention-tab-pages/intervention-progress/intervention-progress.js'
         );
         break;
-
+      case 'new':
+        break;
       default:
         console.log('No file imports configuration found (componentsLazyLoadConfig)!');
         updateAppLocation(ROUTE_404);
