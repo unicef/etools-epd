@@ -6,14 +6,12 @@ import {setselectedValueTypeByFilterKey} from '@unicef-polymer/etools-filters/sr
 export enum InterventionFilterKeys {
   search = 'search',
   status = 'status',
-  document_type = 'document_type',
   partners = 'partners',
   start = 'start',
   end = 'end',
   end_after = 'end_after',
   contingency_pd = 'contingency_pd',
-  budget_owner = 'budget_owner__in',
-  editable_by = 'editable_by'
+  budget_owner = 'budget_owner__in'
 }
 
 export type FilterKeysAndTheirSelectedValues = {[key in InterventionFilterKeys]?: any};
@@ -21,7 +19,6 @@ export type FilterKeysAndTheirSelectedValues = {[key in InterventionFilterKeys]?
 export const defaultSelectedFilters: FilterKeysAndTheirSelectedValues = {
   search: '',
   status: [],
-  document_type: [],
   partners: [],
   start: null,
   end: null,
@@ -33,13 +30,11 @@ export const defaultSelectedFilters: FilterKeysAndTheirSelectedValues = {
 export const selectedValueTypeByFilterKey: AnyObject = {
   [InterventionFilterKeys.search]: 'string',
   [InterventionFilterKeys.status]: 'Array',
-  [InterventionFilterKeys.document_type]: 'Array',
   [InterventionFilterKeys.partners]: 'Array',
   [InterventionFilterKeys.start]: 'string',
   [InterventionFilterKeys.end]: 'string',
   [InterventionFilterKeys.end_after]: 'string',
   [InterventionFilterKeys.contingency_pd]: 'boolean',
-  [InterventionFilterKeys.editable_by]: 'string',
   [InterventionFilterKeys.budget_owner]: 'Array'
 };
 
@@ -67,19 +62,6 @@ export const defaultFilters: EtoolsFilter[] = [
     disabled: false
   },
   {
-    filterName: translate('INTERVENTIONS_LIST.PD_TYPE'),
-    filterKey: InterventionFilterKeys.document_type,
-    type: EtoolsFilterTypes.DropdownMulti,
-    selectionOptions: [],
-    optionValue: 'value',
-    optionLabel: 'label',
-    selectedValue: [],
-    selected: false,
-    minWidth: '350px',
-    hideSearch: true,
-    disabled: false
-  },
-  {
     filterName: translate('INTERVENTIONS_LIST.PARTNER_ORG'),
     filterKey: InterventionFilterKeys.partners,
     type: EtoolsFilterTypes.DropdownMulti,
@@ -93,7 +75,7 @@ export const defaultFilters: EtoolsFilter[] = [
     optionLabel: 'name'
   },
   {
-    filterName: translate('INTERVENTIONS_LIST.BUDGET_OWNER'),
+    filterName: 'U. Budget Owner(TODO)',
     filterKey: InterventionFilterKeys.budget_owner,
     type: EtoolsFilterTypes.DropdownMulti,
     selectionOptions: [],
@@ -110,13 +92,6 @@ export const defaultFilters: EtoolsFilter[] = [
     type: EtoolsFilterTypes.Toggle,
     filterKey: InterventionFilterKeys.contingency_pd,
     selectedValue: false,
-    selected: true
-  },
-  {
-    filterName: translate('EDITABLE_BY'),
-    type: EtoolsFilterTypes.Dropdown,
-    filterKey: InterventionFilterKeys.editable_by,
-    selectedValue: '',
     selected: true
   },
   {

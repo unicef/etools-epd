@@ -376,13 +376,16 @@ export class InterventionList extends connect(store)(LitElement) {
 
   private populateDropdownFilterOptionsFromCommonData(state: RootState, currentFilters: EtoolsFilter[]) {
     updateFilterSelectionOptions(currentFilters, 'partners', notHiddenPartnersSelector(state));
-    updateFilterSelectionOptions(currentFilters, 'status', state.commonData!.interventionStatuses);
+    updateFilterSelectionOptions(currentFilters, 'status', [
+      {label: 'Draft', value: 'draft'},
+      {label: 'Completed', value: 'completed'}
+    ]);
     updateFilterSelectionOptions(
       currentFilters,
       InterventionFilterKeys.budget_owner,
       state.commonData!.unicefUsersData
     );
-    updateFilterSelectionOptions(currentFilters, 'document_type', state.commonData!.documentTypes);
+    // updateFilterSelectionOptions(currentFilters, 'document_type', state.commonData!.documentTypes);
     updateFilterSelectionOptions(currentFilters, InterventionFilterKeys.editable_by, [
       {label: 'UNICEF', value: 'unicef'},
       {label: getTranslation('PARTNER'), value: 'partner'}

@@ -68,7 +68,6 @@ import {setStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-s
 import {SMALL_MENU_ACTIVE_LOCALSTORAGE_KEY} from './config/config';
 import {fireEvent} from './components/utils/fire-custom-event';
 import {ROOT_PATH} from '@unicef-polymer/etools-modules-common/dist/config/config';
-import './components/pages/interventions/new-intervention';
 declare const dayjs: any;
 declare const dayjs_plugin_utc: any;
 declare const dayjs_plugin_isSameOrBefore: any;
