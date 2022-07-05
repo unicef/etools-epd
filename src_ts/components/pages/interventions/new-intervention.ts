@@ -12,6 +12,8 @@ import {EtoolsRequestEndpoint, sendRequest} from '@unicef-polymer/etools-ajax';
 import {etoolsEndpoints} from '../../../endpoints/endpoints-list';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {areEqual} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {formatDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
 
 @customElement('new-intervention')
 export class NewIntervention extends ComponentBaseMixin(LitElement) {
@@ -41,7 +43,7 @@ export class NewIntervention extends ComponentBaseMixin(LitElement) {
                 id="creator"
                 label="Partner Organization"
                 char-counter
-                maxlength="300"
+                maxlength="256"
                 placeholder="&#8212;"
                 required
                 error-message="${translate('THIS_FIELD_IS_REQUIRED')}"
@@ -52,6 +54,58 @@ export class NewIntervention extends ComponentBaseMixin(LitElement) {
               ></paper-input>
             </div>
           </div>
+          <div class="row-padding">
+            <label class="paper-label">Partner Focal Points</label>
+          </div>
+
+          <div class="row-h">
+            <!-- Start Date -->
+            <div class="col-4">
+              <datepicker-lite
+                id="startDate"
+                label="Start Date (Estimated)"
+                .value="${this.data.start}"
+                fire-date-has-changed
+                @date-has-changed="${({detail}: CustomEvent) =>
+                  this.setInterventionField('start', formatDate(detail.date, 'YYYY-MM-DD'))}"
+                selected-date-display-format="D MMM YYYY"
+              >
+              </datepicker-lite>
+            </div>
+            <!-- End Date -->
+            <div class="col-4">
+              <datepicker-lite
+                id="endDate"
+                label="End Date (Estimated)"
+                .value="${this.data.end}"
+                fire-date-has-changed
+                @date-has-changed="${({detail}: CustomEvent) =>
+                  this.setInterventionField('end', formatDate(detail.date, 'YYYY-MM-DD'))}"
+                selected-date-display-format="D MMM YYYY"
+              >
+              </datepicker-lite>
+            </div>
+          </div>
+          <div class="row-padding">
+            <!--   Document Title   -->
+            <div class="col-12">
+              <paper-input
+                id="title"
+                label="Document Title"
+                char-counter
+                maxlength="256"
+                placeholder="&#8212;"
+                required
+                error-message="${translate('THIS_FIELD_IS_REQUIRED')}"
+                .value="${this.data?.title}"
+                @value-changed="${({detail}: CustomEvent) =>
+                  this.setInterventionField('title', detail && detail.value)}"
+                @focus="${this.resetError}"
+                @click="${this.resetError}"
+              ></paper-input>
+            </div>
+          </div>
+
           <div class="row-padding">${this.renderActions(true, true)}</div>
         </etools-content-panel>
       </div>
@@ -68,6 +122,19 @@ export class NewIntervention extends ComponentBaseMixin(LitElement) {
 
   resetError(event: any): void {
     event.target.invalid = false;
+  }
+
+  setInterventionField(field: any, value: any): void {
+    if (value === undefined) {
+      return;
+    }
+
+    if (areEqual(this.data[field], value)) {
+      return;
+    }
+    // @ts-ignore
+    this.data[field] = value;
+    this.requestUpdate();
   }
 
   saveData(): Promise<any> {
