@@ -4,8 +4,6 @@ import '@unicef-polymer/etools-profile-dropdown/etools-profile-dropdown';
 import '@unicef-polymer/etools-dropdown/etools-dropdown.js';
 import {customElement, LitElement, html, property} from 'lit-element';
 
-import './countries-dropdown';
-
 import {connect} from 'pwa-helpers/connect-mixin.js';
 import {RootState, store} from '../../../redux/store';
 import {isProductionServer, ROOT_PATH} from '../../../config/config';
@@ -112,8 +110,6 @@ export class PageHeader extends connect(store)(LitElement) {
               no-label-float
               .autoWidth="${true}"
             ></etools-dropdown>
-
-            <countries-dropdown dir="${this.dir}"></countries-dropdown>
           </div>
 
           <etools-profile-dropdown
@@ -122,6 +118,8 @@ export class PageHeader extends connect(store)(LitElement) {
             .offices="${this.profileDrOffices}"
             .users="${this.profileDrUsers}"
             .profile="${this.profile ? {...this.profile} : {}}"
+            hide-available-workspaces
+            show-email
             @save-profile="${this.handleSaveProfile}"
             @sign-out="${this._signOut}"
           >

@@ -83,7 +83,7 @@ export class InterventionList extends connect(store)(LitElement) {
 
           <paper-button class="primary" @tap="${this._goToNewInterventionPage}">
             <iron-icon icon="add"></iron-icon>
-            Add PD
+            Add Concept Note
           </paper-button>
         </div>
       </page-content-header>
@@ -152,12 +152,6 @@ export class InterventionList extends connect(store)(LitElement) {
     {
       label: translate('INTERVENTIONS_LIST.PARTNER_ORG_NAME') as unknown as string,
       name: 'partner_name',
-      type: EtoolsTableColumnType.Text,
-      sort: null
-    },
-    {
-      label: translate('INTERVENTIONS_LIST.DOC_TYPE') as unknown as string,
-      name: 'document_type',
       type: EtoolsTableColumnType.Text,
       sort: null
     },
@@ -290,10 +284,6 @@ export class InterventionList extends connect(store)(LitElement) {
             <div>
               <div class="title">Total Budget</div>
               <div class="detail">${item.budget_currency || ''} ${addCurrencyAmountDelimiter(item.total_budget)}</div>
-            </div>
-            <div>
-              <div class="title">UNICEF Cash Contribution</div>
-              <div class="detail">${item.budget_currency || ''} ${addCurrencyAmountDelimiter(item.unicef_cash)}</div>
             </div>
           </div>
         </td>

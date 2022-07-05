@@ -30,7 +30,7 @@ export class NewIntervention extends ComponentBaseMixin(LitElement) {
         }
       </style>
       <page-content-header>
-        <h1 slot="page-title">Add Programme Document</h1>
+        <h1 slot="page-title">Add Concept Note</h1>
       </page-content-header>
       <div class="container">
         <etools-content-panel panel-title="Enter Initial Details">
@@ -39,14 +39,14 @@ export class NewIntervention extends ComponentBaseMixin(LitElement) {
             <div class="col-12">
               <paper-input
                 id="creator"
-                label="Creator"
+                label="Partner Organization"
                 char-counter
                 maxlength="300"
                 placeholder="&#8212;"
                 required
                 error-message="${translate('THIS_FIELD_IS_REQUIRED')}"
-                .value="${this.data?.creator}"
-                @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'creator')}"
+                .value="${this.data?.partner}"
+                @value-changed="${({detail}: CustomEvent) => this.valueChanged(detail, 'partner')}"
                 @focus="${this.resetError}"
                 @click="${this.resetError}"
               ></paper-input>

@@ -6,7 +6,6 @@
     "src/components/pages/interventions/intervention-list.js",
     "src/components/pages/interventions/intervention-tab-pages/intervention-tabs.js",
     "src/components/pages/interventions/intervention-tab-pages/intervention-metadata/intervention-metadata.js",
-    "src/components/pages/interventions/intervention-tab-pages/intervention-progress/intervention-progress.js",
     "src/components/pages/interventions/intervention-tab-pages/intervention-strategy/intervention-strategy.js",
     "src/components/pages/interventions/intervention-tab-pages/intervention-workplan/intervention-workplan.js",
     "src/components/pages/interventions/intervention-tab-pages/intervention-workplan-editor/intervention-workplan-editor.js",
