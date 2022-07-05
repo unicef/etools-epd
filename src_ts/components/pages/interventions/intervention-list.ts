@@ -80,6 +80,11 @@ export class InterventionList extends connect(store)(LitElement) {
           <div class="action">
             <export-data .params="${this.exportParams}" raised></export-data>
           </div>
+
+          <paper-button class="primary" @tap="${this._goToNewInterventionPage}">
+            <iron-icon icon="add"></iron-icon>
+            Add PD
+          </paper-button>
         </div>
       </page-content-header>
 
@@ -266,6 +271,15 @@ export class InterventionList extends connect(store)(LitElement) {
       this.showLoading = true;
       this.getListData(forceReGet);
     }
+  }
+
+  _goToNewInterventionPage() {
+    history.pushState(window.history.state, '', `${ROOT_PATH}interventions/new`);
+    window.dispatchEvent(new CustomEvent('popstate'));
+    fireEvent(this, 'global-loading', {
+      active: true,
+      loadingSource: 'interv-page'
+    });
   }
 
   getRowDetails(item: InterventionListData): {rowHTML: TemplateResult} {
