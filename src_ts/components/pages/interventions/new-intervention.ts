@@ -1,4 +1,4 @@
-import {customElement, html, LitElement} from 'lit-element';
+import {customElement, html, LitElement, property} from 'lit-element';
 import '@unicef-polymer/etools-content-panel/etools-content-panel';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import '@unicef-polymer/etools-modules-common/dist/layout/page-content-header/page-content-header';
@@ -14,6 +14,8 @@ import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {areEqual} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 import {formatDate} from '@unicef-polymer/etools-modules-common/dist/utils/date-utils';
+import {User} from '@unicef-polymer/etools-types';
+import './intervention-tab-pages/common/components/intervention/partner-focal-points';
 
 @customElement('new-intervention')
 export class NewIntervention extends ComponentBaseMixin(LitElement) {
@@ -37,10 +39,10 @@ export class NewIntervention extends ComponentBaseMixin(LitElement) {
       <div class="container">
         <etools-content-panel panel-title="Enter Initial Details">
           <div class="row-padding">
-            <!--   Creator   -->
+            <!--   Partner   -->
             <div class="col-12">
               <paper-input
-                id="creator"
+                id="partner"
                 label="Partner Organization"
                 char-counter
                 maxlength="256"
@@ -55,16 +57,28 @@ export class NewIntervention extends ComponentBaseMixin(LitElement) {
             </div>
           </div>
           <div class="row-padding">
-            <label class="paper-label">Partner Focal Points</label>
+            <div class="col-6">
+              <label class="paper-label">Partner Focal Points</label>
+              <partner-focal-points
+                ?onAddPage="${true}"
+                .user="${this.user}"
+                @items-changed="${(e: CustomEvent) => {
+                  if (!areEqual(e.detail.items, this.data.partner_focal_points)) {
+                    this.data.partner_focal_points = e.detail.items;
+                    this.requestUpdate;
+                  }
+                }}"
+              ></partner-focal-points>
+            </div>
           </div>
 
           <div class="row-h">
             <!-- Start Date -->
-            <div class="col-4">
+            <div class="col-3">
               <datepicker-lite
                 id="startDate"
                 label="Start Date (Estimated)"
-                .value="${this.data.start}"
+                .value="${this.data?.start}"
                 fire-date-has-changed
                 @date-has-changed="${({detail}: CustomEvent) =>
                   this.setInterventionField('start', formatDate(detail.date, 'YYYY-MM-DD'))}"
@@ -73,11 +87,11 @@ export class NewIntervention extends ComponentBaseMixin(LitElement) {
               </datepicker-lite>
             </div>
             <!-- End Date -->
-            <div class="col-4">
+            <div class="col-3">
               <datepicker-lite
                 id="endDate"
                 label="End Date (Estimated)"
-                .value="${this.data.end}"
+                .value="${this.data?.end}"
                 fire-date-has-changed
                 @date-has-changed="${({detail}: CustomEvent) =>
                   this.setInterventionField('end', formatDate(detail.date, 'YYYY-MM-DD'))}"
@@ -111,6 +125,12 @@ export class NewIntervention extends ComponentBaseMixin(LitElement) {
       </div>
     `;
   }
+
+  @property({type: Object})
+  user!: User;
+
+  @property({type: Object})
+  data: any = {};
 
   connectedCallback() {
     super.connectedCallback();

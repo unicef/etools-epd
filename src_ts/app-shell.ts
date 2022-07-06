@@ -166,6 +166,7 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
             <new-intervention
               ?active="${this.isActivePage(this.mainPage, 'interventions', this.subPage, 'new')}"
               ?hidden="${!this.isActivePage(this.mainPage, 'interventions', this.subPage, 'new')}"
+              .user="${this.user}"
             >
             </new-intervention>
             <intervention-tabs
