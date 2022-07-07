@@ -37,7 +37,6 @@ import {
   InterventionsTableStyles
 } from '@unicef-polymer/etools-modules-common/dist/list/list-styles';
 import {addCurrencyAmountDelimiter} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
-import {notHiddenPartnersSelector} from '../../../redux/reducers/common-data';
 import {translate, get as getTranslation} from 'lit-translate';
 import {
   InterventionListData,
@@ -48,7 +47,7 @@ import {
 } from '@unicef-polymer/etools-types';
 import pick from 'lodash-es/pick';
 import {etoolsEndpoints} from '../../../endpoints/endpoints-list';
-import {defaultFilters, InterventionFilterKeys} from './interventions-filters';
+import {defaultFilters} from './interventions-filters';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {debounce} from '../../utils/debouncer';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
@@ -83,7 +82,7 @@ export class InterventionList extends connect(store)(LitElement) {
 
           <paper-button class="primary" @tap="${this._goToNewInterventionPage}">
             <iron-icon icon="add"></iron-icon>
-            Add PD
+            Add Concept Note
           </paper-button>
         </div>
       </page-content-header>
@@ -152,12 +151,6 @@ export class InterventionList extends connect(store)(LitElement) {
     {
       label: translate('INTERVENTIONS_LIST.PARTNER_ORG_NAME') as unknown as string,
       name: 'partner_name',
-      type: EtoolsTableColumnType.Text,
-      sort: null
-    },
-    {
-      label: translate('INTERVENTIONS_LIST.DOC_TYPE') as unknown as string,
-      name: 'document_type',
       type: EtoolsTableColumnType.Text,
       sort: null
     },
@@ -291,10 +284,6 @@ export class InterventionList extends connect(store)(LitElement) {
               <div class="title">Total Budget</div>
               <div class="detail">${item.budget_currency || ''} ${addCurrencyAmountDelimiter(item.total_budget)}</div>
             </div>
-            <div>
-              <div class="title">UNICEF Cash Contribution</div>
-              <div class="detail">${item.budget_currency || ''} ${addCurrencyAmountDelimiter(item.unicef_cash)}</div>
-            </div>
           </div>
         </td>
       `
@@ -374,18 +363,10 @@ export class InterventionList extends connect(store)(LitElement) {
     );
   }
 
-  private populateDropdownFilterOptionsFromCommonData(state: RootState, currentFilters: EtoolsFilter[]) {
-    updateFilterSelectionOptions(currentFilters, 'partners', notHiddenPartnersSelector(state));
-    updateFilterSelectionOptions(currentFilters, 'status', state.commonData!.interventionStatuses);
-    updateFilterSelectionOptions(
-      currentFilters,
-      InterventionFilterKeys.budget_owner,
-      state.commonData!.unicefUsersData
-    );
-    updateFilterSelectionOptions(currentFilters, 'document_type', state.commonData!.documentTypes);
-    updateFilterSelectionOptions(currentFilters, InterventionFilterKeys.editable_by, [
-      {label: 'UNICEF', value: 'unicef'},
-      {label: getTranslation('PARTNER'), value: 'partner'}
+  private populateDropdownFilterOptionsFromCommonData(_state: RootState, currentFilters: EtoolsFilter[]) {
+    updateFilterSelectionOptions(currentFilters, 'status', [
+      {label: 'Draft', value: 'draft'},
+      {label: 'Completed', value: 'completed'}
     ]);
   }
 

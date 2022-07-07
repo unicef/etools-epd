@@ -24,8 +24,8 @@
     "ERROR_LOADING_DATA": "Eroare la incarcarea datelor"
   },
   "INTERVENTIONS_LIST": {
-    "PD_LIST": "Lista PD/SPD",
-    "TABLE_TITLE": "PD/SPD",
+    "PD_LIST": "Lista Note Conceptuale",
+    "TABLE_TITLE": "Note Conceptuale",
     "REFERENCE_NO": "Num. Referinta",
     "PARTNER_ORG_NAME": "Nume Org Partener",
     "DOC_TYPE": "Tip Doc",

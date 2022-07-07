@@ -60,8 +60,8 @@ export class AppMenu extends LitElement {
         >
           <a class="nav-menu-item" menu-name="interventions" href="${this.rootPath + 'interventions'}">
             <iron-icon id="page1-icon" icon="accessibility"></iron-icon>
-            <paper-tooltip for="page1-icon" position="right"> PDs/SPDs </paper-tooltip>
-            <div class="name">PDs/SPDs</div>
+            <paper-tooltip for="page1-icon" position="right"> Concept Notes </paper-tooltip>
+            <div class="name">Concept Notes</div>
           </a>
         </iron-selector>
 

@@ -98,6 +98,8 @@ const loadPageComponents: ActionCreator<ThunkResult> = (routeDetails: RouteDetai
         );
         break;
       case 'new':
+        import('../../components/pages/interventions/intervention-tab-pages/intervention-tabs.js');
+        import('../../components/pages/interventions/new-intervention.js');
         break;
       default:
         console.log('No file imports configuration found (componentsLazyLoadConfig)!');

@@ -24,8 +24,8 @@
     "ERROR_LOADING_DATA": "Error on loading data"
   },
   "INTERVENTIONS_LIST": {
-    "PD_LIST": "PDs/SPDs List",
-    "TABLE_TITLE": "PDs/SPDs",
+    "PD_LIST": "Concept Notes List",
+    "TABLE_TITLE": "Concept Notes",
     "REFERENCE_NO": "Reference No.",
     "PARTNER_ORG_NAME": "Partner Org Name",
     "DOC_TYPE": "Doc Type",
