@@ -7,7 +7,6 @@ export interface EtoolsEndpoints {
   intervention: EtoolsEndpoint;
   locations: EtoolsEndpoint;
   sites: EtoolsEndpoint;
-  static: EtoolsEndpoint;
   partners: EtoolsEndpoint;
   sections: EtoolsEndpoint;
   disaggregations: EtoolsEndpoint;
