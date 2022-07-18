@@ -41,9 +41,6 @@ export const etoolsEndpoints: EtoolsEndpoints = {
   sites: {
     url: '/api/v1/field-monitoring/settings/sites/?page_size=all'
   },
-  static: {
-    url: '/api/v2/dropdowns/static/'
-  },
   partners: {
     url: '/api/pmp/v3/partners/'
   },
