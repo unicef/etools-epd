@@ -266,7 +266,7 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
           });
           store.dispatch({
             type: SET_AGREEMENTS,
-            list: this.getValue(response[8])
+            list: this.getValue(response[7])
           });
         });
       }
