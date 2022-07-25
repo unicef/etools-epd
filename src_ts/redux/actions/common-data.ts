@@ -72,12 +72,6 @@ export const getDisaggregations = () => {
   });
 };
 
-export const getStaticData = () => {
-  return sendRequest({
-    endpoint: {url: etoolsEndpoints.static.url!}
-  });
-};
-
 export const getCountryProgrammes = (isUnicefUser: boolean) => {
   if (!isUnicefUser) {
     /**

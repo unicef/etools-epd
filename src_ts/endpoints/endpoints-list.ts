@@ -7,7 +7,6 @@ export interface EtoolsEndpoints {
   intervention: EtoolsEndpoint;
   locations: EtoolsEndpoint;
   sites: EtoolsEndpoint;
-  static: EtoolsEndpoint;
   partners: EtoolsEndpoint;
   sections: EtoolsEndpoint;
   disaggregations: EtoolsEndpoint;
@@ -40,9 +39,6 @@ export const etoolsEndpoints: EtoolsEndpoints = {
   },
   sites: {
     url: '/api/v1/field-monitoring/settings/sites/?page_size=all'
-  },
-  static: {
-    url: '/api/v2/dropdowns/static/'
   },
   partners: {
     url: '/api/pmp/v3/partners/'
