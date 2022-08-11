@@ -52,6 +52,7 @@ import {defaultFilters, InterventionFilterKeys} from './interventions-filters';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {debounce} from '../../utils/debouncer';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {setShouldReGetList} from './intervention-tab-pages/common/actions/interventions';
 
 /**
  * @LitElement
@@ -326,6 +327,7 @@ export class InterventionList extends connect(store)(LitElement) {
       // update paginator (total_pages, visible_range, count...)
       this.paginator = paginator;
       this.showLoading = false;
+      store.dispatch(setShouldReGetList(false));
     } catch (error) {
       console.error('[EtoolsInterventionsList]: get Interventions req error...', error);
       this.showLoading = false;
