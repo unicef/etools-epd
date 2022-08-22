@@ -53,7 +53,6 @@ import {
   getDisaggregations,
   getOffices,
   getUnicefUsers,
-  getStaticData,
   getDropdownsData,
   SET_ALL_STATIC_DATA,
   getCountryProgrammes
@@ -256,7 +255,6 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
           getDisaggregations(),
           getOffices(),
           getUnicefUsers(),
-          getStaticData(),
           getDropdownsData(),
           getAgreements(),
           getCountryProgrammes(user.is_unicef_user),
@@ -268,7 +266,7 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
           });
           store.dispatch({
             type: SET_AGREEMENTS,
-            list: this.getValue(response[8])
+            list: this.getValue(response[7])
           });
         });
       }
@@ -325,12 +323,12 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
     data.disaggregations = this.getValue(response[3]);
     data.offices = this.getValue(response[4]);
     data.unicefUsersData = this.getValue(response[5]);
-    data.providedBy = this.getValue(response[7]).supply_item_provided_by || [];
-    data.cpOutputs = this.getValue(response[7]).cp_outputs || [];
-    data.fileTypes = this.getValue(response[7]).file_types || [];
     const staticData = this.getValue(response[6], {});
-    data.countryProgrammes = this.getValue(response[9]);
-    data.sites = this.getValue(response[10]);
+    data.providedBy = staticData.supply_item_provided_by || [];
+    data.cpOutputs = staticData.cp_outputs || [];
+    data.fileTypes = staticData.file_types || [];
+    data.countryProgrammes = this.getValue(response[8]);
+    data.sites = this.getValue(response[9]);
     data.locationTypes = isEmpty(staticData.location_types) ? [] : staticData.location_types;
     data.documentTypes = isEmpty(staticData.intervention_doc_type) ? [] : staticData.intervention_doc_type;
     data.genderEquityRatings = staticData.gender_equity_sustainability_ratings || [];

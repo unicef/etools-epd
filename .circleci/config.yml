@@ -93,4 +93,4 @@ workflows:
                 - master
                 - staging
                 - develop
-                - new-ui
+                - 30429_refactor_reusable_methods
