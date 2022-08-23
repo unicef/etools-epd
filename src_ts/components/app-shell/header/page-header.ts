@@ -264,7 +264,7 @@ export class PageHeader extends connect(store)(LitElement) {
     if (!selectedItem || !selectedItem.value) {
       return;
     }
-    let newLanguage = selectedItem.value;
+    const newLanguage = selectedItem.value;
     if (newLanguage != 'en') {
       import(`../../../../node_modules/dayjs/locale/${newLanguage}.js`).then(() => window.dayjs.locale(newLanguage));
     }
