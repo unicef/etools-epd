@@ -4,6 +4,7 @@ declare global {
   interface Window {
     EtoolsEsmmFitIntoEl: any;
     applyFocusVisiblePolyfill: any;
+    dayjs: any;
   }
 }
 
