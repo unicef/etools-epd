@@ -265,8 +265,12 @@ export class PageHeader extends connect(store)(LitElement) {
       return;
     }
     const newLanguage = selectedItem.value;
-    if (newLanguage != 'en') {
-      import(`../../../../node_modules/dayjs/locale/${newLanguage}.js`).then(() => window.dayjs.locale(newLanguage));
+    if (newLanguage) {
+      import(`../../../../node_modules/dayjs/locale/${newLanguage}.js`).then(() => {
+        window.dayjs.locale(newLanguage);
+        // Event caught by self translating npm packages
+        fireEvent(this, 'language-changed', {language: newLanguage});
+      });
     }
     if (this.selectedLanguage !== newLanguage) {
       localStorage.setItem('defaultLanguage', newLanguage);
