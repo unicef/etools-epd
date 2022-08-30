@@ -179,7 +179,9 @@ export class PageHeader extends connect(store)(LitElement) {
 
   languages: GenericObject<string>[] = [
     {value: 'en', display_name: 'English'},
-    {value: 'ar', display_name: 'Arabic'}
+    {value: 'ar', display_name: 'Arabic'},
+    {value: 'pt', display_name: 'Portuguese'},
+    {value: 'ru', display_name: 'Russian'}
   ];
 
   @property() selectedLanguage!: string;

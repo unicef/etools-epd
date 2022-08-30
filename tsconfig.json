@@ -3,11 +3,7 @@
     "target": "es2018",
     "module": "esnext",
     "moduleResolution": "node",
-    "lib": [
-      "es2018",
-      "dom",
-      "esnext"
-    ],
+    "lib": ["es2018", "dom", "esnext"],
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -16,9 +12,7 @@
     "experimentalDecorators": true,
     "esModuleInterop": true,
     "outDir": "src",
-    "typeRoots": [
-      "./src_ts/types"
-    ],
+    "typeRoots": ["./src_ts/types"],
     "skipLibCheck": true,
     "resolveJsonModule": true
   },
@@ -26,7 +20,9 @@
     "src_ts/**/*.ts",
     "src_ts/components/pages/interventions/intervention-tab-pages/assets/i18n/en.json",
     "src_ts/components/pages/interventions/intervention-tab-pages/assets/i18n/ro.json",
-    "src_ts/components/pages/interventions/intervention-tab-pages/assets/i18n/ar.json"
+    "src_ts/components/pages/interventions/intervention-tab-pages/assets/i18n/ar.json",
+    "src_ts/components/pages/interventions/intervention-tab-pages/assets/i18n/ru.json",
+    "src_ts/components/pages/interventions/intervention-tab-pages/assets/i18n/pt.json"
   ],
   "exclude": []
 }
