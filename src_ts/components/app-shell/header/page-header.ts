@@ -2,9 +2,7 @@ import '@polymer/app-layout/app-toolbar/app-toolbar';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@unicef-polymer/etools-profile-dropdown/etools-profile-dropdown';
 import '@unicef-polymer/etools-dropdown/etools-dropdown.js';
-import {EtoolsDropdownEl} from '@unicef-polymer/etools-dropdown/etools-dropdown';
-
-import {customElement, LitElement, html, property, query} from 'lit-element';
+import {customElement, LitElement, html, property} from 'lit-element';
 
 import './countries-dropdown';
 
@@ -20,11 +18,7 @@ import {translate, use} from 'lit-translate';
 import {setActiveLanguage} from '../../../redux/actions/active-language';
 import {activeLanguage} from '../../../redux/reducers/active-language';
 import {countriesDropdownStyles} from './countries-dropdown-styles';
-<<<<<<< HEAD
 import {AnyObject, EtoolsUser} from '@unicef-polymer/etools-types';
-=======
-import {AnyObject, EtoolsUser, GenericObject} from '@unicef-polymer/etools-types';
->>>>>>> staging
 import {sendRequest} from '@unicef-polymer/etools-ajax';
 import {etoolsEndpoints} from '../../../endpoints/endpoints-list';
 import {updateUserData} from '../../../redux/actions/user';
@@ -34,10 +28,7 @@ import 'dayjs/locale/ru.js';
 import 'dayjs/locale/pt.js';
 import 'dayjs/locale/ar.js';
 import 'dayjs/locale/ro.js';
-<<<<<<< HEAD
 import {appLanguages} from '../../../config/app-constants';
-=======
->>>>>>> staging
 
 store.addReducers({
   activeLanguage
@@ -120,7 +111,6 @@ export class PageHeader extends connect(store)(LitElement) {
         <div class="header__item header__right-group">
           <div class="dropdowns">
             <etools-dropdown
-              id="languageSelector"
               .selected="${this.selectedLanguage}"
               .options="${appLanguages}"
               option-label="display_name"
@@ -193,62 +183,23 @@ export class PageHeader extends connect(store)(LitElement) {
   @property({type: String})
   dir = '';
 
-<<<<<<< HEAD
-=======
-  languages: GenericObject<string>[] = [
-    {value: 'en', display_name: 'English'},
-    {value: 'ar', display_name: 'Arabic'},
-    {value: 'pt', display_name: 'Portuguese'},
-    {value: 'ru', display_name: 'Russian'}
-  ];
-
->>>>>>> staging
   @property() selectedLanguage!: string;
-
-  @query('#languageSelector') private languageDropdown!: EtoolsDropdownEl;
 
   public connectedCallback() {
     super.connectedCallback();
     this.setBgColor();
     this.checkEnvironment();
-
-    setTimeout(() => {
-      const fitInto = document.querySelector('app-shell')!.shadowRoot!.querySelector('#appHeadLayout');
-      this.languageDropdown.set('fitInto', fitInto);
-    }, 0);
   }
 
   public stateChanged(state: RootState) {
     if (state.user?.data) {
       this.profile = state.user!.data;
-<<<<<<< HEAD
-=======
-      if (this.profile.preferences?.language && this.profile.preferences?.language !== this.selectedLanguage) {
-        this.selectedLanguage = state.activeLanguage!.activeLanguage;
-        this.setLanguageDirection();
-      }
->>>>>>> staging
     }
     if (state.activeLanguage!.activeLanguage && state.activeLanguage!.activeLanguage !== this.selectedLanguage) {
       this.selectedLanguage = state.activeLanguage!.activeLanguage;
       localStorage.setItem('defaultLanguage', this.selectedLanguage);
       this.setLanguageDirection();
     }
-  }
-
-  private setLanguageDirection() {
-    setTimeout(() => {
-      const htmlTag = document.querySelector('html');
-      if (this.selectedLanguage === 'ar') {
-        htmlTag!.setAttribute('dir', 'rtl');
-        this.setAttribute('dir', 'rtl');
-        this.dir = 'rtl';
-      } else if (htmlTag!.getAttribute('dir')) {
-        htmlTag!.removeAttribute('dir');
-        this.removeAttribute('dir');
-        this.dir = '';
-      }
-    });
   }
 
   private setLanguageDirection() {
@@ -338,11 +289,7 @@ export class PageHeader extends connect(store)(LitElement) {
     sendRequest({endpoint: etoolsEndpoints.userProfile, method: 'PATCH', body: {preferences: {language: language}}})
       .then((response) => {
         store.dispatch(updateUserData(response));
-<<<<<<< HEAD
         store.dispatch(setActiveLanguage(language));
-=======
-        store.dispatch(setLanguage(language));
->>>>>>> staging
       })
       .catch((err: any) => parseRequestErrorsAndShowAsToastMsgs(err, this));
   }
