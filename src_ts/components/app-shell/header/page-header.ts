@@ -2,7 +2,9 @@ import '@polymer/app-layout/app-toolbar/app-toolbar';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@unicef-polymer/etools-profile-dropdown/etools-profile-dropdown';
 import '@unicef-polymer/etools-dropdown/etools-dropdown.js';
-import {customElement, LitElement, html, property} from 'lit-element';
+import {EtoolsDropdownEl} from '@unicef-polymer/etools-dropdown/etools-dropdown';
+
+import {customElement, LitElement, html, property, query} from 'lit-element';
 
 import './countries-dropdown';
 
@@ -19,6 +21,15 @@ import {setLanguage} from '../../../redux/actions/active-language';
 import {activeLanguage} from '../../../redux/reducers/active-language';
 import {countriesDropdownStyles} from './countries-dropdown-styles';
 import {AnyObject, EtoolsUser, GenericObject} from '@unicef-polymer/etools-types';
+import {sendRequest} from '@unicef-polymer/etools-ajax';
+import {etoolsEndpoints} from '../../../endpoints/endpoints-list';
+import {updateUserData} from '../../../redux/actions/user';
+import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import 'dayjs/locale/fr.js';
+import 'dayjs/locale/ru.js';
+import 'dayjs/locale/pt.js';
+import 'dayjs/locale/ar.js';
+import 'dayjs/locale/ro.js';
 
 store.addReducers({
   activeLanguage
@@ -101,6 +112,7 @@ export class PageHeader extends connect(store)(LitElement) {
         <div class="header__item header__right-group">
           <div class="dropdowns">
             <etools-dropdown
+              id="languageSelector"
               .selected="${this.selectedLanguage}"
               .options="${this.languages}"
               option-label="display_name"
@@ -175,36 +187,49 @@ export class PageHeader extends connect(store)(LitElement) {
 
   languages: GenericObject<string>[] = [
     {value: 'en', display_name: 'English'},
-    {value: 'ar', display_name: 'Arabic'}
+    {value: 'ar', display_name: 'Arabic'},
+    {value: 'pt', display_name: 'Portuguese'},
+    {value: 'ru', display_name: 'Russian'}
   ];
 
   @property() selectedLanguage!: string;
+
+  @query('#languageSelector') private languageDropdown!: EtoolsDropdownEl;
 
   public connectedCallback() {
     super.connectedCallback();
     this.setBgColor();
     this.checkEnvironment();
+
+    setTimeout(() => {
+      const fitInto = document.querySelector('app-shell')!.shadowRoot!.querySelector('#appHeadLayout');
+      this.languageDropdown.set('fitInto', fitInto);
+    }, 0);
   }
 
   public stateChanged(state: RootState) {
-    if (state) {
+    if (state.user?.data) {
       this.profile = state.user!.data;
-      if (state.activeLanguage && state.activeLanguage.activeLanguage !== this.selectedLanguage) {
+      if (this.profile.preferences?.language && this.profile.preferences?.language !== this.selectedLanguage) {
         this.selectedLanguage = state.activeLanguage!.activeLanguage;
-        setTimeout(() => {
-          const htmlTag = document.querySelector('html');
-          if (this.selectedLanguage === 'ar') {
-            htmlTag!.setAttribute('dir', 'rtl');
-            this.setAttribute('dir', 'rtl');
-            this.dir = 'rtl';
-          } else if (htmlTag!.getAttribute('dir')) {
-            htmlTag!.removeAttribute('dir');
-            this.removeAttribute('dir');
-            this.dir = '';
-          }
-        });
+        this.setLanguageDirection();
       }
     }
+  }
+
+  private setLanguageDirection() {
+    setTimeout(() => {
+      const htmlTag = document.querySelector('html');
+      if (this.selectedLanguage === 'ar') {
+        htmlTag!.setAttribute('dir', 'rtl');
+        this.setAttribute('dir', 'rtl');
+        this.dir = 'rtl';
+      } else if (htmlTag!.getAttribute('dir')) {
+        htmlTag!.removeAttribute('dir');
+        this.removeAttribute('dir');
+        this.dir = '';
+      }
+    });
   }
 
   public handleSaveProfile(e: any) {
@@ -257,12 +282,31 @@ export class PageHeader extends connect(store)(LitElement) {
       return;
     }
     const newLanguage = selectedItem.value;
+    if (newLanguage) {
+      window.dayjs.locale(newLanguage);
+      // Event caught by self translating npm packages
+      fireEvent(this, 'language-changed', {language: newLanguage});
+    }
     if (this.selectedLanguage !== newLanguage) {
       localStorage.setItem('defaultLanguage', newLanguage);
       use(newLanguage)
-        .then(() => store.dispatch(setLanguage(newLanguage)))
+        .then(() => {
+          if (this.profile && this.profile.preferences?.language != newLanguage) {
+            this.updateUserPreference(newLanguage);
+          }
+        })
         .finally(() => location.reload());
     }
+  }
+
+  private updateUserPreference(language: string) {
+    // @ts-ignore
+    sendRequest({endpoint: etoolsEndpoints.userProfile, method: 'PATCH', body: {preferences: {language: language}}})
+      .then((response) => {
+        store.dispatch(updateUserData(response));
+        store.dispatch(setLanguage(language));
+      })
+      .catch((err: any) => parseRequestErrorsAndShowAsToastMsgs(err, this));
   }
 
   public menuBtnClicked() {
