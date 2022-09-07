@@ -279,13 +279,11 @@ export class PageHeader extends connect(store)(LitElement) {
     }
     if (this.selectedLanguage !== newLanguage) {
       localStorage.setItem('defaultLanguage', newLanguage);
-      use(newLanguage)
-        .then(() => {
-          if (this.profile && this.profile.preferences?.language != newLanguage) {
-            this.updateUserPreference(newLanguage);
-          }
-        })
-        .finally(() => location.reload());
+      use(newLanguage).then(() => {
+        if (this.profile && this.profile.preferences?.language != newLanguage) {
+          this.updateUserPreference(newLanguage);
+        }
+      });
     }
   }
 
