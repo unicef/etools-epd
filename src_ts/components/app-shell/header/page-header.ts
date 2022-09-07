@@ -17,10 +17,10 @@ import isEmpty from 'lodash-es/isEmpty';
 import {updateCurrentUser} from '../../user/user-actions';
 import {pageHeaderStyles} from './page-header-styles';
 import {translate, use} from 'lit-translate';
-import {setLanguage} from '../../../redux/actions/active-language';
+import {setActiveLanguage} from '../../../redux/actions/active-language';
 import {activeLanguage} from '../../../redux/reducers/active-language';
 import {countriesDropdownStyles} from './countries-dropdown-styles';
-import {AnyObject, EtoolsUser, GenericObject} from '@unicef-polymer/etools-types';
+import {AnyObject, EtoolsUser} from '@unicef-polymer/etools-types';
 import {sendRequest} from '@unicef-polymer/etools-ajax';
 import {etoolsEndpoints} from '../../../endpoints/endpoints-list';
 import {updateUserData} from '../../../redux/actions/user';
@@ -30,6 +30,7 @@ import 'dayjs/locale/ru.js';
 import 'dayjs/locale/pt.js';
 import 'dayjs/locale/ar.js';
 import 'dayjs/locale/ro.js';
+import {appLanguages} from '../../../config/app-constants';
 
 store.addReducers({
   activeLanguage
@@ -114,7 +115,7 @@ export class PageHeader extends connect(store)(LitElement) {
             <etools-dropdown
               id="languageSelector"
               .selected="${this.selectedLanguage}"
-              .options="${this.languages}"
+              .options="${appLanguages}"
               option-label="display_name"
               option-value="value"
               @etools-selected-item-changed="${({detail}: CustomEvent) => this.languageChanged(detail.selectedItem)}"
@@ -185,13 +186,6 @@ export class PageHeader extends connect(store)(LitElement) {
   @property({type: String})
   dir = '';
 
-  languages: GenericObject<string>[] = [
-    {value: 'en', display_name: 'English'},
-    {value: 'ar', display_name: 'Arabic'},
-    {value: 'pt', display_name: 'Portuguese'},
-    {value: 'ru', display_name: 'Russian'}
-  ];
-
   @property() selectedLanguage!: string;
 
   @query('#languageSelector') private languageDropdown!: EtoolsDropdownEl;
@@ -210,10 +204,11 @@ export class PageHeader extends connect(store)(LitElement) {
   public stateChanged(state: RootState) {
     if (state.user?.data) {
       this.profile = state.user!.data;
-      if (this.profile.preferences?.language && this.profile.preferences?.language !== this.selectedLanguage) {
-        this.selectedLanguage = state.activeLanguage!.activeLanguage;
-        this.setLanguageDirection();
-      }
+    }
+    if (state.activeLanguage!.activeLanguage && state.activeLanguage!.activeLanguage !== this.selectedLanguage) {
+      this.selectedLanguage = state.activeLanguage!.activeLanguage;
+      localStorage.setItem('defaultLanguage', this.selectedLanguage);
+      this.setLanguageDirection();
     }
   }
 
@@ -304,7 +299,7 @@ export class PageHeader extends connect(store)(LitElement) {
     sendRequest({endpoint: etoolsEndpoints.userProfile, method: 'PATCH', body: {preferences: {language: language}}})
       .then((response) => {
         store.dispatch(updateUserData(response));
-        store.dispatch(setLanguage(language));
+        store.dispatch(setActiveLanguage(language));
       })
       .catch((err: any) => parseRequestErrorsAndShowAsToastMsgs(err, this));
   }
@@ -346,7 +341,7 @@ export class PageHeader extends connect(store)(LitElement) {
     const location = window.location.host;
     const devDomains = ['localhost', 'etools-dev', 'etools-test'];
     if (devDomains.some((x) => location.indexOf(x) > -1)) {
-      this.languages.splice(1, 0, {value: 'ro', display_name: 'Romanian'});
+      appLanguages.splice(1, 0, {value: 'ro', display_name: 'Romanian'});
     }
   }
 }
