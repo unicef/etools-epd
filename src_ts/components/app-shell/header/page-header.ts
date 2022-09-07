@@ -15,7 +15,7 @@ import isEmpty from 'lodash-es/isEmpty';
 import {updateCurrentUser} from '../../user/user-actions';
 import {pageHeaderStyles} from './page-header-styles';
 import {translate, use} from 'lit-translate';
-import {setLanguage} from '../../../redux/actions/active-language';
+import {setActiveLanguage} from '../../../redux/actions/active-language';
 import {activeLanguage} from '../../../redux/reducers/active-language';
 import {countriesDropdownStyles} from './countries-dropdown-styles';
 import {AnyObject, EtoolsUser} from '@unicef-polymer/etools-types';
@@ -194,11 +194,11 @@ export class PageHeader extends connect(store)(LitElement) {
   public stateChanged(state: RootState) {
     if (state.user?.data) {
       this.profile = state.user!.data;
-      if (state.activeLanguage!.activeLanguage !== this.selectedLanguage) {
-        this.selectedLanguage = state.activeLanguage!.activeLanguage;
-        localStorage.setItem('defaultLanguage', this.selectedLanguage);
-        this.setLanguageDirection();
-      }
+    }
+    if (state.activeLanguage!.activeLanguage && state.activeLanguage!.activeLanguage !== this.selectedLanguage) {
+      this.selectedLanguage = state.activeLanguage!.activeLanguage;
+      localStorage.setItem('defaultLanguage', this.selectedLanguage);
+      this.setLanguageDirection();
     }
   }
 
@@ -289,7 +289,7 @@ export class PageHeader extends connect(store)(LitElement) {
     sendRequest({endpoint: etoolsEndpoints.userProfile, method: 'PATCH', body: {preferences: {language: language}}})
       .then((response) => {
         store.dispatch(updateUserData(response));
-        store.dispatch(setLanguage(language));
+        store.dispatch(setActiveLanguage(language));
       })
       .catch((err: any) => parseRequestErrorsAndShowAsToastMsgs(err, this));
   }
