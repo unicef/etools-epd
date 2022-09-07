@@ -367,7 +367,7 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
         showCloseBtn: state.app!.toastNotification.showCloseBtn
       });
     }
-    if (state.activeLanguage && state.activeLanguage.activeLanguage !== this.selectedLanguage) {
+    if (state.activeLanguage?.activeLanguage && state.activeLanguage.activeLanguage !== this.selectedLanguage) {
       this.selectedLanguage = state.activeLanguage!.activeLanguage;
       this.loadLocalization();
     }
