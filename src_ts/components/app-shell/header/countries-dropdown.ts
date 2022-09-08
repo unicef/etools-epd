@@ -2,7 +2,7 @@ import {connect} from 'pwa-helpers/connect-mixin.js';
 import {store, RootState} from '../../../redux/store';
 import '@unicef-polymer/etools-dropdown/etools-dropdown.js';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
-import {EtoolsDropdownEl} from '@unicef-polymer/etools-dropdown/etools-dropdown.js';
+import {EtoolsDropdown} from '@unicef-polymer/etools-dropdown/src/EtoolsDropdown';
 import {customElement, LitElement, html, property, query} from 'lit-element';
 
 // import EndpointsMixin from '../../endpoints/endpoints-mixin.js';
@@ -56,14 +56,14 @@ export class CountriesDropdown extends connect(store)(LitElement) {
   @property({type: Object})
   userData!: EtoolsUser;
 
-  @query('#countrySelector') private countryDropdown!: EtoolsDropdownEl;
+  @query('#countrySelector') private countryDropdown!: EtoolsDropdown;
 
   public connectedCallback() {
     super.connectedCallback();
 
     setTimeout(() => {
       const fitInto = document.querySelector('app-shell')!.shadowRoot!.querySelector('#appHeadLayout');
-      this.countryDropdown.set('fitInto', fitInto);
+      this.countryDropdown.fitInto = fitInto;
     }, 0);
   }
 
@@ -131,7 +131,7 @@ export class CountriesDropdown extends connect(store)(LitElement) {
 
   protected handleCountryChangeError(error: any) {
     logError('Country change failed!', 'countries-dropdown', error);
-    this.countryDropdown.set('selected', this.currentCountry.id);
+    this.countryDropdown.selected = this.currentCountry.id;
     fireEvent(this, 'toast', {text: 'Something went wrong changing your workspace. Please try again'});
   }
 }
