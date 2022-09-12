@@ -90,3 +90,4 @@ workflows:
                 - staging
                 - develop
                 - localize-dates
+                - 31237_dropdown_to_lit
