@@ -86,7 +86,10 @@ function fetchLangFiles(lang: string) {
     return Object.assign(response[0].value, response[1].value);
   });
 }
-registerTranslateConfig({loader: (lang: string) => fetchLangFiles(lang)});
+registerTranslateConfig({
+  empty: (key) => `${key && key[0].toUpperCase() + key.slice(1).toLowerCase()}`,
+  loader: (lang: string) => fetchLangFiles(lang)
+});
 
 // set store for intervention-tab-pages
 setStore(store as any);
@@ -364,7 +367,7 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
         showCloseBtn: state.app!.toastNotification.showCloseBtn
       });
     }
-    if (state.activeLanguage && state.activeLanguage.activeLanguage !== this.selectedLanguage) {
+    if (state.activeLanguage?.activeLanguage && state.activeLanguage.activeLanguage !== this.selectedLanguage) {
       this.selectedLanguage = state.activeLanguage!.activeLanguage;
       this.loadLocalization();
     }
