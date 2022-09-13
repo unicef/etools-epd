@@ -2,7 +2,8 @@ import '@polymer/app-layout/app-toolbar/app-toolbar';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@unicef-polymer/etools-profile-dropdown/etools-profile-dropdown';
 import '@unicef-polymer/etools-dropdown/etools-dropdown.js';
-import {customElement, LitElement, html, property} from 'lit-element';
+import {EtoolsDropdownEl} from '@unicef-polymer/etools-dropdown/etools-dropdown';
+import {customElement, LitElement, html, property, query} from 'lit-element';
 
 import './countries-dropdown';
 
@@ -111,6 +112,7 @@ export class PageHeader extends connect(store)(LitElement) {
         <div class="header__item header__right-group">
           <div class="dropdowns">
             <etools-dropdown
+              id="languageSelector"
               .selected="${this.selectedLanguage}"
               .options="${appLanguages}"
               option-label="display_name"
@@ -185,10 +187,17 @@ export class PageHeader extends connect(store)(LitElement) {
 
   @property() selectedLanguage!: string;
 
+  @query('#languageSelector') private languageDropdown!: EtoolsDropdownEl;
+
   public connectedCallback() {
     super.connectedCallback();
     this.setBgColor();
     this.checkEnvironment();
+
+    setTimeout(() => {
+      const fitInto = document.querySelector('app-shell')!.shadowRoot!.querySelector('#appHeadLayout');
+      this.languageDropdown.set('fitInto', fitInto);
+    }, 0);
   }
 
   public stateChanged(state: RootState) {
