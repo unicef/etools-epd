@@ -212,6 +212,9 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
   @property({type: String})
   currentToastMessage!: string;
 
+  @property({type: Boolean})
+  currentLanguageIsSet!: boolean;
+
   @query('#layout') private drawerLayout!: AppDrawerLayoutElement;
   @query('#drawer') private drawer!: AppDrawerElement;
   @query('#appHeadLayout') private appHeaderLayout!: AppHeaderLayoutElement;
@@ -376,6 +379,7 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
   async loadLocalization() {
     this.waitForTranslationsToLoad().then(async () => {
       await use(this.selectedLanguage);
+      this.currentLanguageIsSet = true;
     });
   }
 
