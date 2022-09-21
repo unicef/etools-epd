@@ -21,7 +21,9 @@
     "SAVING_DATA": "Se salveaza datele...",
     "ENTER_MESSAGE_HERE": "Introduceti Mesajul Aici",
     "PROFILEANDSIGNOUT": "Profil și deconectare",
-    "ERROR_LOADING_DATA": "Eroare la incarcarea datelor"
+    "ERROR_LOADING_DATA": "Eroare la incarcarea datelor",
+    "EXPORT_XLS": "Exporta ePD Excel",
+    "EXPORT_CSV": "Exporta ePD CSV"
   },
   "INTERVENTIONS_LIST": {
     "PD_LIST": "Lista PD/SPD",

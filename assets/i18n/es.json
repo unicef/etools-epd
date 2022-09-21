@@ -21,7 +21,9 @@
     "SAVING_DATA": "Guardando datos...",
     "ENTER_MESSAGE_HERE": "Introducir mensaje aquí",
     "PROFILEANDSIGNOUT": "Perfil y cierre de sesión",
-    "ERROR_LOADING_DATA": "Error al cargar los datos"
+    "ERROR_LOADING_DATA": "Error al cargar los datos",
+    "EXPORT_XLS": "Exportar ePD Excel",
+    "EXPORT_CSV": "Exportar ePD CSV"
   },
   "INTERVENTIONS_LIST": {
     "PD_LIST": "Lista de PD/SPD",

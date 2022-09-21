@@ -21,7 +21,9 @@
     "SAVING_DATA": "Сохранение…",
     "ENTER_MESSAGE_HERE": "Введите сообщение ",
     "PROFILEANDSIGNOUT": "Профиль и Выйти",
-    "ERROR_LOADING_DATA": "Ошибка загрузки"
+    "ERROR_LOADING_DATA": "Ошибка загрузки",
+    "EXPORT_XLS": "Экспорт в XLS ePD",
+    "EXPORT_CSV": "Экспорт в CSV ePD"
   },
   "INTERVENTIONS_LIST": {
     "PD_LIST": "Список ПД/УПД",

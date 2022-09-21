@@ -79,7 +79,7 @@ export class InterventionList extends connect(store)(LitElement) {
 
         <div slot="title-row-actions" class="content-header-actions">
           <div class="action">
-            <export-data .params="${this.exportParams}" raised></export-data>
+            <export-data .exportLinks="${this.exportLinks}" .params="${this.exportParams}" raised></export-data>
           </div>
         </div>
       </page-content-header>
@@ -124,6 +124,12 @@ export class InterventionList extends connect(store)(LitElement) {
 
   @property({type: String})
   exportParams = '';
+
+  @property({type: Array})
+  exportLinks = [
+    {name: translate('GENERAL.EXPORT_XLS'), type: 'xlsx'},
+    {name: translate('GENERAL.EXPORT_CSV'), type: 'csv'}
+  ];
 
   @property({type: Boolean})
   showLoading = false;
