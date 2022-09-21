@@ -42,7 +42,41 @@
     "ENDS_BEFORE": "Ends Before",
     "STARTS_AFTER": "Starts After",
     "ENDS_AFTER": "Ends After",
-    "BUDGET_OWNER": "UNICEF Budget Owner"
+    "BUDGET_OWNER": "UNICEF Budget Owner",
+    "TOTAL_BUDGET":"Total Budget",
+    "UNICEF_CASH_CONTRIBUTION":"UNICEF Cash Contribution"
   },
-  "EDITABLE_BY": "Editable By"
+  "EDITABLE_BY": "Editable By",
+  "PDS_SPDS": "PDs/SPDs",
+  "UNICEF": "UNICEF",
+  "PD_STATUS": {
+    "ENDED": "Ended",
+    "DEVELOPMENT": "Development",
+    "REVIEW": "Review" ,
+    "SIGNATURE": "Signature" ,
+    "SIGNED": "Signed",
+    "ACTIVE": "Active" ,
+    "CANCELLED": "Cancelled" ,
+    "CLOSED": "Closed" ,
+    "SUSPENDED": "Suspended" ,
+    "TERMINATED": "Terminated",
+    "EXPIRED": "Expired"
+  },
+  "ITEM_TYPE": {
+    "PD": "PD",
+    "SPD": "SPD",
+    "SSFA": "SSFA",
+    "PROGRAMME_DOCUMENT":"Programme Document",
+    "SIMPLIFIED_PROGRAMME_DOCUMENT":"Simplified Programme Document"
+  },
+  "LL": {
+    "ENGLISH": "English",
+    "ARABIC": "Arabic",
+    "PORTUGUESE": "Portuguese",
+    "RUSSIAN": "Russian",
+    "FRENCH": "French",
+    "SPANISH": "Spanish",
+    "ROMANIAN": "Romanian"
+  }
 }
+  

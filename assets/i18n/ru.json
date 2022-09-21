@@ -42,7 +42,40 @@
     "ENDS_BEFORE": "Действителен до ",
     "STARTS_AFTER": "Действителен после ",
     "ENDS_AFTER": "Завершится после  ",
-    "BUDGET_OWNER": "Сотрудник ЮНИСЕФ ответственный за фонды"
+    "BUDGET_OWNER": "Сотрудник ЮНИСЕФ ответственный за фонды",
+    "TOTAL_BUDGET": "Общий бюджет",
+    "UNICEF_CASH_CONTRIBUTION": "Денежный взнос ЮНИСЕФ"
   },
-  "EDITABLE_BY": "Изменено следующими лицами"
+  "EDITABLE_BY": "Изменено следующими лицами",
+  "PDS_SPDS": "ПД/УПД",
+  "UNICEF": "ЮНИСЕФ",
+  "PD_STATUS": {
+    "ENDED": "окончившийся",
+    "DEVELOPMENT": "Разработка",
+    "REVIEW": "Обзор",
+    "SIGNATURE": "Подпись",
+    "SIGNED": "Подписано",
+    "ACTIVE": "Активный",
+    "CANCELLED": "Отменено",
+    "CLOSED": "Отменено",
+    "SUSPENDED": "Приостановленный",
+    "TERMINATED": "Прекращено",
+    "EXPIRED": "Истекший"
+  },
+  "ITEM_TYPE": {
+    "PD": "ПД",
+    "SPD": "СПД",
+    "SSFA": "ССФА",
+    "PROGRAMME_DOCUMENT": "Программный документ",
+    "SIMPLIFIED_PROGRAMME_DOCUMENT": "Упрощенный программный документ"
+  },
+  "LL": {
+    "ENGLISH": "Английский",
+    "ARABIC": "арабский",
+    "PORTUGUESE": "португальский",
+    "RUSSIAN": "Русский",
+    "FRENCH": "Французский",
+    "SPANISH": "испанский",
+    "ROMANIAN": "румынский"
+  }
 }

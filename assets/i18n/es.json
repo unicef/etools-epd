@@ -42,7 +42,40 @@
     "ENDS_BEFORE": "Finaliza antes",
     "STARTS_AFTER": "Inicia después",
     "ENDS_AFTER": "Finaliza después",
-    "BUDGET_OWNER": "Propietario del presupuesto de UNICEF"
+    "BUDGET_OWNER": "Propietario del presupuesto de UNICEF",
+    "TOTAL_BUDGET": "Presupuesto total",
+    "UNICEF_CASH_CONTRIBUTION": "Contribución en efectivo de UNICEF"
   },
-  "EDITABLE_BY": "Editable por"
+  "EDITABLE_BY": "Editable por",
+  "PDS_SPDS": "PD/SPD",
+  "UNICEF": "UNICEF",
+  "PD_STATUS": {
+    "ENDED": "Terminado",
+    "DEVELOPMENT": "Desarrollo",
+    "REVIEW": "Revisar",
+    "SIGNATURE": "Firma",
+    "SIGNED": "firmado",
+    "ACTIVE": "Activo",
+    "CANCELLED": "Cancelado",
+    "CLOSED": "Cerrado",
+    "SUSPENDED": "Suspendido",
+    "TERMINATED": "Terminado",
+    "EXPIRED": "Venció"
+  },
+  "ITEM_TYPE": {
+    "PD": "PD",
+    "SPD": "SPD",
+    "SSFA": "SSFA",
+    "PROGRAMME_DOCUMENT": "Documento del programa",
+    "SIMPLIFIED_PROGRAMME_DOCUMENT": "Documento de programa simplificado"
+  },
+  "LL": {
+    "ENGLISH": "Inglés",
+    "ARABIC": "Arábica",
+    "PORTUGUESE": "Portugués",
+    "RUSSIAN": "Ruso",
+    "FRENCH": "Francés",
+    "SPANISH": "Español",
+    "ROMANIAN": "Rumano"
+  }
 }

@@ -42,7 +42,40 @@
     "ENDS_BEFORE": "Finalizat inainte de",
     "STARTS_AFTER": "Incepe dupa",
     "ENDS_AFTER": "Finalizat dupa",
-    "BUDGET_OWNER": "Responsabil UNICEF al Bugetului"
+    "BUDGET_OWNER": "Responsabil UNICEF al Bugetului",
+    "TOTAL_BUDGET": "Buget total",
+    "UNICEF_CASH_CONTRIBUTION": "Contribuția în numerar a UNICEF"
   },
-  "EDITABLE_BY": "Editable By"
+  "EDITABLE_BY": "Editable By",
+  "PDS_SPDS": "PD-uri/SPD-uri",
+  "UNICEF": "UNICEF",
+  "PD_STATUS": {
+    "ENDED": "Încheiat",
+    "DEVELOPMENT": "Dezvoltare",
+    "REVIEW": "Revizuire",
+    "SIGNATURE": "Semnătură",
+    "SIGNED": "Semnat",
+    "ACTIVE": "Activ",
+    "CANCELLED": "Anulat",
+    "CLOSED": "Închis",
+    "SUSPENDED": "Suspendat",
+    "TERMINATED": "Terminat",
+    "EXPIRED": "Expirat"
+  },
+  "ITEM_TYPE": {
+    "PD": "PD",
+    "SPD": "SPD",
+    "SSFA": "SSFA",
+    "PROGRAMME_DOCUMENT": "Documentul programului",
+    "SIMPLIFIED_PROGRAMME_DOCUMENT": "Document de program simplificat"
+  },
+  "LL": {
+    "ENGLISH": "Engleză",
+    "ARABIC": "Arabă",
+    "PORTUGUESE": "Portugheză",
+    "RUSSIAN": "Rusă",
+    "FRENCH": "Franceză",
+    "SPANISH": "Spaniolă",
+    "ROMANIAN": "Română"
+  }
 }
