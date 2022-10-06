@@ -86,7 +86,7 @@ function fetchLangFiles(lang: string) {
     return Object.assign(response[0].value, response[1].value);
   });
 }
-registerTranslateConfig({
+const translationConfig = registerTranslateConfig({
   empty: (key) => `${key && key[0].toUpperCase() + key.slice(1).toLowerCase()}`,
   loader: (lang: string) => fetchLangFiles(lang)
 });
@@ -211,6 +211,9 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
 
   @property({type: String})
   currentToastMessage!: string;
+
+  @property({type: Boolean})
+  currentLanguageIsSet!: boolean;
 
   @query('#layout') private drawerLayout!: AppDrawerLayoutElement;
   @query('#drawer') private drawer!: AppDrawerElement;
@@ -374,7 +377,21 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
   }
 
   async loadLocalization() {
-    await use(this.selectedLanguage);
+    this.waitForTranslationsToLoad().then(async () => {
+      await use(this.selectedLanguage);
+      this.currentLanguageIsSet = true;
+    });
+  }
+
+  waitForTranslationsToLoad() {
+    return new Promise((resolve) => {
+      const translationsCheck = setInterval(() => {
+        if (translationConfig) {
+          clearInterval(translationsCheck);
+          resolve(true);
+        }
+      }, 100);
+    });
   }
 
   // TODO: just for testing...

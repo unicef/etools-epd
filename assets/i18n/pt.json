@@ -21,7 +21,9 @@
     "SAVING_DATA": "Salvando dados",
     "ENTER_MESSAGE_HERE": "Digite a mensagem aqui",
     "PROFILEANDSIGNOUT": "Perfil e Sair",
-    "ERROR_LOADING_DATA": "Erro no carregamento do dado"
+    "ERROR_LOADING_DATA": "Erro no carregamento do dado",
+    "EXPORT_CSV": "Exportar ePD CSV",
+    "EXPORT_XLS": "Exportar ePD Excel"
   },
   "INTERVENTIONS_LIST": {
     "PD_LIST": "Lista PD/SPDs",

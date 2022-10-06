@@ -22,7 +22,9 @@
     "src_ts/components/pages/interventions/intervention-tab-pages/assets/i18n/ro.json",
     "src_ts/components/pages/interventions/intervention-tab-pages/assets/i18n/ar.json",
     "src_ts/components/pages/interventions/intervention-tab-pages/assets/i18n/ru.json",
-    "src_ts/components/pages/interventions/intervention-tab-pages/assets/i18n/pt.json"
+    "src_ts/components/pages/interventions/intervention-tab-pages/assets/i18n/pt.json",
+    "src_ts/components/pages/interventions/intervention-tab-pages/assets/i18n/fr.json",
+    "src_ts/components/pages/interventions/intervention-tab-pages/assets/i18n/es.json"
   ],
   "exclude": []
 }
