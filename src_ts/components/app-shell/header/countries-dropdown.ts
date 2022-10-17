@@ -63,7 +63,7 @@ export class CountriesDropdown extends connect(store)(LitElement) {
 
     setTimeout(() => {
       const fitInto = document.querySelector('app-shell')!.shadowRoot!.querySelector('#appHeadLayout');
-      this.countryDropdown.set('fitInto', fitInto);
+      this.countryDropdown.fitInto = fitInto;
     }, 0);
   }
 
@@ -131,7 +131,7 @@ export class CountriesDropdown extends connect(store)(LitElement) {
 
   protected handleCountryChangeError(error: any) {
     logError('Country change failed!', 'countries-dropdown', error);
-    this.countryDropdown.set('selected', this.currentCountry.id);
+    this.countryDropdown.selected = this.currentCountry.id;
     fireEvent(this, 'toast', {text: 'Something went wrong changing your workspace. Please try again'});
   }
 }

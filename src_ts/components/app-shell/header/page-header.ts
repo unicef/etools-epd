@@ -197,7 +197,7 @@ export class PageHeader extends connect(store)(LitElement) {
 
     setTimeout(() => {
       const fitInto = document.querySelector('app-shell')!.shadowRoot!.querySelector('#appHeadLayout');
-      this.languageDropdown.set('fitInto', fitInto);
+      this.languageDropdown.fitInto = fitInto;
     }, 0);
   }
 
