@@ -1,10 +1,10 @@
 ﻿{
   "GENERAL": {
     "ADD": "Ajouter",
-    "ADD_UPDATE": " Ajouter/Mettre à jour ",
+    "ADD_UPDATE": "Ajouter/Mettre à jour",
     "SAVE": "Enregistrer",
     "DELETE": "Supprimer",
-    "EDIT": " Modifier",
+    "EDIT": "Modifier",
     "TITLE": "Titre",
     "TOTAL": "Total",
     "TOTAL_C": "TOTAL",
@@ -13,20 +13,20 @@
     "REQUIRED_FIELD": "Ce champ est obligatoire",
     "CANCEL": "Annuler",
     "YES": "Oui",
-    "FILTERS": " Filtres ",
+    "FILTERS": "Filtres",
     "CLEAR_ALL": "TOUT EFFACER",
     "COMMENT_MODE": "Mode commentaires",
-    "LOADING": " Chargement...",
-    "SAVING_DATA": " Enregistrement des données...",
-    "ENTER_MESSAGE_HERE": " Entrez le message ici ",
-    "CREATE": " إCréer",
-    "PROFILEANDSIGNOUT": " Liste des DP/DPS ",
-    "ERROR_LOADING_DATA": " Erreur lors du chargement des données ",
+    "LOADING": "Chargement...",
+    "SAVING_DATA": "Enregistrement des données...",
+    "ENTER_MESSAGE_HERE": "Entrez le message ici",
+    "CREATE": "Créer",
+    "PROFILEANDSIGNOUT": "Liste des DP/DPS",
+    "ERROR_LOADING_DATA": "Erreur lors du chargement des données",
     "EXPORT_XLS": "Exporter ePD en Excel",
     "EXPORT_CSV": "Exporter ePD en CSV"
   },
   "INTERVENTIONS_LIST": {
-    "PD_LIST": "Liste des DP/DPSة",
+    "PD_LIST": "Liste des DP/DPS",
     "TABLE_TITLE": "DP/DPS",
     "REFERENCE_NO": "N° de référence",
     "PARTNER_ORG_NAME": "Nom de l'organisation partenaire",
@@ -38,11 +38,11 @@
     "SEARCH_RECORDS": "Rechercher des enregistrements",
     "PD_TYPE": "Type DP/DPS",
     "PARTNER_ORG": "Organisation partenaire",
-    "CONTINGENCY_PD": " DP de Contingence ",
+    "CONTINGENCY_PD": "DP de Contingence",
     "ENDS_BEFORE": "Se termine avant",
     "STARTS_AFTER": "Commence après",
     "ENDS_AFTER": "Se termine après",
-    "BUDGET_OWNER": " Gestionnaire du budget UNICEF "
+    "BUDGET_OWNER": "Gestionnaire du budget UNICEF"
   },
-  "EDITABLE_BY": " Modifiable par "
+  "EDITABLE_BY": "Modifiable par"
 }

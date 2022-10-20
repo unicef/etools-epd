@@ -135,6 +135,7 @@ export class PageHeader extends connect(store)(LitElement) {
             .offices="${this.profileDrOffices}"
             .users="${this.profileDrUsers}"
             .profile="${this.profile ? {...this.profile} : {}}"
+            language="${this.selectedLanguage}"
             @save-profile="${this.handleSaveProfile}"
             @sign-out="${this._signOut}"
           >

@@ -1,7 +1,7 @@
 {
   "GENERAL": {
     "ADD": "أضف",
-    "ADD_UPDATE": "Add/Update",
+    "ADD_UPDATE": "إضافة / تحديث",
     "SAVE": "حفظ",
     "DELETE": "حذف",
     "EDIT": "Edit",
@@ -13,17 +13,18 @@
     "REQUIRED_FIELD": "هذه الخانة مطلوبه",
     "CANCEL": "إلغاء",
     "YES": "نعم",
+    "NO": "رقم",
     "FILTERS": "المرشحات",
     "CLEAR_ALL": "امسح الكل",
     "COMMENT_MODE": "وضع التعليق",
-    "LOADING": "Loading...",
-    "SAVING_DATA": "Saving data...",
-    "ENTER_MESSAGE_HERE": "Enter Message Here",
-    "CREATE": "Create",
-    "PROFILEANDSIGNOUT": "Profile and Sign out",
-    "ERROR_LOADING_DATA": "Error on loading data",
-    "EXPORT_XLS": "Export ePD Excel",
-    "EXPORT_CSV": "Export ePD CSV"
+    "LOADING": "جار التحميل...",
+    "SAVING_DATA": "حفظ البيانات...",
+    "ENTER_MESSAGE_HERE": "أدخل الرسالة هنا",
+    "PROFILEANDSIGNOUT": "الملف الشخصي وتسجيل الخروج",
+    "ERROR_LOADING_DATA": "خطأ في تحميل البيانات",
+    "EXPORT_XLS": "تصدير ملف ePD Excel",
+    "EXPORT_CSV": "تصدير ePD CSV",
+    "CREATE": "خلق"
   },
   "INTERVENTIONS_LIST": {
     "PD_LIST": "PDs/SPDs قائمة",
@@ -42,7 +43,31 @@
     "ENDS_BEFORE": "ينتهي قبل",
     "STARTS_AFTER": "يبدأ بعد",
     "ENDS_AFTER": "ينتهي بعد",
-    "BUDGET_OWNER": "UNICEF Budget Owner"
+    "BUDGET_OWNER": "مالك ميزانية اليونيسف",
+    "TOTAL_BUDGET": "الميزانية الإجمالية",
+    "UNICEF_CASH_CONTRIBUTION": "مساهمة اليونيسف النقدية"
   },
-  "EDITABLE_BY": "Editable By"
+  "EDITABLE_BY": "Editable By",
+  "PDS_SPDS": "PDs / SPDs",
+  "UNICEF": "اليونيسف",
+  "PD_STATUS": {
+    "ENDED": "انتهى",
+    "DEVELOPMENT": "تطوير",
+    "REVIEW": "إعادة النظر",
+    "SIGNATURE": "التوقيع",
+    "SIGNED": "وقعت",
+    "ACTIVE": "نشيط",
+    "CANCELLED": "ألغيت",
+    "CLOSED": "مغلق",
+    "SUSPENDED": "موقوف عن العمل",
+    "TERMINATED": "تم إنهاؤه",
+    "EXPIRED": "منتهي الصلاحية"
+  },
+  "ITEM_TYPE": {
+    "PD": "PD",
+    "SPD": "SPD",
+    "SSFA": "SSFA",
+    "PROGRAMME_DOCUMENT": "وثيقة البرنامج",
+    "SIMPLIFIED_PROGRAMME_DOCUMENT": "وثيقة البرنامج المبسطة"
+  }
 }

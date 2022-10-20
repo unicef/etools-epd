@@ -94,7 +94,7 @@ export class InterventionList extends connect(store)(LitElement) {
       </section>
 
       <section class="elevation page-content no-padding" elevation="1">
-        <etools-loading loading-text="Loading..." .active="${this.showLoading}"></etools-loading>
+        <etools-loading loading-text="${translate('GENERAL.LOADING')}" .active="${this.showLoading}"></etools-loading>
         <etools-table
           caption="${translate('INTERVENTIONS_LIST.TABLE_TITLE')}"
           .columns="${this.listColumns}"
@@ -160,8 +160,11 @@ export class InterventionList extends connect(store)(LitElement) {
     {
       label: translate('INTERVENTIONS_LIST.DOC_TYPE') as unknown as string,
       name: 'document_type',
-      type: EtoolsTableColumnType.Text,
-      sort: null
+      type: EtoolsTableColumnType.Custom,
+      sort: null,
+      customMethod: (item: any, _key: string) => {
+        return item.document_type ? translate(`ITEM_TYPE.${item.document_type.toUpperCase()}`) : item.document_type;
+      }
     },
     {
       label: translate('INTERVENTIONS_LIST.STATUS') as unknown as string,
@@ -170,31 +173,32 @@ export class InterventionList extends connect(store)(LitElement) {
       capitalize: true,
       sort: null,
       customMethod: (item: any, _key: string) => {
+        const translatedStatus = item.status ? translate(`PD_STATUS.${item.status.toUpperCase()}`) : item.status;
         if (item.status !== 'development') {
-          return item.status;
+          return translatedStatus;
         }
         if (item.partner_accepted && item.unicef_accepted) {
-          return html`${item.status} <br />
+          return html`${translatedStatus} <br />
             ${translate('PARTNER_AND_UNICEF_ACCEPTED')}`;
         }
         if (!item.partner_accepted && item.unicef_accepted) {
-          return html`${item.status} <br />
+          return html`${translatedStatus} <br />
             ${translate('UNICEF_ACCEPTED')}`;
         }
         if (item.partner_accepted && !item.unicef_accepted) {
-          return html`${item.status} <br />
+          return html`${translatedStatus} <br />
             ${translate('PARTNER_ACCEPTED')}`;
         }
         if (!item.unicef_court && !!item.date_sent_to_partner) {
-          return html`${item.status} <br />
+          return html`${translatedStatus} <br />
             ${translate('SENT_TO_PARTNER')}`;
         }
 
         if (item.unicef_court && !!item.submission_date && !!item.date_sent_to_partner) {
-          return html`${item.status} <br />
+          return html`${translatedStatus} <br />
             ${translate('SENT_TO_UNICEF')}`;
         }
-        return item.status;
+        return translatedStatus;
       },
       cssClass: 'col_type'
     },
@@ -281,11 +285,11 @@ export class InterventionList extends connect(store)(LitElement) {
         <td colspan="8">
           <div class="details">
             <div>
-              <div class="title">Total Budget</div>
+              <div class="title">${translate('INTERVENTIONS_LIST.TOTAL_BUDGET')}</div>
               <div class="detail">${item.budget_currency || ''} ${addCurrencyAmountDelimiter(item.total_budget)}</div>
             </div>
             <div>
-              <div class="title">UNICEF Cash Contribution</div>
+              <div class="title">${translate('INTERVENTIONS_LIST.UNICEF_CASH_CONTRIBUTION')}</div>
               <div class="detail">${item.budget_currency || ''} ${addCurrencyAmountDelimiter(item.unicef_cash)}</div>
             </div>
           </div>
@@ -370,15 +374,29 @@ export class InterventionList extends connect(store)(LitElement) {
 
   private populateDropdownFilterOptionsFromCommonData(state: RootState, currentFilters: EtoolsFilter[]) {
     updateFilterSelectionOptions(currentFilters, 'partners', notHiddenPartnersSelector(state));
-    updateFilterSelectionOptions(currentFilters, 'status', state.commonData!.interventionStatuses);
+    updateFilterSelectionOptions(
+      currentFilters,
+      'status',
+      state.commonData!.interventionStatuses.map((x: any) => ({
+        ...x,
+        label: getTranslation(`PD_STATUS.${x.label.toUpperCase()}`)
+      }))
+    );
     updateFilterSelectionOptions(
       currentFilters,
       InterventionFilterKeys.budget_owner,
       state.commonData!.unicefUsersData
     );
-    updateFilterSelectionOptions(currentFilters, 'document_type', state.commonData!.documentTypes);
+    updateFilterSelectionOptions(
+      currentFilters,
+      'document_type',
+      state.commonData!.documentTypes.map((x: any) => ({
+        ...x,
+        label: getTranslation(`ITEM_TYPE.${x.label.replace(/ /g, '_').toUpperCase()}`)
+      }))
+    );
     updateFilterSelectionOptions(currentFilters, InterventionFilterKeys.editable_by, [
-      {label: 'UNICEF', value: 'unicef'},
+      {label: getTranslation('UNICEF'), value: 'unicef'},
       {label: getTranslation('PARTNER'), value: 'partner'}
     ]);
   }

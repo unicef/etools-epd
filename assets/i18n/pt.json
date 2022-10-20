@@ -22,8 +22,8 @@
     "ENTER_MESSAGE_HERE": "Digite a mensagem aqui",
     "PROFILEANDSIGNOUT": "Perfil e Sair",
     "ERROR_LOADING_DATA": "Erro no carregamento do dado",
-    "EXPORT_CSV": "Exportar ePD CSV",
-    "EXPORT_XLS": "Exportar ePD Excel"
+    "EXPORT_XLS": "Exportar ePD Excel",
+    "EXPORT_CSV": "Exportar ePD CSV"
   },
   "INTERVENTIONS_LIST": {
     "PD_LIST": "Lista PD/SPDs",
@@ -42,7 +42,31 @@
     "ENDS_BEFORE": "Finaliza antes de",
     "STARTS_AFTER": "Começa depois de",
     "ENDS_AFTER": "Finaliza depois de",
-    "BUDGET_OWNER": "UNICEF Budget Owner"
+    "BUDGET_OWNER": "UNICEF Budget Owner",
+    "TOTAL_BUDGET": "Orçamento total",
+    "UNICEF_CASH_CONTRIBUTION": "Contribuição em dinheiro do UNICEF"
   },
-  "EDITABLE_BY": "Editado por"
+  "EDITABLE_BY": "Editado por",
+  "PDS_SPDS": "PDs/SPDs",
+  "UNICEF": "UNICEF",
+  "PD_STATUS": {
+    "ENDED": "Finalizado",
+    "DEVELOPMENT": "Desenvolvimento",
+    "REVIEW": "Análise",
+    "SIGNATURE": "Assinatura",
+    "SIGNED": "Assinado",
+    "ACTIVE": "Ativo",
+    "CANCELLED": "Cancelado",
+    "CLOSED": "Fechadas",
+    "SUSPENDED": "Suspenso",
+    "TERMINATED": "Terminado",
+    "EXPIRED": "Expirado"
+  },
+  "ITEM_TYPE": {
+    "PD": "PD",
+    "SPD": "SPD",
+    "SSFA": "SSFA",
+    "PROGRAMME_DOCUMENT": "Documento do Programa",
+    "SIMPLIFIED_PROGRAMME_DOCUMENT": "Documento do Programa Simplificado"
+  }
 }
