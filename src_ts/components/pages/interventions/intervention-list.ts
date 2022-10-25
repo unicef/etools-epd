@@ -1,5 +1,5 @@
 import '@polymer/paper-button/paper-button';
-import {customElement, html, LitElement, property, TemplateResult} from 'lit-element';
+import {customElement, html, LitElement, property, state, TemplateResult} from 'lit-element';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {RootState, store} from '../../../redux/store';
 
@@ -38,7 +38,7 @@ import {
 } from '@unicef-polymer/etools-modules-common/dist/list/list-styles';
 import {addCurrencyAmountDelimiter} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {notHiddenPartnersSelector} from '../../../redux/reducers/common-data';
-import {translate, get as getTranslation} from 'lit-translate';
+import {translate, get as getTranslation, listenForLangChanged} from 'lit-translate';
 import {
   InterventionListData,
   LabelAndValue,
@@ -53,6 +53,7 @@ import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/sh
 import {debounce} from '../../utils/debouncer';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {setShouldReGetList} from './intervention-tab-pages/common/actions/interventions';
+import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 
 /**
  * @LitElement
@@ -94,7 +95,7 @@ export class InterventionList extends connect(store)(LitElement) {
       </section>
 
       <section class="elevation page-content no-padding" elevation="1">
-        <etools-loading loading-text="${translate('GENERAL.LOADING')}" .active="${this.showLoading}"></etools-loading>
+        <etools-loading .active="${this.showLoading}"></etools-loading>
         <etools-table
           caption="${translate('INTERVENTIONS_LIST.TABLE_TITLE')}"
           .columns="${this.listColumns}"
@@ -229,6 +230,10 @@ export class InterventionList extends connect(store)(LitElement) {
   connectedCallback(): void {
     super.connectedCallback();
     this.getListData = debounce(this.getListData.bind(this), 400) as any;
+    listenForLangChanged(() => {
+      const availableFilters = [...defaultFilters];
+      this.populateDropdownFilterOptionsFromCommonData(store.getState(), availableFilters);
+    });
   }
 
   stateChanged(state: RootState) {
@@ -379,7 +384,7 @@ export class InterventionList extends connect(store)(LitElement) {
       'status',
       state.commonData!.interventionStatuses.map((x: any) => ({
         ...x,
-        label: getTranslation(`PD_STATUS.${x.label.toUpperCase()}`)
+        label: getTranslatedValue(x.label, 'PD_STATUS')
       }))
     );
     updateFilterSelectionOptions(
@@ -392,7 +397,7 @@ export class InterventionList extends connect(store)(LitElement) {
       'document_type',
       state.commonData!.documentTypes.map((x: any) => ({
         ...x,
-        label: getTranslation(`ITEM_TYPE.${x.label.replace(/ /g, '_').toUpperCase()}`)
+        label: getTranslatedValue(x.label, 'ITEM_TYPE')
       }))
     );
     updateFilterSelectionOptions(currentFilters, InterventionFilterKeys.editable_by, [
