@@ -1,5 +1,5 @@
 import '@polymer/paper-button/paper-button';
-import {customElement, html, LitElement, property, state, TemplateResult} from 'lit-element';
+import {customElement, html, LitElement, property, TemplateResult} from 'lit-element';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {RootState, store} from '../../../redux/store';
 
