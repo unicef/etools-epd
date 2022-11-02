@@ -31,6 +31,7 @@
     "format": "npm run format:eslint"
   },
   "dependencies": {
+    "@mapbox/leaflet-omnivore": "^0.3.4",
     "@polymer/app-layout": "^3.1.0",
     "@polymer/decorators": "^3.0.0",
     "@polymer/iron-icons": "^3.0.1",
@@ -77,8 +78,9 @@
     "@webcomponents/webcomponentsjs": "^2.6.0",
     "dayjs": "^1.11.5",
     "focus-visible": "^5.2.0",
-    "leaflet": "^1.8.0",
+    "leaflet": "^1.9.2",
     "leaflet.markercluster": "^1.5.3",
+    "esri-leaflet": "^3.0.8",
     "lit-element": "^2.5.1",
     "lit-translate": "^1.2.1",
     "lodash-es": "^4.17.21",
