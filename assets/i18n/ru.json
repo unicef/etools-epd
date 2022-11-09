@@ -68,5 +68,11 @@
     "SSFA": "ССФА",
     "PROGRAMME_DOCUMENT": "Программный документ",
     "SIMPLIFIED_PROGRAMME_DOCUMENT": "Упрощенный программный документ"
-  }
+  },
+  "PROFILE_DATA_NOT_SAVED": "Данные профиля не сохранены. Ошибка сохранения профиля!",
+  "ALL_DATA_SAVED": "Все изменения сохраняются.",
+  "COMMUNITY_CHANNELS": "Каналы сообщества eTools",
+  "KNOWLEDGE_BASE": "База знаний",
+  "DISCUSSION": "Обсуждение",
+  "INFORMATION": "Информация"
 }

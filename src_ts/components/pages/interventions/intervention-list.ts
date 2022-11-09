@@ -238,7 +238,7 @@ export class InterventionList extends connect(store)(LitElement) {
 
   stateChanged(state: RootState) {
     const routeDetails = get(state, 'app.routeDetails');
-    if (!(routeDetails.routeName === 'interventions' && routeDetails.subRouteName === 'list')) {
+    if (!(routeDetails?.routeName === 'interventions' && routeDetails?.subRouteName === 'list')) {
       this.paramsInitialized = false;
       this.routeDetails = null;
       return; // Avoid code execution while on a different page

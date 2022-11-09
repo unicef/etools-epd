@@ -68,5 +68,11 @@
     "SSFA": "SSFA",
     "PROGRAMME_DOCUMENT": "Documento del programa",
     "SIMPLIFIED_PROGRAMME_DOCUMENT": "Documento de programa simplificado"
-  }
+  },
+  "PROFILE_DATA_NOT_SAVED": "Los datos del perfil no se guardaron. ¡Error al guardar perfil!",
+  "ALL_DATA_SAVED": "Todos los cambios se guardan.",
+  "COMMUNITY_CHANNELS": "Canales de la comunidad de eTools",
+  "KNOWLEDGE_BASE": "Base de conocimientos",
+  "DISCUSSION": "Discusión",
+  "INFORMATION": "Información"
 }

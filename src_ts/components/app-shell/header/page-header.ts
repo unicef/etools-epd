@@ -15,7 +15,7 @@ import {fireEvent} from '../../utils/fire-custom-event';
 import isEmpty from 'lodash-es/isEmpty';
 import {updateCurrentUser} from '../../user/user-actions';
 import {pageHeaderStyles} from './page-header-styles';
-import {translate, use} from 'lit-translate';
+import {translate, use, get as getTranslation} from 'lit-translate';
 import {setActiveLanguage} from '../../../redux/actions/active-language';
 import {activeLanguage} from '../../../redux/reducers/active-language';
 import {countriesDropdownStyles} from './countries-dropdown-styles';
@@ -241,7 +241,7 @@ export class PageHeader extends connect(store)(LitElement) {
         this.showSaveNotification();
       })
       .catch(() => {
-        this.showSaveNotification('Profile data not saved. Save profile error!');
+        this.showSaveNotification(getTranslation('PROFILE_DATA_NOT_SAVED'));
       })
       .then(() => {
         this.profileSaveLoadingMsgDisplay(false);
@@ -257,7 +257,7 @@ export class PageHeader extends connect(store)(LitElement) {
 
   protected showSaveNotification(msg?: string) {
     fireEvent(this, 'toast', {
-      text: msg ? msg : 'All changes are saved.',
+      text: msg ? msg : getTranslation('ALL_DATA_SAVED'),
       showCloseBtn: false
     });
   }

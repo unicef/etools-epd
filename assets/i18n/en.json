@@ -68,6 +68,12 @@
     "SSFA": "SSFA",
     "PROGRAMME_DOCUMENT":"Programme Document",
     "SIMPLIFIED_PROGRAMME_DOCUMENT":"Simplified Programme Document"
-  }
+  },
+  "PROFILE_DATA_NOT_SAVED":"Profile data not saved. Save profile error!",
+  "ALL_DATA_SAVED":"All changes are saved.",
+  "COMMUNITY_CHANNELS": "eTools Community Channels",
+  "KNOWLEDGE_BASE": "Knowledge base",
+  "DISCUSSION": "Discussion",
+  "INFORMATION": "Information"
 }
   
