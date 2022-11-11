@@ -36,7 +36,7 @@ const copyConfig = {
     },
     {
       src: 'node_modules/@mapbox/leaflet-omnivore/leaflet-omnivore.min.js',
-      dest: 'node_modules/@mapbox/leaflet-omnivore'
+      dest: 'build/node_modules/@mapbox/leaflet-omnivore'
     },
     {
       src: 'src/components/pages/interventions/intervention-tab-pages/assets/i18n',
