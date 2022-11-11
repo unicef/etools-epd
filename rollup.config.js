@@ -31,8 +31,20 @@ const copyConfig = {
     {src: 'node_modules/dayjs/plugin/isBetween.js', dest: 'build/node_modules/dayjs'},
     {src: 'node_modules/dayjs/plugin/isSameOrBefore.js', dest: 'build/node_modules/dayjs'},
     {
+      src: 'node_modules/esri-leaflet/dist/esri-leaflet.js',
+      dest: 'build/node_modules/esri-leaflet/dist'
+    },
+    {
+      src: 'node_modules/@mapbox/leaflet-omnivore/leaflet-omnivore.min.js',
+      dest: 'node_modules/@mapbox/leaflet-omnivore'
+    },
+    {
       src: 'src/components/pages/interventions/intervention-tab-pages/assets/i18n',
       dest: 'build/src/components/pages/interventions/intervention-tab-pages/assets'
+    },
+    {
+      src: 'node_modules/esri-leaflet/dist/esri-leaflet.js',
+      dest: 'build/node_modules/esri-leaflet/dist'
     },
     {src: 'images', dest: 'build'},
     {src: 'assets', dest: 'build'},

@@ -100,6 +100,8 @@
     "web-animations-js": "^2.3.2"
   },
   "devDependencies": {
+    "@web/dev-server": "0.1.35",
+    "concurrently": "^7.5.0",
     "@typescript-eslint/eslint-plugin": "^5.7.0",
     "@typescript-eslint/parser": "^5.7.0",
     "@typescript-eslint/typescript-estree": "^5.7.0",
