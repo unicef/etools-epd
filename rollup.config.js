@@ -10,6 +10,7 @@ import {generateSW} from 'rollup-plugin-workbox';
 
 const copyConfig = {
   targets: [
+    {src: 'node_modules/@webcomponents/webcomponentsjs', dest: 'build/node_modules/@webcomponents'},
     {src: 'node_modules/@webcomponents/shadycss', dest: 'build/node_modules/@webcomponents'},
     {
       src: 'node_modules/web-animations-js/web-animations-next-lite.min.js',
