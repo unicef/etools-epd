@@ -10,6 +10,9 @@ import {generateSW} from 'rollup-plugin-workbox';
 
 const copyConfig = {
   targets: [
+    {src: 'manifest.json', dest: 'build'},
+    {src: 'version.json', dest: 'build'},
+    {src: 'upgrade-browser.html', dest: 'build'},
     {src: 'node_modules/@webcomponents/webcomponentsjs', dest: 'build/node_modules/@webcomponents'},
     {src: 'node_modules/@webcomponents/shadycss', dest: 'build/node_modules/@webcomponents'},
     {
