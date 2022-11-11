@@ -27,10 +27,9 @@ const copyConfig = {
       dest: 'build/node_modules/focus-visible/dist'
     },
     {src: 'node_modules/dayjs/dayjs.min.js', dest: 'build/node_modules/dayjs'},
-    {src: 'node_modules/dayjs/plugin/utc.js', dest: 'build/node_modules/dayjs'},
-    {src: 'node_modules/dayjs/plugin/isBetween.js', dest: 'build/node_modules/dayjs'},
-    {src: 'node_modules/dayjs/plugin/isSameOrBefore.js', dest: 'build/node_modules/dayjs'},
-    {src: 'node_modules/dayjs/plugin/utc.js', dest: 'build/node_modules/dayjs'},
+    {src: 'node_modules/dayjs/plugin/utc.js', dest: 'build/node_modules/dayjs/plugin'},
+    {src: 'node_modules/dayjs/plugin/isBetween.js', dest: 'build/node_modules/dayjs/plugin'},
+    {src: 'node_modules/dayjs/plugin/isSameOrBefore.js', dest: 'build/node_modules/dayjs/plugin'},
     {
       src: 'node_modules/esri-leaflet/dist/esri-leaflet.js',
       dest: 'build/node_modules/esri-leaflet/dist'
