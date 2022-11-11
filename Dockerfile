@@ -1,4 +1,4 @@
-FROM node:12.22.7-alpine3.12 as builder
+FROM node:14.21-alpine3.16 as builder
 RUN apk update
 RUN apk add --update bash
 
@@ -20,9 +20,9 @@ RUN rm -rf node_modules
 RUN cp -a /tmp/node_modules /code/node_modules
 
 WORKDIR /code
-RUN npm run build
+RUN npm run build:rollup
 
-FROM node:12.22.7-alpine3.12
+FROM node:14.21-alpine3.16
 RUN apk update
 RUN apk add --update bash
 
