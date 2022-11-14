@@ -68,5 +68,11 @@
     "SSFA": "SSFA",
     "PROGRAMME_DOCUMENT": "Documentul programului",
     "SIMPLIFIED_PROGRAMME_DOCUMENT": "Document de program simplificat"
-  }
+  },
+  "PROFILE_DATA_NOT_SAVED": "Datele profilului nu au fost salvate. Eroare de salvare a profilului!",
+  "ALL_DATA_SAVED": "Toate modificările sunt salvate.",
+  "COMMUNITY_CHANNELS": "Canale comunitare eTools",
+  "KNOWLEDGE_BASE": "Bază de cunoștințe",
+  "DISCUSSION": "Discuţie",
+  "INFORMATION": "informație"
 }
