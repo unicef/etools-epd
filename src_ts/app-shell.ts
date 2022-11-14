@@ -211,7 +211,7 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
 
   @property({type: String})
   currentToastMessage!: string;
-
+  @property({type: Boolean})
   private translationFilesAreLoaded = false;
 
   @query('#layout') private drawerLayout!: AppDrawerLayoutElement;
