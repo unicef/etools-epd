@@ -277,14 +277,10 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
       }
     });
 
-    this.waitForTranslationsToLoad().then(() =>
-      // Render will happen only after translation files are loaded,
-      // so this.appHeaderLayout will be available only after that
-      setTimeout(() => {
-        window.EtoolsEsmmFitIntoEl = this.appHeaderLayout!.shadowRoot!.querySelector('#contentContainer');
-        this.etoolsLoadingContainer = window.EtoolsEsmmFitIntoEl;
-      }, 3000)
-    );
+    this.waitForComponentRender().then(() => {
+      window.EtoolsEsmmFitIntoEl = this.appHeaderLayout!.shadowRoot!.querySelector('#contentContainer');
+      this.etoolsLoadingContainer = window.EtoolsEsmmFitIntoEl;
+    });
   }
 
   checkAppVersion() {
@@ -388,11 +384,11 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
     this.translationFilesAreLoaded = true;
   }
 
-  waitForTranslationsToLoad() {
+  waitForComponentRender() {
     return new Promise((resolve) => {
-      const translationsCheck = setInterval(() => {
-        if (this.translationFilesAreLoaded) {
-          clearInterval(translationsCheck);
+      const check = setInterval(() => {
+        if (this.appHeaderLayout) {
+          clearInterval(check);
           resolve(true);
         }
       }, 100);
