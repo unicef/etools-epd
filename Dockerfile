@@ -14,7 +14,7 @@ WORKDIR /tmp
 ADD package.json /tmp/
 ADD package-lock.json /tmp/
 
-RUN npm ci --only=prod
+RUN npm ci --omit=dev
 
 ADD . /code/
 WORKDIR /code

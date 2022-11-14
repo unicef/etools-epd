@@ -277,10 +277,14 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
       }
     });
 
-    setTimeout(() => {
-      window.EtoolsEsmmFitIntoEl = this.appHeaderLayout!.shadowRoot!.querySelector('#contentContainer');
-      this.etoolsLoadingContainer = window.EtoolsEsmmFitIntoEl;
-    }, 100);
+    this.waitForTranslationsToLoad().then(() =>
+      // Render will happen only after translation files are loaded,
+      // so this.appHeaderLayout will be available only after that
+      setTimeout(() => {
+        window.EtoolsEsmmFitIntoEl = this.appHeaderLayout!.shadowRoot!.querySelector('#contentContainer');
+        this.etoolsLoadingContainer = window.EtoolsEsmmFitIntoEl;
+      }, 200)
+    );
   }
 
   checkAppVersion() {
@@ -380,16 +384,14 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
   }
 
   async loadLocalization() {
-    this.waitForTranslationsToLoad().then(async () => {
-      await use(this.selectedLanguage);
-      this.translationFilesAreLoaded = true;
-    });
+    await use(this.selectedLanguage);
+    this.translationFilesAreLoaded = true;
   }
 
   waitForTranslationsToLoad() {
     return new Promise((resolve) => {
       const translationsCheck = setInterval(() => {
-        if (translationConfig) {
+        if (this.translationFilesAreLoaded) {
           clearInterval(translationsCheck);
           resolve(true);
         }
