@@ -69,5 +69,11 @@
     "SSFA": "SSFA",
     "PROGRAMME_DOCUMENT": "وثيقة البرنامج",
     "SIMPLIFIED_PROGRAMME_DOCUMENT": "وثيقة البرنامج المبسطة"
-  }
+  },
+  "PROFILE_DATA_NOT_SAVED": "لم يتم حفظ بيانات الملف الشخصي. حفظ خطأ ملف التعريف!",
+  "ALL_DATA_SAVED": "تم حفظ جميع التغييرات.",
+  "COMMUNITY_CHANNELS": "قنوات المجتمع eTools",
+  "KNOWLEDGE_BASE": "قاعدة المعرفة",
+  "DISCUSSION": "مناقشة",
+  "INFORMATION": "معلومة"
 }
