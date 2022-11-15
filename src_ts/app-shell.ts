@@ -86,7 +86,7 @@ function fetchLangFiles(lang: string) {
     return Object.assign(response[0].value, response[1].value);
   });
 }
-const translationConfig = registerTranslateConfig({
+registerTranslateConfig({
   empty: (key) => `${key && key[0].toUpperCase() + key.slice(1).toLowerCase()}`,
   loader: (lang: string) => fetchLangFiles(lang)
 });
@@ -211,9 +211,8 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
 
   @property({type: String})
   currentToastMessage!: string;
-
   @property({type: Boolean})
-  currentLanguageIsSet!: boolean;
+  private translationFilesAreLoaded = false;
 
   @query('#layout') private drawerLayout!: AppDrawerLayoutElement;
   @query('#drawer') private drawer!: AppDrawerElement;
@@ -278,10 +277,10 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
       }
     });
 
-    setTimeout(() => {
+    this.waitForComponentRender().then(() => {
       window.EtoolsEsmmFitIntoEl = this.appHeaderLayout!.shadowRoot!.querySelector('#contentContainer');
       this.etoolsLoadingContainer = window.EtoolsEsmmFitIntoEl;
-    }, 100);
+    });
   }
 
   checkAppVersion() {
@@ -358,6 +357,10 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
     this.appToastsNotificationsHelper.removeToastNotificationListeners();
   }
 
+  protected shouldUpdate(changedProperties: Map<PropertyKey, unknown>): boolean {
+    return this.translationFilesAreLoaded && super.shouldUpdate(changedProperties);
+  }
+
   public stateChanged(state: RootState) {
     this.routeDetails = state.app!.routeDetails;
     this.mainPage = state.app!.routeDetails!.routeName;
@@ -377,17 +380,15 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
   }
 
   async loadLocalization() {
-    this.waitForTranslationsToLoad().then(async () => {
-      await use(this.selectedLanguage);
-      this.currentLanguageIsSet = true;
-    });
+    await use(this.selectedLanguage);
+    this.translationFilesAreLoaded = true;
   }
 
-  waitForTranslationsToLoad() {
+  waitForComponentRender() {
     return new Promise((resolve) => {
-      const translationsCheck = setInterval(() => {
-        if (translationConfig) {
-          clearInterval(translationsCheck);
+      const check = setInterval(() => {
+        if (this.appHeaderLayout) {
+          clearInterval(check);
           resolve(true);
         }
       }, 100);
