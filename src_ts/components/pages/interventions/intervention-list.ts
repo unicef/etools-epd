@@ -323,6 +323,10 @@ export class InterventionList extends connect(store)(LitElement) {
       currentParams = pick(currentParams, ['sort', 'page_size']);
     }
     const newParams: RouteQueryParams = {...currentParams, ...paramsToUpdate};
+    if (JSON.stringify(this.prevQueryStringObj) === JSON.stringify(newParams)) {
+      return;
+    }
+
     this.prevQueryStringObj = newParams;
     const stringParams: string = buildUrlQueryString(newParams);
     this.exportParams = stringParams;
@@ -432,7 +436,7 @@ export class InterventionList extends connect(store)(LitElement) {
           ? this.prevQueryStringObj
           : {
               page_size: '20',
-              status: ['draft', 'active', 'review', 'signed', 'signature']
+              status: ['draft', 'review', 'signature', 'signed', 'active']
             }
       );
       return false;
