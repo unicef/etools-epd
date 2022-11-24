@@ -23,7 +23,10 @@
     "PROFILEANDSIGNOUT": "Профиль и Выйти",
     "ERROR_LOADING_DATA": "Ошибка загрузки",
     "EXPORT_XLS": "Экспорт в XLS ePD",
-    "EXPORT_CSV": "Экспорт в CSV ePD"
+    "EXPORT_CSV": "Экспорт в CSV ePD",
+    "STAY": "Остаться",
+    "LEAVE": "Покинуть",
+    "LEAVE_UPLOADS_UNSAVED": "Вы уверены, что хотите покинуть эту страницу? У вас остались несохраненные файлы. "
   },
   "INTERVENTIONS_LIST": {
     "PD_LIST": "Список ПД/УПД",

@@ -11,6 +11,7 @@ import {
   RESET_CURRENT_ITEM,
   UPDATE_ROUTE
 } from '../../components/pages/interventions/intervention-tab-pages/common/actions/actionsContants';
+import {commingFromPDDetailsToList} from '../../components/utils/utils';
 
 export const UPDATE_ROUTE_DETAILS = 'UPDATE_ROUTE_DETAILS';
 export const UPDATE_DRAWER_STATE = 'UPDATE_DRAWER_STATE';
@@ -38,12 +39,6 @@ const updateRouteDetails = (routeDetails: any) => {
   return {
     type: UPDATE_ROUTE,
     routeDetails
-  };
-};
-
-const resetCurrentItem = () => {
-  return {
-    type: RESET_CURRENT_ITEM
   };
 };
 
@@ -122,7 +117,6 @@ const loadPageComponents: ActionCreator<ThunkResult> = (routeDetails: RouteDetai
   if (commingFromPDDetailsToList(prevRouteDetails!, routeDetails)) {
     // Avoid multiple list requests after updating PD data that is displayed on the list and then going to the list
     dispatch(updateRouteDetails(routeDetails));
-    dispatch(resetCurrentItem());
   } else {
     dispatch(updateStoreRouteDetails(routeDetails));
   }
@@ -164,12 +158,5 @@ export const navigate: ActionCreator<ThunkResult> = (path: string) => (dispatch)
   dispatch(loadPageComponents(routeDetails));
 };
 
-function commingFromPDDetailsToList(prevRouteDetails: RouteDetails, routeDetails: RouteDetails | null) {
-  return (
-    routeDetails &&
-    prevRouteDetails &&
-    prevRouteDetails.routeName === 'interventions' &&
-    prevRouteDetails.subRouteName !== 'list' &&
-    routeDetails?.subRouteName === 'list'
-  );
+export
 }

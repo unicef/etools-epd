@@ -23,7 +23,10 @@
     "PROFILEANDSIGNOUT": "Perfil y cierre de sesión",
     "ERROR_LOADING_DATA": "Error al cargar los datos",
     "EXPORT_XLS": "Exportar ePD Excel",
-    "EXPORT_CSV": "Exportar ePD CSV"
+    "EXPORT_CSV": "Exportar ePD CSV",
+    "STAY": "Permanecer",
+    "LEAVE": "Abandonar",
+    "LEAVE_UPLOADS_UNSAVED": "Está seguro de que quiere abandonar esta página? Tienes archivos subidos sin guardar!"
   },
   "INTERVENTIONS_LIST": {
     "PD_LIST": "Lista de PD/SPD",

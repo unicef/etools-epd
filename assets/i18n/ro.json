@@ -23,7 +23,10 @@
     "PROFILEANDSIGNOUT": "Profil și deconectare",
     "ERROR_LOADING_DATA": "Eroare la incarcarea datelor",
     "EXPORT_XLS": "Exporta ePD Excel",
-    "EXPORT_CSV": "Exporta ePD CSV"
+    "EXPORT_CSV": "Exporta ePD CSV",
+    "STAY": "Stau",
+    "LEAVE": "Părăsi",
+    "LEAVE_UPLOADS_UNSAVED": "Sigur vrei să părăsești această pagină? Aveți fișiere încărcate nesalvate!"
   },
   "INTERVENTIONS_LIST": {
     "PD_LIST": "Lista PD/SPD",
