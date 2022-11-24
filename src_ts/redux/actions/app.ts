@@ -7,10 +7,7 @@ import {DEFAULT_ROUTE, EtoolsRouter, ROUTE_404, updateAppLocation} from '../../r
 import {getRedirectToListPath} from '../../routing/subpage-redirect';
 import {RouteDetails} from '@unicef-polymer/etools-types';
 
-import {
-  RESET_CURRENT_ITEM,
-  UPDATE_ROUTE
-} from '../../components/pages/interventions/intervention-tab-pages/common/actions/actionsContants';
+import {UPDATE_ROUTE} from '../../components/pages/interventions/intervention-tab-pages/common/actions/actionsContants';
 import {commingFromPDDetailsToList} from '../../components/utils/utils';
 
 export const UPDATE_ROUTE_DETAILS = 'UPDATE_ROUTE_DETAILS';
