@@ -157,6 +157,3 @@ export const navigate: ActionCreator<ThunkResult> = (path: string) => (dispatch)
 
   dispatch(loadPageComponents(routeDetails));
 };
-
-export
-}
