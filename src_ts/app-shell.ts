@@ -43,8 +43,9 @@ import './components/app-shell/app-theme.js';
 import {ToastNotificationHelper} from './components/common/toast-notifications/toast-notification-helper';
 import user from './redux/reducers/user';
 import commonData, {CommonDataState} from './redux/reducers/common-data';
+import uploadStatus from './redux/reducers/upload-status.js';
 import {getCurrentUser} from './components/user/user-actions';
-import {EtoolsRouter} from './routing/routes';
+import {EtoolsRouter, replaceAppLocation} from './routing/routes';
 import {
   getPartners,
   getLocations,
@@ -61,12 +62,17 @@ import {getAgreements, SET_AGREEMENTS} from './redux/actions/agreements';
 import isEmpty from 'lodash-es/isEmpty';
 import get from 'lodash-es/get';
 import './components/env-flags/environment-flags';
-import {registerTranslateConfig, use} from 'lit-translate';
+import {registerTranslateConfig, use, translate} from 'lit-translate';
 import {EtoolsUser, RouteDetails} from '@unicef-polymer/etools-types';
 import {setStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import {SMALL_MENU_ACTIVE_LOCALSTORAGE_KEY} from './config/config';
 import {fireEvent} from './components/utils/fire-custom-event';
 import {ROOT_PATH} from '@unicef-polymer/etools-modules-common/dist/config/config';
+import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
+import {RESET_CURRENT_ITEM, RESET_UNSAVED_UPLOADS, RESET_UPLOADS_IN_PROGRESS} from './redux/actions/upload-status';
+import UploadsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/uploads-mixin';
+import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
+import {commingFromPDDetailsToList} from './components/utils/utils';
 declare const dayjs: any;
 declare const dayjs_plugin_utc: any;
 declare const dayjs_plugin_isSameOrBefore: any;
@@ -96,7 +102,8 @@ setStore(store as any);
 
 store.addReducers({
   user,
-  commonData
+  commonData,
+  uploadStatus
 });
 
 /**
@@ -104,7 +111,7 @@ store.addReducers({
  * @LitElement
  */
 @customElement('app-shell')
-export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
+export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElement))) {
   static get styles() {
     return [AppShellStyles];
   }
@@ -211,6 +218,7 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
 
   @property({type: String})
   currentToastMessage!: string;
+
   @property({type: Boolean})
   private translationFilesAreLoaded = false;
 
@@ -361,10 +369,22 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
     return this.translationFilesAreLoaded && super.shouldUpdate(changedProperties);
   }
 
-  public stateChanged(state: RootState) {
+  public async stateChanged(state: RootState) {
+    this.uploadsStateChanged(state);
+
+    if (commingFromPDDetailsToList(this.routeDetails, state.app!.routeDetails!)) {
+      if (this.existsUnsavedUploads()) {
+        await this.confirmLeaveUploadsUnsavedDialog(this.routeDetails!.path, state.app!.routeDetails.path);
+        return;
+      } else if (state.interventions?.current) {
+        store.dispatch(this.resetCurrentItem());
+      }
+    }
+
     this.routeDetails = state.app!.routeDetails;
     this.mainPage = state.app!.routeDetails!.routeName;
     this.subPage = state.app!.routeDetails!.subRouteName;
+
     this.drawerOpened = state.app!.drawerOpened;
     this.smallMenu = state.app!.smallMenu;
     if (get(state, 'app.toastNotification.active')) {
@@ -450,4 +470,37 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
     }
     return true;
   }
+
+  existsUnsavedUploads() {
+    return Number(this.uploadsInProgress) > 0 || Number(this.unsavedUploads) > 0;
+  }
+
+  async confirmLeaveUploadsUnsavedDialog(prevPath: string, pathToRedirect: string) {
+    // stay in the page where change was made
+    replaceAppLocation(prevPath);
+
+    const confirmed = await openDialog({
+      dialog: 'are-you-sure',
+      dialogData: {
+        content: translate('GENERAL.LEAVE_UPLOADS_UNSAVED'),
+        confirmBtnText: translate('GENERAL.LEAVE'),
+        cancelBtnText: translate('GENERAL.STAY')
+      }
+    }).then(({confirmed}) => {
+      return confirmed;
+    });
+    if (confirmed) {
+      // confirmed to leave page and loose changes, reset uploads and redirect
+      store.dispatch({type: RESET_UNSAVED_UPLOADS});
+      store.dispatch({type: RESET_UPLOADS_IN_PROGRESS});
+      store.dispatch(this.resetCurrentItem());
+      replaceAppLocation(pathToRedirect);
+    }
+  }
+
+  resetCurrentItem = () => {
+    return {
+      type: RESET_CURRENT_ITEM
+    };
+  };
 }

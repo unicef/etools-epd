@@ -23,7 +23,10 @@
     "PROFILEANDSIGNOUT": "Profile and Sign out",
     "ERROR_LOADING_DATA": "Error on loading data",
     "EXPORT_XLS": "Export ePD Excel",
-    "EXPORT_CSV": "Export ePD CSV"
+    "EXPORT_CSV": "Export ePD CSV",
+    "STAY": "Stay",
+    "LEAVE": "Leave",
+    "LEAVE_UPLOADS_UNSAVED": "Are you sure you want to leave this page? You have unsaved uploaded files!"
   },
   "INTERVENTIONS_LIST": {
     "PD_LIST": "PDs/SPDs List",
@@ -76,4 +79,4 @@
   "DISCUSSION": "Discussion",
   "INFORMATION": "Information"
 }
-  
+
