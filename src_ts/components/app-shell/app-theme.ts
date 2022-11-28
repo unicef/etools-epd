@@ -1,9 +1,5 @@
-import '@polymer/polymer/polymer-element.js';
-import '@polymer/polymer/lib/elements/custom-style.js';
-
 const documentContainer = document.createElement('template');
 documentContainer.innerHTML = `
-  <custom-style>
     <style>
       html {
         --primary-color: #0099ff;
@@ -134,7 +130,6 @@ documentContainer.innerHTML = `
           padding-right: 15px;
         }
       }
-    </style>
-  </custom-style>`;
+    </style>`;
 
 document.head.appendChild(documentContainer.content);
