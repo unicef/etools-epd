@@ -99,7 +99,7 @@ export class InterventionList extends connect(store)(LitElement) {
         <etools-table
           caption="${translate('INTERVENTIONS_LIST.TABLE_TITLE')}"
           .columns="${this.listColumns}"
-          .items="${this.listData.length ? this.listData : [{}]}"
+          .items="${this.listData}"
           .paginator="${this.paginator}"
           .getChildRowTemplateMethod="${this.listData.length ? this.getRowDetails.bind(this) : null}"
           .extraCSS="${InterventionsTableStyles}"
@@ -323,7 +323,7 @@ export class InterventionList extends connect(store)(LitElement) {
       currentParams = pick(currentParams, ['sort', 'page_size']);
     }
     const newParams: RouteQueryParams = {...currentParams, ...paramsToUpdate};
-    if (JSON.stringify(this.prevQueryStringObj) === JSON.stringify(newParams)) {
+    if (JSON.stringify(currentParams) === JSON.stringify(newParams)) {
       return;
     }
 
@@ -335,6 +335,7 @@ export class InterventionList extends connect(store)(LitElement) {
 
   private async getListData(forceReGet: boolean) {
     const currentParams: GenericObject<any> = this.routeDetails!.queryParams || {};
+
     try {
       const {list, paginator}: ListHelperResponse<InterventionListData> = await this.listHelper.getList(
         currentParams,

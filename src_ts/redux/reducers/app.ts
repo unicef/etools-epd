@@ -40,7 +40,7 @@ const INITIAL_STATE: AppState = {
 
 const app: Reducer<AppState, RootAction> = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case UPDATE_ROUTE_DETAILS:
+    case UPDATE_ROUTE_DETAILS: // TODO fix duplication
       return {
         ...state,
         routeDetails: action.routeDetails
