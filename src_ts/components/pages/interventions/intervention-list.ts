@@ -99,7 +99,7 @@ export class InterventionList extends connect(store)(LitElement) {
         <etools-table
           caption="${translate('INTERVENTIONS_LIST.TABLE_TITLE')}"
           .columns="${this.listColumns}"
-          .items="${this.listData.length ? this.listData : [{}]}"
+          .items="${this.listData}"
           .paginator="${this.paginator}"
           .getChildRowTemplateMethod="${this.listData.length ? this.getRowDetails.bind(this) : null}"
           .extraCSS="${InterventionsTableStyles}"
