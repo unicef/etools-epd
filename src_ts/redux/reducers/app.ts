@@ -9,7 +9,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 */
 
 import {Reducer} from 'redux';
-import {UPDATE_ROUTE_DETAILS, UPDATE_DRAWER_STATE, UPDATE_SMALLMENU_STATE} from '../actions/app';
+import {UPDATE_DRAWER_STATE, UPDATE_SMALLMENU_STATE} from '../actions/app';
 import {RootAction} from '../store';
 import {SHOW_TOAST, CLOSE_TOAST} from '../actionsContants';
 import {RouteDetails} from '@unicef-polymer/etools-types';
