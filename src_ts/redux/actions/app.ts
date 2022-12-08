@@ -8,6 +8,7 @@ import {getRedirectToListPath} from '../../routing/subpage-redirect';
 import {RouteDetails} from '@unicef-polymer/etools-types';
 
 import {UPDATE_ROUTE} from '../../components/pages/interventions/intervention-tab-pages/common/actions/actionsContants';
+import {enableCommentMode} from '../../components/pages/interventions/intervention-tab-pages/common/components/comments/comments.actions';
 
 export const UPDATE_DRAWER_STATE = 'UPDATE_DRAWER_STATE';
 export const UPDATE_SMALLMENU_STATE = 'UPDATE_SMALLMENU_STATE';
@@ -103,6 +104,7 @@ const loadPageComponents: ActionCreator<ThunkResult> = (routeDetails: RouteDetai
 
   // add page details to redux store, to be used in other components
   dispatch(updateRouteDetails(routeDetails));
+  dispatch(enableCommentMode(Boolean(routeDetails?.queryParams?.comment_mode)));
 };
 
 export const updateDrawerState: ActionCreator<AppActionUpdateDrawerState> = (opened: boolean) => {

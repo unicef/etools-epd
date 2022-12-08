@@ -89,5 +89,4 @@ workflows:
                 - master
                 - staging
                 - develop
-                - localize-dates
-                - 31237_dropdown_to_lit
+                - fix-comment-mode
