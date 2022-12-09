@@ -8,29 +8,17 @@ import {getRedirectToListPath} from '../../routing/subpage-redirect';
 import {RouteDetails} from '@unicef-polymer/etools-types';
 
 import {UPDATE_ROUTE} from '../../components/pages/interventions/intervention-tab-pages/common/actions/actionsContants';
-import {commingFromPDDetailsToList} from '../../components/utils/utils';
 
-export const UPDATE_ROUTE_DETAILS = 'UPDATE_ROUTE_DETAILS';
 export const UPDATE_DRAWER_STATE = 'UPDATE_DRAWER_STATE';
 export const UPDATE_SMALLMENU_STATE = 'UPDATE_SMALLMENU_STATE';
 
-export interface AppActionUpdateRouteDetails extends Action<'UPDATE_ROUTE_DETAILS'> {
-  routeDetails: any;
-}
 export interface AppActionUpdateDrawerState extends Action<'UPDATE_DRAWER_STATE'> {
   opened: boolean;
 }
 
-export type AppAction = AppActionUpdateRouteDetails | AppActionUpdateDrawerState | any;
+export type AppAction = AppActionUpdateDrawerState | any;
 
 type ThunkResult = ThunkAction<void, RootState, undefined, AppAction>;
-
-const updateStoreRouteDetails: ActionCreator<AppActionUpdateRouteDetails> = (routeDetails: any) => {
-  return {
-    type: UPDATE_ROUTE_DETAILS,
-    routeDetails
-  };
-};
 
 const updateRouteDetails = (routeDetails: any) => {
   return {
@@ -39,7 +27,7 @@ const updateRouteDetails = (routeDetails: any) => {
   };
 };
 
-const loadPageComponents: ActionCreator<ThunkResult> = (routeDetails: RouteDetails) => (dispatch, getState) => {
+const loadPageComponents: ActionCreator<ThunkResult> = (routeDetails: RouteDetails) => (dispatch, _getState) => {
   if (!routeDetails) {
     // invalid route => redirect to 404 page
     updateAppLocation(ROUTE_404);
@@ -109,14 +97,12 @@ const loadPageComponents: ActionCreator<ThunkResult> = (routeDetails: RouteDetai
     }
   }
 
+  // const prevRouteDetails = getState().app?.routeDetails;
+  // if (commingFromPDDetailsToList(prevRouteDetails!, routeDetails)) {
+  // Avoid multiple list requests after updating PD data that is displayed on the list and then going to the list
+
   // add page details to redux store, to be used in other components
-  const prevRouteDetails = getState().app?.routeDetails;
-  if (commingFromPDDetailsToList(prevRouteDetails!, routeDetails)) {
-    // Avoid multiple list requests after updating PD data that is displayed on the list and then going to the list
-    dispatch(updateRouteDetails(routeDetails));
-  } else {
-    dispatch(updateStoreRouteDetails(routeDetails));
-  }
+  dispatch(updateRouteDetails(routeDetails));
 };
 
 export const updateDrawerState: ActionCreator<AppActionUpdateDrawerState> = (opened: boolean) => {

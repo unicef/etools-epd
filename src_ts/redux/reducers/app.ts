@@ -9,7 +9,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 */
 
 import {Reducer} from 'redux';
-import {UPDATE_ROUTE_DETAILS, UPDATE_DRAWER_STATE, UPDATE_SMALLMENU_STATE} from '../actions/app';
+import {UPDATE_DRAWER_STATE, UPDATE_SMALLMENU_STATE} from '../actions/app';
 import {RootAction} from '../store';
 import {SHOW_TOAST, CLOSE_TOAST} from '../actionsContants';
 import {RouteDetails} from '@unicef-polymer/etools-types';
@@ -40,11 +40,6 @@ const INITIAL_STATE: AppState = {
 
 const app: Reducer<AppState, RootAction> = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case UPDATE_ROUTE_DETAILS: // TODO fix duplication
-      return {
-        ...state,
-        routeDetails: action.routeDetails
-      };
     case UPDATE_ROUTE:
       return {
         ...state,
