@@ -40,7 +40,7 @@ import './components/app-shell/header/page-header.js';
 import './components/app-shell/footer/page-footer.js';
 
 import './components/app-shell/app-theme.js';
-import {ToastNotificationHelper} from './components/common/toast-notifications/toast-notification-helper';
+// import {ToastNotificationHelper} from './components/common/toast-notifications/toast-notification-helper';
 import user from './redux/reducers/user';
 import commonData, {CommonDataState} from './redux/reducers/common-data';
 import uploadStatus from './redux/reducers/upload-status.js';
@@ -62,6 +62,7 @@ import {getAgreements, SET_AGREEMENTS} from './redux/actions/agreements';
 import isEmpty from 'lodash-es/isEmpty';
 import get from 'lodash-es/get';
 import './components/env-flags/environment-flags';
+import '@unicef-polymer/etools-toasts';
 import {registerTranslateConfig, use, translate} from 'lit-translate';
 import {EtoolsUser, RouteDetails} from '@unicef-polymer/etools-types';
 import {setStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
@@ -128,6 +129,8 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
         .toast="${this.currentToastMessage}"
       >
       </etools-piwik-analytics>
+
+      <etools-toasts></etools-toasts>
 
       <app-drawer-layout
         id="layout"
@@ -226,16 +229,16 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
   @query('#drawer') private drawer!: AppDrawerElement;
   @query('#appHeadLayout') private appHeaderLayout!: AppHeaderLayoutElement;
 
-  private appToastsNotificationsHelper!: ToastNotificationHelper;
+  // private appToastsNotificationsHelper!: ToastNotificationHelper;
 
   constructor() {
     super();
     // Gesture events like tap and track generated from touch will not be
     // preventable, allowing for better scrolling performance.
     setPassiveTouchGestures(true);
-    // init toasts notifications queue
-    this.appToastsNotificationsHelper = new ToastNotificationHelper(this);
-    this.appToastsNotificationsHelper.addToastNotificationListeners();
+    // // init toasts notifications queue
+    // this.appToastsNotificationsHelper = new ToastNotificationHelper(this);
+    // this.appToastsNotificationsHelper.addToastNotificationListeners();
 
     const menuTypeStoredVal: string | null = localStorage.getItem(SMALL_MENU_ACTIVE_LOCALSTORAGE_KEY);
     if (!menuTypeStoredVal) {
@@ -362,7 +365,7 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
   public disconnectedCallback() {
     super.disconnectedCallback();
     // remove toasts notifications listeners
-    this.appToastsNotificationsHelper.removeToastNotificationListeners();
+    // this.appToastsNotificationsHelper.removeToastNotificationListeners();
   }
 
   protected shouldUpdate(changedProperties: Map<PropertyKey, unknown>): boolean {
@@ -390,7 +393,7 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
     if (get(state, 'app.toastNotification.active')) {
       fireEvent(this, 'toast', {
         text: state.app!.toastNotification.message,
-        showCloseBtn: state.app!.toastNotification.showCloseBtn
+        hideCloseBtn: !state.app!.toastNotification.showCloseBtn
       });
     }
     if (state.activeLanguage?.activeLanguage && state.activeLanguage.activeLanguage !== this.selectedLanguage) {
