@@ -40,7 +40,6 @@ import './components/app-shell/header/page-header.js';
 import './components/app-shell/footer/page-footer.js';
 
 import './components/app-shell/app-theme.js';
-// import {ToastNotificationHelper} from './components/common/toast-notifications/toast-notification-helper';
 import user from './redux/reducers/user';
 import commonData, {CommonDataState} from './redux/reducers/common-data';
 import uploadStatus from './redux/reducers/upload-status.js';
@@ -229,16 +228,11 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
   @query('#drawer') private drawer!: AppDrawerElement;
   @query('#appHeadLayout') private appHeaderLayout!: AppHeaderLayoutElement;
 
-  // private appToastsNotificationsHelper!: ToastNotificationHelper;
-
   constructor() {
     super();
     // Gesture events like tap and track generated from touch will not be
     // preventable, allowing for better scrolling performance.
     setPassiveTouchGestures(true);
-    // // init toasts notifications queue
-    // this.appToastsNotificationsHelper = new ToastNotificationHelper(this);
-    // this.appToastsNotificationsHelper.addToastNotificationListeners();
 
     const menuTypeStoredVal: string | null = localStorage.getItem(SMALL_MENU_ACTIVE_LOCALSTORAGE_KEY);
     if (!menuTypeStoredVal) {
@@ -255,7 +249,7 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
     installRouter((location) => store.dispatch(navigate(decodeURIComponent(location.pathname + location.search))));
     this.addEventListener('scroll-up', () => {
       if (this.appHeaderLayout) {
-        this.appHeaderLayout.$.contentContainer.scrollTop = 0;
+        this.appHeaderLayout.shadowRoot!.querySelector('contentContainer')!.scrollTop = 0;
       }
     });
     installMediaQueryWatcher(`(min-width: 460px)`, () => store.dispatch(updateDrawerState(false)));
@@ -364,8 +358,6 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
 
   public disconnectedCallback() {
     super.disconnectedCallback();
-    // remove toasts notifications listeners
-    // this.appToastsNotificationsHelper.removeToastNotificationListeners();
   }
 
   protected shouldUpdate(changedProperties: Map<PropertyKey, unknown>): boolean {
