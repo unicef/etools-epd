@@ -158,17 +158,13 @@ export class EtoolsToast extends LitElement {
 
     toastProperties.duration = 0;
     if (detail) {
-      if (detail.showCloseBtn === true) {
-        if (this.confirmBtn) {
-          this.confirmBtn.removeAttribute('hidden');
-        }
-      } else {
-        if (this.confirmBtn) {
-          this.confirmBtn.setAttribute('hidden', '');
-        }
-        if (!detail.duration) {
-          toastProperties.duration = 5000;
-        }
+      if (this.confirmBtn) {
+        detail.showCloseBtn === true
+          ? this.confirmBtn.removeAttribute('hidden')
+          : this.confirmBtn.setAttribute('hidden', '');
+      }
+      if (!detail.duration) {
+        toastProperties.duration = 10000;
       }
       delete toastProperties.showCloseBtn;
     } else {
