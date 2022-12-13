@@ -1,7 +1,7 @@
 {
   "GENERAL": {
     "ADD": "أضف",
-    "ADD_UPDATE": "Add/Update",
+    "ADD_UPDATE": "إضافة / تحديث",
     "SAVE": "حفظ",
     "DELETE": "حذف",
     "EDIT": "Edit",
@@ -13,15 +13,21 @@
     "REQUIRED_FIELD": "هذه الخانة مطلوبه",
     "CANCEL": "إلغاء",
     "YES": "نعم",
+    "NO": "رقم",
     "FILTERS": "المرشحات",
     "CLEAR_ALL": "امسح الكل",
     "COMMENT_MODE": "وضع التعليق",
-    "LOADING": "Loading...",
-    "SAVING_DATA": "Saving data...",
-    "ENTER_MESSAGE_HERE": "Enter Message Here",
-    "CREATE": "Create",
-    "PROFILEANDSIGNOUT": "Profile and Sign out",
-    "ERROR_LOADING_DATA": "Error on loading data"
+    "LOADING": "جار التحميل...",
+    "SAVING_DATA": "حفظ البيانات...",
+    "ENTER_MESSAGE_HERE": "أدخل الرسالة هنا",
+    "PROFILEANDSIGNOUT": "الملف الشخصي وتسجيل الخروج",
+    "ERROR_LOADING_DATA": "خطأ في تحميل البيانات",
+    "EXPORT_XLS": "تصدير ملف ePD Excel",
+    "EXPORT_CSV": "تصدير ePD CSV",
+    "CREATE": "خلق",
+    "STAY": "يقضي",
+    "LEAVE": "غادر",
+    "LEAVE_UPLOADS_UNSAVED": "هل أنت متأكد أنك تريد مغادرة هذه الصفحة؟ لديك ملفات تم تحميلها غير محفوظة!"
   },
   "INTERVENTIONS_LIST": {
     "PD_LIST": "PDs/SPDs قائمة",
@@ -40,7 +46,37 @@
     "ENDS_BEFORE": "ينتهي قبل",
     "STARTS_AFTER": "يبدأ بعد",
     "ENDS_AFTER": "ينتهي بعد",
-    "BUDGET_OWNER": "UNICEF Budget Owner"
+    "BUDGET_OWNER": "مالك ميزانية اليونيسف",
+    "TOTAL_BUDGET": "الميزانية الإجمالية",
+    "UNICEF_CASH_CONTRIBUTION": "مساهمة اليونيسف النقدية"
   },
-  "EDITABLE_BY": "Editable By"
+  "EDITABLE_BY": "Editable By",
+  "PDS_SPDS": "PDs / SPDs",
+  "UNICEF": "اليونيسف",
+  "PD_STATUS": {
+    "ENDED": "انتهى",
+    "DEVELOPMENT": "تطوير",
+    "REVIEW": "إعادة النظر",
+    "SIGNATURE": "التوقيع",
+    "SIGNED": "وقعت",
+    "ACTIVE": "نشيط",
+    "CANCELLED": "ألغيت",
+    "CLOSED": "مغلق",
+    "SUSPENDED": "موقوف عن العمل",
+    "TERMINATED": "تم إنهاؤه",
+    "EXPIRED": "منتهي الصلاحية"
+  },
+  "ITEM_TYPE": {
+    "PD": "PD",
+    "SPD": "SPD",
+    "SSFA": "SSFA",
+    "PROGRAMME_DOCUMENT": "وثيقة البرنامج",
+    "SIMPLIFIED_PROGRAMME_DOCUMENT": "وثيقة البرنامج المبسطة"
+  },
+  "PROFILE_DATA_NOT_SAVED": "لم يتم حفظ بيانات الملف الشخصي. حفظ خطأ ملف التعريف!",
+  "ALL_DATA_SAVED": "تم حفظ جميع التغييرات.",
+  "COMMUNITY_CHANNELS": "قنوات المجتمع eTools",
+  "KNOWLEDGE_BASE": "قاعدة المعرفة",
+  "DISCUSSION": "مناقشة",
+  "INFORMATION": "معلومة"
 }

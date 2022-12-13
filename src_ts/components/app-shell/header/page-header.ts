@@ -2,7 +2,8 @@ import '@polymer/app-layout/app-toolbar/app-toolbar';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@unicef-polymer/etools-profile-dropdown/etools-profile-dropdown';
 import '@unicef-polymer/etools-dropdown/etools-dropdown.js';
-import {customElement, LitElement, html, property} from 'lit-element';
+import {EtoolsDropdownEl} from '@unicef-polymer/etools-dropdown/etools-dropdown';
+import {customElement, LitElement, html, property, query} from 'lit-element';
 
 import './countries-dropdown';
 
@@ -14,7 +15,7 @@ import {fireEvent} from '../../utils/fire-custom-event';
 import isEmpty from 'lodash-es/isEmpty';
 import {updateCurrentUser} from '../../user/user-actions';
 import {pageHeaderStyles} from './page-header-styles';
-import {translate, use} from 'lit-translate';
+import {translate, use, get as getTranslation} from 'lit-translate';
 import {setActiveLanguage} from '../../../redux/actions/active-language';
 import {activeLanguage} from '../../../redux/reducers/active-language';
 import {countriesDropdownStyles} from './countries-dropdown-styles';
@@ -28,6 +29,7 @@ import 'dayjs/locale/ru.js';
 import 'dayjs/locale/pt.js';
 import 'dayjs/locale/ar.js';
 import 'dayjs/locale/ro.js';
+import 'dayjs/locale/es.js';
 import {appLanguages} from '../../../config/app-constants';
 
 store.addReducers({
@@ -111,6 +113,7 @@ export class PageHeader extends connect(store)(LitElement) {
         <div class="header__item header__right-group">
           <div class="dropdowns">
             <etools-dropdown
+              id="languageSelector"
               .selected="${this.selectedLanguage}"
               .options="${appLanguages}"
               option-label="display_name"
@@ -132,6 +135,7 @@ export class PageHeader extends connect(store)(LitElement) {
             .offices="${this.profileDrOffices}"
             .users="${this.profileDrUsers}"
             .profile="${this.profile ? {...this.profile} : {}}"
+            language="${this.selectedLanguage}"
             @save-profile="${this.handleSaveProfile}"
             @sign-out="${this._signOut}"
           >
@@ -185,10 +189,17 @@ export class PageHeader extends connect(store)(LitElement) {
 
   @property() selectedLanguage!: string;
 
+  @query('#languageSelector') private languageDropdown!: EtoolsDropdownEl;
+
   public connectedCallback() {
     super.connectedCallback();
     this.setBgColor();
     this.checkEnvironment();
+
+    setTimeout(() => {
+      const fitInto = document.querySelector('app-shell')!.shadowRoot!.querySelector('#appHeadLayout');
+      this.languageDropdown.fitInto = fitInto;
+    }, 0);
   }
 
   public stateChanged(state: RootState) {
@@ -230,7 +241,7 @@ export class PageHeader extends connect(store)(LitElement) {
         this.showSaveNotification();
       })
       .catch(() => {
-        this.showSaveNotification('Profile data not saved. Save profile error!');
+        this.showSaveNotification(getTranslation('PROFILE_DATA_NOT_SAVED'));
       })
       .then(() => {
         this.profileSaveLoadingMsgDisplay(false);
@@ -246,7 +257,7 @@ export class PageHeader extends connect(store)(LitElement) {
 
   protected showSaveNotification(msg?: string) {
     fireEvent(this, 'toast', {
-      text: msg ? msg : 'All changes are saved.',
+      text: msg ? msg : getTranslation('ALL_DATA_SAVED'),
       showCloseBtn: false
     });
   }
@@ -274,13 +285,11 @@ export class PageHeader extends connect(store)(LitElement) {
     }
     if (this.selectedLanguage !== newLanguage) {
       localStorage.setItem('defaultLanguage', newLanguage);
-      use(newLanguage)
-        .then(() => {
-          if (this.profile && this.profile.preferences?.language != newLanguage) {
-            this.updateUserPreference(newLanguage);
-          }
-        })
-        .finally(() => location.reload());
+      use(newLanguage).then(() => {
+        if (this.profile && this.profile.preferences?.language != newLanguage) {
+          this.updateUserPreference(newLanguage);
+        }
+      });
     }
   }
 

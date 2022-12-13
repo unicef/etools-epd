@@ -21,7 +21,12 @@
     "SAVING_DATA": "Se salveaza datele...",
     "ENTER_MESSAGE_HERE": "Introduceti Mesajul Aici",
     "PROFILEANDSIGNOUT": "Profil și deconectare",
-    "ERROR_LOADING_DATA": "Eroare la incarcarea datelor"
+    "ERROR_LOADING_DATA": "Eroare la incarcarea datelor",
+    "EXPORT_XLS": "Exporta ePD Excel",
+    "EXPORT_CSV": "Exporta ePD CSV",
+    "STAY": "Stau",
+    "LEAVE": "Părăsi",
+    "LEAVE_UPLOADS_UNSAVED": "Sigur vrei să părăsești această pagină? Aveți fișiere încărcate nesalvate!"
   },
   "INTERVENTIONS_LIST": {
     "PD_LIST": "Lista PD/SPD",
@@ -40,7 +45,37 @@
     "ENDS_BEFORE": "Finalizat inainte de",
     "STARTS_AFTER": "Incepe dupa",
     "ENDS_AFTER": "Finalizat dupa",
-    "BUDGET_OWNER": "Responsabil UNICEF al Bugetului"
+    "BUDGET_OWNER": "Responsabil UNICEF al Bugetului",
+    "TOTAL_BUDGET": "Buget total",
+    "UNICEF_CASH_CONTRIBUTION": "Contribuția în numerar a UNICEF"
   },
-  "EDITABLE_BY": "Editable By"
+  "EDITABLE_BY": "Editable By",
+  "PDS_SPDS": "PD-uri/SPD-uri",
+  "UNICEF": "UNICEF",
+  "PD_STATUS": {
+    "ENDED": "Încheiat",
+    "DEVELOPMENT": "Dezvoltare",
+    "REVIEW": "Revizuire",
+    "SIGNATURE": "Semnătură",
+    "SIGNED": "Semnat",
+    "ACTIVE": "Activ",
+    "CANCELLED": "Anulat",
+    "CLOSED": "Închis",
+    "SUSPENDED": "Suspendat",
+    "TERMINATED": "Terminat",
+    "EXPIRED": "Expirat"
+  },
+  "ITEM_TYPE": {
+    "PD": "PD",
+    "SPD": "SPD",
+    "SSFA": "SSFA",
+    "PROGRAMME_DOCUMENT": "Documentul programului",
+    "SIMPLIFIED_PROGRAMME_DOCUMENT": "Document de program simplificat"
+  },
+  "PROFILE_DATA_NOT_SAVED": "Datele profilului nu au fost salvate. Eroare de salvare a profilului!",
+  "ALL_DATA_SAVED": "Toate modificările sunt salvate.",
+  "COMMUNITY_CHANNELS": "Canale comunitare eTools",
+  "KNOWLEDGE_BASE": "Bază de cunoștințe",
+  "DISCUSSION": "Discuţie",
+  "INFORMATION": "informație"
 }

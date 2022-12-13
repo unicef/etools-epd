@@ -60,8 +60,8 @@ export class AppMenu extends LitElement {
         >
           <a class="nav-menu-item" menu-name="interventions" href="${this.rootPath + 'interventions'}">
             <iron-icon id="page1-icon" icon="accessibility"></iron-icon>
-            <paper-tooltip for="page1-icon" position="right"> PDs/SPDs </paper-tooltip>
-            <div class="name">PDs/SPDs</div>
+            <paper-tooltip for="page1-icon" position="right">${translate('PDS_SPDS')}</paper-tooltip>
+            <div class="name">${translate('PDS_SPDS')}</div>
           </a>
         </iron-selector>
 
@@ -71,8 +71,8 @@ export class AppMenu extends LitElement {
 
         <a class="nav-menu-item lighter-item" href="http://etools.zendesk.com" target="_blank">
           <iron-icon id="knoledge-icon" icon="maps:local-library"></iron-icon>
-          <paper-tooltip for="knoledge-icon" position="right">${translate('KNOLEDGE_BASE')}</paper-tooltip>
-          <div class="name">${translate('KNOLEDGE_BASE')}</div>
+          <paper-tooltip for="knoledge-icon" position="right">${translate('KNOWLEDGE_BASE')}</paper-tooltip>
+          <div class="name">${translate('KNOWLEDGE_BASE')}</div>
         </a>
 
         <a

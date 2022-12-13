@@ -38,7 +38,7 @@ import {
 } from '@unicef-polymer/etools-modules-common/dist/list/list-styles';
 import {addCurrencyAmountDelimiter} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {notHiddenPartnersSelector} from '../../../redux/reducers/common-data';
-import {translate, get as getTranslation} from 'lit-translate';
+import {translate, get as getTranslation, listenForLangChanged} from 'lit-translate';
 import {
   InterventionListData,
   LabelAndValue,
@@ -53,6 +53,7 @@ import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/sh
 import {debounce} from '../../utils/debouncer';
 import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
 import {setShouldReGetList} from './intervention-tab-pages/common/actions/interventions';
+import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 
 /**
  * @LitElement
@@ -79,7 +80,7 @@ export class InterventionList extends connect(store)(LitElement) {
 
         <div slot="title-row-actions" class="content-header-actions">
           <div class="action">
-            <export-data .params="${this.exportParams}" raised></export-data>
+            <export-data .exportLinks="${this.exportLinks}" .params="${this.exportParams}" raised></export-data>
           </div>
         </div>
       </page-content-header>
@@ -94,11 +95,11 @@ export class InterventionList extends connect(store)(LitElement) {
       </section>
 
       <section class="elevation page-content no-padding" elevation="1">
-        <etools-loading loading-text="Loading..." .active="${this.showLoading}"></etools-loading>
+        <etools-loading .active="${this.showLoading}"></etools-loading>
         <etools-table
           caption="${translate('INTERVENTIONS_LIST.TABLE_TITLE')}"
           .columns="${this.listColumns}"
-          .items="${this.listData.length ? this.listData : [{}]}"
+          .items="${this.listData}"
           .paginator="${this.paginator}"
           .getChildRowTemplateMethod="${this.listData.length ? this.getRowDetails.bind(this) : null}"
           .extraCSS="${InterventionsTableStyles}"
@@ -124,6 +125,12 @@ export class InterventionList extends connect(store)(LitElement) {
 
   @property({type: String})
   exportParams = '';
+
+  @property({type: Array})
+  exportLinks = [
+    {name: translate('GENERAL.EXPORT_XLS'), type: 'xlsx'},
+    {name: translate('GENERAL.EXPORT_CSV'), type: 'csv'}
+  ];
 
   @property({type: Boolean})
   showLoading = false;
@@ -154,8 +161,11 @@ export class InterventionList extends connect(store)(LitElement) {
     {
       label: translate('INTERVENTIONS_LIST.DOC_TYPE') as unknown as string,
       name: 'document_type',
-      type: EtoolsTableColumnType.Text,
-      sort: null
+      type: EtoolsTableColumnType.Custom,
+      sort: null,
+      customMethod: (item: any, _key: string) => {
+        return item.document_type ? translate(`ITEM_TYPE.${item.document_type.toUpperCase()}`) : item.document_type;
+      }
     },
     {
       label: translate('INTERVENTIONS_LIST.STATUS') as unknown as string,
@@ -164,31 +174,32 @@ export class InterventionList extends connect(store)(LitElement) {
       capitalize: true,
       sort: null,
       customMethod: (item: any, _key: string) => {
+        const translatedStatus = item.status ? translate(`PD_STATUS.${item.status.toUpperCase()}`) : item.status;
         if (item.status !== 'development') {
-          return item.status;
+          return translatedStatus;
         }
         if (item.partner_accepted && item.unicef_accepted) {
-          return html`${item.status} <br />
+          return html`${translatedStatus} <br />
             ${translate('PARTNER_AND_UNICEF_ACCEPTED')}`;
         }
         if (!item.partner_accepted && item.unicef_accepted) {
-          return html`${item.status} <br />
+          return html`${translatedStatus} <br />
             ${translate('UNICEF_ACCEPTED')}`;
         }
         if (item.partner_accepted && !item.unicef_accepted) {
-          return html`${item.status} <br />
+          return html`${translatedStatus} <br />
             ${translate('PARTNER_ACCEPTED')}`;
         }
         if (!item.unicef_court && !!item.date_sent_to_partner) {
-          return html`${item.status} <br />
+          return html`${translatedStatus} <br />
             ${translate('SENT_TO_PARTNER')}`;
         }
 
         if (item.unicef_court && !!item.submission_date && !!item.date_sent_to_partner) {
-          return html`${item.status} <br />
+          return html`${translatedStatus} <br />
             ${translate('SENT_TO_UNICEF')}`;
         }
-        return item.status;
+        return translatedStatus;
       },
       cssClass: 'col_type'
     },
@@ -219,11 +230,15 @@ export class InterventionList extends connect(store)(LitElement) {
   connectedCallback(): void {
     super.connectedCallback();
     this.getListData = debounce(this.getListData.bind(this), 400) as any;
+    listenForLangChanged(() => {
+      const availableFilters = [...defaultFilters];
+      this.populateDropdownFilterOptionsFromCommonData(store.getState(), availableFilters);
+    });
   }
 
   stateChanged(state: RootState) {
     const routeDetails = get(state, 'app.routeDetails');
-    if (!(routeDetails.routeName === 'interventions' && routeDetails.subRouteName === 'list')) {
+    if (!(routeDetails?.routeName === 'interventions' && routeDetails?.subRouteName === 'list')) {
       this.paramsInitialized = false;
       this.routeDetails = null;
       return; // Avoid code execution while on a different page
@@ -275,11 +290,11 @@ export class InterventionList extends connect(store)(LitElement) {
         <td colspan="8">
           <div class="details">
             <div>
-              <div class="title">Total Budget</div>
+              <div class="title">${translate('INTERVENTIONS_LIST.TOTAL_BUDGET')}</div>
               <div class="detail">${item.budget_currency || ''} ${addCurrencyAmountDelimiter(item.total_budget)}</div>
             </div>
             <div>
-              <div class="title">UNICEF Cash Contribution</div>
+              <div class="title">${translate('INTERVENTIONS_LIST.UNICEF_CASH_CONTRIBUTION')}</div>
               <div class="detail">${item.budget_currency || ''} ${addCurrencyAmountDelimiter(item.unicef_cash)}</div>
             </div>
           </div>
@@ -308,6 +323,10 @@ export class InterventionList extends connect(store)(LitElement) {
       currentParams = pick(currentParams, ['sort', 'page_size']);
     }
     const newParams: RouteQueryParams = {...currentParams, ...paramsToUpdate};
+    if (JSON.stringify(currentParams) === JSON.stringify(newParams)) {
+      return;
+    }
+
     this.prevQueryStringObj = newParams;
     const stringParams: string = buildUrlQueryString(newParams);
     this.exportParams = stringParams;
@@ -316,6 +335,7 @@ export class InterventionList extends connect(store)(LitElement) {
 
   private async getListData(forceReGet: boolean) {
     const currentParams: GenericObject<any> = this.routeDetails!.queryParams || {};
+
     try {
       const {list, paginator}: ListHelperResponse<InterventionListData> = await this.listHelper.getList(
         currentParams,
@@ -364,15 +384,29 @@ export class InterventionList extends connect(store)(LitElement) {
 
   private populateDropdownFilterOptionsFromCommonData(state: RootState, currentFilters: EtoolsFilter[]) {
     updateFilterSelectionOptions(currentFilters, 'partners', notHiddenPartnersSelector(state));
-    updateFilterSelectionOptions(currentFilters, 'status', state.commonData!.interventionStatuses);
+    updateFilterSelectionOptions(
+      currentFilters,
+      'status',
+      state.commonData!.interventionStatuses.map((x: any) => ({
+        ...x,
+        label: getTranslatedValue(x.label, 'PD_STATUS')
+      }))
+    );
     updateFilterSelectionOptions(
       currentFilters,
       InterventionFilterKeys.budget_owner,
       state.commonData!.unicefUsersData
     );
-    updateFilterSelectionOptions(currentFilters, 'document_type', state.commonData!.documentTypes);
+    updateFilterSelectionOptions(
+      currentFilters,
+      'document_type',
+      state.commonData!.documentTypes.map((x: any) => ({
+        ...x,
+        label: getTranslatedValue(x.label, 'ITEM_TYPE')
+      }))
+    );
     updateFilterSelectionOptions(currentFilters, InterventionFilterKeys.editable_by, [
-      {label: 'UNICEF', value: 'unicef'},
+      {label: getTranslation('UNICEF'), value: 'unicef'},
       {label: getTranslation('PARTNER'), value: 'partner'}
     ]);
   }
@@ -403,7 +437,7 @@ export class InterventionList extends connect(store)(LitElement) {
           ? this.prevQueryStringObj
           : {
               page_size: '20',
-              status: ['draft', 'active', 'review', 'signed', 'signature']
+              status: ['draft', 'review', 'signature', 'signed', 'active']
             }
       );
       return false;

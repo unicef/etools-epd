@@ -21,7 +21,12 @@
     "SAVING_DATA": "Salvando dados",
     "ENTER_MESSAGE_HERE": "Digite a mensagem aqui",
     "PROFILEANDSIGNOUT": "Perfil e Sair",
-    "ERROR_LOADING_DATA": "Erro no carregamento do dado"
+    "ERROR_LOADING_DATA": "Erro no carregamento do dado",
+    "EXPORT_XLS": "Exportar ePD Excel",
+    "EXPORT_CSV": "Exportar ePD CSV",
+    "STAY": "Continuar",
+    "LEAVE": "Sair",
+    "LEAVE_UPLOADS_UNSAVED": "Tem certeza de que deseja sair dessa página? Você possui arquivos que não foram salvos!"
   },
   "INTERVENTIONS_LIST": {
     "PD_LIST": "Lista PD/SPDs",
@@ -40,7 +45,37 @@
     "ENDS_BEFORE": "Finaliza antes de",
     "STARTS_AFTER": "Começa depois de",
     "ENDS_AFTER": "Finaliza depois de",
-    "BUDGET_OWNER": "UNICEF Budget Owner"
+    "BUDGET_OWNER": "UNICEF Budget Owner",
+    "TOTAL_BUDGET": "Orçamento total",
+    "UNICEF_CASH_CONTRIBUTION": "Contribuição em dinheiro do UNICEF"
   },
-  "EDITABLE_BY": "Editado por"
+  "EDITABLE_BY": "Editado por",
+  "PDS_SPDS": "PDs/SPDs",
+  "UNICEF": "UNICEF",
+  "PD_STATUS": {
+    "ENDED": "Finalizado",
+    "DEVELOPMENT": "Desenvolvimento",
+    "REVIEW": "Análise",
+    "SIGNATURE": "Assinatura",
+    "SIGNED": "Assinado",
+    "ACTIVE": "Ativo",
+    "CANCELLED": "Cancelado",
+    "CLOSED": "Fechadas",
+    "SUSPENDED": "Suspenso",
+    "TERMINATED": "Terminado",
+    "EXPIRED": "Expirado"
+  },
+  "ITEM_TYPE": {
+    "PD": "PD",
+    "SPD": "SPD",
+    "SSFA": "SSFA",
+    "PROGRAMME_DOCUMENT": "Documento do Programa",
+    "SIMPLIFIED_PROGRAMME_DOCUMENT": "Documento do Programa Simplificado"
+  },
+  "PROFILE_DATA_NOT_SAVED": "Dados de perfil não salvos. Erro ao salvar perfil!",
+  "ALL_DATA_SAVED": "Todas as alterações são salvas.",
+  "COMMUNITY_CHANNELS": "Canais da comunidade eTools",
+  "KNOWLEDGE_BASE": "Base de conhecimento",
+  "DISCUSSION": "Discussão",
+  "INFORMATION": "Em formação"
 }
