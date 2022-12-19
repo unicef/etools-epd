@@ -339,8 +339,18 @@ export class PageHeader extends connect(store)(LitElement) {
   protected showLanguagesForDevDomains() {
     const location = window.location.host;
     const devDomains = ['localhost', 'etools-dev', 'etools-test'];
-    if (devDomains.some((x) => location.indexOf(x) > -1)) {
-      appLanguages.splice(1, 0, {value: 'ro', display_name: 'Romanian'});
+    if (!devDomains.some((x) => location.indexOf(x) > -1)) {
+      appLanguages.splice(this.getIndexOfRoLang(), 1);
     }
+  }
+
+  getIndexOfRoLang() {
+    let index = 0;
+    appLanguages.forEach((l, i) => {
+      if (l.value === 'ro') {
+        index = i;
+      }
+    });
+    return index;
   }
 }
