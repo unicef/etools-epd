@@ -257,8 +257,7 @@ export class PageHeader extends connect(store)(LitElement) {
 
   protected showSaveNotification(msg?: string) {
     fireEvent(this, 'toast', {
-      text: msg ? msg : getTranslation('ALL_DATA_SAVED'),
-      showCloseBtn: false
+      text: msg ? msg : getTranslation('ALL_DATA_SAVED')
     });
   }
 
