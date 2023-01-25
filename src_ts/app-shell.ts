@@ -249,7 +249,10 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
     installRouter((location) => store.dispatch(navigate(decodeURIComponent(location.pathname + location.search))));
     this.addEventListener('scroll-up', () => {
       if (this.appHeaderLayout) {
-        this.appHeaderLayout.shadowRoot!.querySelector('contentContainer')!.scrollTop = 0;
+        const contentContainer = this.appHeaderLayout.shadowRoot!.querySelector('#contentContainer');
+        if (contentContainer) {
+          contentContainer.scrollTop = 0;
+        }
       }
     });
     installMediaQueryWatcher(`(min-width: 460px)`, () => store.dispatch(updateDrawerState(false)));
