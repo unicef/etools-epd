@@ -86,3 +86,14 @@ export function changeCurrentUserCountry(countryId: number) {
     throw error;
   });
 }
+
+export function changeCurrentOrganization(organizationId: number) {
+  return sendRequest({
+    method: 'POST',
+    endpoint: {url: getEndpoint(etoolsEndpoints.changeOrganization).url},
+    body: {organization: organizationId}
+  }).catch((error: AnyObject) => {
+    console.error('[EtoolsUser]: changeOrganization req error ', error);
+    throw error;
+  });
+}

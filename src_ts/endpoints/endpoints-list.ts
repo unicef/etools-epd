@@ -3,6 +3,7 @@ import {EtoolsEndpoint} from '@unicef-polymer/etools-types';
 export interface EtoolsEndpoints {
   userProfile: EtoolsEndpoint;
   changeCountry: EtoolsEndpoint;
+  changeOrganization: EtoolsEndpoint;
   interventions: EtoolsEndpoint;
   intervention: EtoolsEndpoint;
   locations: EtoolsEndpoint;
@@ -24,6 +25,9 @@ export const etoolsEndpoints: EtoolsEndpoints = {
   },
   changeCountry: {
     url: '/api/v3/users/changecountry/'
+  },
+  changeOrganization: {
+    url: '/api/v3/users/changeorganization/'
   },
   countryProgrammes: {
     url: '/api/v2/reports/countryprogramme/'
