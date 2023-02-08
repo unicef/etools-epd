@@ -21,6 +21,8 @@
     "SAVING_DATA": "Сохранение…",
     "ENTER_MESSAGE_HERE": "Введите сообщение ",
     "PROFILEANDSIGNOUT": "Профиль и Выйти",
+    "COUNTRY": "Страна",
+    "SELECT_ORGANIZATION": "Выберите организацию",
     "ERROR_LOADING_DATA": "Ошибка загрузки",
     "EXPORT_XLS": "Экспорт в XLS ePD",
     "EXPORT_CSV": "Экспорт в CSV ePD",
