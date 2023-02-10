@@ -21,6 +21,8 @@
     "SAVING_DATA": "Enregistrement des données...",
     "ENTER_MESSAGE_HERE": "Entrez le message ici",
     "PROFILEANDSIGNOUT": "Liste des DP/DPS",
+    "COUNTRY": "Pays",
+    "SELECT_ORGANIZATION": "Sélectionnez l'organisation",
     "ERROR_LOADING_DATA": "Erreur lors du chargement des données",
     "EXPORT_XLS": "Exporter ePD en Excel",
     "EXPORT_CSV": "Exporter ePD en CSV",

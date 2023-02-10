@@ -21,6 +21,8 @@
     "SAVING_DATA": "Guardando datos...",
     "ENTER_MESSAGE_HERE": "Introducir mensaje aquí",
     "PROFILEANDSIGNOUT": "Perfil y cierre de sesión",
+    "COUNTRY": "País",
+    "SELECT_ORGANIZATION": "Seleccionar organización",
     "ERROR_LOADING_DATA": "Error al cargar los datos",
     "EXPORT_XLS": "Exportar ePD Excel",
     "EXPORT_CSV": "Exportar ePD CSV",
