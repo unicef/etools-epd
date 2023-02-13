@@ -394,11 +394,6 @@ export class InterventionList extends connect(store)(LitElement) {
     );
     updateFilterSelectionOptions(
       currentFilters,
-      InterventionFilterKeys.budget_owner,
-      state.commonData!.unicefUsersData
-    );
-    updateFilterSelectionOptions(
-      currentFilters,
       'document_type',
       state.commonData!.documentTypes.map((x: any) => ({
         ...x,

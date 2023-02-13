@@ -12,7 +12,6 @@ export enum InterventionFilterKeys {
   end = 'end',
   end_after = 'end_after',
   contingency_pd = 'contingency_pd',
-  budget_owner = 'budget_owner__in',
   editable_by = 'editable_by'
 }
 
@@ -26,8 +25,7 @@ export const defaultSelectedFilters: FilterKeysAndTheirSelectedValues = {
   start: null,
   end: null,
   end_after: null,
-  contingency_pd: false,
-  budget_owner__in: []
+  contingency_pd: false
 };
 
 export const selectedValueTypeByFilterKey: AnyObject = {
@@ -39,8 +37,7 @@ export const selectedValueTypeByFilterKey: AnyObject = {
   [InterventionFilterKeys.end]: 'string',
   [InterventionFilterKeys.end_after]: 'string',
   [InterventionFilterKeys.contingency_pd]: 'boolean',
-  [InterventionFilterKeys.editable_by]: 'string',
-  [InterventionFilterKeys.budget_owner]: 'Array'
+  [InterventionFilterKeys.editable_by]: 'string'
 };
 
 setselectedValueTypeByFilterKey(selectedValueTypeByFilterKey);
@@ -82,19 +79,6 @@ export const defaultFilters: EtoolsFilter[] = [
   {
     filterName: translate('INTERVENTIONS_LIST.PARTNER_ORG'),
     filterKey: InterventionFilterKeys.partners,
-    type: EtoolsFilterTypes.DropdownMulti,
-    selectionOptions: [],
-    selectedValue: [],
-    selected: false,
-    minWidth: '350px',
-    hideSearch: false,
-    disabled: false,
-    optionValue: 'id',
-    optionLabel: 'name'
-  },
-  {
-    filterName: translate('INTERVENTIONS_LIST.BUDGET_OWNER'),
-    filterKey: InterventionFilterKeys.budget_owner,
     type: EtoolsFilterTypes.DropdownMulti,
     selectionOptions: [],
     selectedValue: [],
