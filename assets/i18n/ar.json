@@ -21,6 +21,8 @@
     "SAVING_DATA": "حفظ البيانات...",
     "ENTER_MESSAGE_HERE": "أدخل الرسالة هنا",
     "PROFILEANDSIGNOUT": "الملف الشخصي وتسجيل الخروج",
+    "COUNTRY": "دولة",
+    "SELECT_ORGANIZATION": "حدد المنظمة",
     "ERROR_LOADING_DATA": "خطأ في تحميل البيانات",
     "EXPORT_XLS": "تصدير ملف ePD Excel",
     "EXPORT_CSV": "تصدير ePD CSV",
