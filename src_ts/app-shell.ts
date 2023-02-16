@@ -55,6 +55,7 @@ import {
   getUnicefUsers,
   getDropdownsData,
   SET_ALL_STATIC_DATA,
+  UPDATE_STATIC_DATA,
   getCountryProgrammes
 } from './redux/actions/common-data';
 import {getAgreements, SET_AGREEMENTS} from './redux/actions/agreements';
@@ -361,6 +362,26 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
     return data;
   }
 
+  private formatResponseOnLanguageChange(response: any[]) {
+    const data: Partial<CommonDataState> = {};
+    data.disaggregations = this.getValue(response[0]);
+    const staticData = this.getValue(response[1], {});
+    data.providedBy = staticData.supply_item_provided_by || [];
+    data.cpOutputs = staticData.cp_outputs || [];
+    data.fileTypes = staticData.file_types || [];
+    data.locationTypes = isEmpty(staticData.location_types) ? [] : staticData.location_types;
+    data.documentTypes = isEmpty(staticData.intervention_doc_type) ? [] : staticData.intervention_doc_type;
+    data.genderEquityRatings = staticData.gender_equity_sustainability_ratings || [];
+    data.interventionAmendmentTypes = isEmpty(staticData.intervention_amendment_types)
+      ? []
+      : staticData.intervention_amendment_types;
+    data.interventionStatuses = staticData.intervention_status || [];
+    data.currencies = isEmpty(staticData.currencies) ? [] : staticData.currencies;
+    data.riskTypes = staticData.risk_types || [];
+    data.cashTransferModalities = staticData.cash_transfer_modalities || [];
+    return data;
+  }
+
   getValue(response: {status: string; value?: any; reason?: any}, defaultValue: any = []) {
     return response.status === 'fulfilled' ? response.value : defaultValue;
   }
@@ -398,6 +419,10 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
       });
     }
     if (state.activeLanguage?.activeLanguage && state.activeLanguage.activeLanguage !== this.selectedLanguage) {
+      if (this.selectedLanguage) {
+        // on language change, reload parts of commonData in order to use BE localized text
+        this.loadDataOnLanguageChange();
+      }
       this.selectedLanguage = state.activeLanguage!.activeLanguage;
       this.loadLocalization();
     }
@@ -406,6 +431,15 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
   async loadLocalization() {
     await use(this.selectedLanguage);
     this.translationFilesAreLoaded = true;
+  }
+
+  loadDataOnLanguageChange() {
+    Promise.allSettled([getDisaggregations(), getDropdownsData()]).then((response: any[]) => {
+      store.dispatch({
+        type: UPDATE_STATIC_DATA,
+        staticData: this.formatResponseOnLanguageChange(response)
+      });
+    });
   }
 
   waitForComponentRender() {

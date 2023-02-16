@@ -56,6 +56,7 @@
   "UNICEF": "ЮНИСЕФ",
   "PD_STATUS": {
     "ENDED": "окончившийся",
+    "DRAFT": "Разработка",
     "DEVELOPMENT": "Разработка",
     "REVIEW": "Обзор",
     "SIGNATURE": "Подпись",

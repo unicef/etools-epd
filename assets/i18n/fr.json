@@ -57,6 +57,7 @@
   "UNICEF": "UNICEF",
   "PD_STATUS": {
     "ENDED": "Terminé",
+    "DRAFT": "Développement",
     "DEVELOPMENT": "Développement",
     "REVIEW": "Examen",
     "SIGNATURE": "Signature",
