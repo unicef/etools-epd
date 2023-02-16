@@ -26,10 +26,10 @@
     "ERROR_LOADING_DATA": "خطأ في تحميل البيانات",
     "EXPORT_XLS": "تصدير ملف ePD Excel",
     "EXPORT_CSV": "تصدير ePD CSV",
-    "CREATE": "خلق",
     "STAY": "يقضي",
     "LEAVE": "غادر",
-    "LEAVE_UPLOADS_UNSAVED": "هل أنت متأكد أنك تريد مغادرة هذه الصفحة؟ لديك ملفات تم تحميلها غير محفوظة!"
+    "LEAVE_UPLOADS_UNSAVED": "هل أنت متأكد أنك تريد مغادرة هذه الصفحة؟ لديك ملفات تم تحميلها غير محفوظة!",
+    "CREATE": "خلق"
   },
   "INTERVENTIONS_LIST": {
     "PD_LIST": "PDs/SPDs قائمة",
@@ -80,5 +80,6 @@
   "COMMUNITY_CHANNELS": "قنوات المجتمع eTools",
   "KNOWLEDGE_BASE": "قاعدة المعرفة",
   "DISCUSSION": "مناقشة",
-  "INFORMATION": "معلومة"
+  "INFORMATION": "معلومة",
+  "FIELD": "مجال"
 }
