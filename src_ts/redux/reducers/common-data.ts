@@ -1,5 +1,5 @@
 import {Reducer} from 'redux';
-import {SET_ALL_STATIC_DATA, UPDATE_ENV_FLAGS, UPDATE_PRP_COUNTRIES} from '../actions/common-data';
+import {SET_ALL_STATIC_DATA, UPDATE_STATIC_DATA, UPDATE_ENV_FLAGS, UPDATE_PRP_COUNTRIES} from '../actions/common-data';
 import {RootAction} from '../store';
 import {createSelector} from 'reselect';
 import {
@@ -88,6 +88,11 @@ const commonData: Reducer<CommonDataState, RootAction> = (state = INITIAL_COMMON
         countryProgrammes: action.staticData.countryProgrammes,
         commonDataIsLoaded: true,
         providedBy: action.staticData.providedBy
+      };
+    case UPDATE_STATIC_DATA:
+      return {
+        ...state,
+        ...action.staticData
       };
     case UPDATE_ENV_FLAGS:
       return {

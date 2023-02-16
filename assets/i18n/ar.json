@@ -57,6 +57,7 @@
   "UNICEF": "اليونيسف",
   "PD_STATUS": {
     "ENDED": "انتهى",
+    "DRAFT": "تطوير",
     "DEVELOPMENT": "تطوير",
     "REVIEW": "إعادة النظر",
     "SIGNATURE": "التوقيع",
