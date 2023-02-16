@@ -73,6 +73,7 @@ import {RESET_CURRENT_ITEM, RESET_UNSAVED_UPLOADS, RESET_UPLOADS_IN_PROGRESS} fr
 import UploadsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/uploads-mixin';
 import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
 import {commingFromPDDetailsToList} from './components/utils/utils';
+import { getTranslatedValue } from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 declare const dayjs: any;
 declare const dayjs_plugin_utc: any;
 declare const dayjs_plugin_isSameOrBefore: any;
@@ -288,6 +289,11 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
     this.waitForComponentRender().then(() => {
       window.EtoolsEsmmFitIntoEl = this.appHeaderLayout!.shadowRoot!.querySelector('#contentContainer');
       this.etoolsLoadingContainer = window.EtoolsEsmmFitIntoEl;
+      // Override ajax error parser inside @unicef-polymer/etools-ajax
+      // for string translation using lit-translate
+      window.ajaxErrorParserTranslateFunction = (key: string) => {
+        return getTranslatedValue(key);
+      };
     });
   }
 
