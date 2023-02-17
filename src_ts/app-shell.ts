@@ -343,29 +343,19 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
     data.disaggregations = this.getValue(response[3]);
     data.offices = this.getValue(response[4]);
     data.unicefUsersData = this.getValue(response[5]);
-    const staticData = this.getValue(response[6], {});
-    data.providedBy = staticData.supply_item_provided_by || [];
-    data.cpOutputs = staticData.cp_outputs || [];
-    data.fileTypes = staticData.file_types || [];
+    this.setStaticDataFromResponse(data, this.getValue(response[6], {}));
     data.countryProgrammes = this.getValue(response[8]);
     data.sites = this.getValue(response[9]);
-    data.locationTypes = isEmpty(staticData.location_types) ? [] : staticData.location_types;
-    data.documentTypes = isEmpty(staticData.intervention_doc_type) ? [] : staticData.intervention_doc_type;
-    data.genderEquityRatings = staticData.gender_equity_sustainability_ratings || [];
-    data.interventionAmendmentTypes = isEmpty(staticData.intervention_amendment_types)
-      ? []
-      : staticData.intervention_amendment_types;
-    data.interventionStatuses = staticData.intervention_status || [];
-    data.currencies = isEmpty(staticData.currencies) ? [] : staticData.currencies;
-    data.riskTypes = staticData.risk_types || [];
-    data.cashTransferModalities = staticData.cash_transfer_modalities || [];
     return data;
   }
 
   private formatResponseOnLanguageChange(response: any[]) {
     const data: Partial<CommonDataState> = {};
-    data.disaggregations = this.getValue(response[0]);
-    const staticData = this.getValue(response[1], {});
+    this.setStaticDataFromResponse(data, this.getValue(response[0], {}));
+    return data;
+  }
+
+  private setStaticDataFromResponse(data: Partial<CommonDataState>, staticData: any) {
     data.providedBy = staticData.supply_item_provided_by || [];
     data.cpOutputs = staticData.cp_outputs || [];
     data.fileTypes = staticData.file_types || [];
@@ -379,7 +369,6 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
     data.currencies = isEmpty(staticData.currencies) ? [] : staticData.currencies;
     data.riskTypes = staticData.risk_types || [];
     data.cashTransferModalities = staticData.cash_transfer_modalities || [];
-    return data;
   }
 
   getValue(response: {status: string; value?: any; reason?: any}, defaultValue: any = []) {
@@ -434,7 +423,7 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
   }
 
   loadDataOnLanguageChange() {
-    Promise.allSettled([getDisaggregations(), getDropdownsData()]).then((response: any[]) => {
+    Promise.allSettled([getDropdownsData()]).then((response: any[]) => {
       store.dispatch({
         type: UPDATE_STATIC_DATA,
         staticData: this.formatResponseOnLanguageChange(response)

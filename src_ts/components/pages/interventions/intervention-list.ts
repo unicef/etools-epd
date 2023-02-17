@@ -38,7 +38,7 @@ import {
 } from '@unicef-polymer/etools-modules-common/dist/list/list-styles';
 import {addCurrencyAmountDelimiter} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {notHiddenPartnersSelector} from '../../../redux/reducers/common-data';
-import {translate, get as getTranslation, listenForLangChanged} from 'lit-translate';
+import {translate, get as getTranslation} from 'lit-translate';
 import {
   InterventionListData,
   LabelAndValue,
@@ -138,6 +138,9 @@ export class InterventionList extends connect(store)(LitElement) {
   @property({type: Array})
   interventionStatuses!: LabelAndValue[];
 
+  @property({type: Number})
+  commonDataLoadedTimestamp = 0;
+
   /**
    * Used to preserve previously selected filters and pagination when navigating away from the list and comming back
    */
@@ -230,10 +233,6 @@ export class InterventionList extends connect(store)(LitElement) {
   connectedCallback(): void {
     super.connectedCallback();
     this.getListData = debounce(this.getListData.bind(this), 400) as any;
-    listenForLangChanged(() => {
-      const availableFilters = [...defaultFilters];
-      this.populateDropdownFilterOptionsFromCommonData(store.getState(), availableFilters);
-    });
   }
 
   stateChanged(state: RootState) {
@@ -267,6 +266,13 @@ export class InterventionList extends connect(store)(LitElement) {
 
     if (state.user && state.user.permissions) {
       this.canExport = state.user.permissions.canExport;
+    }
+
+    if (this.commonDataLoadedTimestamp !== state.commonData!.loadedTimestamp && this.filters) {
+      // static data reloaded (because of language change), need to update filters
+      this.commonDataLoadedTimestamp = state.commonData!.loadedTimestamp;
+      this.populateDropdownFilterOptionsFromCommonData(state, this.filters);
+      this.filters = [...this.filters];
     }
 
     this.initFiltersForDisplay(state);
@@ -365,6 +371,7 @@ export class InterventionList extends connect(store)(LitElement) {
 
   private initFiltersForDisplay(state: RootState) {
     if (!this.filters && this.dataRequiredByFiltersHasBeenLoaded(state)) {
+      this.commonDataLoadedTimestamp = state.commonData!.loadedTimestamp;
       const availableFilters = [...defaultFilters];
       this.populateDropdownFilterOptionsFromCommonData(state, availableFilters);
 
@@ -376,7 +383,7 @@ export class InterventionList extends connect(store)(LitElement) {
 
   private dataRequiredByFiltersHasBeenLoaded(state: RootState): boolean {
     return !!(
-      state.commonData?.commonDataIsLoaded &&
+      state.commonData?.loadedTimestamp &&
       this.routeDetails?.queryParams &&
       Object.keys(this.routeDetails?.queryParams).length > 0
     );
