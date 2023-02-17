@@ -351,8 +351,7 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
 
   private formatResponseOnLanguageChange(response: any[]) {
     const data: Partial<CommonDataState> = {};
-    data.disaggregations = this.getValue(response[0]);
-    this.setStaticDataFromResponse(data, this.getValue(response[1], {}));
+    this.setStaticDataFromResponse(data, this.getValue(response[0], {}));
     return data;
   }
 
@@ -424,7 +423,7 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
   }
 
   loadDataOnLanguageChange() {
-    Promise.allSettled([getDisaggregations(), getDropdownsData()]).then((response: any[]) => {
+    Promise.allSettled([getDropdownsData()]).then((response: any[]) => {
       store.dispatch({
         type: UPDATE_STATIC_DATA,
         staticData: this.formatResponseOnLanguageChange(response)

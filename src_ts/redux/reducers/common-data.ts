@@ -34,7 +34,7 @@ export interface CommonDataState {
   cashTransferModalities: any[];
   PRPCountryData: any[];
   countryProgrammes: CountryProgram[];
-  commonDataIsLoaded: boolean;
+  loadedTimestamp: number;
   providedBy: LabelAndValue[];
 }
 
@@ -59,7 +59,7 @@ const INITIAL_COMMON_DATA: CommonDataState = {
   cashTransferModalities: [],
   PRPCountryData: [],
   countryProgrammes: [],
-  commonDataIsLoaded: false,
+  loadedTimestamp: 0,
   providedBy: []
 };
 
@@ -86,13 +86,14 @@ const commonData: Reducer<CommonDataState, RootAction> = (state = INITIAL_COMMON
         fileTypes: action.staticData.fileTypes,
         cashTransferModalities: action.staticData.cashTransferModalities,
         countryProgrammes: action.staticData.countryProgrammes,
-        commonDataIsLoaded: true,
+        loadedTimestamp: new Date().getTime(),
         providedBy: action.staticData.providedBy
       };
     case UPDATE_STATIC_DATA:
       return {
         ...state,
-        ...action.staticData
+        ...action.staticData,
+        loadedTimestamp: new Date().getTime()
       };
     case UPDATE_ENV_FLAGS:
       return {
