@@ -58,11 +58,6 @@ export const countriesDropdownStyles = html`
       margin-inline: 30px 20px;
     }
 
-    etools-dropdown::placeholder {
-      color: red;
-      opacity: 1;
-    }
-
     organizations-dropdown {
       width: 165px;
     }
