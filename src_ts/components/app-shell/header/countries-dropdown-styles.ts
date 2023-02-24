@@ -63,10 +63,12 @@ export const countriesDropdownStyles = html`
       opacity: 1;
     }
 
-    countries-dropdown,
     organizations-dropdown {
-      width: 180px;
-      margin-inline-start: 5px;
+      width: 165px;
+    }
+
+    countries-dropdown {
+      width: 160px;
     }
 
     #languageSelector {
