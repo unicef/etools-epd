@@ -83,9 +83,6 @@ export const pageHeaderStyles = css`
   }
 
   @media (max-width: 576px) {
-    etools-app-selector {
-      --app-selector-button-padding: 18px 8px;
-    }
     #app-logo {
       display: none;
     }
