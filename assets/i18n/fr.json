@@ -3,7 +3,6 @@
   "COMMUNITY_CHANNELS": "Canaux de la communauté eTools",
   "DISCUSSION": "Discussion",
   "EDITABLE_BY": "Modifiable par",
-  "FIELD": "Champ",
   "GENERAL": {
     "ADD": "Ajouter",
     "ADD_UPDATE": "Ajouter/Mettre à jour",
@@ -32,7 +31,7 @@
     "TOTAL": "Total",
     "TOTAL_C": "TOTAL",
     "YES": "Oui",
-	"COUNTRY": "Pays",
+    "COUNTRY": "Pays",
     "SELECT_ORGANIZATION": "Sélectionnez l'organisation"
   },
   "INFORMATION": "Informations",
@@ -64,6 +63,7 @@
     "SPD": "DPS",
     "SSFA": "APPE"
   },
+  "FIELD": "Champ",
   "KNOWLEDGE_BASE": "Base de connaissances",
   "PDS_SPDS": "DP/DPS",
   "PD_STATUS": {
@@ -71,7 +71,7 @@
     "CANCELLED": "Annulé",
     "CLOSED": "Clôturé",
     "DEVELOPMENT": "Développement",
-	"DRAFT": "Développement",
+    "DRAFT": "Brouillon",
     "ENDED": "Terminé",
     "EXPIRED": "Expiré",
     "REVIEW": "Revue",

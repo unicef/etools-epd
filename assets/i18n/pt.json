@@ -3,7 +3,6 @@
   "COMMUNITY_CHANNELS": "Canais de Comunicação do eTools",
   "DISCUSSION": "Discussão",
   "EDITABLE_BY": "Editado por",
-  "FIELD": "Campo",
   "GENERAL": {
     "ADD": "Adicionar",
     "ADD_UPDATE": "Adicionar/Atualizar",
@@ -32,8 +31,8 @@
     "TOTAL": "Total",
     "TOTAL_C": "TOTAL",
     "YES": "Sim",
-	"COUNTRY": "País",
-    "SELECT_ORGANIZATION": "Selecione Organização"
+    "COUNTRY": "País",
+    "SELECT_ORGANIZATION": "Seleccione Organização"
   },
   "INFORMATION": "INFORMAÇÃO",
   "INTERVENTIONS_LIST": {
@@ -64,14 +63,15 @@
     "SPD": "SPD",
     "SSFA": "SSFA"
   },
+  "FIELD": "Campo",
   "KNOWLEDGE_BASE": "Base de conhecimento",
   "PDS_SPDS": "PDs/SPDs",
   "PD_STATUS": {
     "ACTIVE": "Ativo",
     "CANCELLED": "Cancelado",
     "CLOSED": "Encerrado",
-	"DRAFT": "Desenvolvimento",
     "DEVELOPMENT": "Desenvolvimento",
+    "DRAFT": "Rascunho",
     "ENDED": "Finalizado",
     "EXPIRED": "Expirado",
     "REVIEW": "Revisar",
