@@ -3,7 +3,6 @@
   "COMMUNITY_CHANNELS": "قنوات مجتمع eTools",
   "DISCUSSION": "مناقشة",
   "EDITABLE_BY": "قابل للتحرير بواسطة",
-  "FIELD": "مجال",
   "GENERAL": {
     "ADD": "إضافة",
     "ADD_UPDATE": "إضافة/تحديث",
@@ -32,8 +31,8 @@
     "TOTAL": "المجموع",
     "TOTAL_C": "المجموع",
     "YES": "نعم",
-	"COUNTRY": "دولة",
-    "SELECT_ORGANIZATION": "حدد المنظمة"
+    "COUNTRY": "البلد",
+    "SELECT_ORGANIZATION": "اختيار منظمة"
   },
   "INFORMATION": "معلومات",
   "INTERVENTIONS_LIST": {
@@ -64,14 +63,15 @@
     "SPD": "وثيقة البرنامج المبسطة",
     "SSFA": "اتفاقية التمويل الصغير"
   },
+  "FIELD": "حقل",
   "KNOWLEDGE_BASE": "قاعدة المعرفة",
   "PDS_SPDS": "وثائق البرامج العادية/المبسطة",
   "PD_STATUS": {
     "ACTIVE": "مفعَّل",
     "CANCELLED": "تم الإلغاء",
     "CLOSED": "مغلق",
-	"DRAFT": "تطوير",
     "DEVELOPMENT": "قيد التطوير",
+    "DRAFT": "قيد التطوير",
     "ENDED": "انتهى",
     "EXPIRED": "منتهي الصلاحية",
     "REVIEW": "مراجعة",
