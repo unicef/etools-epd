@@ -69,7 +69,11 @@ export class AppMenu extends LitElement {
           <span>${translate('COMMUNITY_CHANNELS')}</span>
         </div>
 
-        <a class="nav-menu-item lighter-item" href="https://unpartnerportalcso.zendesk.com/hc/en-us/sections/12663538797975-Electronic-Programme-Document-ePD-" target="_blank">
+        <a
+          class="nav-menu-item lighter-item"
+          href="https://unpartnerportalcso.zendesk.com/hc/en-us/sections/12663538797975-Electronic-Programme-Document-ePD-"
+          target="_blank"
+        >
           <iron-icon id="knoledge-icon" icon="maps:local-library"></iron-icon>
           <paper-tooltip for="knoledge-icon" position="right">${translate('KNOWLEDGE_BASE')}</paper-tooltip>
           <div class="name">${translate('KNOWLEDGE_BASE')}</div>
