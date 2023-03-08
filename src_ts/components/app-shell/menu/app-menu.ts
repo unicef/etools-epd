@@ -9,7 +9,6 @@ import {fireEvent} from '../../utils/fire-custom-event';
 import {ROOT_PATH, SMALL_MENU_ACTIVE_LOCALSTORAGE_KEY} from '../../../config/config';
 import {customElement, html, LitElement, property} from 'lit-element';
 import {translate} from 'lit-translate';
-import {store} from '../../../redux/store';
 
 /**
  * main menu
