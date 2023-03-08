@@ -12,11 +12,7 @@ import {installRouter} from 'pwa-helpers/router.js';
 import {store, RootState} from './redux/store';
 
 // These are the actions needed by this element.
-import {
-  navigate,
-  // updateOffline,
-  updateDrawerState
-} from './redux/actions/app';
+import {navigate} from './redux/actions/app';
 
 // These are the elements needed by this element.
 import '@polymer/app-layout/app-drawer-layout/app-drawer-layout.js';
@@ -151,11 +147,7 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
           ?small-menu="${this.smallMenu}"
         >
           <!-- App main menu(left sidebar) -->
-          <app-menu
-            selected-option="${this.mainPage}"
-            @toggle-small-menu="${(e: CustomEvent) => this.toggleMenu(e)}"
-            ?small-menu="${this.smallMenu}"
-          ></app-menu>
+          <app-menu selected-option="${this.mainPage}" ?small-menu="${this.smallMenu}"></app-menu>
         </app-drawer>
 
         <!-- Main content -->
@@ -257,7 +249,9 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
         }
       }
     });
-    installMediaQueryWatcher(`(min-width: 460px)`, () => store.dispatch(updateDrawerState(false)));
+    this.addEventListener('change-drawer-state', this.changeDrawerState);
+    this.addEventListener('toggle-small-menu', this.toggleMenu as any);
+    installMediaQueryWatcher(`(min-width: 460px)`, () => fireEvent(this, 'change-drawer-state'));
 
     getCurrentUser().then((user?: EtoolsUser) => {
       if (user) {
@@ -296,6 +290,10 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
         return getTranslatedValue(key);
       };
     });
+  }
+
+  public changeDrawerState() {
+    this.drawerOpened = !this.drawerOpened;
   }
 
   checkAppVersion() {
@@ -377,6 +375,8 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
 
   public disconnectedCallback() {
     super.disconnectedCallback();
+    this.removeEventListener('change-drawer-state', this.changeDrawerState);
+    this.removeEventListener('toggle-small-menu', this.toggleMenu as any);
   }
 
   protected shouldUpdate(changedProperties: Map<PropertyKey, unknown>): boolean {
@@ -399,8 +399,6 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
     this.mainPage = state.app!.routeDetails!.routeName;
     this.subPage = state.app!.routeDetails!.subRouteName;
 
-    this.drawerOpened = state.app!.drawerOpened;
-    this.smallMenu = state.app!.smallMenu;
     if (get(state, 'app.toastNotification.active')) {
       fireEvent(this, 'toast', {
         text: state.app!.toastNotification.message,
@@ -454,7 +452,7 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
 
   public onDrawerToggle() {
     if (this.drawerOpened !== this.drawer.opened) {
-      store.dispatch(updateDrawerState(this.drawer.opened));
+      this.drawerOpened = Boolean(this.drawer.opened);
     }
   }
 

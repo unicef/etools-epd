@@ -10,7 +10,6 @@ import './countries-dropdown';
 import {connect} from 'pwa-helpers/connect-mixin.js';
 import {RootState, store} from '../../../redux/store';
 import {isProductionServer, ROOT_PATH} from '../../../config/config';
-import {updateDrawerState} from '../../../redux/actions/app';
 import {fireEvent} from '../../utils/fire-custom-event';
 import isEmpty from 'lodash-es/isEmpty';
 import {updateCurrentUser} from '../../user/user-actions';
@@ -303,8 +302,7 @@ export class PageHeader extends connect(store)(LitElement) {
   }
 
   public menuBtnClicked() {
-    store.dispatch(updateDrawerState(true));
-    // fireEvent(this, 'drawer');
+    fireEvent(this, 'change-drawer-state');
   }
 
   private setBgColor() {
