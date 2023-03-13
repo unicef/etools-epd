@@ -5,13 +5,13 @@ import {ROOT_PATH} from '../../config/config';
 import {elevationStyles} from '../styles/lit-styles/elevation-styles';
 import {pageLayoutStyles} from '../styles/page-layout-styles';
 import {SharedStylesLit} from '../styles/shared-styles-lit';
-import {fireEvent} from './interventions/intervention-tab-pages/utils/fire-custom-event';
+import {fireEvent} from '../utils/fire-custom-event';
 
 /**
  * @customElement
  * @LitElement
  */
-@customElement('page-not-found')
+@customElement('not-found')
 export class PageNotFound extends LitElement {
   static get styles() {
     return [elevationStyles, pageLayoutStyles];
@@ -32,6 +32,22 @@ export class PageNotFound extends LitElement {
 
   @property({type: String})
   rootPath: string = ROOT_PATH;
+
+  _active = false;
+  @property({type: Boolean})
+  get active() {
+    return this._active;
+  }
+
+  set active(newVal) {
+    this._active = newVal;
+    if (this._active) {
+      fireEvent(this, 'global-loading', {
+        active: false,
+        loadingSource: 'interv-page'
+      });
+    }
+  }
 
   connectedCallback() {
     super.connectedCallback();

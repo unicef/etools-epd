@@ -57,23 +57,10 @@ documentContainer.innerHTML = `
         --error-box-border-color: #ebccd1;
         --error-box-text-color: var(--error-color);
 
-        --epc-header: {
-          background-color: var(--primary-background-color);
-          border-bottom: 1px groove var(--dark-divider-color);
-        }
-        --epc-header-color: var(--primary-text-color);
-        --ecp-header-title: {
-          padding: 0 24px 0 0;
-          text-align: left;
-          font-size: 18px;
-          font-weight: 500;
-        }
+        --ecp-header-color: var(--primary-text-color);
 
         --etools-dialog-primary-color: #FFFFFF;
         --etools-dialog-contrast-text-color: var(--primary-text-color);
-        --etools-dialog-title: {
-          border-bottom: solid 1px var(--dark-divider-color);
-        }
 
         --paper-input-container-label: {
           color: var(--secondary-text-color, #737373);
@@ -108,19 +95,39 @@ documentContainer.innerHTML = `
 
         *:focus:not(paper-icon-button):not(paper-radio-button) {
           outline: 0;
-          box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12), 0 3px 5px -1px rgba(0, 0, 0, 0.4);
+          box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12),
+           0 3px 5px -1px rgba(0, 0, 0, 0.4);
         }
 
         --paper-button-flat-keyboard-focus: {
           outline: 0;
-          box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12), 0 3px 5px -1px rgba(0, 0, 0, 0.4);
+          box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12),
+           0 3px 5px -1px rgba(0, 0, 0, 0.4);
         }
 
         --paper-button-raised-keyboard-focus: {
           outline: 0;
-          box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12), 0 3px 5px -1px rgba(0, 0, 0, 0.4);
-        }
+          box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12),
+           0 3px 5px -1px rgba(0, 0, 0, 0.4);
+        }      
 
+        --epd-profile-dialog-border-b: solid 1px var(--dark-divider-color);  
+        
+        --required-star-style: {
+          background: url('./images/required.svg') no-repeat 99% 20%/8px;
+          width: auto !important;
+          max-width: 100%;
+          right: auto;
+          padding-right: 15px;
+        }               
+      }
+
+      html[dir="rtl"] {
+        --required-star-style: {
+          background: url('./images/required.svg') no-repeat 99% 20%/8px;
+          right: auto;
+          padding-right: 15px;
+        }
       }
     </style>
   </custom-style>`;

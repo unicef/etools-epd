@@ -1,9 +1,9 @@
 import '@polymer/app-layout/app-toolbar/app-toolbar';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@unicef-polymer/etools-profile-dropdown/etools-profile-dropdown';
+import '@unicef-polymer/etools-dropdown/etools-dropdown.js';
 import {customElement, LitElement, html, property} from 'lit-element';
 
-import '../../common/layout/support-btn';
 import './countries-dropdown';
 
 import {connect} from 'pwa-helpers/connect-mixin.js';
@@ -14,7 +14,7 @@ import {fireEvent} from '../../utils/fire-custom-event';
 import isEmpty from 'lodash-es/isEmpty';
 import {updateCurrentUser} from '../../user/user-actions';
 import {pageHeaderStyles} from './page-header-styles';
-import {use} from 'lit-translate';
+import {translate, use} from 'lit-translate';
 import {setLanguage} from '../../../redux/actions/active-language';
 import {activeLanguage} from '../../../redux/reducers/active-language';
 import {countriesDropdownStyles} from './countries-dropdown-styles';
@@ -49,7 +49,6 @@ export class PageHeader extends connect(store)(LitElement) {
         .dropdowns {
           display: flex;
           margin-right: 5px;
-          max-width: 280px;
         }
         .header {
           flex-wrap: wrap;
@@ -111,16 +110,14 @@ export class PageHeader extends connect(store)(LitElement) {
               hide-search
               allow-outside-scroll
               no-label-float
-              .minWidth="160px"
               .autoWidth="${true}"
             ></etools-dropdown>
 
-            <countries-dropdown></countries-dropdown>
+            <countries-dropdown dir="${this.dir}"></countries-dropdown>
           </div>
 
-          <support-btn></support-btn>
-
           <etools-profile-dropdown
+            title=${translate('GENERAL.PROFILEANDSIGNOUT')}
             .sections="${this.profileDrSections}"
             .offices="${this.profileDrOffices}"
             .users="${this.profileDrUsers}"
@@ -173,9 +170,11 @@ export class PageHeader extends connect(store)(LitElement) {
   @property({type: String})
   environment = 'LOCAL';
 
+  @property({type: String})
+  dir = '';
+
   languages: GenericObject<string>[] = [
     {value: 'en', display_name: 'English'},
-    {value: 'ro', display_name: 'Romanian'},
     {value: 'ar', display_name: 'Arabic'}
   ];
 
@@ -193,11 +192,15 @@ export class PageHeader extends connect(store)(LitElement) {
       if (state.activeLanguage && state.activeLanguage.activeLanguage !== this.selectedLanguage) {
         this.selectedLanguage = state.activeLanguage!.activeLanguage;
         setTimeout(() => {
-          const body = document.querySelector('body');
+          const htmlTag = document.querySelector('html');
           if (this.selectedLanguage === 'ar') {
-            body!.setAttribute('dir', 'rtl');
-          } else if (body!.getAttribute('dir')) {
-            body!.removeAttribute('dir');
+            htmlTag!.setAttribute('dir', 'rtl');
+            this.setAttribute('dir', 'rtl');
+            this.dir = 'rtl';
+          } else if (htmlTag!.getAttribute('dir')) {
+            htmlTag!.removeAttribute('dir');
+            this.removeAttribute('dir');
+            this.dir = '';
           }
         });
       }
@@ -290,7 +293,16 @@ export class PageHeader extends connect(store)(LitElement) {
   }
 
   protected checkEnvironment() {
+    this.showLanguagesForDevDomains();
     this.isStaging = !isProductionServer();
     this.environment = isProductionServer() ? 'DEMO' : 'LOCAL';
+  }
+
+  protected showLanguagesForDevDomains() {
+    const location = window.location.host;
+    const devDomains = ['localhost', 'etools-dev', 'etools-test'];
+    if (devDomains.some((x) => location.indexOf(x) > -1)) {
+      this.languages.splice(1, 0, {value: 'ro', display_name: 'Romanian'});
+    }
   }
 }

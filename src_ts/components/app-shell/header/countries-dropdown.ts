@@ -39,7 +39,6 @@ export class CountriesDropdown extends connect(store)(LitElement) {
         shown-options-limit="250"
         ?hidden="${!this.countrySelectorVisible}"
         hide-search
-        .minWidth="160px"
         .autoWidth="${true}"
       ></etools-dropdown>
     `;
