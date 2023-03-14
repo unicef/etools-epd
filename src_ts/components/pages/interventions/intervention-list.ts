@@ -7,13 +7,10 @@ import '@unicef-polymer/etools-modules-common/dist/layout/page-content-header/pa
 // eslint-disable-next-line max-len
 import {pageContentHeaderSlottedStyles} from '@unicef-polymer/etools-modules-common/dist/layout/page-content-header/page-content-header-slotted-styles';
 
-import '@unicef-polymer/etools-modules-common/dist/layout/filters/etools-filters';
-import {
-  updateFilterSelectionOptions,
-  updateFiltersSelectedValues
-} from '@unicef-polymer/etools-modules-common/dist/list/filters';
+import '@unicef-polymer/etools-filters/src/etools-filters';
+import {updateFilterSelectionOptions, updateFiltersSelectedValues} from '@unicef-polymer/etools-filters/src/filters';
 import {ROOT_PATH} from '../../../config/config';
-import {EtoolsFilter} from '@unicef-polymer/etools-modules-common/dist/layout/filters/etools-filters';
+import {EtoolsFilter} from '@unicef-polymer/etools-filters/src/etools-filters';
 import {pageLayoutStyles} from '../../styles/page-layout-styles';
 import {buttonsStyles} from '../../styles/button-styles';
 import {elevationStyles} from '../../styles/lit-styles/elevation-styles';
@@ -39,7 +36,6 @@ import {
   InterventionsListStyles,
   InterventionsTableStyles
 } from '@unicef-polymer/etools-modules-common/dist/list/list-styles';
-import {isJsonStrMatch} from '../../utils/utils';
 import {addCurrencyAmountDelimiter} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
 import {notHiddenPartnersSelector} from '../../../redux/reducers/common-data';
 import {translate, get as getTranslation} from 'lit-translate';
@@ -55,6 +51,9 @@ import {etoolsEndpoints} from '../../../endpoints/endpoints-list';
 import {defaultFilters, InterventionFilterKeys} from './interventions-filters';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {debounce} from '../../utils/debouncer';
+import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {setShouldReGetList} from './intervention-tab-pages/common/actions/interventions';
+import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 
 /**
  * @LitElement
@@ -81,21 +80,26 @@ export class InterventionList extends connect(store)(LitElement) {
 
         <div slot="title-row-actions" class="content-header-actions">
           <div class="action">
-            <export-data .params="${this.exportParams}" raised></export-data>
+            <export-data .exportLinks="${this.exportLinks}" .params="${this.exportParams}" raised></export-data>
           </div>
         </div>
       </page-content-header>
 
       <section class="elevation page-content filters" elevation="1">
-        <etools-filters .filters="${this.filters}" @filter-change="${this.filtersChange}"></etools-filters>
+        <etools-filters
+          .filters="${this.filters}"
+          @filter-change="${this.filtersChange}"
+          .textFilters="${translate('GENERAL.FILTERS')}"
+          .textClearAll="${translate('GENERAL.CLEAR_ALL')}"
+        ></etools-filters>
       </section>
 
       <section class="elevation page-content no-padding" elevation="1">
-        <etools-loading loading-text="Loading..." .active="${this.showLoading}"></etools-loading>
+        <etools-loading .active="${this.showLoading}"></etools-loading>
         <etools-table
           caption="${translate('INTERVENTIONS_LIST.TABLE_TITLE')}"
           .columns="${this.listColumns}"
-          .items="${this.listData.length ? this.listData : [{}]}"
+          .items="${this.listData}"
           .paginator="${this.paginator}"
           .getChildRowTemplateMethod="${this.listData.length ? this.getRowDetails.bind(this) : null}"
           .extraCSS="${InterventionsTableStyles}"
@@ -122,14 +126,26 @@ export class InterventionList extends connect(store)(LitElement) {
   @property({type: String})
   exportParams = '';
 
+  @property({type: Array})
+  exportLinks = [
+    {name: translate('GENERAL.EXPORT_XLS'), type: 'xlsx'},
+    {name: translate('GENERAL.EXPORT_CSV'), type: 'csv'}
+  ];
+
   @property({type: Boolean})
   showLoading = false;
 
   @property({type: Array})
   interventionStatuses!: LabelAndValue[];
 
+  @property({type: Number})
+  commonDataLoadedTimestamp = 0;
+
+  /**
+   * Used to preserve previously selected filters and pagination when navigating away from the list and comming back
+   */
   @property({type: Object})
-  urlParams!: GenericObject;
+  prevQueryStringObj!: GenericObject;
 
   listColumns: EtoolsTableColumn[] = [
     {
@@ -148,8 +164,11 @@ export class InterventionList extends connect(store)(LitElement) {
     {
       label: translate('INTERVENTIONS_LIST.DOC_TYPE') as unknown as string,
       name: 'document_type',
-      type: EtoolsTableColumnType.Text,
-      sort: null
+      type: EtoolsTableColumnType.Custom,
+      sort: null,
+      customMethod: (item: any, _key: string) => {
+        return item.document_type ? translate(`ITEM_TYPE.${item.document_type.toUpperCase()}`) : item.document_type;
+      }
     },
     {
       label: translate('INTERVENTIONS_LIST.STATUS') as unknown as string,
@@ -158,31 +177,32 @@ export class InterventionList extends connect(store)(LitElement) {
       capitalize: true,
       sort: null,
       customMethod: (item: any, _key: string) => {
+        const translatedStatus = item.status ? translate(`PD_STATUS.${item.status.toUpperCase()}`) : item.status;
         if (item.status !== 'development') {
-          return item.status;
+          return translatedStatus;
         }
         if (item.partner_accepted && item.unicef_accepted) {
-          return html`${item.status} <br />
+          return html`${translatedStatus} <br />
             ${translate('PARTNER_AND_UNICEF_ACCEPTED')}`;
         }
         if (!item.partner_accepted && item.unicef_accepted) {
-          return html`${item.status} <br />
+          return html`${translatedStatus} <br />
             ${translate('UNICEF_ACCEPTED')}`;
         }
         if (item.partner_accepted && !item.unicef_accepted) {
-          return html`${item.status} <br />
+          return html`${translatedStatus} <br />
             ${translate('PARTNER_ACCEPTED')}`;
         }
         if (!item.unicef_court && !!item.date_sent_to_partner) {
-          return html`${item.status} <br />
+          return html`${translatedStatus} <br />
             ${translate('SENT_TO_PARTNER')}`;
         }
 
         if (item.unicef_court && !!item.submission_date && !!item.date_sent_to_partner) {
-          return html`${item.status} <br />
+          return html`${translatedStatus} <br />
             ${translate('SENT_TO_UNICEF')}`;
         }
-        return item.status;
+        return translatedStatus;
       },
       cssClass: 'col_type'
     },
@@ -217,7 +237,7 @@ export class InterventionList extends connect(store)(LitElement) {
 
   stateChanged(state: RootState) {
     const routeDetails = get(state, 'app.routeDetails');
-    if (!(routeDetails.routeName === 'interventions' && routeDetails.subRouteName === 'list')) {
+    if (!(routeDetails?.routeName === 'interventions' && routeDetails?.subRouteName === 'list')) {
       this.paramsInitialized = false;
       this.routeDetails = null;
       return; // Avoid code execution while on a different page
@@ -230,22 +250,29 @@ export class InterventionList extends connect(store)(LitElement) {
     ) {
       if (
         (!stateRouteDetails.queryParams || Object.keys(stateRouteDetails.queryParams).length === 0) &&
-        this.urlParams
+        this.prevQueryStringObj
       ) {
         this.routeDetails = stateRouteDetails;
-        this.updateCurrentParams(this.urlParams);
+        this.updateCurrentParams(this.prevQueryStringObj);
         return;
       }
 
       this.onParamsChange(stateRouteDetails, state.interventions?.shouldReGetList);
     }
 
-    if (!isJsonStrMatch(this.interventionStatuses, state.commonData!.interventionStatuses)) {
-      this.interventionStatuses = [...state.commonData!.interventionStatuses];
-    }
+    // if (!isJsonStrMatch(this.interventionStatuses, state.commonData!.interventionStatuses)) {
+    //   this.interventionStatuses = [...state.commonData!.interventionStatuses];
+    // }
 
     if (state.user && state.user.permissions) {
       this.canExport = state.user.permissions.canExport;
+    }
+
+    if (this.commonDataLoadedTimestamp !== state.commonData!.loadedTimestamp && this.filters) {
+      // static data reloaded (because of language change), need to update filters
+      this.commonDataLoadedTimestamp = state.commonData!.loadedTimestamp;
+      this.populateDropdownFilterOptionsFromCommonData(state, this.filters);
+      this.filters = [...this.filters];
     }
 
     this.initFiltersForDisplay(state);
@@ -269,11 +296,11 @@ export class InterventionList extends connect(store)(LitElement) {
         <td colspan="8">
           <div class="details">
             <div>
-              <div class="title">Total Budget</div>
+              <div class="title">${translate('INTERVENTIONS_LIST.TOTAL_BUDGET')}</div>
               <div class="detail">${item.budget_currency || ''} ${addCurrencyAmountDelimiter(item.total_budget)}</div>
             </div>
             <div>
-              <div class="title">UNICEF Cash Contribution</div>
+              <div class="title">${translate('INTERVENTIONS_LIST.UNICEF_CASH_CONTRIBUTION')}</div>
               <div class="detail">${item.budget_currency || ''} ${addCurrencyAmountDelimiter(item.unicef_cash)}</div>
             </div>
           </div>
@@ -302,7 +329,11 @@ export class InterventionList extends connect(store)(LitElement) {
       currentParams = pick(currentParams, ['sort', 'page_size']);
     }
     const newParams: RouteQueryParams = {...currentParams, ...paramsToUpdate};
-    this.urlParams = newParams;
+    if (JSON.stringify(currentParams) === JSON.stringify(newParams)) {
+      return;
+    }
+
+    this.prevQueryStringObj = newParams;
     const stringParams: string = buildUrlQueryString(newParams);
     this.exportParams = stringParams;
     replaceAppLocation(`${this.routeDetails!.path}?${stringParams}`);
@@ -310,6 +341,7 @@ export class InterventionList extends connect(store)(LitElement) {
 
   private async getListData(forceReGet: boolean) {
     const currentParams: GenericObject<any> = this.routeDetails!.queryParams || {};
+
     try {
       const {list, paginator}: ListHelperResponse<InterventionListData> = await this.listHelper.getList(
         currentParams,
@@ -321,8 +353,11 @@ export class InterventionList extends connect(store)(LitElement) {
       // update paginator (total_pages, visible_range, count...)
       this.paginator = paginator;
       this.showLoading = false;
+      store.dispatch(setShouldReGetList(false));
     } catch (error) {
       console.error('[EtoolsInterventionsList]: get Interventions req error...', error);
+      this.showLoading = false;
+      fireEvent(this, 'toast', {text: getTranslation('ERROR_LOADING_DATA')});
     }
   }
 
@@ -336,6 +371,7 @@ export class InterventionList extends connect(store)(LitElement) {
 
   private initFiltersForDisplay(state: RootState) {
     if (!this.filters && this.dataRequiredByFiltersHasBeenLoaded(state)) {
+      this.commonDataLoadedTimestamp = state.commonData!.loadedTimestamp;
       const availableFilters = [...defaultFilters];
       this.populateDropdownFilterOptionsFromCommonData(state, availableFilters);
 
@@ -347,7 +383,7 @@ export class InterventionList extends connect(store)(LitElement) {
 
   private dataRequiredByFiltersHasBeenLoaded(state: RootState): boolean {
     return !!(
-      state.commonData?.commonDataIsLoaded &&
+      state.commonData?.loadedTimestamp &&
       this.routeDetails?.queryParams &&
       Object.keys(this.routeDetails?.queryParams).length > 0
     );
@@ -355,15 +391,24 @@ export class InterventionList extends connect(store)(LitElement) {
 
   private populateDropdownFilterOptionsFromCommonData(state: RootState, currentFilters: EtoolsFilter[]) {
     updateFilterSelectionOptions(currentFilters, 'partners', notHiddenPartnersSelector(state));
-    updateFilterSelectionOptions(currentFilters, 'status', state.commonData!.interventionStatuses);
     updateFilterSelectionOptions(
       currentFilters,
-      InterventionFilterKeys.budget_owner,
-      state.commonData!.unicefUsersData
+      'status',
+      state.commonData!.interventionStatuses.map((x: any) => ({
+        ...x,
+        label: getTranslatedValue(x.label, 'PD_STATUS')
+      }))
     );
-    updateFilterSelectionOptions(currentFilters, 'document_type', state.commonData!.documentTypes);
+    updateFilterSelectionOptions(
+      currentFilters,
+      'document_type',
+      state.commonData!.documentTypes.map((x: any) => ({
+        ...x,
+        label: getTranslatedValue(x.label, 'ITEM_TYPE')
+      }))
+    );
     updateFilterSelectionOptions(currentFilters, InterventionFilterKeys.editable_by, [
-      {label: 'UNICEF', value: 'unicef'},
+      {label: getTranslation('UNICEF'), value: 'unicef'},
       {label: getTranslation('PARTNER'), value: 'partner'}
     ]);
   }
@@ -388,19 +433,19 @@ export class InterventionList extends connect(store)(LitElement) {
 
     // set required params in url
     if (!currentParams.page_size) {
-      // urlParams store page previous filtering params, if set, apply them to preserve user filters selection
+      // prevQueryStringObj store page previous filtering params, if set, apply them to preserve user filters selection
       this.updateCurrentParams(
-        this.urlParams
-          ? this.urlParams
+        this.prevQueryStringObj
+          ? this.prevQueryStringObj
           : {
               page_size: '20',
-              status: ['draft', 'active', 'review', 'signed', 'signature']
+              status: ['draft', 'review', 'signature', 'signed', 'active']
             }
       );
       return false;
     } else {
-      // store existing url params in urlParams property, to be used on navigation to PD list as default params
-      this.urlParams = currentParams;
+      // store existing url params in prevQueryStringObj property, to be used on navigation to PD list as default params
+      this.prevQueryStringObj = currentParams;
       return true;
     }
   }

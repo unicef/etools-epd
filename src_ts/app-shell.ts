@@ -40,11 +40,11 @@ import './components/app-shell/header/page-header.js';
 import './components/app-shell/footer/page-footer.js';
 
 import './components/app-shell/app-theme.js';
-import {ToastNotificationHelper} from './components/common/toast-notifications/toast-notification-helper';
 import user from './redux/reducers/user';
 import commonData, {CommonDataState} from './redux/reducers/common-data';
+import uploadStatus from './redux/reducers/upload-status.js';
 import {getCurrentUser} from './components/user/user-actions';
-import {EtoolsRouter} from './routing/routes';
+import {EtoolsRouter, replaceAppLocation} from './routing/routes';
 import {
   getPartners,
   getLocations,
@@ -53,21 +53,28 @@ import {
   getDisaggregations,
   getOffices,
   getUnicefUsers,
-  getStaticData,
   getDropdownsData,
   SET_ALL_STATIC_DATA,
+  UPDATE_STATIC_DATA,
   getCountryProgrammes
 } from './redux/actions/common-data';
 import {getAgreements, SET_AGREEMENTS} from './redux/actions/agreements';
 import isEmpty from 'lodash-es/isEmpty';
 import get from 'lodash-es/get';
 import './components/env-flags/environment-flags';
-import {registerTranslateConfig, use} from 'lit-translate';
+import '@unicef-polymer/etools-toasts';
+import {registerTranslateConfig, use, translate} from 'lit-translate';
 import {EtoolsUser, RouteDetails} from '@unicef-polymer/etools-types';
 import {setStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
 import {SMALL_MENU_ACTIVE_LOCALSTORAGE_KEY} from './config/config';
 import {fireEvent} from './components/utils/fire-custom-event';
 import {ROOT_PATH} from '@unicef-polymer/etools-modules-common/dist/config/config';
+import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
+import {RESET_CURRENT_ITEM, RESET_UNSAVED_UPLOADS, RESET_UPLOADS_IN_PROGRESS} from './redux/actions/upload-status';
+import UploadsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/uploads-mixin';
+import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
+import {commingFromPDDetailsToList} from './components/utils/utils';
+import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 declare const dayjs: any;
 declare const dayjs_plugin_utc: any;
 declare const dayjs_plugin_isSameOrBefore: any;
@@ -87,14 +94,18 @@ function fetchLangFiles(lang: string) {
     return Object.assign(response[0].value, response[1].value);
   });
 }
-registerTranslateConfig({loader: (lang: string) => fetchLangFiles(lang)});
+registerTranslateConfig({
+  empty: (key) => `${key && key[0].toUpperCase() + key.slice(1).toLowerCase()}`,
+  loader: (lang: string) => fetchLangFiles(lang)
+});
 
 // set store for intervention-tab-pages
 setStore(store as any);
 
 store.addReducers({
   user,
-  commonData
+  commonData,
+  uploadStatus
 });
 
 /**
@@ -102,7 +113,7 @@ store.addReducers({
  * @LitElement
  */
 @customElement('app-shell')
-export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
+export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElement))) {
   static get styles() {
     return [AppShellStyles];
   }
@@ -119,6 +130,8 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
         .toast="${this.currentToastMessage}"
       >
       </etools-piwik-analytics>
+
+      <etools-toasts></etools-toasts>
 
       <app-drawer-layout
         id="layout"
@@ -164,13 +177,13 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
                 this.mainPage,
                 'interventions',
                 this.subPage,
-                'overview|metadata|strategy|workplan|timing|review|attachments|info'
+                'overview|metadata|strategy|workplan|workplan-editor|timing|review|attachments|info'
               )}"
               ?hidden="${!this.isActivePage(
                 this.mainPage,
                 'interventions',
                 this.subPage,
-                'overview|metadata|strategy|workplan|timing|review|attachments|info'
+                'overview|metadata|strategy|workplan|workplan-editor|timing|review|attachments|info'
               )}"
             >
             </intervention-tabs>
@@ -210,20 +223,18 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
   @property({type: String})
   currentToastMessage!: string;
 
+  @property({type: Boolean})
+  private translationFilesAreLoaded = false;
+
   @query('#layout') private drawerLayout!: AppDrawerLayoutElement;
   @query('#drawer') private drawer!: AppDrawerElement;
   @query('#appHeadLayout') private appHeaderLayout!: AppHeaderLayoutElement;
-
-  private appToastsNotificationsHelper!: ToastNotificationHelper;
 
   constructor() {
     super();
     // Gesture events like tap and track generated from touch will not be
     // preventable, allowing for better scrolling performance.
     setPassiveTouchGestures(true);
-    // init toasts notifications queue
-    this.appToastsNotificationsHelper = new ToastNotificationHelper(this);
-    this.appToastsNotificationsHelper.addToastNotificationListeners();
 
     const menuTypeStoredVal: string | null = localStorage.getItem(SMALL_MENU_ACTIVE_LOCALSTORAGE_KEY);
     if (!menuTypeStoredVal) {
@@ -240,12 +251,15 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
     installRouter((location) => store.dispatch(navigate(decodeURIComponent(location.pathname + location.search))));
     this.addEventListener('scroll-up', () => {
       if (this.appHeaderLayout) {
-        this.appHeaderLayout.$.contentContainer.scrollTop = 0;
+        const contentContainer = this.appHeaderLayout.shadowRoot!.querySelector('#contentContainer');
+        if (contentContainer) {
+          contentContainer.scrollTop = 0;
+        }
       }
     });
     installMediaQueryWatcher(`(min-width: 460px)`, () => store.dispatch(updateDrawerState(false)));
 
-    getCurrentUser().then((user: EtoolsUser) => {
+    getCurrentUser().then((user?: EtoolsUser) => {
       if (user) {
         this.user = user;
         // @ts-ignore
@@ -256,7 +270,6 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
           getDisaggregations(),
           getOffices(),
           getUnicefUsers(),
-          getStaticData(),
           getDropdownsData(),
           getAgreements(),
           getCountryProgrammes(user.is_unicef_user),
@@ -268,16 +281,21 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
           });
           store.dispatch({
             type: SET_AGREEMENTS,
-            list: this.getValue(response[8])
+            list: this.getValue(response[7])
           });
         });
       }
     });
 
-    setTimeout(() => {
+    this.waitForComponentRender().then(() => {
       window.EtoolsEsmmFitIntoEl = this.appHeaderLayout!.shadowRoot!.querySelector('#contentContainer');
       this.etoolsLoadingContainer = window.EtoolsEsmmFitIntoEl;
-    }, 100);
+      // Override ajax error parser inside @unicef-polymer/etools-ajax
+      // for string translation using lit-translate
+      window.ajaxErrorParserTranslateFunction = (key: string) => {
+        return getTranslatedValue(key);
+      };
+    });
   }
 
   checkAppVersion() {
@@ -325,12 +343,22 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
     data.disaggregations = this.getValue(response[3]);
     data.offices = this.getValue(response[4]);
     data.unicefUsersData = this.getValue(response[5]);
-    data.providedBy = this.getValue(response[7]).supply_item_provided_by || [];
-    data.cpOutputs = this.getValue(response[7]).cp_outputs || [];
-    data.fileTypes = this.getValue(response[7]).file_types || [];
-    const staticData = this.getValue(response[6], {});
-    data.countryProgrammes = this.getValue(response[9]);
-    data.sites = this.getValue(response[10]);
+    this.setStaticDataFromResponse(data, this.getValue(response[6], {}));
+    data.countryProgrammes = this.getValue(response[8]);
+    data.sites = this.getValue(response[9]);
+    return data;
+  }
+
+  private formatResponseOnLanguageChange(response: any[]) {
+    const data: Partial<CommonDataState> = {};
+    this.setStaticDataFromResponse(data, this.getValue(response[0], {}));
+    return data;
+  }
+
+  private setStaticDataFromResponse(data: Partial<CommonDataState>, staticData: any) {
+    data.providedBy = staticData.supply_item_provided_by || [];
+    data.cpOutputs = staticData.cp_outputs || [];
+    data.fileTypes = staticData.file_types || [];
     data.locationTypes = isEmpty(staticData.location_types) ? [] : staticData.location_types;
     data.documentTypes = isEmpty(staticData.intervention_doc_type) ? [] : staticData.intervention_doc_type;
     data.genderEquityRatings = staticData.gender_equity_sustainability_ratings || [];
@@ -341,7 +369,6 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
     data.currencies = isEmpty(staticData.currencies) ? [] : staticData.currencies;
     data.riskTypes = staticData.risk_types || [];
     data.cashTransferModalities = staticData.cash_transfer_modalities || [];
-    return data;
   }
 
   getValue(response: {status: string; value?: any; reason?: any}, defaultValue: any = []) {
@@ -350,22 +377,41 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
 
   public disconnectedCallback() {
     super.disconnectedCallback();
-    // remove toasts notifications listeners
-    this.appToastsNotificationsHelper.removeToastNotificationListeners();
   }
 
-  public stateChanged(state: RootState) {
+  protected shouldUpdate(changedProperties: Map<PropertyKey, unknown>): boolean {
+    return this.translationFilesAreLoaded && super.shouldUpdate(changedProperties);
+  }
+
+  public async stateChanged(state: RootState) {
+    this.uploadsStateChanged(state);
+
+    if (commingFromPDDetailsToList(this.routeDetails, state.app!.routeDetails!)) {
+      if (this.existsUnsavedUploads()) {
+        await this.confirmLeaveUploadsUnsavedDialog(this.routeDetails!.path, state.app!.routeDetails.path);
+        return;
+      } else if (state.interventions?.current) {
+        store.dispatch(this.resetCurrentItem());
+      }
+    }
+
     this.routeDetails = state.app!.routeDetails;
     this.mainPage = state.app!.routeDetails!.routeName;
     this.subPage = state.app!.routeDetails!.subRouteName;
+
     this.drawerOpened = state.app!.drawerOpened;
+    this.smallMenu = state.app!.smallMenu;
     if (get(state, 'app.toastNotification.active')) {
       fireEvent(this, 'toast', {
         text: state.app!.toastNotification.message,
-        showCloseBtn: state.app!.toastNotification.showCloseBtn
+        hideCloseBtn: !state.app!.toastNotification.showCloseBtn
       });
     }
-    if (state.activeLanguage && state.activeLanguage.activeLanguage !== this.selectedLanguage) {
+    if (state.activeLanguage?.activeLanguage && state.activeLanguage.activeLanguage !== this.selectedLanguage) {
+      if (this.selectedLanguage) {
+        // on language change, reload parts of commonData in order to use BE localized text
+        this.loadDataOnLanguageChange();
+      }
       this.selectedLanguage = state.activeLanguage!.activeLanguage;
       this.loadLocalization();
     }
@@ -373,6 +419,27 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
 
   async loadLocalization() {
     await use(this.selectedLanguage);
+    this.translationFilesAreLoaded = true;
+  }
+
+  loadDataOnLanguageChange() {
+    Promise.allSettled([getDropdownsData()]).then((response: any[]) => {
+      store.dispatch({
+        type: UPDATE_STATIC_DATA,
+        staticData: this.formatResponseOnLanguageChange(response)
+      });
+    });
+  }
+
+  waitForComponentRender() {
+    return new Promise((resolve) => {
+      const check = setInterval(() => {
+        if (this.appHeaderLayout) {
+          clearInterval(check);
+          resolve(true);
+        }
+      }, 100);
+    });
   }
 
   // TODO: just for testing...
@@ -430,4 +497,37 @@ export class AppShell extends connect(store)(LoadingMixin(LitElement)) {
     }
     return true;
   }
+
+  existsUnsavedUploads() {
+    return Number(this.uploadsInProgress) > 0 || Number(this.unsavedUploads) > 0;
+  }
+
+  async confirmLeaveUploadsUnsavedDialog(prevPath: string, pathToRedirect: string) {
+    // stay in the page where change was made
+    replaceAppLocation(prevPath);
+
+    const confirmed = await openDialog({
+      dialog: 'are-you-sure',
+      dialogData: {
+        content: translate('GENERAL.LEAVE_UPLOADS_UNSAVED'),
+        confirmBtnText: translate('GENERAL.LEAVE'),
+        cancelBtnText: translate('GENERAL.STAY')
+      }
+    }).then(({confirmed}) => {
+      return confirmed;
+    });
+    if (confirmed) {
+      // confirmed to leave page and loose changes, reset uploads and redirect
+      store.dispatch({type: RESET_UNSAVED_UPLOADS});
+      store.dispatch({type: RESET_UPLOADS_IN_PROGRESS});
+      store.dispatch(this.resetCurrentItem());
+      replaceAppLocation(pathToRedirect);
+    }
+  }
+
+  resetCurrentItem = () => {
+    return {
+      type: RESET_CURRENT_ITEM
+    };
+  };
 }

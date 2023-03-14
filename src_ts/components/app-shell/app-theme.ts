@@ -57,6 +57,11 @@ documentContainer.innerHTML = `
         --error-box-border-color: #ebccd1;
         --error-box-text-color: var(--error-color);
 
+        --gray-06: rgba(0,0,0,.06);
+        --gray-20: rgba(0,0,0,.20);
+        --gray-50: rgba(0,0,0,.50);
+        --gray-light: rgba(0,0,0,.38);
+
         --ecp-header-color: var(--primary-text-color);
 
         --etools-dialog-primary-color: #FFFFFF;
@@ -101,25 +106,25 @@ documentContainer.innerHTML = `
 
         --paper-button-flat-keyboard-focus: {
           outline: 0;
-          box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12),
-           0 3px 5px -1px rgba(0, 0, 0, 0.4);
+          box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.34), 0 1px 18px 0 rgba(0, 0, 0, 0.32),
+           0 3px 5px -1px rgba(0, 0, 0, 0.6);
         }
 
         --paper-button-raised-keyboard-focus: {
           outline: 0;
-          box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12),
-           0 3px 5px -1px rgba(0, 0, 0, 0.4);
-        }      
+          box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.34), 0 1px 18px 0 rgba(0, 0, 0, 0.32),
+           0 3px 5px -1px rgba(0, 0, 0, 0.6);
+        }
 
-        --epd-profile-dialog-border-b: solid 1px var(--dark-divider-color);  
-        
+        --epd-profile-dialog-border-b: solid 1px var(--dark-divider-color);
+
         --required-star-style: {
           background: url('./images/required.svg') no-repeat 99% 20%/8px;
           width: auto !important;
           max-width: 100%;
           right: auto;
           padding-right: 15px;
-        }               
+        }
       }
 
       html[dir="rtl"] {

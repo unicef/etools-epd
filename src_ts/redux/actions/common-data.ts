@@ -4,10 +4,15 @@ import {etoolsEndpoints} from '../../endpoints/endpoints-list';
 import {AnyObject} from '@unicef-polymer/etools-types';
 
 export const SET_ALL_STATIC_DATA = 'SET_ALL_STATIC_DATA';
+export const UPDATE_STATIC_DATA = 'UPDATE_STATIC_DATA';
 export const UPDATE_ENV_FLAGS = 'UPDATE_ENV_FLAGS';
 export const UPDATE_PRP_COUNTRIES = 'UPDATE_PRP_COUNTRIES';
 
 export interface CommonDataActionSetAllStaticData extends Action<'SET_ALL_STATIC_DATA'> {
+  genderEquityRatings: AnyObject[];
+}
+
+export interface CommonDataActionUpdateStaticData extends Action<'UPDATE_STATIC_DATA'> {
   genderEquityRatings: AnyObject[];
 }
 
@@ -21,6 +26,7 @@ export interface CommonDataActionUpdatePrpCountries extends Action<'UPDATE_PRP_C
 
 export type CommonDataAction =
   | CommonDataActionSetAllStaticData
+  | CommonDataActionUpdateStaticData
   | CommonDataActionUpdateEnvFlags
   | CommonDataActionUpdatePrpCountries;
 
@@ -69,12 +75,6 @@ export const getUnicefUsers = () => {
 export const getDisaggregations = () => {
   return sendRequest({
     endpoint: {url: etoolsEndpoints.disaggregations.url!}
-  });
-};
-
-export const getStaticData = () => {
-  return sendRequest({
-    endpoint: {url: etoolsEndpoints.static.url!}
   });
 };
 

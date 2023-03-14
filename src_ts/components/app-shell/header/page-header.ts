@@ -2,7 +2,8 @@ import '@polymer/app-layout/app-toolbar/app-toolbar';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@unicef-polymer/etools-profile-dropdown/etools-profile-dropdown';
 import '@unicef-polymer/etools-dropdown/etools-dropdown.js';
-import {customElement, LitElement, html, property} from 'lit-element';
+import {EtoolsDropdownEl} from '@unicef-polymer/etools-dropdown/etools-dropdown';
+import {customElement, LitElement, html, property, query} from 'lit-element';
 
 import './countries-dropdown';
 
@@ -14,11 +15,22 @@ import {fireEvent} from '../../utils/fire-custom-event';
 import isEmpty from 'lodash-es/isEmpty';
 import {updateCurrentUser} from '../../user/user-actions';
 import {pageHeaderStyles} from './page-header-styles';
-import {translate, use} from 'lit-translate';
-import {setLanguage} from '../../../redux/actions/active-language';
+import {translate, use, get as getTranslation} from 'lit-translate';
+import {setActiveLanguage} from '../../../redux/actions/active-language';
 import {activeLanguage} from '../../../redux/reducers/active-language';
 import {countriesDropdownStyles} from './countries-dropdown-styles';
-import {AnyObject, EtoolsUser, GenericObject} from '@unicef-polymer/etools-types';
+import {AnyObject, EtoolsUser} from '@unicef-polymer/etools-types';
+import {sendRequest} from '@unicef-polymer/etools-ajax';
+import {etoolsEndpoints} from '../../../endpoints/endpoints-list';
+import {updateUserData} from '../../../redux/actions/user';
+import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import 'dayjs/locale/fr.js';
+import 'dayjs/locale/ru.js';
+import 'dayjs/locale/pt.js';
+import 'dayjs/locale/ar.js';
+import 'dayjs/locale/ro.js';
+import 'dayjs/locale/es.js';
+import {appLanguages} from '../../../config/app-constants';
 
 store.addReducers({
   activeLanguage
@@ -101,8 +113,9 @@ export class PageHeader extends connect(store)(LitElement) {
         <div class="header__item header__right-group">
           <div class="dropdowns">
             <etools-dropdown
+              id="languageSelector"
               .selected="${this.selectedLanguage}"
-              .options="${this.languages}"
+              .options="${appLanguages}"
               option-label="display_name"
               option-value="value"
               @etools-selected-item-changed="${({detail}: CustomEvent) => this.languageChanged(detail.selectedItem)}"
@@ -122,6 +135,7 @@ export class PageHeader extends connect(store)(LitElement) {
             .offices="${this.profileDrOffices}"
             .users="${this.profileDrUsers}"
             .profile="${this.profile ? {...this.profile} : {}}"
+            language="${this.selectedLanguage}"
             @save-profile="${this.handleSaveProfile}"
             @sign-out="${this._signOut}"
           >
@@ -173,38 +187,45 @@ export class PageHeader extends connect(store)(LitElement) {
   @property({type: String})
   dir = '';
 
-  languages: GenericObject<string>[] = [
-    {value: 'en', display_name: 'English'},
-    {value: 'ar', display_name: 'Arabic'}
-  ];
-
   @property() selectedLanguage!: string;
+
+  @query('#languageSelector') private languageDropdown!: EtoolsDropdownEl;
 
   public connectedCallback() {
     super.connectedCallback();
     this.setBgColor();
     this.checkEnvironment();
+
+    setTimeout(() => {
+      const fitInto = document.querySelector('app-shell')!.shadowRoot!.querySelector('#appHeadLayout');
+      this.languageDropdown.fitInto = fitInto;
+    }, 0);
   }
 
   public stateChanged(state: RootState) {
-    if (state) {
+    if (state.user?.data) {
       this.profile = state.user!.data;
-      if (state.activeLanguage && state.activeLanguage.activeLanguage !== this.selectedLanguage) {
-        this.selectedLanguage = state.activeLanguage!.activeLanguage;
-        setTimeout(() => {
-          const htmlTag = document.querySelector('html');
-          if (this.selectedLanguage === 'ar') {
-            htmlTag!.setAttribute('dir', 'rtl');
-            this.setAttribute('dir', 'rtl');
-            this.dir = 'rtl';
-          } else if (htmlTag!.getAttribute('dir')) {
-            htmlTag!.removeAttribute('dir');
-            this.removeAttribute('dir');
-            this.dir = '';
-          }
-        });
-      }
     }
+    if (state.activeLanguage!.activeLanguage && state.activeLanguage!.activeLanguage !== this.selectedLanguage) {
+      this.selectedLanguage = state.activeLanguage!.activeLanguage;
+      localStorage.setItem('defaultLanguage', this.selectedLanguage);
+      this.setLanguageDirection();
+    }
+  }
+
+  private setLanguageDirection() {
+    setTimeout(() => {
+      const htmlTag = document.querySelector('html');
+      if (this.selectedLanguage === 'ar') {
+        htmlTag!.setAttribute('dir', 'rtl');
+        this.setAttribute('dir', 'rtl');
+        this.dir = 'rtl';
+      } else if (htmlTag!.getAttribute('dir')) {
+        htmlTag!.removeAttribute('dir');
+        this.removeAttribute('dir');
+        this.dir = '';
+      }
+    });
   }
 
   public handleSaveProfile(e: any) {
@@ -220,7 +241,7 @@ export class PageHeader extends connect(store)(LitElement) {
         this.showSaveNotification();
       })
       .catch(() => {
-        this.showSaveNotification('Profile data not saved. Save profile error!');
+        this.showSaveNotification(getTranslation('PROFILE_DATA_NOT_SAVED'));
       })
       .then(() => {
         this.profileSaveLoadingMsgDisplay(false);
@@ -236,8 +257,7 @@ export class PageHeader extends connect(store)(LitElement) {
 
   protected showSaveNotification(msg?: string) {
     fireEvent(this, 'toast', {
-      text: msg ? msg : 'All changes are saved.',
-      showCloseBtn: false
+      text: msg ? msg : getTranslation('ALL_DATA_SAVED')
     });
   }
 
@@ -257,12 +277,29 @@ export class PageHeader extends connect(store)(LitElement) {
       return;
     }
     const newLanguage = selectedItem.value;
+    if (newLanguage) {
+      window.dayjs.locale(newLanguage);
+      // Event caught by self translating npm packages
+      fireEvent(this, 'language-changed', {language: newLanguage});
+    }
     if (this.selectedLanguage !== newLanguage) {
       localStorage.setItem('defaultLanguage', newLanguage);
-      use(newLanguage)
-        .then(() => store.dispatch(setLanguage(newLanguage)))
-        .finally(() => location.reload());
+      use(newLanguage).then(() => {
+        if (this.profile && this.profile.preferences?.language != newLanguage) {
+          this.updateUserPreference(newLanguage);
+        }
+      });
     }
+  }
+
+  private updateUserPreference(language: string) {
+    // @ts-ignore
+    sendRequest({endpoint: etoolsEndpoints.userProfile, method: 'PATCH', body: {preferences: {language: language}}})
+      .then((response) => {
+        store.dispatch(updateUserData(response));
+        store.dispatch(setActiveLanguage(language));
+      })
+      .catch((err: any) => parseRequestErrorsAndShowAsToastMsgs(err, this));
   }
 
   public menuBtnClicked() {
@@ -280,29 +317,15 @@ export class PageHeader extends connect(store)(LitElement) {
   protected _signOut() {
     // this._clearDexieDbs();
     this.clearLocalStorage();
-    window.location.href = window.location.origin + '/logout';
+    window.location.href = window.location.origin + '/social/unicef-logout/';
   }
-
-  // TODO
-  // protected _clearDexieDbs() {
-  //   window.EtoolsPmpApp.DexieDb.delete();
-  // }
 
   protected clearLocalStorage() {
     localStorage.clear();
   }
 
   protected checkEnvironment() {
-    this.showLanguagesForDevDomains();
     this.isStaging = !isProductionServer();
     this.environment = isProductionServer() ? 'DEMO' : 'LOCAL';
-  }
-
-  protected showLanguagesForDevDomains() {
-    const location = window.location.host;
-    const devDomains = ['localhost', 'etools-dev', 'etools-test'];
-    if (devDomains.some((x) => location.indexOf(x) > -1)) {
-      this.languages.splice(1, 0, {value: 'ro', display_name: 'Romanian'});
-    }
   }
 }

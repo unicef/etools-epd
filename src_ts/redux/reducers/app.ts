@@ -9,16 +9,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 */
 
 import {Reducer} from 'redux';
-import {UPDATE_ROUTE_DETAILS, UPDATE_DRAWER_STATE} from '../actions/app';
+import {UPDATE_DRAWER_STATE, UPDATE_SMALLMENU_STATE} from '../actions/app';
 import {RootAction} from '../store';
 import {SHOW_TOAST, CLOSE_TOAST} from '../actionsContants';
 import {RouteDetails} from '@unicef-polymer/etools-types';
 // eslint-disable-next-line max-len
-import {UPDATE_ROUTE_AND_RESET_INTERVENTION} from '../../components/pages/interventions/intervention-tab-pages/common/actions/actionsContants';
+import {UPDATE_ROUTE} from '../../components/pages/interventions/intervention-tab-pages/common/actions/actionsContants';
 
 export interface AppState {
   routeDetails: RouteDetails;
   drawerOpened: boolean;
+  smallMenu: boolean;
   toastNotification: {
     active: boolean;
     message: string;
@@ -29,6 +30,7 @@ export interface AppState {
 const INITIAL_STATE: AppState = {
   routeDetails: {} as RouteDetails,
   drawerOpened: false,
+  smallMenu: false,
   toastNotification: {
     active: false,
     message: '',
@@ -38,12 +40,7 @@ const INITIAL_STATE: AppState = {
 
 const app: Reducer<AppState, RootAction> = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case UPDATE_ROUTE_DETAILS:
-      return {
-        ...state,
-        routeDetails: action.routeDetails
-      };
-    case UPDATE_ROUTE_AND_RESET_INTERVENTION:
+    case UPDATE_ROUTE:
       return {
         ...state,
         routeDetails: action.routeDetails
@@ -53,6 +50,11 @@ const app: Reducer<AppState, RootAction> = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         drawerOpened: action.opened
+      };
+    case UPDATE_SMALLMENU_STATE:
+      return {
+        ...state,
+        smallMenu: action.smallMenu
       };
     case SHOW_TOAST:
       return {

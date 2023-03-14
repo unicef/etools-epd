@@ -1,16 +1,24 @@
 import {updateUserData} from '../../redux/actions/user';
+import {setActiveLanguage} from '../../redux/actions/active-language';
 import {getEndpoint} from '../../endpoints/endpoints';
 import {store} from '../../redux/store';
 import {etoolsEndpoints} from '../../endpoints/endpoints-list';
 import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {AnyObject, EtoolsUser} from '@unicef-polymer/etools-types';
+import {languageIsAvailableInApp} from '../utils/utils';
 
 export function getCurrentUser() {
   return sendRequest({
     endpoint: {url: getEndpoint(etoolsEndpoints.userProfile).url}
   })
     .then((response: EtoolsUser) => {
+      if (redirectToPMPIfNeccessary(response)) {
+        return;
+      }
       store.dispatch(updateUserData(response));
+
+      setCurrentLanguage(response.preferences?.language);
+
       return response;
     })
     .catch((error: AnyObject) => {
@@ -19,6 +27,38 @@ export function getCurrentUser() {
       }
       throw error;
     });
+}
+
+function setCurrentLanguage(lngCode: string) {
+  let currentLanguage = '';
+  if (lngCode) {
+    lngCode = lngCode.substring(0, 2);
+    if (languageIsAvailableInApp(lngCode)) {
+      currentLanguage = lngCode;
+    } else {
+      console.log(`User profile language ${lngCode} missing`);
+    }
+  }
+  if (!currentLanguage) {
+    const storageLang = localStorage.getItem('defaultLanguage');
+    if (storageLang && languageIsAvailableInApp(storageLang)) {
+      currentLanguage = storageLang;
+    }
+  }
+  if (!currentLanguage) {
+    currentLanguage = 'en';
+  }
+  store.dispatch(setActiveLanguage(currentLanguage));
+}
+
+function redirectToPMPIfNeccessary(user: EtoolsUser) {
+  if (!user.is_superuser) {
+    if (user.is_unicef_user) {
+      window.location.href = window.location.href.replace('epd', 'pmp');
+      return true;
+    }
+  }
+  return false;
 }
 
 export function updateCurrentUser(profile: AnyObject) {
