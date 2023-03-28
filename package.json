@@ -76,7 +76,7 @@
     "@unicef-polymer/etools-table": "^1.4.1",
     "@unicef-polymer/etools-toasts": "^1.0.5",
     "@unicef-polymer/etools-types": "^1.11.12",
-    "@unicef-polymer/etools-upload": "^4.4.2",
+    "@unicef-polymer/etools-upload": "^4.4.4",
     "@webcomponents/webcomponentsjs": "^2.6.0",
     "dayjs": "^1.11.5",
     "esri-leaflet": "^3.0.8",
