@@ -96,7 +96,7 @@ export const pageHeaderStyles = css`
       margin-left: 2px;
     }
     app-toolbar {
-      padding-right: 0px;
+      padding-inline-end: 0px;
     }
   }
 `;
