@@ -129,7 +129,7 @@ documentContainer.innerHTML = `
 
       html[dir="rtl"] {
         --required-star-style: {
-          background: url('./images/required.svg') no-repeat 99% 20%/8px;
+          background: url('./images/required.svg') no-repeat 0 20%/8px;
           inset-inline-end: auto;
           padding-inline-end: 15px;
         }
