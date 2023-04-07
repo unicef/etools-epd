@@ -6,12 +6,13 @@ import {EtoolsDropdownEl} from '@unicef-polymer/etools-dropdown/etools-dropdown.
 import {customElement, LitElement, html, property, query} from 'lit-element';
 
 // import EndpointsMixin from '../../endpoints/endpoints-mixin.js';
-import {fireEvent} from '../../utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {countriesDropdownStyles} from './countries-dropdown-styles';
 import {changeCurrentUserCountry} from '../../user/user-actions';
-import {DEFAULT_ROUTE, updateAppLocation} from '../../../routing/routes';
 import {ROOT_PATH} from '../../../config/config';
 import {AnyObject, EtoolsUser} from '@unicef-polymer/etools-types';
+import { EtoolsRouter } from '@unicef-polymer/etools-utils/dist/singleton/router';
+import { EtoolsRedirectPath } from '@unicef-polymer/etools-utils/dist/enums/router.enum';
 
 /**
  * @LitElement
@@ -114,7 +115,7 @@ export class CountriesDropdown extends connect(store)(LitElement) {
         // country change req returns 204
         // redirect to default page
         // TODO: clear all cached data related to old country
-        updateAppLocation(DEFAULT_ROUTE);
+        EtoolsRouter.updateAppLocation(EtoolsRouter.getRedirectPath(EtoolsRedirectPath.DEFAULT));
         // force page reload to load all data specific to the new country
         document.location.assign(window.location.origin + ROOT_PATH);
       })

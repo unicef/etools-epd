@@ -5,7 +5,7 @@ import {ROOT_PATH} from '../../config/config';
 import {elevationStyles} from '../styles/lit-styles/elevation-styles';
 import {pageLayoutStyles} from '../styles/page-layout-styles';
 import {SharedStylesLit} from '../styles/shared-styles-lit';
-import {fireEvent} from '../utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 
 /**
  * @customElement
