@@ -75,7 +75,7 @@ documentContainer.innerHTML = `
         }
         --paper-input-prefix: {
           color: var(--secondary-text-color, #737373);
-          margin-right: 10px;
+          margin-inline-end: 10px;
         };
         --esmm-external-wrapper: {
           width: 100%;
@@ -122,16 +122,16 @@ documentContainer.innerHTML = `
           background: url('./images/required.svg') no-repeat 99% 20%/8px;
           width: auto !important;
           max-width: 100%;
-          right: auto;
-          padding-right: 15px;
+          inset-inline-end: auto;
+          padding-inline-end: 15px;
         }
       }
 
       html[dir="rtl"] {
         --required-star-style: {
-          background: url('./images/required.svg') no-repeat 99% 20%/8px;
-          right: auto;
-          padding-right: 15px;
+          background: url('./images/required.svg') no-repeat 0 20%/8px;
+          inset-inline-end: auto;
+          padding-inline-end: 15px;
         }
       }
     </style>
