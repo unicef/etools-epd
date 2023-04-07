@@ -11,8 +11,8 @@ import {countriesDropdownStyles} from './countries-dropdown-styles';
 import {changeCurrentUserCountry} from '../../user/user-actions';
 import {ROOT_PATH} from '../../../config/config';
 import {AnyObject, EtoolsUser} from '@unicef-polymer/etools-types';
-import { EtoolsRouter } from '@unicef-polymer/etools-utils/dist/singleton/router';
-import { EtoolsRedirectPath } from '@unicef-polymer/etools-utils/dist/enums/router.enum';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
+import {EtoolsRedirectPath} from '@unicef-polymer/etools-utils/dist/enums/router.enum';
 
 /**
  * @LitElement

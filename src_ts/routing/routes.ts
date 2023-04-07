@@ -1,4 +1,4 @@
-import { EtoolsRouter } from '@unicef-polymer/etools-utils/dist/singleton/router';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {ROOT_PATH} from '../config/config';
 import {RouteCallbackParams, RouteDetails} from '@unicef-polymer/etools-types';
 

@@ -6,8 +6,8 @@ import {ROOT_PATH} from '../../config/config';
 import {RouteDetails} from '@unicef-polymer/etools-types';
 import {UPDATE_ROUTE} from '../../components/pages/interventions/intervention-tab-pages/common/actions/actionsContants';
 import {enableCommentMode} from '../../components/pages/interventions/intervention-tab-pages/common/components/comments/comments.actions';
-import { EtoolsRouter } from '@unicef-polymer/etools-utils/dist/singleton/router';
-import { EtoolsRedirectPath } from '@unicef-polymer/etools-utils/dist/enums/router.enum';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
+import {EtoolsRedirectPath} from '@unicef-polymer/etools-utils/dist/enums/router.enum';
 
 export interface AppActionUpdateDrawerState extends Action<'UPDATE_DRAWER_STATE'> {
   opened: boolean;
@@ -114,7 +114,7 @@ export const navigate: ActionCreator<ThunkResult> = (path: string) => (dispatch)
   }
 
   // some routes need redirect to subRoute list
-  const redirectPath: string | undefined =  EtoolsRouter.getRedirectToListPath(path);
+  const redirectPath: string | undefined = EtoolsRouter.getRedirectToListPath(path);
   if (redirectPath) {
     EtoolsRouter.updateAppLocation(redirectPath);
     return;

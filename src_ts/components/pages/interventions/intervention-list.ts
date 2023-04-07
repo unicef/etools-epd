@@ -53,7 +53,7 @@ import {debounce} from '@unicef-polymer/etools-utils/dist/debouncer.util';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {setShouldReGetList} from './intervention-tab-pages/common/actions/interventions';
 import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
-import { EtoolsRouter } from '@unicef-polymer/etools-utils/dist/singleton/router';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 
 /**
  * @LitElement
