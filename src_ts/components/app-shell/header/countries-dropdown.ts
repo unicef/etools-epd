@@ -1,7 +1,7 @@
 import {connect} from 'pwa-helpers/connect-mixin.js';
 import {store, RootState} from '../../../redux/store';
 import '@unicef-polymer/etools-dropdown/etools-dropdown.js';
-import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
+import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
 import {EtoolsDropdownEl} from '@unicef-polymer/etools-dropdown/etools-dropdown.js';
 import {customElement, LitElement, html, property, query} from 'lit-element';
 
@@ -131,7 +131,7 @@ export class CountriesDropdown extends connect(store)(LitElement) {
   }
 
   protected handleCountryChangeError(error: any) {
-    logError('Country change failed!', 'countries-dropdown', error);
+    EtoolsLogger.warn('Country change failed!', 'countries-dropdown', error);
     this.countryDropdown.selected = this.currentCountry.id;
     fireEvent(this, 'toast', {text: 'Something went wrong changing your workspace. Please try again'});
   }
