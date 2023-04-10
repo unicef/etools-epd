@@ -89,5 +89,4 @@ workflows:
                 - master
                 - staging
                 - develop
-                - fix-comment-mode
                 - amp

@@ -11,7 +11,6 @@ import './organizations-dropdown';
 import {connect} from 'pwa-helpers/connect-mixin.js';
 import {RootState, store} from '../../../redux/store';
 import {isProductionServer, ROOT_PATH} from '../../../config/config';
-import {updateDrawerState} from '../../../redux/actions/app';
 import {fireEvent} from '../../utils/fire-custom-event';
 import isEmpty from 'lodash-es/isEmpty';
 import {updateCurrentUser} from '../../user/user-actions';
@@ -305,8 +304,7 @@ export class PageHeader extends connect(store)(LitElement) {
   }
 
   public menuBtnClicked() {
-    store.dispatch(updateDrawerState(true));
-    // fireEvent(this, 'drawer');
+    fireEvent(this, 'change-drawer-state');
   }
 
   private setBgColor() {
@@ -319,39 +317,15 @@ export class PageHeader extends connect(store)(LitElement) {
   protected _signOut() {
     // this._clearDexieDbs();
     this.clearLocalStorage();
-    window.location.href = window.location.origin + '/logout';
+    window.location.href = window.location.origin + '/social/unicef-logout/';
   }
-
-  // TODO
-  // protected _clearDexieDbs() {
-  //   window.EtoolsPmpApp.DexieDb.delete();
-  // }
 
   protected clearLocalStorage() {
     localStorage.clear();
   }
 
   protected checkEnvironment() {
-    this.showLanguagesForDevDomains();
     this.isStaging = !isProductionServer();
     this.environment = isProductionServer() ? 'DEMO' : 'LOCAL';
-  }
-
-  protected showLanguagesForDevDomains() {
-    const location = window.location.host;
-    const devDomains = ['localhost', 'etools-dev', 'etools-test'];
-    if (!devDomains.some((x) => location.indexOf(x) > -1)) {
-      appLanguages.splice(this.getIndexOfRoLang(), 1);
-    }
-  }
-
-  getIndexOfRoLang() {
-    let index = 0;
-    appLanguages.forEach((l, i) => {
-      if (l.value === 'ro') {
-        index = i;
-      }
-    });
-    return index;
   }
 }

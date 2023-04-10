@@ -71,9 +71,6 @@ export const pageHeaderStyles = css`
   }
 
   @media (max-width: 576px) {
-    etools-app-selector {
-      --app-selector-button-padding: 18px 8px;
-    }
     #app-logo {
       display: none;
     }
@@ -87,7 +84,7 @@ export const pageHeaderStyles = css`
       margin-left: 2px;
     }
     app-toolbar {
-      padding-right: 0px;
+      padding-inline-end: 0px;
     }
   }
 `;

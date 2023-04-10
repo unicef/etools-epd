@@ -12,11 +12,7 @@ import {installRouter} from 'pwa-helpers/router.js';
 import {store, RootState} from './redux/store';
 
 // These are the actions needed by this element.
-import {
-  navigate,
-  // updateOffline,
-  updateDrawerState
-} from './redux/actions/app';
+import {navigate} from './redux/actions/app';
 
 // These are the elements needed by this element.
 import '@polymer/app-layout/app-drawer-layout/app-drawer-layout.js';
@@ -55,6 +51,7 @@ import {
   getUnicefUsers,
   getDropdownsData,
   SET_ALL_STATIC_DATA,
+  UPDATE_STATIC_DATA,
   getCountryProgrammes
 } from './redux/actions/common-data';
 import {getAgreements, SET_AGREEMENTS} from './redux/actions/agreements';
@@ -73,6 +70,7 @@ import {RESET_CURRENT_ITEM, RESET_UNSAVED_UPLOADS, RESET_UPLOADS_IN_PROGRESS} fr
 import UploadsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/uploads-mixin';
 import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
 import {commingFromPDDetailsToList} from './components/utils/utils';
+import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
 declare const dayjs: any;
 declare const dayjs_plugin_utc: any;
 declare const dayjs_plugin_isSameOrBefore: any;
@@ -149,11 +147,7 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
           ?small-menu="${this.smallMenu}"
         >
           <!-- App main menu(left sidebar) -->
-          <app-menu
-            selected-option="${this.mainPage}"
-            @toggle-small-menu="${(e: CustomEvent) => this.toggleMenu(e)}"
-            ?small-menu="${this.smallMenu}"
-          ></app-menu>
+          <app-menu selected-option="${this.mainPage}" ?small-menu="${this.smallMenu}"></app-menu>
         </app-drawer>
 
         <!-- Main content -->
@@ -255,7 +249,9 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
         }
       }
     });
-    installMediaQueryWatcher(`(min-width: 460px)`, () => store.dispatch(updateDrawerState(false)));
+    this.addEventListener('change-drawer-state', this.changeDrawerState);
+    this.addEventListener('toggle-small-menu', this.toggleMenu as any);
+    installMediaQueryWatcher(`(min-width: 460px)`, () => fireEvent(this, 'change-drawer-state'));
 
     getCurrentUser().then((user?: EtoolsUser) => {
       if (user) {
@@ -288,7 +284,16 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
     this.waitForComponentRender().then(() => {
       window.EtoolsEsmmFitIntoEl = this.appHeaderLayout!.shadowRoot!.querySelector('#contentContainer');
       this.etoolsLoadingContainer = window.EtoolsEsmmFitIntoEl;
+      // Override ajax error parser inside @unicef-polymer/etools-ajax
+      // for string translation using lit-translate
+      window.ajaxErrorParserTranslateFunction = (key: string) => {
+        return getTranslatedValue(key);
+      };
     });
+  }
+
+  public changeDrawerState() {
+    this.drawerOpened = !this.drawerOpened;
   }
 
   checkAppVersion() {
@@ -336,12 +341,22 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
     data.disaggregations = this.getValue(response[3]);
     data.offices = this.getValue(response[4]);
     data.unicefUsersData = this.getValue(response[5]);
-    const staticData = this.getValue(response[6], {});
+    this.setStaticDataFromResponse(data, this.getValue(response[6], {}));
+    data.countryProgrammes = this.getValue(response[8]);
+    data.sites = this.getValue(response[9]);
+    return data;
+  }
+
+  private formatResponseOnLanguageChange(response: any[]) {
+    const data: Partial<CommonDataState> = {};
+    this.setStaticDataFromResponse(data, this.getValue(response[0], {}));
+    return data;
+  }
+
+  private setStaticDataFromResponse(data: Partial<CommonDataState>, staticData: any) {
     data.providedBy = staticData.supply_item_provided_by || [];
     data.cpOutputs = staticData.cp_outputs || [];
     data.fileTypes = staticData.file_types || [];
-    data.countryProgrammes = this.getValue(response[8]);
-    data.sites = this.getValue(response[9]);
     data.locationTypes = isEmpty(staticData.location_types) ? [] : staticData.location_types;
     data.documentTypes = isEmpty(staticData.intervention_doc_type) ? [] : staticData.intervention_doc_type;
     data.genderEquityRatings = staticData.gender_equity_sustainability_ratings || [];
@@ -352,7 +367,6 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
     data.currencies = isEmpty(staticData.currencies) ? [] : staticData.currencies;
     data.riskTypes = staticData.risk_types || [];
     data.cashTransferModalities = staticData.cash_transfer_modalities || [];
-    return data;
   }
 
   getValue(response: {status: string; value?: any; reason?: any}, defaultValue: any = []) {
@@ -361,6 +375,8 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
 
   public disconnectedCallback() {
     super.disconnectedCallback();
+    this.removeEventListener('change-drawer-state', this.changeDrawerState);
+    this.removeEventListener('toggle-small-menu', this.toggleMenu as any);
   }
 
   protected shouldUpdate(changedProperties: Map<PropertyKey, unknown>): boolean {
@@ -383,8 +399,6 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
     this.mainPage = state.app!.routeDetails!.routeName;
     this.subPage = state.app!.routeDetails!.subRouteName;
 
-    this.drawerOpened = state.app!.drawerOpened;
-    this.smallMenu = state.app!.smallMenu;
     if (get(state, 'app.toastNotification.active')) {
       fireEvent(this, 'toast', {
         text: state.app!.toastNotification.message,
@@ -392,6 +406,10 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
       });
     }
     if (state.activeLanguage?.activeLanguage && state.activeLanguage.activeLanguage !== this.selectedLanguage) {
+      if (this.selectedLanguage) {
+        // on language change, reload parts of commonData in order to use BE localized text
+        this.loadDataOnLanguageChange();
+      }
       this.selectedLanguage = state.activeLanguage!.activeLanguage;
       this.loadLocalization();
     }
@@ -400,6 +418,15 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
   async loadLocalization() {
     await use(this.selectedLanguage);
     this.translationFilesAreLoaded = true;
+  }
+
+  loadDataOnLanguageChange() {
+    Promise.allSettled([getDropdownsData()]).then((response: any[]) => {
+      store.dispatch({
+        type: UPDATE_STATIC_DATA,
+        staticData: this.formatResponseOnLanguageChange(response)
+      });
+    });
   }
 
   waitForComponentRender() {
@@ -425,7 +452,7 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
 
   public onDrawerToggle() {
     if (this.drawerOpened !== this.drawer.opened) {
-      store.dispatch(updateDrawerState(this.drawer.opened));
+      this.drawerOpened = Boolean(this.drawer.opened);
     }
   }
 
