@@ -10,9 +10,6 @@ import {RouteDetails} from '@unicef-polymer/etools-types';
 import {UPDATE_ROUTE} from '../../components/pages/interventions/intervention-tab-pages/common/actions/actionsContants';
 import {enableCommentMode} from '../../components/pages/interventions/intervention-tab-pages/common/components/comments/comments.actions';
 
-export const UPDATE_DRAWER_STATE = 'UPDATE_DRAWER_STATE';
-export const UPDATE_SMALLMENU_STATE = 'UPDATE_SMALLMENU_STATE';
-
 export interface AppActionUpdateDrawerState extends Action<'UPDATE_DRAWER_STATE'> {
   opened: boolean;
 }
@@ -105,20 +102,6 @@ const loadPageComponents: ActionCreator<ThunkResult> = (routeDetails: RouteDetai
   // add page details to redux store, to be used in other components
   dispatch(updateRouteDetails(routeDetails));
   dispatch(enableCommentMode(Boolean(routeDetails?.queryParams?.comment_mode)));
-};
-
-export const updateDrawerState: ActionCreator<AppActionUpdateDrawerState> = (opened: boolean) => {
-  return {
-    type: UPDATE_DRAWER_STATE,
-    opened
-  };
-};
-
-export const updateSmallMenu: any = (smallMenu: boolean) => {
-  return {
-    type: UPDATE_SMALLMENU_STATE,
-    smallMenu
-  };
 };
 
 export const navigate: ActionCreator<ThunkResult> = (path: string) => (dispatch) => {
