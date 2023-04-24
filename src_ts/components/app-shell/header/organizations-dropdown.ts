@@ -9,10 +9,11 @@ import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-c
 import {EtoolsUser} from '@unicef-polymer/etools-types';
 import {countriesDropdownStyles} from './countries-dropdown-styles';
 import {get as getTranslation, translate} from 'lit-translate';
-import {DEFAULT_ROUTE, updateAppLocation} from '../../../routing/routes';
 import {ROOT_PATH} from '../../../config/config';
 import {changeCurrentOrganization} from '../../user/user-actions';
 import {isEmptyObject} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
+import {EtoolsRedirectPath} from '@unicef-polymer/etools-utils/dist/enums/router.enum';
 
 /**
  * @LitElement
@@ -103,8 +104,9 @@ export class organizationsDropdown extends connect(store)(LitElement) {
     changeCurrentOrganization(selectedOrganizationId)
       .then(() => {
         // redirect to default page
-        updateAppLocation(DEFAULT_ROUTE);
-        // force page reload to load all data specific to the new organization
+        // TODO: clear all cached data related to old country
+        EtoolsRouter.updateAppLocation(EtoolsRouter.getRedirectPath(EtoolsRedirectPath.DEFAULT));
+        // force page reload to load all data specific to the new country
         document.location.assign(window.location.origin + ROOT_PATH);
       })
       .catch((error: any) => {
