@@ -3,12 +3,11 @@ import {Action, ActionCreator} from 'redux';
 import {ThunkAction} from 'redux-thunk';
 import {RootState} from '../store';
 import {ROOT_PATH} from '../../config/config';
-import {DEFAULT_ROUTE, EtoolsRouter, ROUTE_404, updateAppLocation} from '../../routing/routes';
-import {getRedirectToListPath} from '../../routing/subpage-redirect';
 import {RouteDetails} from '@unicef-polymer/etools-types';
-
 import {UPDATE_ROUTE} from '../../components/pages/interventions/intervention-tab-pages/common/actions/actionsContants';
 import {enableCommentMode} from '../../components/pages/interventions/intervention-tab-pages/common/components/comments/comments.actions';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
+import {EtoolsRedirectPath} from '@unicef-polymer/etools-utils/dist/enums/router.enum';
 
 export interface AppActionUpdateDrawerState extends Action<'UPDATE_DRAWER_STATE'> {
   opened: boolean;
@@ -28,7 +27,7 @@ const updateRouteDetails = (routeDetails: any) => {
 const loadPageComponents: ActionCreator<ThunkResult> = (routeDetails: RouteDetails) => (dispatch, _getState) => {
   if (!routeDetails) {
     // invalid route => redirect to 404 page
-    updateAppLocation(ROUTE_404);
+    EtoolsRouter.updateAppLocation(EtoolsRouter.getRedirectPath(EtoolsRedirectPath.NOT_FOUND));
     return;
   }
 
@@ -90,7 +89,7 @@ const loadPageComponents: ActionCreator<ThunkResult> = (routeDetails: RouteDetai
 
       default:
         console.log('No file imports configuration found (componentsLazyLoadConfig)!');
-        updateAppLocation(ROUTE_404);
+        EtoolsRouter.updateAppLocation(EtoolsRouter.getRedirectPath(EtoolsRedirectPath.NOT_FOUND));
         break;
     }
   }
@@ -109,15 +108,15 @@ export const navigate: ActionCreator<ThunkResult> = (path: string) => (dispatch)
 
   // if app route is accessed, redirect to default route (if not already on it)
   // @ts-ignore
-  if (path === ROOT_PATH && ROOT_PATH !== DEFAULT_ROUTE) {
-    updateAppLocation(DEFAULT_ROUTE);
+  if (path === ROOT_PATH && ROOT_PATH !== EtoolsRouter.getRedirectPath(EtoolsRedirectPath.DEFAULT)) {
+    EtoolsRouter.updateAppLocation(EtoolsRouter.getRedirectPath(EtoolsRedirectPath.DEFAULT));
     return;
   }
 
   // some routes need redirect to subRoute list
-  const redirectPath: string | undefined = getRedirectToListPath(path);
+  const redirectPath: string | undefined = EtoolsRouter.getRedirectToListPath(path);
   if (redirectPath) {
-    updateAppLocation(redirectPath);
+    EtoolsRouter.updateAppLocation(redirectPath);
     return;
   }
 

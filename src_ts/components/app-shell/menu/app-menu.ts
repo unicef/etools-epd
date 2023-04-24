@@ -5,7 +5,7 @@ import '@polymer/paper-tooltip/paper-tooltip.js';
 import '@polymer/paper-ripple/paper-ripple.js';
 
 import {navMenuStyles} from './styles/nav-menu-styles';
-import {fireEvent} from '../../utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {ROOT_PATH, SMALL_MENU_ACTIVE_LOCALSTORAGE_KEY} from '../../../config/config';
 import {customElement, html, LitElement, property} from 'lit-element';
 import {translate} from 'lit-translate';
