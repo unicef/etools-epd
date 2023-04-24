@@ -26,7 +26,6 @@ import {
   getSortFields,
   getUrlQueryStringSort
 } from '@unicef-polymer/etools-modules-common/dist/layout/etools-table/etools-table-utility';
-import {replaceAppLocation} from '../../../routing/routes';
 
 import '@unicef-polymer/etools-loading';
 import get from 'lodash-es/get';
@@ -50,10 +49,11 @@ import pick from 'lodash-es/pick';
 import {etoolsEndpoints} from '../../../endpoints/endpoints-list';
 import {defaultFilters, InterventionFilterKeys} from './interventions-filters';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {debounce} from '../../utils/debouncer';
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {debounce} from '@unicef-polymer/etools-utils/dist/debouncer.util';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {setShouldReGetList} from './intervention-tab-pages/common/actions/interventions';
-import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 
 /**
  * @LitElement
@@ -336,7 +336,7 @@ export class InterventionList extends connect(store)(LitElement) {
     this.prevQueryStringObj = newParams;
     const stringParams: string = buildUrlQueryString(newParams);
     this.exportParams = stringParams;
-    replaceAppLocation(`${this.routeDetails!.path}?${stringParams}`);
+    EtoolsRouter.replaceAppLocation(`${this.routeDetails!.path}?${stringParams}`);
   }
 
   private async getListData(forceReGet: boolean) {
