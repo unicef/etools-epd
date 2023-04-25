@@ -1,6 +1,6 @@
 import {sendRequest, EtoolsRequestEndpoint} from '@unicef-polymer/etools-ajax/etools-ajax-request';
 import {connect} from 'pwa-helpers/connect-mixin';
-import {logError} from '@unicef-polymer/etools-behaviors/etools-logging.js';
+import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
 import {store} from '../../redux/store';
 import {LitElement, property} from 'lit-element';
 import {etoolsEndpoints} from '../../endpoints/endpoints-list';
@@ -45,7 +45,7 @@ class EnvironmentFlags extends connect(store)(LitElement) {
         }
       })
       .catch((error: any) => {
-        logError('Env flags request failed', null, error);
+        EtoolsLogger.error('Env flags request failed', null, error);
         store.dispatch(updateEnvFlags(this.envFlagsDefaultValue));
       });
   }
