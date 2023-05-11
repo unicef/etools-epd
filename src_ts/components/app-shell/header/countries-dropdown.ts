@@ -10,7 +10,7 @@ import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {countriesDropdownStyles} from './countries-dropdown-styles';
 import {changeCurrentUserCountry} from '../../user/user-actions';
 import {ROOT_PATH} from '../../../config/config';
-import {AnyObject, EtoolsUser} from '@unicef-polymer/etools-types';
+import {AnyObject, AvailableUserCountry, EtoolsUser} from '@unicef-polymer/etools-types';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {EtoolsRedirectPath} from '@unicef-polymer/etools-utils/dist/enums/router.enum';
 
@@ -39,7 +39,7 @@ export class CountriesDropdown extends connect(store)(LitElement) {
         trigger-value-change-event
         @etools-selected-item-changed="${this.countrySelected}"
         .shownOptionsLimit="${250}"
-        ?hidden="${!this.countrySelectorVisible}"
+        ?readonly="${!this.enableCountrySelector(this.countries)}"
         hide-search
         .autoWidth="${true}"
       ></etools-dropdown>
@@ -50,10 +50,7 @@ export class CountriesDropdown extends connect(store)(LitElement) {
   currentCountry: AnyObject = {};
 
   @property({type: Array})
-  countries: any[] = [];
-
-  @property({type: Boolean})
-  countrySelectorVisible = false;
+  countries: AvailableUserCountry[] = [];
 
   @property({type: Object})
   userData!: EtoolsUser;
@@ -81,15 +78,11 @@ export class CountriesDropdown extends connect(store)(LitElement) {
     if (userData) {
       this.countries = userData.countries_available;
       this.currentCountry = userData.country;
-
-      this.showCountrySelector(this.countries);
     }
   }
 
-  protected showCountrySelector(countries: any) {
-    if (Array.isArray(countries) && countries.length > 1) {
-      this.countrySelectorVisible = true;
-    }
+  protected enableCountrySelector(countries: AvailableUserCountry[]): boolean {
+    return Array.isArray(countries) && countries.length > 1;
   }
 
   protected countrySelected(e: CustomEvent) {
