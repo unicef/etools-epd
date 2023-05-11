@@ -40,7 +40,7 @@ function setCurrentLanguage(lngCode: string) {
     }
   }
   if (!currentLanguage) {
-    const storageLang = localStorage.getItem('defaultLanguage');
+    const storageLang = window.EtoolsLanguage;
     if (storageLang && languageIsAvailableInApp(storageLang)) {
       currentLanguage = storageLang;
     }
