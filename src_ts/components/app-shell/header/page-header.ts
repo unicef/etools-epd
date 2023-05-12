@@ -209,7 +209,7 @@ export class PageHeader extends connect(store)(LitElement) {
     }
     if (state.activeLanguage!.activeLanguage && state.activeLanguage!.activeLanguage !== this.selectedLanguage) {
       this.selectedLanguage = state.activeLanguage!.activeLanguage;
-      localStorage.setItem('defaultLanguage', this.selectedLanguage);
+      window.EtoolsLanguage = this.selectedLanguage;
       this.setLanguageDirection();
     }
   }
@@ -284,7 +284,7 @@ export class PageHeader extends connect(store)(LitElement) {
       fireEvent(this, 'language-changed', {language: newLanguage});
     }
     if (this.selectedLanguage !== newLanguage) {
-      localStorage.setItem('defaultLanguage', newLanguage);
+      window.EtoolsLanguage = newLanguage;
       use(newLanguage).then(() => {
         if (this.profile && this.profile.preferences?.language != newLanguage) {
           this.updateUserPreference(newLanguage);

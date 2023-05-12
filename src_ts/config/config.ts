@@ -6,6 +6,7 @@ declare global {
     applyFocusVisiblePolyfill: any;
     ajaxErrorParserTranslateFunction: (key: string) => string;
     dayjs: any;
+    EtoolsLanguage: string;
   }
 }
 
