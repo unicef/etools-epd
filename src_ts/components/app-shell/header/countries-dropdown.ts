@@ -39,7 +39,6 @@ export class CountriesDropdown extends connect(store)(LitElement) {
         trigger-value-change-event
         @etools-selected-item-changed="${this.countrySelected}"
         .shownOptionsLimit="${250}"
-        ?readonly="${!this.enableCountrySelector(this.countries)}"
         hide-search
         .autoWidth="${true}"
       ></etools-dropdown>
@@ -79,10 +78,6 @@ export class CountriesDropdown extends connect(store)(LitElement) {
       this.countries = userData.countries_available;
       this.currentCountry = userData.country;
     }
-  }
-
-  protected enableCountrySelector(countries: AvailableUserCountry[]): boolean {
-    return Array.isArray(countries) && countries.length > 1;
   }
 
   protected countrySelected(e: CustomEvent) {
