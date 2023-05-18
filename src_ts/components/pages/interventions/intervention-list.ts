@@ -43,7 +43,8 @@ import {
   LabelAndValue,
   GenericObject,
   RouteDetails,
-  RouteQueryParams
+  RouteQueryParams,
+  EtoolsUser
 } from '@unicef-polymer/etools-types';
 import pick from 'lodash-es/pick';
 import {etoolsEndpoints} from '../../../endpoints/endpoints-list';
@@ -125,6 +126,9 @@ export class InterventionList extends connect(store)(LitElement) {
 
   @property({type: String})
   exportParams = '';
+
+  @property({type: Object})
+  user!: EtoolsUser;
 
   @property({type: Array})
   exportLinks = [
@@ -243,6 +247,10 @@ export class InterventionList extends connect(store)(LitElement) {
       return; // Avoid code execution while on a different page
     }
 
+    if (state.user && state.user.data && JSON.stringify(this.user) !== JSON.stringify(state.user.data)) {
+      this.user = state.user.data;
+    }
+
     const stateRouteDetails = {...state.app!.routeDetails};
     if (
       JSON.stringify(stateRouteDetails) !== JSON.stringify(this.routeDetails) ||
@@ -340,8 +348,12 @@ export class InterventionList extends connect(store)(LitElement) {
   }
 
   private async getListData(forceReGet: boolean) {
+    if (!this.user || !this.user.organization) {
+      // do not load list data if user don't have organization
+      this.showLoading = false;
+      return;
+    }
     const currentParams: GenericObject<any> = this.routeDetails!.queryParams || {};
-
     try {
       const {list, paginator}: ListHelperResponse<InterventionListData> = await this.listHelper.getList(
         currentParams,
