@@ -89,4 +89,3 @@ workflows:
                 - master
                 - staging
                 - develop
-                - 2-after-code-freeze

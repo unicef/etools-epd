@@ -6,6 +6,7 @@ import {EtoolsDropdownEl} from '@unicef-polymer/etools-dropdown/etools-dropdown'
 import {customElement, LitElement, html, property, query} from 'lit-element';
 
 import './countries-dropdown';
+import './organizations-dropdown';
 
 import {connect} from 'pwa-helpers/connect-mixin.js';
 import {RootState, store} from '../../../redux/store';
@@ -95,14 +96,14 @@ export class PageHeader extends connect(store)(LitElement) {
         }
       </style>
 
-      <app-toolbar sticky class="content-align header">
-        <div class="header__item">
-          <paper-icon-button
-            id="menuButton"
-            icon="menu"
-            class="nav-menu-button"
-            @tap="${() => this.menuBtnClicked()}"
-          ></paper-icon-button>
+      <app-toolbar sticky class="content-align">
+        <paper-icon-button
+          id="menuButton"
+          icon="menu"
+          class="nav-menu-button"
+          @tap="${() => this.menuBtnClicked()}"
+        ></paper-icon-button>
+        <div class="titlebar content-align">
           <img id="app-logo" class="logo" src="images/etools-logo-color-white.svg" alt="eTools" />
           ${this.isStaging
             ? html`<div class="envWarning">
@@ -126,6 +127,7 @@ export class PageHeader extends connect(store)(LitElement) {
             ></etools-dropdown>
 
             <countries-dropdown dir="${this.dir}"></countries-dropdown>
+            <organizations-dropdown></organizations-dropdown>
           </div>
 
           <etools-profile-dropdown
@@ -207,7 +209,7 @@ export class PageHeader extends connect(store)(LitElement) {
     }
     if (state.activeLanguage!.activeLanguage && state.activeLanguage!.activeLanguage !== this.selectedLanguage) {
       this.selectedLanguage = state.activeLanguage!.activeLanguage;
-      localStorage.setItem('defaultLanguage', this.selectedLanguage);
+      window.EtoolsLanguage = this.selectedLanguage;
       this.setLanguageDirection();
     }
   }
@@ -282,7 +284,7 @@ export class PageHeader extends connect(store)(LitElement) {
       fireEvent(this, 'language-changed', {language: newLanguage});
     }
     if (this.selectedLanguage !== newLanguage) {
-      localStorage.setItem('defaultLanguage', newLanguage);
+      window.EtoolsLanguage = newLanguage;
       use(newLanguage).then(() => {
         if (this.profile && this.profile.preferences?.language != newLanguage) {
           this.updateUserPreference(newLanguage);
