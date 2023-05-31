@@ -120,7 +120,7 @@ export const navigate: ActionCreator<ThunkResult> = (path: string) => (dispatch)
     return;
   }
 
-  const routeDetails: RouteDetails | null = EtoolsRouter.getRouteDetails(path);
+  const routeDetails = EtoolsRouter.getRouteDetails(path);
 
   dispatch(loadPageComponents(routeDetails));
 };
