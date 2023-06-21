@@ -89,3 +89,4 @@ workflows:
                 - master
                 - staging
                 - develop
+                - unfunded-logic
