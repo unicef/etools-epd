@@ -50,10 +50,6 @@ export const countriesDropdownStyles = html`
       }
     }
 
-    countries-dropdown[dir='rtl'] {
-      margin-inline: 30px 20px;
-    }
-
     organizations-dropdown {
       width: 165px;
     }
