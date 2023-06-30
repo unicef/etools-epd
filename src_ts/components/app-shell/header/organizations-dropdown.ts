@@ -5,13 +5,13 @@ import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
 import {EtoolsDropdownEl} from '@unicef-polymer/etools-dropdown/etools-dropdown.js';
 import {customElement, LitElement, html, property, query} from 'lit-element';
 
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {EtoolsUser} from '@unicef-polymer/etools-types';
 import {countriesDropdownStyles} from './countries-dropdown-styles';
 import {get as getTranslation, translate} from 'lit-translate';
 import {ROOT_PATH} from '../../../config/config';
 import {changeCurrentOrganization} from '../../user/user-actions';
-import {isEmptyObject} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {isEmptyObject} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {EtoolsRedirectPath} from '@unicef-polymer/etools-utils/dist/enums/router.enum';
 
