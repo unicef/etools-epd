@@ -15,10 +15,6 @@ export const countriesDropdownStyles = html`
       cursor: pointer;
     }
 
-    :host([dir='rtl']) etools-dropdown {
-      --paper-input-container-shared-input-style_-_max-width: 75px;
-    }
-
     etools-dropdown {
       --paper-listbox: {
         max-height: 600px;
@@ -52,10 +48,6 @@ export const countriesDropdownStyles = html`
       --paper-menu-button-dropdown: {
         max-height: 380px;
       }
-    }
-
-    countries-dropdown[dir='rtl'] {
-      margin-inline: 30px 20px;
     }
 
     organizations-dropdown {
