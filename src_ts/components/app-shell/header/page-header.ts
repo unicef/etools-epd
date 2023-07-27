@@ -2,8 +2,7 @@ import '@polymer/app-layout/app-toolbar/app-toolbar';
 import '@polymer/paper-icon-button/paper-icon-button';
 import '@unicef-polymer/etools-profile-dropdown/etools-profile-dropdown';
 import '@unicef-polymer/etools-dropdown/etools-dropdown.js';
-import {EtoolsDropdownEl} from '@unicef-polymer/etools-dropdown/etools-dropdown';
-import {customElement, LitElement, html, property, query} from 'lit-element';
+import {customElement, LitElement, html, property} from 'lit-element';
 
 import './countries-dropdown';
 import './organizations-dropdown';
@@ -191,17 +190,17 @@ export class PageHeader extends connect(store)(LitElement) {
 
   @property() selectedLanguage!: string;
 
-  @query('#languageSelector') private languageDropdown!: EtoolsDropdownEl;
+  // @query('#languageSelector') private languageDropdown!: EtoolsDropdownEl;
 
   public connectedCallback() {
     super.connectedCallback();
     this.setBgColor();
     this.checkEnvironment();
 
-    setTimeout(() => {
-      const fitInto = document.querySelector('app-shell')!.shadowRoot!.querySelector('#appHeadLayout');
-      this.languageDropdown.fitInto = fitInto;
-    }, 0);
+    // setTimeout(() => {
+    //   const fitInto = document.querySelector('app-shell')!.shadowRoot!.querySelector('#appHeadLayout');
+    //   this.languageDropdown.fitInto = fitInto;
+    // }, 0);
   }
 
   public stateChanged(state: RootState) {

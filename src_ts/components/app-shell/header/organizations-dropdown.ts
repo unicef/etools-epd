@@ -57,10 +57,10 @@ export class organizationsDropdown extends connect(store)(LitElement) {
   public connectedCallback() {
     super.connectedCallback();
 
-    setTimeout(() => {
-      const fitInto = document.querySelector('app-shell')!.shadowRoot!.querySelector('#appHeadLayout');
-      this.organizationSelectorDropdown.fitInto = fitInto;
-    }, 0);
+    // setTimeout(() => {
+    //   const fitInto = document.querySelector('app-shell')!.shadowRoot!.querySelector('#appHeadLayout');
+    //   this.organizationSelectorDropdown.fitInto = fitInto;
+    // }, 0);
   }
 
   public stateChanged(state: RootState) {
