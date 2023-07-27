@@ -25,6 +25,7 @@ export class organizationsDropdown extends connect(store)(LitElement) {
     return html`
       ${countriesDropdownStyles}
       <etools-dropdown
+        transparent
         ?hidden=${isEmptyObject(this.organizations)}
         id="organizationSelector"
         placeholder="${translate('GENERAL.SELECT_ORGANIZATION')}"

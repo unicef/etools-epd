@@ -90,6 +90,10 @@ export const countriesDropdownStyles = html`
       width: 100%;
     }
 
+    etools-dropdown::part(display-input) {
+      text-align: right;
+    }
+
     etools-dropdown.warning {
       --paper-input-container: {
         padding-left: 3px;

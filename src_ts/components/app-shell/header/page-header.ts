@@ -114,6 +114,7 @@ export class PageHeader extends connect(store)(LitElement) {
           <div class="dropdowns">
             <etools-dropdown
               id="languageSelector"
+              transparent
               .selected="${this.selectedLanguage}"
               .options="${appLanguages}"
               option-label="display_name"

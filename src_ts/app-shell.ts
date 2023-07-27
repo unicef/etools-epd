@@ -74,6 +74,7 @@ import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
 import {commingFromPDDetailsToList} from './components/utils/utils';
 import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
+import {setBasePath} from '@shoelace-style/shoelace/dist/utilities/base-path.js';
 declare const dayjs: any;
 declare const dayjs_plugin_utc: any;
 declare const dayjs_plugin_isSameOrBefore: any;
@@ -106,6 +107,8 @@ store.addReducers({
   commonData,
   uploadStatus
 });
+
+setBasePath('/epd/');
 
 /**
  * @customElement

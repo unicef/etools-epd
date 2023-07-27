@@ -48,6 +48,10 @@ export const pageHeaderStyles = css`
     font-size: 18px;
   }
 
+  etools-dropdown::part(display-input) {
+    text-align: right;
+  }
+
   @media (min-width: 850px) {
     #menuButton {
       display: none;
