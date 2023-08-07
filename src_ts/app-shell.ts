@@ -24,7 +24,7 @@ import '@polymer/app-layout/app-header-layout/app-header-layout.js';
 import '@polymer/app-layout/app-header/app-header.js';
 import '@polymer/app-layout/app-toolbar/app-toolbar.js';
 import '@unicef-polymer/etools-piwik-analytics/etools-piwik-analytics';
-import {createDynamicDialog} from '@unicef-polymer/etools-dialog/dynamic-dialog';
+import {createDynamicDialog} from '@unicef-polymer/etools-unicef/src/etools-dialog/dynamic-dialog';
 
 import {AppDrawerLayoutElement} from '@polymer/app-layout/app-drawer-layout/app-drawer-layout';
 import {AppHeaderLayoutElement} from '@polymer/app-layout/app-header-layout/app-header-layout';

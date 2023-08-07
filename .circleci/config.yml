@@ -88,5 +88,5 @@ workflows:
               only:
                 - master
                 - staging
-                - develop              
+                - develop
 
