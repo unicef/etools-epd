@@ -89,4 +89,4 @@ workflows:
                 - master
                 - staging
                 - develop
-
+                - use-sl-dialog
