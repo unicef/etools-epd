@@ -1,5 +1,6 @@
 import '@polymer/paper-button/paper-button';
-import {customElement, html, LitElement, property, TemplateResult} from 'lit-element';
+import {html, LitElement, TemplateResult} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {RootState, store} from '../../../redux/store';
 
@@ -7,27 +8,33 @@ import '@unicef-polymer/etools-modules-common/dist/layout/page-content-header/pa
 // eslint-disable-next-line max-len
 import {pageContentHeaderSlottedStyles} from '@unicef-polymer/etools-modules-common/dist/layout/page-content-header/page-content-header-slotted-styles';
 
-import '@unicef-polymer/etools-filters/src/etools-filters';
-import {updateFilterSelectionOptions, updateFiltersSelectedValues} from '@unicef-polymer/etools-filters/src/filters';
+import '@unicef-polymer/etools-unicef/src/etools-filters/etools-filters';
+import {
+  updateFilterSelectionOptions,
+  updateFiltersSelectedValues
+} from '@unicef-polymer/etools-unicef/src/etools-filters/filters';
 import {ROOT_PATH} from '../../../config/config';
-import {EtoolsFilter} from '@unicef-polymer/etools-filters/src/etools-filters';
+import {EtoolsFilter} from '@unicef-polymer/etools-unicef/src/etools-filters/etools-filters';
 import {pageLayoutStyles} from '../../styles/page-layout-styles';
 import {buttonsStyles} from '../../styles/button-styles';
 import {elevationStyles} from '../../styles/lit-styles/elevation-styles';
-import '@unicef-polymer/etools-table/etools-table';
+import '@unicef-polymer/etools-unicef/src/etools-table/etools-table';
 import {
   EtoolsTableColumn,
   EtoolsTableColumnSort,
   EtoolsTableColumnType
-} from '@unicef-polymer/etools-table/etools-table';
-import {EtoolsPaginator, defaultPaginator} from '@unicef-polymer/etools-table/pagination/etools-pagination';
+} from '@unicef-polymer/etools-unicef/src/etools-table/etools-table';
+import {
+  EtoolsPaginator,
+  defaultPaginator
+} from '@unicef-polymer/etools-unicef/src/etools-table/pagination/etools-pagination';
 import {
   buildUrlQueryString,
   getSortFields,
   getUrlQueryStringSort
 } from '@unicef-polymer/etools-modules-common/dist/layout/etools-table/etools-table-utility';
 
-import '@unicef-polymer/etools-loading';
+import '@unicef-polymer/etools-unicef/src/etools-loading/etools-loading';
 import get from 'lodash-es/get';
 import '@unicef-polymer/etools-modules-common/dist/layout/export-data';
 import {ListHelper, ListHelperResponse} from '@unicef-polymer/etools-modules-common/dist/list/list-helper';

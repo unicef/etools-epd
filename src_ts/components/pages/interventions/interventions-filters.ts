@@ -1,7 +1,7 @@
 import {AnyObject} from '@unicef-polymer/etools-types/dist/global.types';
-import {translate} from 'lit-translate';
-import {EtoolsFilter, EtoolsFilterTypes} from '@unicef-polymer/etools-filters/src/etools-filters';
-import {setselectedValueTypeByFilterKey} from '@unicef-polymer/etools-filters/src/filters';
+import {get as getTranslation} from 'lit-translate';
+import {setselectedValueTypeByFilterKey} from '@unicef-polymer/etools-unicef/src/etools-filters/filters';
+import {EtoolsFilter, EtoolsFilterTypes} from '@unicef-polymer/etools-unicef/src/etools-filters/etools-filters';
 
 export enum InterventionFilterKeys {
   search = 'search',
@@ -44,14 +44,14 @@ setselectedValueTypeByFilterKey(selectedValueTypeByFilterKey);
 
 export const defaultFilters: EtoolsFilter[] = [
   {
-    filterName: translate('INTERVENTIONS_LIST.SEARCH_RECORDS'),
+    filterName: getTranslation('INTERVENTIONS_LIST.SEARCH_RECORDS'),
     filterKey: InterventionFilterKeys.search,
     type: EtoolsFilterTypes.Search,
     selectedValue: '',
     selected: true
   },
   {
-    filterName: translate('INTERVENTIONS_LIST.STATUS'),
+    filterName: getTranslation('INTERVENTIONS_LIST.STATUS'),
     filterKey: InterventionFilterKeys.status,
     type: EtoolsFilterTypes.DropdownMulti,
     selectionOptions: [],
@@ -64,7 +64,7 @@ export const defaultFilters: EtoolsFilter[] = [
     disabled: false
   },
   {
-    filterName: translate('INTERVENTIONS_LIST.PD_TYPE'),
+    filterName: getTranslation('INTERVENTIONS_LIST.PD_TYPE'),
     filterKey: InterventionFilterKeys.document_type,
     type: EtoolsFilterTypes.DropdownMulti,
     selectionOptions: [],
@@ -77,7 +77,7 @@ export const defaultFilters: EtoolsFilter[] = [
     disabled: false
   },
   {
-    filterName: translate('INTERVENTIONS_LIST.PARTNER_ORG'),
+    filterName: getTranslation('INTERVENTIONS_LIST.PARTNER_ORG'),
     filterKey: InterventionFilterKeys.partners,
     type: EtoolsFilterTypes.DropdownMulti,
     selectionOptions: [],
@@ -90,35 +90,35 @@ export const defaultFilters: EtoolsFilter[] = [
     optionLabel: 'name'
   },
   {
-    filterName: translate('INTERVENTIONS_LIST.CONTINGENCY_PD'),
+    filterName: getTranslation('INTERVENTIONS_LIST.CONTINGENCY_PD'),
     type: EtoolsFilterTypes.Toggle,
     filterKey: InterventionFilterKeys.contingency_pd,
     selectedValue: false,
     selected: true
   },
   {
-    filterName: translate('EDITABLE_BY'),
+    filterName: getTranslation('EDITABLE_BY'),
     type: EtoolsFilterTypes.Dropdown,
     filterKey: InterventionFilterKeys.editable_by,
     selectedValue: '',
     selected: true
   },
   {
-    filterName: translate('INTERVENTIONS_LIST.ENDS_BEFORE'),
+    filterName: getTranslation('INTERVENTIONS_LIST.ENDS_BEFORE'),
     type: EtoolsFilterTypes.Date,
     filterKey: InterventionFilterKeys.end,
     selectedValue: '',
     selected: false
   },
   {
-    filterName: translate('INTERVENTIONS_LIST.STARTS_AFTER'),
+    filterName: getTranslation('INTERVENTIONS_LIST.STARTS_AFTER'),
     filterKey: InterventionFilterKeys.start,
     type: EtoolsFilterTypes.Date,
     selectedValue: null,
     selected: false
   },
   {
-    filterName: translate('INTERVENTIONS_LIST.ENDS_AFTER'),
+    filterName: getTranslation('INTERVENTIONS_LIST.ENDS_AFTER'),
     type: EtoolsFilterTypes.Date,
     filterKey: InterventionFilterKeys.end_after,
     selectedValue: '',
