@@ -1,4 +1,5 @@
-import {customElement, html, LitElement, property} from 'lit-element';
+import {LitElement, html} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
 
 // These are the shared styles needed by this element.
 import {ROOT_PATH} from '../../config/config';

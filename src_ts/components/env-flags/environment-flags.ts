@@ -2,7 +2,8 @@ import {sendRequest, EtoolsRequestEndpoint} from '@unicef-polymer/etools-ajax/et
 import {connect} from 'pwa-helpers/connect-mixin';
 import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
 import {store} from '../../redux/store';
-import {LitElement, property} from 'lit-element';
+import {LitElement} from 'lit';
+import {property} from 'lit/decorators.js';
 import {etoolsEndpoints} from '../../endpoints/endpoints-list';
 import {updateEnvFlags} from '../../redux/actions/common-data';
 import {EnvFlags} from '@unicef-polymer/etools-types';
