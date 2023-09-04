@@ -15,7 +15,6 @@ import {
 import {ROOT_PATH} from '../../../config/config';
 import {EtoolsFilter} from '@unicef-polymer/etools-unicef/src/etools-filters/etools-filters';
 import {pageLayoutStyles} from '../../styles/page-layout-styles';
-import {buttonsStyles} from '../../styles/button-styles';
 import {elevationStyles} from '../../styles/lit-styles/elevation-styles';
 import '@unicef-polymer/etools-unicef/src/etools-table/etools-table';
 import {
@@ -69,7 +68,7 @@ import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 @customElement('intervention-list')
 export class InterventionList extends connect(store)(LitElement) {
   static get styles() {
-    return [elevationStyles, buttonsStyles, pageLayoutStyles, pageContentHeaderSlottedStyles, InterventionsListStyles];
+    return [elevationStyles, pageLayoutStyles, pageContentHeaderSlottedStyles, InterventionsListStyles];
   }
 
   public render() {
