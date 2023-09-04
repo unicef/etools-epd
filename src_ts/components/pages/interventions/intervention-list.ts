@@ -1,4 +1,3 @@
-import '@polymer/paper-button/paper-button';
 import {html, LitElement, TemplateResult} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import {connect} from 'pwa-helpers/connect-mixin';
