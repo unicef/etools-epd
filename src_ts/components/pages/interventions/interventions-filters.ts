@@ -42,86 +42,88 @@ export const selectedValueTypeByFilterKey: AnyObject = {
 
 setselectedValueTypeByFilterKey(selectedValueTypeByFilterKey);
 
-export const defaultFilters: EtoolsFilter[] = [
-  {
-    filterName: getTranslation('INTERVENTIONS_LIST.SEARCH_RECORDS'),
-    filterKey: InterventionFilterKeys.search,
-    type: EtoolsFilterTypes.Search,
-    selectedValue: '',
-    selected: true
-  },
-  {
-    filterName: getTranslation('INTERVENTIONS_LIST.STATUS'),
-    filterKey: InterventionFilterKeys.status,
-    type: EtoolsFilterTypes.DropdownMulti,
-    selectionOptions: [],
-    optionValue: 'value',
-    optionLabel: 'label',
-    selectedValue: [],
-    selected: true,
-    minWidth: '350px',
-    hideSearch: true,
-    disabled: false
-  },
-  {
-    filterName: getTranslation('INTERVENTIONS_LIST.PD_TYPE'),
-    filterKey: InterventionFilterKeys.document_type,
-    type: EtoolsFilterTypes.DropdownMulti,
-    selectionOptions: [],
-    optionValue: 'value',
-    optionLabel: 'label',
-    selectedValue: [],
-    selected: false,
-    minWidth: '350px',
-    hideSearch: true,
-    disabled: false
-  },
-  {
-    filterName: getTranslation('INTERVENTIONS_LIST.PARTNER_ORG'),
-    filterKey: InterventionFilterKeys.partners,
-    type: EtoolsFilterTypes.DropdownMulti,
-    selectionOptions: [],
-    selectedValue: [],
-    selected: false,
-    minWidth: '350px',
-    hideSearch: false,
-    disabled: false,
-    optionValue: 'id',
-    optionLabel: 'name'
-  },
-  {
-    filterName: getTranslation('INTERVENTIONS_LIST.CONTINGENCY_PD'),
-    type: EtoolsFilterTypes.Toggle,
-    filterKey: InterventionFilterKeys.contingency_pd,
-    selectedValue: false,
-    selected: true
-  },
-  {
-    filterName: getTranslation('EDITABLE_BY'),
-    type: EtoolsFilterTypes.Dropdown,
-    filterKey: InterventionFilterKeys.editable_by,
-    selectedValue: '',
-    selected: true
-  },
-  {
-    filterName: getTranslation('INTERVENTIONS_LIST.ENDS_BEFORE'),
-    type: EtoolsFilterTypes.Date,
-    filterKey: InterventionFilterKeys.end,
-    selectedValue: '',
-    selected: false
-  },
-  {
-    filterName: getTranslation('INTERVENTIONS_LIST.STARTS_AFTER'),
-    filterKey: InterventionFilterKeys.start,
-    type: EtoolsFilterTypes.Date,
-    selectedValue: null,
-    selected: false
-  },
-  {
-    filterName: getTranslation('INTERVENTIONS_LIST.ENDS_AFTER'),
-    type: EtoolsFilterTypes.Date,
-    filterKey: InterventionFilterKeys.end_after,
-    selectedValue: '',
-    selected: false
-  }
-];
+export function getInterventionFilters(): EtoolsFilter[] {
+  return [
+    {
+      filterName: getTranslation('INTERVENTIONS_LIST.SEARCH_RECORDS'),
+      filterKey: InterventionFilterKeys.search,
+      type: EtoolsFilterTypes.Search,
+      selectedValue: '',
+      selected: true
+    },
+    {
+      filterName: getTranslation('INTERVENTIONS_LIST.STATUS'),
+      filterKey: InterventionFilterKeys.status,
+      type: EtoolsFilterTypes.DropdownMulti,
+      selectionOptions: [],
+      optionValue: 'value',
+      optionLabel: 'label',
+      selectedValue: [],
+      selected: true,
+      minWidth: '350px',
+      hideSearch: true,
+      disabled: false
+    },
+    {
+      filterName: getTranslation('INTERVENTIONS_LIST.PD_TYPE'),
+      filterKey: InterventionFilterKeys.document_type,
+      type: EtoolsFilterTypes.DropdownMulti,
+      selectionOptions: [],
+      optionValue: 'value',
+      optionLabel: 'label',
+      selectedValue: [],
+      selected: false,
+      minWidth: '350px',
+      hideSearch: true,
+      disabled: false
+    },
+    {
+      filterName: getTranslation('INTERVENTIONS_LIST.PARTNER_ORG'),
+      filterKey: InterventionFilterKeys.partners,
+      type: EtoolsFilterTypes.DropdownMulti,
+      selectionOptions: [],
+      selectedValue: [],
+      selected: false,
+      minWidth: '350px',
+      hideSearch: false,
+      disabled: false,
+      optionValue: 'id',
+      optionLabel: 'name'
+    },
+    {
+      filterName: getTranslation('INTERVENTIONS_LIST.CONTINGENCY_PD'),
+      type: EtoolsFilterTypes.Toggle,
+      filterKey: InterventionFilterKeys.contingency_pd,
+      selectedValue: false,
+      selected: true
+    },
+    {
+      filterName: getTranslation('EDITABLE_BY'),
+      type: EtoolsFilterTypes.Dropdown,
+      filterKey: InterventionFilterKeys.editable_by,
+      selectedValue: '',
+      selected: true
+    },
+    {
+      filterName: getTranslation('INTERVENTIONS_LIST.ENDS_BEFORE'),
+      type: EtoolsFilterTypes.Date,
+      filterKey: InterventionFilterKeys.end,
+      selectedValue: '',
+      selected: false
+    },
+    {
+      filterName: getTranslation('INTERVENTIONS_LIST.STARTS_AFTER'),
+      filterKey: InterventionFilterKeys.start,
+      type: EtoolsFilterTypes.Date,
+      selectedValue: null,
+      selected: false
+    },
+    {
+      filterName: getTranslation('INTERVENTIONS_LIST.ENDS_AFTER'),
+      type: EtoolsFilterTypes.Date,
+      filterKey: InterventionFilterKeys.end_after,
+      selectedValue: '',
+      selected: false
+    }
+  ];
+}
