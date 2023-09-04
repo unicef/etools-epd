@@ -29,7 +29,7 @@ import {createDynamicDialog} from '@unicef-polymer/etools-unicef/src/etools-dial
 import {AppDrawerLayoutElement} from '@polymer/app-layout/app-drawer-layout/app-drawer-layout';
 import {AppHeaderLayoutElement} from '@polymer/app-layout/app-header-layout/app-header-layout';
 import {AppDrawerElement} from '@polymer/app-layout/app-drawer/app-drawer';
-import LoadingMixin from '@unicef-polymer/etools-unicef/src/etools-loading/etools-loading-mixin';
+import {LoadingMixin} from '@unicef-polymer/etools-unicef/src/etools-loading/etools-loading-mixin';
 import {html, LitElement} from 'lit';
 import {customElement, property, query} from 'lit/decorators.js';
 import {AppShellStyles} from './components/app-shell/app-shell-styles';
