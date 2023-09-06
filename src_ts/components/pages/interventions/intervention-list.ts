@@ -53,7 +53,7 @@ import {
 } from '@unicef-polymer/etools-types';
 import pick from 'lodash-es/pick';
 import {etoolsEndpoints} from '../../../endpoints/endpoints-list';
-import {defaultFilters, InterventionFilterKeys} from './interventions-filters';
+import {getInterventionFilters, InterventionFilterKeys} from './interventions-filters';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {debounce} from '@unicef-polymer/etools-utils/dist/debouncer.util';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
@@ -389,7 +389,7 @@ export class InterventionList extends connect(store)(LitElement) {
   private initFiltersForDisplay(state: RootState) {
     if (!this.filters && this.dataRequiredByFiltersHasBeenLoaded(state)) {
       this.commonDataLoadedTimestamp = state.commonData!.loadedTimestamp;
-      const availableFilters = [...defaultFilters];
+      const availableFilters = [...getInterventionFilters()];
       this.populateDropdownFilterOptionsFromCommonData(state, availableFilters);
 
       // update filter selection and assign the result to etools-filters(trigger render)
