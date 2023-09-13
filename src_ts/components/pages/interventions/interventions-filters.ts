@@ -46,6 +46,7 @@ export function getInterventionFilters(): EtoolsFilter[] {
   return [
     {
       filterName: getTranslation('INTERVENTIONS_LIST.SEARCH_RECORDS'),
+      translationKey: 'INTERVENTIONS_LIST.SEARCH_RECORDS',
       filterKey: InterventionFilterKeys.search,
       type: EtoolsFilterTypes.Search,
       selectedValue: '',
@@ -54,6 +55,7 @@ export function getInterventionFilters(): EtoolsFilter[] {
     {
       filterName: getTranslation('INTERVENTIONS_LIST.STATUS'),
       filterKey: InterventionFilterKeys.status,
+      translationKey: 'INTERVENTIONS_LIST.STATUS',
       type: EtoolsFilterTypes.DropdownMulti,
       selectionOptions: [],
       optionValue: 'value',
@@ -66,6 +68,7 @@ export function getInterventionFilters(): EtoolsFilter[] {
     },
     {
       filterName: getTranslation('INTERVENTIONS_LIST.PD_TYPE'),
+      translationKey: 'INTERVENTIONS_LIST.PD_TYPE',
       filterKey: InterventionFilterKeys.document_type,
       type: EtoolsFilterTypes.DropdownMulti,
       selectionOptions: [],
@@ -79,6 +82,7 @@ export function getInterventionFilters(): EtoolsFilter[] {
     },
     {
       filterName: getTranslation('INTERVENTIONS_LIST.PARTNER_ORG'),
+      translationKey: 'INTERVENTIONS_LIST.PARTNER_ORG',
       filterKey: InterventionFilterKeys.partners,
       type: EtoolsFilterTypes.DropdownMulti,
       selectionOptions: [],
@@ -92,6 +96,7 @@ export function getInterventionFilters(): EtoolsFilter[] {
     },
     {
       filterName: getTranslation('INTERVENTIONS_LIST.CONTINGENCY_PD'),
+      translationKey: 'INTERVENTIONS_LIST.CONTINGENCY_PD',
       type: EtoolsFilterTypes.Toggle,
       filterKey: InterventionFilterKeys.contingency_pd,
       selectedValue: false,
@@ -99,6 +104,7 @@ export function getInterventionFilters(): EtoolsFilter[] {
     },
     {
       filterName: getTranslation('EDITABLE_BY'),
+      translationKey: 'EDITABLE_BY',
       type: EtoolsFilterTypes.Dropdown,
       filterKey: InterventionFilterKeys.editable_by,
       selectedValue: '',
@@ -106,6 +112,7 @@ export function getInterventionFilters(): EtoolsFilter[] {
     },
     {
       filterName: getTranslation('INTERVENTIONS_LIST.ENDS_BEFORE'),
+      translationKey: 'INTERVENTIONS_LIST.ENDS_BEFORE',
       type: EtoolsFilterTypes.Date,
       filterKey: InterventionFilterKeys.end,
       selectedValue: '',
@@ -113,6 +120,7 @@ export function getInterventionFilters(): EtoolsFilter[] {
     },
     {
       filterName: getTranslation('INTERVENTIONS_LIST.STARTS_AFTER'),
+      translationKey: 'INTERVENTIONS_LIST.STARTS_AFTER',
       filterKey: InterventionFilterKeys.start,
       type: EtoolsFilterTypes.Date,
       selectedValue: null,
@@ -120,10 +128,16 @@ export function getInterventionFilters(): EtoolsFilter[] {
     },
     {
       filterName: getTranslation('INTERVENTIONS_LIST.ENDS_AFTER'),
+      translationKey: 'INTERVENTIONS_LIST.ENDS_AFTER',
       type: EtoolsFilterTypes.Date,
       filterKey: InterventionFilterKeys.end_after,
       selectedValue: '',
       selected: false
     }
   ];
+}
+
+export function translateFilters(filters: AnyObject[]) {
+  (filters || []).forEach((filter) => (filter.filterName = getTranslation(filter.translationKey)));
+  return filters;
 }
