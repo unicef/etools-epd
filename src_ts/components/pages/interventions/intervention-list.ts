@@ -53,7 +53,7 @@ import {
 } from '@unicef-polymer/etools-types';
 import pick from 'lodash-es/pick';
 import {etoolsEndpoints} from '../../../endpoints/endpoints-list';
-import {getInterventionFilters, InterventionFilterKeys} from './interventions-filters';
+import {getInterventionFilters, InterventionFilterKeys, translateFilters} from './interventions-filters';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {debounce} from '@unicef-polymer/etools-utils/dist/debouncer.util';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
@@ -273,10 +273,6 @@ export class InterventionList extends connect(store)(LitElement) {
       this.onParamsChange(stateRouteDetails, state.interventions?.shouldReGetList);
     }
 
-    // if (!isJsonStrMatch(this.interventionStatuses, state.commonData!.interventionStatuses)) {
-    //   this.interventionStatuses = [...state.commonData!.interventionStatuses];
-    // }
-
     if (state.user && state.user.permissions) {
       this.canExport = state.user.permissions.canExport;
     }
@@ -284,6 +280,7 @@ export class InterventionList extends connect(store)(LitElement) {
     if (this.commonDataLoadedTimestamp !== state.commonData!.loadedTimestamp && this.filters) {
       // static data reloaded (because of language change), need to update filters
       this.commonDataLoadedTimestamp = state.commonData!.loadedTimestamp;
+      translateFilters(this.filters);
       this.populateDropdownFilterOptionsFromCommonData(state, this.filters);
       this.filters = [...this.filters];
     }
