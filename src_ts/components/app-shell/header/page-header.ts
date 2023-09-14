@@ -1,6 +1,6 @@
 import '@polymer/app-layout/app-toolbar/app-toolbar';
 import '@polymer/paper-icon-button/paper-icon-button';
-import '@unicef-polymer/etools-profile-dropdown/etools-profile-dropdown.js';
+import '@unicef-polymer/etools-unicef/src/etools-profile-dropdown/etools-profile-dropdown';
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
 import {LitElement, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
