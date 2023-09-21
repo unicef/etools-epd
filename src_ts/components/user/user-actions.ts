@@ -40,7 +40,7 @@ function setCurrentLanguage(lngCode: string) {
     }
   }
   if (!currentLanguage) {
-    const storageLang = localStorage.getItem('defaultLanguage');
+    const storageLang = window.EtoolsLanguage;
     if (storageLang && languageIsAvailableInApp(storageLang)) {
       currentLanguage = storageLang;
     }
@@ -83,6 +83,17 @@ export function changeCurrentUserCountry(countryId: number) {
     body: {country: countryId}
   }).catch((error: AnyObject) => {
     console.error('[EtoolsUser]: changeCountry req error ', error);
+    throw error;
+  });
+}
+
+export function changeCurrentOrganization(organizationId: number) {
+  return sendRequest({
+    method: 'POST',
+    endpoint: {url: getEndpoint(etoolsEndpoints.changeOrganization).url},
+    body: {organization: organizationId}
+  }).catch((error: AnyObject) => {
+    console.error('[EtoolsUser]: changeOrganization req error ', error);
     throw error;
   });
 }

@@ -12,11 +12,10 @@ import {installRouter} from 'pwa-helpers/router.js';
 import {store, RootState} from './redux/store';
 
 // These are the actions needed by this element.
-import {
-  navigate,
-  // updateOffline,
-  updateDrawerState
-} from './redux/actions/app';
+import {navigate} from './redux/actions/app';
+
+// Routes
+import './routing/routes';
 
 // These are the elements needed by this element.
 import '@polymer/app-layout/app-drawer-layout/app-drawer-layout.js';
@@ -44,7 +43,6 @@ import user from './redux/reducers/user';
 import commonData, {CommonDataState} from './redux/reducers/common-data';
 import uploadStatus from './redux/reducers/upload-status.js';
 import {getCurrentUser} from './components/user/user-actions';
-import {EtoolsRouter, replaceAppLocation} from './routing/routes';
 import {
   getPartners,
   getLocations,
@@ -65,16 +63,17 @@ import './components/env-flags/environment-flags';
 import '@unicef-polymer/etools-toasts';
 import {registerTranslateConfig, use, translate} from 'lit-translate';
 import {EtoolsUser, RouteDetails} from '@unicef-polymer/etools-types';
-import {setStore} from '@unicef-polymer/etools-modules-common/dist/utils/redux-store-access';
+import {setStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {SMALL_MENU_ACTIVE_LOCALSTORAGE_KEY} from './config/config';
-import {fireEvent} from './components/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {ROOT_PATH} from '@unicef-polymer/etools-modules-common/dist/config/config';
-import {openDialog} from '@unicef-polymer/etools-modules-common/dist/utils/dialog';
+import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import {RESET_CURRENT_ITEM, RESET_UNSAVED_UPLOADS, RESET_UPLOADS_IN_PROGRESS} from './redux/actions/upload-status';
 import UploadsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/uploads-mixin';
 import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
 import {commingFromPDDetailsToList} from './components/utils/utils';
-import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 declare const dayjs: any;
 declare const dayjs_plugin_utc: any;
 declare const dayjs_plugin_isSameOrBefore: any;
@@ -151,11 +150,7 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
           ?small-menu="${this.smallMenu}"
         >
           <!-- App main menu(left sidebar) -->
-          <app-menu
-            selected-option="${this.mainPage}"
-            @toggle-small-menu="${(e: CustomEvent) => this.toggleMenu(e)}"
-            ?small-menu="${this.smallMenu}"
-          ></app-menu>
+          <app-menu selected-option="${this.mainPage}" ?small-menu="${this.smallMenu}"></app-menu>
         </app-drawer>
 
         <!-- Main content -->
@@ -257,7 +252,9 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
         }
       }
     });
-    installMediaQueryWatcher(`(min-width: 460px)`, () => store.dispatch(updateDrawerState(false)));
+    this.addEventListener('change-drawer-state', this.changeDrawerState);
+    this.addEventListener('toggle-small-menu', this.toggleMenu as any);
+    installMediaQueryWatcher(`(min-width: 460px)`, () => fireEvent(this, 'change-drawer-state'));
 
     getCurrentUser().then((user?: EtoolsUser) => {
       if (user) {
@@ -296,6 +293,10 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
         return getTranslatedValue(key);
       };
     });
+  }
+
+  public changeDrawerState() {
+    this.drawerOpened = !this.drawerOpened;
   }
 
   checkAppVersion() {
@@ -377,6 +378,8 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
 
   public disconnectedCallback() {
     super.disconnectedCallback();
+    this.removeEventListener('change-drawer-state', this.changeDrawerState);
+    this.removeEventListener('toggle-small-menu', this.toggleMenu as any);
   }
 
   protected shouldUpdate(changedProperties: Map<PropertyKey, unknown>): boolean {
@@ -399,8 +402,6 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
     this.mainPage = state.app!.routeDetails!.routeName;
     this.subPage = state.app!.routeDetails!.subRouteName;
 
-    this.drawerOpened = state.app!.drawerOpened;
-    this.smallMenu = state.app!.smallMenu;
     if (get(state, 'app.toastNotification.active')) {
       fireEvent(this, 'toast', {
         text: state.app!.toastNotification.message,
@@ -454,7 +455,7 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
 
   public onDrawerToggle() {
     if (this.drawerOpened !== this.drawer.opened) {
-      store.dispatch(updateDrawerState(this.drawer.opened));
+      this.drawerOpened = Boolean(this.drawer.opened);
     }
   }
 
@@ -504,7 +505,7 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
 
   async confirmLeaveUploadsUnsavedDialog(prevPath: string, pathToRedirect: string) {
     // stay in the page where change was made
-    replaceAppLocation(prevPath);
+    EtoolsRouter.replaceAppLocation(prevPath);
 
     const confirmed = await openDialog({
       dialog: 'are-you-sure',
@@ -521,7 +522,7 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
       store.dispatch({type: RESET_UNSAVED_UPLOADS});
       store.dispatch({type: RESET_UPLOADS_IN_PROGRESS});
       store.dispatch(this.resetCurrentItem());
-      replaceAppLocation(pathToRedirect);
+      EtoolsRouter.replaceAppLocation(pathToRedirect);
     }
   }
 
