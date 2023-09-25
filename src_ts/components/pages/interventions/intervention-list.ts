@@ -81,7 +81,7 @@ export class InterventionList extends connect(store)(LitElement) {
 
         <div slot="title-row-actions" class="content-header-actions">
           <div class="action">
-            <export-data .exportLinks="${this.exportLinks}" .params="${this.exportParams}" raised></export-data>
+            <export-data hidden .exportLinks="${this.exportLinks}" .params="${this.exportParams}" raised></export-data>
           </div>
         </div>
       </page-content-header>
