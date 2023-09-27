@@ -1,9 +1,10 @@
 import {connect} from 'pwa-helpers/connect-mixin.js';
 import {store, RootState} from '../../../redux/store';
-import '@unicef-polymer/etools-dropdown/etools-dropdown.js';
+import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
 import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
-import {EtoolsDropdownEl} from '@unicef-polymer/etools-dropdown/etools-dropdown.js';
-import {customElement, LitElement, html, property, query} from 'lit-element';
+import {EtoolsDropdownEl} from '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
+import {LitElement, html} from 'lit';
+import {customElement, property, query} from 'lit/decorators.js';
 
 // import EndpointsMixin from '../../endpoints/endpoints-mixin.js';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
@@ -28,6 +29,7 @@ export class CountriesDropdown extends connect(store)(LitElement) {
       <!-- shown options limit set to 250 as there are currently 195 countries in the UN council and about 230 total -->
       <etools-dropdown
         id="countrySelector"
+        transparent
         class="w100"
         .selected="${this.currentCountry.id}"
         placeholder="Country"
@@ -59,10 +61,10 @@ export class CountriesDropdown extends connect(store)(LitElement) {
   public connectedCallback() {
     super.connectedCallback();
 
-    setTimeout(() => {
-      const fitInto = document.querySelector('app-shell')!.shadowRoot!.querySelector('#appHeadLayout');
-      this.countryDropdown.fitInto = fitInto;
-    }, 0);
+    // setTimeout(() => {
+    //   const fitInto = document.querySelector('app-shell')!.shadowRoot!.querySelector('#appHeadLayout');
+    //   this.countryDropdown.fitInto = fitInto;
+    // }, 0);
   }
 
   public stateChanged(state: RootState) {

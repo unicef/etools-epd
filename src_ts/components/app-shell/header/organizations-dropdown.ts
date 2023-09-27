@@ -1,17 +1,18 @@
 import {connect} from 'pwa-helpers/connect-mixin.js';
 import {store, RootState} from '../../../redux/store';
-import '@unicef-polymer/etools-dropdown/etools-dropdown.js';
+import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
 import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
-import {EtoolsDropdownEl} from '@unicef-polymer/etools-dropdown/etools-dropdown.js';
-import {customElement, LitElement, html, property, query} from 'lit-element';
+import {EtoolsDropdownEl} from '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
+import {LitElement, html} from 'lit';
+import {customElement, property, query} from 'lit/decorators.js';
 
-import {fireEvent} from '@unicef-polymer/etools-modules-common/dist/utils/fire-custom-event';
+import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {EtoolsUser} from '@unicef-polymer/etools-types';
 import {countriesDropdownStyles} from './countries-dropdown-styles';
 import {get as getTranslation, translate} from 'lit-translate';
 import {ROOT_PATH} from '../../../config/config';
 import {changeCurrentOrganization} from '../../user/user-actions';
-import {isEmptyObject} from '@unicef-polymer/etools-modules-common/dist/utils/utils';
+import {isEmptyObject} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {EtoolsRedirectPath} from '@unicef-polymer/etools-utils/dist/enums/router.enum';
 
@@ -25,6 +26,7 @@ export class organizationsDropdown extends connect(store)(LitElement) {
     return html`
       ${countriesDropdownStyles}
       <etools-dropdown
+        transparent
         ?hidden=${isEmptyObject(this.organizations)}
         id="organizationSelector"
         placeholder="${translate('GENERAL.SELECT_ORGANIZATION')}"
@@ -56,10 +58,10 @@ export class organizationsDropdown extends connect(store)(LitElement) {
   public connectedCallback() {
     super.connectedCallback();
 
-    setTimeout(() => {
-      const fitInto = document.querySelector('app-shell')!.shadowRoot!.querySelector('#appHeadLayout');
-      this.organizationSelectorDropdown.fitInto = fitInto;
-    }, 0);
+    // setTimeout(() => {
+    //   const fitInto = document.querySelector('app-shell')!.shadowRoot!.querySelector('#appHeadLayout');
+    //   this.organizationSelectorDropdown.fitInto = fitInto;
+    // }, 0);
   }
 
   public stateChanged(state: RootState) {

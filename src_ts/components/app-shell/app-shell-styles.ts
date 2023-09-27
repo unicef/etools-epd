@@ -1,4 +1,4 @@
-import {css} from 'lit-element';
+import {css} from 'lit';
 import {appDrawerStyles} from './menu/styles/app-drawer-styles';
 
 export const AppShellStyles = css`

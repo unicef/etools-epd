@@ -1,4 +1,4 @@
-import {css} from 'lit-element';
+import {css} from 'lit';
 
 // language=CSS
 export const pageHeaderStyles = css`
@@ -46,6 +46,10 @@ export const pageHeaderStyles = css`
     color: var(--nonprod-text-warn-color);
     font-weight: 700;
     font-size: 18px;
+  }
+
+  etools-dropdown::part(display-input) {
+    text-align: right;
   }
 
   @media (min-width: 850px) {

@@ -1,5 +1,5 @@
-import '@polymer/paper-button/paper-button';
-import {customElement, html, LitElement, property, TemplateResult} from 'lit-element';
+import {html, LitElement, TemplateResult} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
 import {connect} from 'pwa-helpers/connect-mixin';
 import {RootState, store} from '../../../redux/store';
 
@@ -7,27 +7,32 @@ import '@unicef-polymer/etools-modules-common/dist/layout/page-content-header/pa
 // eslint-disable-next-line max-len
 import {pageContentHeaderSlottedStyles} from '@unicef-polymer/etools-modules-common/dist/layout/page-content-header/page-content-header-slotted-styles';
 
-import '@unicef-polymer/etools-filters/src/etools-filters';
-import {updateFilterSelectionOptions, updateFiltersSelectedValues} from '@unicef-polymer/etools-filters/src/filters';
+import '@unicef-polymer/etools-unicef/src/etools-filters/etools-filters';
+import {
+  updateFilterSelectionOptions,
+  updateFiltersSelectedValues
+} from '@unicef-polymer/etools-unicef/src/etools-filters/filters';
 import {ROOT_PATH} from '../../../config/config';
-import {EtoolsFilter} from '@unicef-polymer/etools-filters/src/etools-filters';
+import {EtoolsFilter} from '@unicef-polymer/etools-unicef/src/etools-filters/etools-filters';
 import {pageLayoutStyles} from '../../styles/page-layout-styles';
-import {buttonsStyles} from '../../styles/button-styles';
 import {elevationStyles} from '../../styles/lit-styles/elevation-styles';
-import '@unicef-polymer/etools-table/etools-table';
+import '@unicef-polymer/etools-unicef/src/etools-table/etools-table';
 import {
   EtoolsTableColumn,
   EtoolsTableColumnSort,
   EtoolsTableColumnType
-} from '@unicef-polymer/etools-table/etools-table';
-import {EtoolsPaginator, defaultPaginator} from '@unicef-polymer/etools-table/pagination/etools-pagination';
+} from '@unicef-polymer/etools-unicef/src/etools-table/etools-table';
+import {
+  EtoolsPaginator,
+  defaultPaginator
+} from '@unicef-polymer/etools-unicef/src/etools-table/pagination/etools-pagination';
 import {
   buildUrlQueryString,
   getSortFields,
   getUrlQueryStringSort
 } from '@unicef-polymer/etools-modules-common/dist/layout/etools-table/etools-table-utility';
 
-import '@unicef-polymer/etools-loading';
+import '@unicef-polymer/etools-unicef/src/etools-loading/etools-loading';
 import get from 'lodash-es/get';
 import '@unicef-polymer/etools-modules-common/dist/layout/export-data';
 import {ListHelper, ListHelperResponse} from '@unicef-polymer/etools-modules-common/dist/list/list-helper';
@@ -48,7 +53,7 @@ import {
 } from '@unicef-polymer/etools-types';
 import pick from 'lodash-es/pick';
 import {etoolsEndpoints} from '../../../endpoints/endpoints-list';
-import {defaultFilters, InterventionFilterKeys} from './interventions-filters';
+import {getInterventionFilters, InterventionFilterKeys, translateFilters} from './interventions-filters';
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
 import {debounce} from '@unicef-polymer/etools-utils/dist/debouncer.util';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
@@ -63,7 +68,7 @@ import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 @customElement('intervention-list')
 export class InterventionList extends connect(store)(LitElement) {
   static get styles() {
-    return [elevationStyles, buttonsStyles, pageLayoutStyles, pageContentHeaderSlottedStyles, InterventionsListStyles];
+    return [elevationStyles, pageLayoutStyles, pageContentHeaderSlottedStyles, InterventionsListStyles];
   }
 
   public render() {
@@ -268,10 +273,6 @@ export class InterventionList extends connect(store)(LitElement) {
       this.onParamsChange(stateRouteDetails, state.interventions?.shouldReGetList);
     }
 
-    // if (!isJsonStrMatch(this.interventionStatuses, state.commonData!.interventionStatuses)) {
-    //   this.interventionStatuses = [...state.commonData!.interventionStatuses];
-    // }
-
     if (state.user && state.user.permissions) {
       this.canExport = state.user.permissions.canExport;
     }
@@ -279,6 +280,7 @@ export class InterventionList extends connect(store)(LitElement) {
     if (this.commonDataLoadedTimestamp !== state.commonData!.loadedTimestamp && this.filters) {
       // static data reloaded (because of language change), need to update filters
       this.commonDataLoadedTimestamp = state.commonData!.loadedTimestamp;
+      translateFilters(this.filters);
       this.populateDropdownFilterOptionsFromCommonData(state, this.filters);
       this.filters = [...this.filters];
     }
@@ -384,7 +386,7 @@ export class InterventionList extends connect(store)(LitElement) {
   private initFiltersForDisplay(state: RootState) {
     if (!this.filters && this.dataRequiredByFiltersHasBeenLoaded(state)) {
       this.commonDataLoadedTimestamp = state.commonData!.loadedTimestamp;
-      const availableFilters = [...defaultFilters];
+      const availableFilters = [...getInterventionFilters()];
       this.populateDropdownFilterOptionsFromCommonData(state, availableFilters);
 
       // update filter selection and assign the result to etools-filters(trigger render)

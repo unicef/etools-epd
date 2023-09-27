@@ -1,4 +1,4 @@
-import {html} from 'lit-element';
+import {html} from 'lit';
 
 // language=HTML
 export const countriesDropdownStyles = html`
@@ -88,6 +88,10 @@ export const countriesDropdownStyles = html`
 
     .w100 {
       width: 100%;
+    }
+
+    etools-dropdown::part(display-input) {
+      text-align: right;
     }
 
     etools-dropdown.warning {

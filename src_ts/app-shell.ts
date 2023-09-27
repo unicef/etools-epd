@@ -24,14 +24,14 @@ import '@polymer/app-layout/app-header-layout/app-header-layout.js';
 import '@polymer/app-layout/app-header/app-header.js';
 import '@polymer/app-layout/app-toolbar/app-toolbar.js';
 import '@unicef-polymer/etools-piwik-analytics/etools-piwik-analytics';
-import {createDynamicDialog} from '@unicef-polymer/etools-dialog/dynamic-dialog';
+import {createDynamicDialog} from '@unicef-polymer/etools-unicef/src/etools-dialog/dynamic-dialog';
 
 import {AppDrawerLayoutElement} from '@polymer/app-layout/app-drawer-layout/app-drawer-layout';
 import {AppHeaderLayoutElement} from '@polymer/app-layout/app-header-layout/app-header-layout';
 import {AppDrawerElement} from '@polymer/app-layout/app-drawer/app-drawer';
-import LoadingMixin from '@unicef-polymer/etools-loading/etools-loading-mixin';
-import {customElement, html, LitElement, property, query} from 'lit-element';
-
+import {LoadingMixin} from '@unicef-polymer/etools-unicef/src/etools-loading/etools-loading-mixin';
+import {html, LitElement} from 'lit';
+import {customElement, property, query} from 'lit/decorators.js';
 import {AppShellStyles} from './components/app-shell/app-shell-styles';
 
 import './components/app-shell/menu/app-menu.js';
@@ -74,6 +74,7 @@ import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
 import {commingFromPDDetailsToList} from './components/utils/utils';
 import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
+import {setBasePath} from '@shoelace-style/shoelace/dist/utilities/base-path.js';
 declare const dayjs: any;
 declare const dayjs_plugin_utc: any;
 declare const dayjs_plugin_isSameOrBefore: any;
@@ -106,6 +107,8 @@ store.addReducers({
   commonData,
   uploadStatus
 });
+
+setBasePath('/epd/');
 
 /**
  * @customElement
