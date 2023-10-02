@@ -135,7 +135,7 @@
     "rollup-plugin-minify-html-literals": "^1.2.6",
     "rollup-plugin-terser": "^7.0.2",
     "shelljs": ">=0.8.5",
-    "socket.io": ">=2.5.0",
+    "socket.io": ">=4.6.1",
     "socket.io-parser": ">=3.3.3",
     "terser": ">=5.14.2",
     "thenify": ">=3.3.1",
