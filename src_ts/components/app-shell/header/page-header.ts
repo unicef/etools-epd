@@ -1,7 +1,7 @@
 import '@polymer/app-layout/app-toolbar/app-toolbar';
-import '@polymer/paper-icon-button/paper-icon-button';
 import '@unicef-polymer/etools-unicef/src/etools-profile-dropdown/etools-profile-dropdown';
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button.js';
 import {LitElement, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 
@@ -97,12 +97,12 @@ export class PageHeader extends connect(store)(LitElement) {
       </style>
 
       <app-toolbar sticky class="content-align">
-        <paper-icon-button
+        <etools-icon-button
           id="menuButton"
-          icon="menu"
+          name="menu"
           class="nav-menu-button"
-          @tap="${() => this.menuBtnClicked()}"
-        ></paper-icon-button>
+          @click="${() => this.menuBtnClicked()}"
+        ></etools-icon-button>
         <div class="titlebar content-align">
           <img id="app-logo" class="logo" src="images/etools-logo-color-white.svg" alt="eTools" />
           ${this.isStaging
