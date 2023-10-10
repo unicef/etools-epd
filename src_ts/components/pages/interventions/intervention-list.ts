@@ -40,7 +40,7 @@ import {
   InterventionsListStyles,
   InterventionsTableStyles
 } from '@unicef-polymer/etools-modules-common/dist/list/list-styles';
-import {addCurrencyAmountDelimiter} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
+import {addCurrencyAmountDelimiter} from '@unicef-polymer/etools-unicef/src/utils/currency';
 import {notHiddenPartnersSelector} from '../../../redux/reducers/common-data';
 import {translate, get as getTranslation} from 'lit-translate';
 import {
