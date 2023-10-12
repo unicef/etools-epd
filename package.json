@@ -115,5 +115,8 @@
     "wd": ">=1.14.0",
     "y18n": ">=3.2.2"
   },
-  "relativeDependencies": {}
+  "relativeDependencies": {
+    "@unicef-polymer/etools-unicef": "../../etools-polymer/etools-unicef/",
+    "@unicef-polymer/etools-modules-common": "../../etools-polymer/etools-modules-common"
+  }
 }

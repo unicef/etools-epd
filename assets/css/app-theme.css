@@ -1,4 +1,8 @@
 :root, :host {
+    --sl-font-mono: Roboto, Noto, sans-serif;
+    --sl-font-sans: Roboto, Noto, sans-serif;
+    --sl-font-serif: Roboto, Noto, sans-serif;
+
     --primary-color: #0099ff;
     --primary-background-color: #FFFFFF;
     --secondary-background-color: #eeeeee;
@@ -110,20 +114,4 @@
     }
 
     --epd-profile-dialog-border-b: solid 1px var(--dark-divider-color);
-
-    --required-star-style: {
-        background: url('./images/required.svg') no-repeat 99% 20%/8px;
-        width: auto !important;
-        max-width: 100%;
-        inset-inline-end: auto;
-        padding-inline-end: 15px;
-    }
-}
-
-html[dir="rtl"] {
-    --required-star-style: {
-        background: url('./images/required.svg') no-repeat 0 20%/8px;
-        inset-inline-end: auto;
-        padding-inline-end: 15px;
-    }
 }

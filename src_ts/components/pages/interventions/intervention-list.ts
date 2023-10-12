@@ -165,17 +165,20 @@ export class InterventionList extends connect(store)(LitElement) {
       label: translate('INTERVENTIONS_LIST.REFERENCE_NO') as unknown as string,
       name: 'number',
       link_tmpl: `${ROOT_PATH}interventions/:id/metadata`,
-      type: EtoolsTableColumnType.Link
+      type: EtoolsTableColumnType.Link,
+      sort: true
     },
     {
       label: translate('INTERVENTIONS_LIST.PARTNER_ORG_NAME') as unknown as string,
       name: 'partner_name',
-      type: EtoolsTableColumnType.Text
+      type: EtoolsTableColumnType.Text,
+      sort: true
     },
     {
       label: translate('INTERVENTIONS_LIST.DOC_TYPE') as unknown as string,
       name: 'document_type',
       type: EtoolsTableColumnType.Custom,
+      sort: true,
       customMethod: (item: any, _key: string) => {
         return item.document_type ? translate(`ITEM_TYPE.${item.document_type.toUpperCase()}`) : item.document_type;
       }
@@ -185,6 +188,7 @@ export class InterventionList extends connect(store)(LitElement) {
       name: 'status',
       type: EtoolsTableColumnType.Custom,
       capitalize: true,
+      sort: true,
       customMethod: (item: any, _key: string) => {
         const translatedStatus = item.status ? translate(`PD_STATUS.${item.status.toUpperCase()}`) : item.status;
         if (item.status !== 'development') {
@@ -218,17 +222,20 @@ export class InterventionList extends connect(store)(LitElement) {
     {
       label: translate('INTERVENTIONS_LIST.TITLE') as unknown as string,
       name: 'title',
-      type: EtoolsTableColumnType.Text
+      type: EtoolsTableColumnType.Text,
+      sort: true
     },
     {
       label: translate('INTERVENTIONS_LIST.START_DATE') as unknown as string,
       name: 'start',
-      type: EtoolsTableColumnType.Date
+      type: EtoolsTableColumnType.Date,
+      sort: true
     },
     {
       label: translate('INTERVENTIONS_LIST.END_DATE') as unknown as string,
       name: 'end',
-      type: EtoolsTableColumnType.Date
+      type: EtoolsTableColumnType.Date,
+      sort: true
     }
   ];
 
