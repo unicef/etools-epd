@@ -17,17 +17,14 @@ import {navigate} from './redux/actions/app';
 import './routing/routes';
 
 // These are the elements needed by this element.
-import '@polymer/app-layout/app-drawer-layout/app-drawer-layout.js';
-import '@polymer/app-layout/app-drawer/app-drawer.js';
-import '@polymer/app-layout/app-header-layout/app-header-layout.js';
-import '@polymer/app-layout/app-header/app-header.js';
-import '@polymer/app-layout/app-toolbar/app-toolbar.js';
+import '@unicef-polymer/etools-unicef/src/etools-app-layout/app-drawer-layout.js';
+import '@unicef-polymer/etools-unicef/src/etools-app-layout/app-drawer.js';
+import '@unicef-polymer/etools-unicef/src/etools-app-layout/app-header-layout.js';
+import '@unicef-polymer/etools-unicef/src/etools-app-layout/app-header.js';
+import '@unicef-polymer/etools-unicef/src/etools-app-layout/app-toolbar.js';
 import '@unicef-polymer/etools-piwik-analytics/etools-piwik-analytics';
 import {createDynamicDialog} from '@unicef-polymer/etools-unicef/src/etools-dialog/dynamic-dialog';
 
-import {AppDrawerLayoutElement} from '@polymer/app-layout/app-drawer-layout/app-drawer-layout';
-import {AppHeaderLayoutElement} from '@polymer/app-layout/app-header-layout/app-header-layout';
-import {AppDrawerElement} from '@polymer/app-layout/app-drawer/app-drawer';
 import {LoadingMixin} from '@unicef-polymer/etools-unicef/src/etools-loading/etools-loading-mixin';
 import {html, LitElement} from 'lit';
 import {customElement, property, query} from 'lit/decorators.js';
@@ -236,9 +233,8 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
   @property({type: Boolean})
   private translationFilesAreLoaded = false;
 
-  @query('#layout') private drawerLayout!: AppDrawerLayoutElement;
-  @query('#drawer') private drawer!: AppDrawerElement;
-  @query('#appHeadLayout') private appHeaderLayout!: AppHeaderLayoutElement;
+  @query('#drawer') private drawer!: LitElement;
+  @query('#appHeadLayout') private appHeaderLayout!: LitElement;
 
   constructor() {
     super();
@@ -265,6 +261,7 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
       }
     });
     this.addEventListener('change-drawer-state', this.changeDrawerState);
+    this.addEventListener('app-drawer-transitioned', this.syncWithDrawerState);
     this.addEventListener('toggle-small-menu', this.toggleMenu as any);
     installMediaQueryWatcher(`(min-width: 460px)`, () => fireEvent(this, 'change-drawer-state'));
 
@@ -309,6 +306,10 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
 
   public changeDrawerState() {
     this.drawerOpened = !this.drawerOpened;
+  }
+
+  public syncWithDrawerState() {
+    this.drawerOpened = Boolean((this.shadowRoot?.querySelector('#drawer') as any).opened);
   }
 
   checkAppVersion() {
@@ -391,6 +392,7 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
   public disconnectedCallback() {
     super.disconnectedCallback();
     this.removeEventListener('change-drawer-state', this.changeDrawerState);
+    this.removeEventListener('app-drawer-transitioned', this.syncWithDrawerState);
     this.removeEventListener('toggle-small-menu', this.toggleMenu as any);
   }
 
@@ -466,25 +468,13 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
   }
 
   public onDrawerToggle() {
-    if (this.drawerOpened !== this.drawer.opened) {
-      this.drawerOpened = Boolean(this.drawer.opened);
+    if (this.drawerOpened !== (this.drawer as any).opened) {
+      this.drawerOpened = Boolean((this.drawer as any).opened);
     }
   }
 
   public toggleMenu(e: CustomEvent) {
     this.smallMenu = e.detail.value;
-    this._updateDrawerStyles();
-    this._notifyLayoutResize();
-  }
-
-  private _updateDrawerStyles(): void {
-    this.drawerLayout.updateStyles();
-    this.drawer.updateStyles();
-  }
-
-  private _notifyLayoutResize(): void {
-    this.drawerLayout.notifyResize();
-    this.appHeaderLayout.notifyResize();
   }
 
   protected isActiveMainPage(currentPageName: string, expectedPageName: string): boolean {
