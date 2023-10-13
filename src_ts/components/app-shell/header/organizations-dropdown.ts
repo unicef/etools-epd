@@ -1,7 +1,7 @@
 import {connect} from 'pwa-helpers/connect-mixin.js';
 import {store, RootState} from '../../../redux/store';
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
-import {logError} from '@unicef-polymer/etools-behaviors/etools-logging';
+import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
 import {EtoolsDropdownEl} from '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
 import {LitElement, html} from 'lit';
 import {customElement, property, query} from 'lit/decorators.js';
@@ -123,7 +123,7 @@ export class organizationsDropdown extends connect(store)(LitElement) {
   }
 
   protected handleOrganizationChangeError(error: any) {
-    logError('organization change failed!', 'organization-dropdown', error);
+    EtoolsLogger.error('organization change failed!', 'organization-dropdown', error);
     this.organizationSelectorDropdown.selected = this.currentOrganizationId;
     fireEvent(this, 'toast', {text: 'Something went wrong changing your organization. Please try again'});
   }
