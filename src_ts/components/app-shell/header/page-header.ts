@@ -1,4 +1,4 @@
-import '@polymer/app-layout/app-toolbar/app-toolbar';
+import '@unicef-polymer/etools-unicef/src/etools-app-layout/app-toolbar.js';
 import '@unicef-polymer/etools-unicef/src/etools-profile-dropdown/etools-profile-dropdown';
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
 import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button.js';
