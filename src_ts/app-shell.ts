@@ -299,7 +299,7 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
     this.waitForComponentRender().then(() => {
       window.EtoolsEsmmFitIntoEl = this.appHeaderLayout!.shadowRoot!.querySelector('#contentContainer');
       this.etoolsLoadingContainer = window.EtoolsEsmmFitIntoEl;
-      // Override ajax error parser inside @unicef-polymer/etools-ajax
+      // Override ajax error parser inside @unicef-polymer/etools-utils/dist/etools-ajax
       // for string translation using lit-translate
       window.ajaxErrorParserTranslateFunction = (key: string) => {
         return getTranslatedValue(key);
