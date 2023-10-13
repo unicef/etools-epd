@@ -34,13 +34,13 @@ import {
 
 import '@unicef-polymer/etools-unicef/src/etools-loading/etools-loading';
 import get from 'lodash-es/get';
-import '@unicef-polymer/etools-modules-common/dist/layout/export-data';
+import './intervention-tab-pages/common/layout/export-intervention-data';
 import {ListHelper, ListHelperResponse} from '@unicef-polymer/etools-modules-common/dist/list/list-helper';
 import {
   InterventionsListStyles,
   InterventionsTableStyles
 } from '@unicef-polymer/etools-modules-common/dist/list/list-styles';
-import {addCurrencyAmountDelimiter} from '@unicef-polymer/etools-currency-amount-input/mixins/etools-currency-module';
+import {addCurrencyAmountDelimiter} from '@unicef-polymer/etools-unicef/src/utils/currency';
 import {notHiddenPartnersSelector} from '../../../redux/reducers/common-data';
 import {translate, get as getTranslation} from 'lit-translate';
 import {
@@ -86,7 +86,11 @@ export class InterventionList extends connect(store)(LitElement) {
 
         <div slot="title-row-actions" class="content-header-actions">
           <div class="action">
-            <export-data .exportLinks="${this.exportLinks}" .params="${this.exportParams}" raised></export-data>
+            <export-intervention-data
+              .exportLinks="${this.exportLinks}"
+              .params="${this.exportParams}"
+              raised
+            ></export-intervention-data>
           </div>
         </div>
       </page-content-header>
@@ -162,19 +166,19 @@ export class InterventionList extends connect(store)(LitElement) {
       name: 'number',
       link_tmpl: `${ROOT_PATH}interventions/:id/metadata`,
       type: EtoolsTableColumnType.Link,
-      sort: null
+      sort: true
     },
     {
       label: translate('INTERVENTIONS_LIST.PARTNER_ORG_NAME') as unknown as string,
       name: 'partner_name',
       type: EtoolsTableColumnType.Text,
-      sort: null
+      sort: true
     },
     {
       label: translate('INTERVENTIONS_LIST.DOC_TYPE') as unknown as string,
       name: 'document_type',
       type: EtoolsTableColumnType.Custom,
-      sort: null,
+      sort: true,
       customMethod: (item: any, _key: string) => {
         return item.document_type ? translate(`ITEM_TYPE.${item.document_type.toUpperCase()}`) : item.document_type;
       }
@@ -184,7 +188,7 @@ export class InterventionList extends connect(store)(LitElement) {
       name: 'status',
       type: EtoolsTableColumnType.Custom,
       capitalize: true,
-      sort: null,
+      sort: true,
       customMethod: (item: any, _key: string) => {
         const translatedStatus = item.status ? translate(`PD_STATUS.${item.status.toUpperCase()}`) : item.status;
         if (item.status !== 'development') {
@@ -219,19 +223,19 @@ export class InterventionList extends connect(store)(LitElement) {
       label: translate('INTERVENTIONS_LIST.TITLE') as unknown as string,
       name: 'title',
       type: EtoolsTableColumnType.Text,
-      sort: null
+      sort: true
     },
     {
       label: translate('INTERVENTIONS_LIST.START_DATE') as unknown as string,
       name: 'start',
       type: EtoolsTableColumnType.Date,
-      sort: null
+      sort: true
     },
     {
       label: translate('INTERVENTIONS_LIST.END_DATE') as unknown as string,
       name: 'end',
       type: EtoolsTableColumnType.Date,
-      sort: null
+      sort: true
     }
   ];
 

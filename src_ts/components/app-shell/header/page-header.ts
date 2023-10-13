@@ -1,7 +1,7 @@
 import '@polymer/app-layout/app-toolbar/app-toolbar';
-import '@polymer/paper-icon-button/paper-icon-button';
 import '@unicef-polymer/etools-unicef/src/etools-profile-dropdown/etools-profile-dropdown';
 import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button.js';
 import {LitElement, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 
@@ -20,10 +20,10 @@ import {setActiveLanguage} from '../../../redux/actions/active-language';
 import {activeLanguage} from '../../../redux/reducers/active-language';
 import {countriesDropdownStyles} from './countries-dropdown-styles';
 import {AnyObject, EtoolsUser} from '@unicef-polymer/etools-types';
-import {sendRequest} from '@unicef-polymer/etools-ajax';
+import {sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax';
 import {etoolsEndpoints} from '../../../endpoints/endpoints-list';
 import {updateUserData} from '../../../redux/actions/user';
-import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import 'dayjs/locale/fr.js';
 import 'dayjs/locale/ru.js';
 import 'dayjs/locale/pt.js';
@@ -97,12 +97,12 @@ export class PageHeader extends connect(store)(LitElement) {
       </style>
 
       <app-toolbar sticky class="content-align">
-        <paper-icon-button
+        <etools-icon-button
           id="menuButton"
-          icon="menu"
+          name="menu"
           class="nav-menu-button"
-          @tap="${() => this.menuBtnClicked()}"
-        ></paper-icon-button>
+          @click="${() => this.menuBtnClicked()}"
+        ></etools-icon-button>
         <div class="titlebar content-align">
           <img id="app-logo" class="logo" src="images/etools-logo-color-white.svg" alt="eTools" />
           ${this.isStaging

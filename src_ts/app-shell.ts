@@ -3,7 +3,6 @@
 Copyright (c) 2019 The eTools Project Authors. All rights reserved.
 */
 
-import {setPassiveTouchGestures} from '@polymer/polymer/lib/utils/settings.js';
 import {connect} from 'pwa-helpers/connect-mixin.js';
 import {installMediaQueryWatcher} from 'pwa-helpers/media-query.js';
 import {installRouter} from 'pwa-helpers/router.js';
@@ -38,7 +37,6 @@ import './components/app-shell/menu/app-menu.js';
 import './components/app-shell/header/page-header.js';
 import './components/app-shell/footer/page-footer.js';
 
-import './components/app-shell/app-theme.js';
 import user from './redux/reducers/user';
 import commonData, {CommonDataState} from './redux/reducers/common-data';
 import uploadStatus from './redux/reducers/upload-status.js';
@@ -60,7 +58,7 @@ import {getAgreements, SET_AGREEMENTS} from './redux/actions/agreements';
 import isEmpty from 'lodash-es/isEmpty';
 import get from 'lodash-es/get';
 import './components/env-flags/environment-flags';
-import '@unicef-polymer/etools-toasts';
+import '@unicef-polymer/etools-unicef/src/etools-toasts/etools-toasts';
 import {registerTranslateConfig, use, translate} from 'lit-translate';
 import {EtoolsUser, RouteDetails} from '@unicef-polymer/etools-types';
 import {setStore} from '@unicef-polymer/etools-utils/dist/store.util';
@@ -75,6 +73,9 @@ import {commingFromPDDetailsToList} from './components/utils/utils';
 import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {setBasePath} from '@shoelace-style/shoelace/dist/utilities/base-path.js';
+import {EtoolsIconSet, initializeIcons} from '@unicef-polymer/etools-unicef/src/etools-icons/etools-icons';
+import {pmpIcons} from './components/pages/interventions/intervention-tab-pages/intervention-progress/styles/pmp-icons';
+
 declare const dayjs: any;
 declare const dayjs_plugin_utc: any;
 declare const dayjs_plugin_isSameOrBefore: any;
@@ -109,6 +110,17 @@ store.addReducers({
 });
 
 setBasePath('/epd/');
+initializeIcons(
+  [
+    EtoolsIconSet.communication,
+    EtoolsIconSet.device,
+    EtoolsIconSet.social,
+    EtoolsIconSet.av,
+    EtoolsIconSet.image,
+    EtoolsIconSet.maps
+  ],
+  pmpIcons
+);
 
 /**
  * @customElement
@@ -153,7 +165,7 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
           ?small-menu="${this.smallMenu}"
         >
           <!-- App main menu(left sidebar) -->
-          <app-menu selected-option="${this.mainPage}" ?small-menu="${this.smallMenu}"></app-menu>
+          <app-menu .selectedOption="${this.mainPage}" ?small-menu="${this.smallMenu}"></app-menu>
         </app-drawer>
 
         <!-- Main content -->
@@ -230,9 +242,6 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
 
   constructor() {
     super();
-    // Gesture events like tap and track generated from touch will not be
-    // preventable, allowing for better scrolling performance.
-    setPassiveTouchGestures(true);
 
     const menuTypeStoredVal: string | null = localStorage.getItem(SMALL_MENU_ACTIVE_LOCALSTORAGE_KEY);
     if (!menuTypeStoredVal) {
@@ -290,7 +299,7 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
     this.waitForComponentRender().then(() => {
       window.EtoolsEsmmFitIntoEl = this.appHeaderLayout!.shadowRoot!.querySelector('#contentContainer');
       this.etoolsLoadingContainer = window.EtoolsEsmmFitIntoEl;
-      // Override ajax error parser inside @unicef-polymer/etools-ajax
+      // Override ajax error parser inside @unicef-polymer/etools-utils/dist/etools-ajax
       // for string translation using lit-translate
       window.ajaxErrorParserTranslateFunction = (key: string) => {
         return getTranslatedValue(key);

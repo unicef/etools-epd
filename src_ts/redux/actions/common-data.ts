@@ -1,5 +1,5 @@
 import {Action, ActionCreator} from 'redux';
-import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
+import {sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax';
 import {etoolsEndpoints} from '../../endpoints/endpoints-list';
 import {AnyObject} from '@unicef-polymer/etools-types';
 
