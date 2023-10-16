@@ -9,46 +9,46 @@ import copy from 'rollup-plugin-copy';
 
 const copyConfig = {
   targets: [
-    {src: 'manifest.json', dest: 'rollup'},
-    {src: 'version.json', dest: 'rollup'},
-    {src: 'node_modules/@webcomponents/webcomponentsjs/**', dest: 'rollup/node_modules/@webcomponents/webcomponentsjs'},
-    {src: 'node_modules/@webcomponents/shadycss', dest: 'rollup/node_modules/@webcomponents'},
+    {src: 'manifest.json', dest: 'build'},
+    {src: 'version.json', dest: 'build'},
+    {src: 'node_modules/@webcomponents/webcomponentsjs/**', dest: 'build/node_modules/@webcomponents/webcomponentsjs'},
+    {src: 'node_modules/@webcomponents/shadycss', dest: 'build/node_modules/@webcomponents'},
     {
       src: 'node_modules/web-animations-js/web-animations-next-lite.min.js',
-      dest: 'rollup/node_modules/web-animations-js'
+      dest: 'build/node_modules/web-animations-js'
     },
-    {src: 'node_modules/leaflet/dist/leaflet.js', dest: 'rollup/node_modules/leaflet/dist'},
-    {src: 'node_modules/esri-leaflet/dist/esri-leaflet.js', dest: 'rollup/node_modules/esri-leaflet/dist'},
+    {src: 'node_modules/leaflet/dist/leaflet.js', dest: 'build/node_modules/leaflet/dist'},
+    {src: 'node_modules/esri-leaflet/dist/esri-leaflet.js', dest: 'build/node_modules/esri-leaflet/dist'},
     {
       src: 'node_modules/@mapbox/leaflet-omnivore/leaflet-omnivore.min.js',
-      dest: 'rollup/node_modules/@mapbox/leaflet-omnivore/'
+      dest: 'build/node_modules/@mapbox/leaflet-omnivore/'
     },
-    {src: 'node_modules/leaflet/dist/leaflet.css', dest: 'rollup/node_modules/leaflet/dist'},
-    {src: 'node_modules/leaflet/dist/images/marker-icon.png', dest: 'rollup/node_modules/leaflet/dist/images'},
+    {src: 'node_modules/leaflet/dist/leaflet.css', dest: 'build/node_modules/leaflet/dist'},
+    {src: 'node_modules/leaflet/dist/images/marker-icon.png', dest: 'build/node_modules/leaflet/dist/images'},
     {
       src: 'node_modules/leaflet.markercluster/dist/leaflet.markercluster.js',
-      dest: 'rollup/node_modules/leaflet.markercluster/dist'
+      dest: 'build/node_modules/leaflet.markercluster/dist'
     },
     {
       src: 'node_modules/focus-visible/dist/focus-visible.min.js',
-      dest: 'rollup/node_modules/focus-visible/dist'
+      dest: 'build/node_modules/focus-visible/dist'
     },
-    {src: 'node_modules/dayjs/dayjs.min.js', dest: 'rollup/node_modules/dayjs'},
-    {src: 'node_modules/dayjs/plugin/utc.js', dest: 'rollup/node_modules/dayjs/plugin'},
-    {src: 'node_modules/dayjs/plugin/isBetween.js', dest: 'rollup/node_modules/dayjs/plugin'},
-    {src: 'node_modules/dayjs/plugin/isSameOrBefore.js', dest: 'rollup/node_modules/dayjs/plugin'},
-    {src: 'node_modules/dayjs/plugin/isSameOrAfter.js', dest: 'rollup/node_modules/dayjs/plugin'},
+    {src: 'node_modules/dayjs/dayjs.min.js', dest: 'build/node_modules/dayjs'},
+    {src: 'node_modules/dayjs/plugin/utc.js', dest: 'build/node_modules/dayjs/plugin'},
+    {src: 'node_modules/dayjs/plugin/isBetween.js', dest: 'build/node_modules/dayjs/plugin'},
+    {src: 'node_modules/dayjs/plugin/isSameOrBefore.js', dest: 'build/node_modules/dayjs/plugin'},
+    {src: 'node_modules/dayjs/plugin/isSameOrAfter.js', dest: 'build/node_modules/dayjs/plugin'},
     {
       src: 'src/components/pages/interventions/intervention-tab-pages/assets/i18n',
-      dest: 'rollup/src/components/pages/interventions/intervention-tab-pages/assets'
+      dest: 'build/src/components/pages/interventions/intervention-tab-pages/assets'
     },
     {
       src: 'node_modules/@unicef-polymer/etools-unicef/src/etools-icons/icons/**',
-      dest: 'rollup/src/icons'
+      dest: 'build/src/icons'
     },
-    {src: 'images', dest: 'rollup'},
-    {src: 'assets', dest: 'rollup'},
-    {src: 'index.html', dest: 'rollup'}
+    {src: 'images', dest: 'build'},
+    {src: 'assets', dest: 'build'},
+    {src: 'index.html', dest: 'build'}
   ]
 };
 

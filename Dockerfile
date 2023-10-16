@@ -29,6 +29,6 @@ WORKDIR /code
 RUN npm install express --no-save
 RUN npm install browser-capabilities@1.1.x --no-save
 COPY --from=builder /code/express.js /code/express.js
-COPY --from=builder /code/rollup /code/rollup
+COPY --from=builder /code/rollup /code/build
 EXPOSE 8080
 CMD ["node", "express.js"]
