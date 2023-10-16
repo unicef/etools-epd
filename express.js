@@ -3,7 +3,7 @@ const browserCapabilities = require('browser-capabilities'); // eslint-disable-l
 const UAParser = require('ua-parser-js').UAParser; // eslint-disable-line
 
 const app = express();
-const basedir = __dirname + '/rollup/'; // eslint-disable-line
+const basedir = __dirname + '/build/'; // eslint-disable-line
 
 function getSourcesPath(request, filePath = '') {
   const userAgent = request.headers['user-agent'];
