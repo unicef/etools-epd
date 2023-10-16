@@ -28,8 +28,8 @@ jobs:
           name: EsLint
           command: npm run lint
       - run:
-          name: Polymer3 Build
-          command: npm run build
+          name: Rollup Build
+          command: npm run build:rollup
           no_output_timeout: 25m
 
   build_and_deploy:
@@ -88,3 +88,4 @@ workflows:
                 - staging
                 - develop
                 - use-sl-dialog
+                - rollup-build-test
