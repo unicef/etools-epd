@@ -26,9 +26,8 @@ RUN apk update
 RUN apk add --update bash
 
 WORKDIR /code
-COPY --from=builder /code/package.json /code/package.json
-RUN npm install express@4.17.x
-RUN npm install browser-capabilities@1.1.x
+RUN npm install express --no-save
+RUN npm install browser-capabilities@1.1.x --no-save
 COPY --from=builder /code/express.js /code/express.js
 COPY --from=builder /code/rollup /code/rollup
 EXPOSE 8080
