@@ -2,13 +2,10 @@ FROM node:14.21-alpine3.16 as builder
 RUN apk update
 RUN apk add --update bash
 
-RUN npm i -g npm@8.19.3
-
 RUN apk add git
 RUN npm config set unsafe-perm true
 # RUN npm install -g --unsafe-perm polymer-cli
 RUN npm install -g typescript@4.x
-
 
 WORKDIR /tmp
 ADD package.json /tmp/
