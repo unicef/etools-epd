@@ -44,7 +44,7 @@ const copyConfig = {
     },
     {
       src: 'node_modules/@unicef-polymer/etools-unicef/src/etools-icons/icons/**',
-      dest: 'rollup/icons'
+      dest: 'rollup/src/icons'
     },
     {src: 'images', dest: 'rollup'},
     {src: 'assets', dest: 'rollup'},
