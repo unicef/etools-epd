@@ -15,6 +15,11 @@ const copyConfig = {
       dest: 'rollup/node_modules/web-animations-js'
     },
     {src: 'node_modules/leaflet/dist/leaflet.js', dest: 'rollup/node_modules/leaflet/dist'},
+    {src: 'node_modules/esri-leaflet/dist/esri-leaflet.js', dest: 'rollup/node_modules/esri-leaflet/dist'},
+    {
+      src: 'node_modules/@mapbox/leaflet-omnivore/leaflet-omnivore.min.js',
+      dest: 'rollup/node_modules/@mapbox/leaflet-omnivore/'
+    },
     {src: 'node_modules/leaflet/dist/leaflet.css', dest: 'rollup/node_modules/leaflet/dist'},
     {src: 'node_modules/leaflet/dist/images/marker-icon.png', dest: 'rollup/node_modules/leaflet/dist/images'},
     {
@@ -26,12 +31,17 @@ const copyConfig = {
       dest: 'rollup/node_modules/focus-visible/dist'
     },
     {src: 'node_modules/dayjs/dayjs.min.js', dest: 'rollup/node_modules/dayjs'},
-    {src: 'node_modules/dayjs/plugin/utc.js', dest: 'rollup/node_modules/dayjs'},
-    {src: 'node_modules/dayjs/plugin/isBetween.js', dest: 'rollup/node_modules/dayjs'},
-    {src: 'node_modules/dayjs/plugin/isSameOrBefore.js', dest: 'rollup/node_modules/dayjs'},
+    {src: 'node_modules/dayjs/plugin/utc.js', dest: 'rollup/node_modules/dayjs/plugin'},
+    {src: 'node_modules/dayjs/plugin/isBetween.js', dest: 'rollup/node_modules/dayjs/plugin'},
+    {src: 'node_modules/dayjs/plugin/isSameOrBefore.js', dest: 'rollup/node_modules/dayjs/plugin'},
+    {src: 'node_modules/dayjs/plugin/isSameOrAfter.js', dest: 'rollup/node_modules/dayjs/plugin'},
     {
       src: 'src/components/pages/interventions/intervention-tab-pages/assets/i18n',
       dest: 'rollup/src/components/pages/interventions/intervention-tab-pages/assets'
+    },
+    {
+      src: 'node_modules/@unicef-polymer/etools-unicef/src/etools-icons/icons/**',
+      dest: 'rollup/node_modules/@unicef-polymer/etools-unicef/src/etools-icons/icons'
     },
     {src: 'images', dest: 'rollup'},
     {src: 'assets', dest: 'rollup'},
