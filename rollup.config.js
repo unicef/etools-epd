@@ -55,7 +55,7 @@ const copyConfig = {
 const config = {
   input: 'src/app-shell.js',
   output: {
-    dir: 'rollup/src',
+    dir: 'build/src',
     format: 'es'
   },
   plugins: [minifyHTML(), copy(copyConfig), resolve()],
