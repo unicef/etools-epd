@@ -9,6 +9,9 @@ import copy from 'rollup-plugin-copy';
 
 const copyConfig = {
   targets: [
+    {src: 'manifest.json', dest: 'rollup'},
+    {src: 'version.json', dest: 'rollup'},
+    {src: 'node_modules/@webcomponents/webcomponentsjs/**', dest: 'rollup/node_modules/@webcomponents/webcomponentsjs'},
     {src: 'node_modules/@webcomponents/shadycss', dest: 'rollup/node_modules/@webcomponents'},
     {
       src: 'node_modules/web-animations-js/web-animations-next-lite.min.js',
@@ -41,7 +44,7 @@ const copyConfig = {
     },
     {
       src: 'node_modules/@unicef-polymer/etools-unicef/src/etools-icons/icons/**',
-      dest: 'rollup/node_modules/@unicef-polymer/etools-unicef/src/etools-icons/icons'
+      dest: 'rollup/icons'
     },
     {src: 'images', dest: 'rollup'},
     {src: 'assets', dest: 'rollup'},
