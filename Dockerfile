@@ -30,6 +30,6 @@ COPY --from=builder /code/package.json /code/package.json
 RUN npm install express@4.17.x
 RUN npm install browser-capabilities@1.1.x
 COPY --from=builder /code/express.js /code/express.js
-COPY --from=builder /code/build /code/build
+COPY --from=builder /code/rollup /code/rollup
 EXPOSE 8080
 CMD ["node", "express.js"]
