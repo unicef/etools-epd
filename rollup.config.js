@@ -52,7 +52,7 @@ const copyConfig = {
     { src: 'node_modules/dayjs/plugin/isSameOrAfter.js', dest: 'src/node_modules/dayjs/plugin' },
     {
       src: 'src_ts/components/pages/interventions/intervention-tab-pages/assets/i18n',
-      dest: 'src/components/pages/interventions/intervention-tab-pages/assets'
+      dest: 'src/src/components/pages/interventions/intervention-tab-pages/assets'
     },
     {
       src: 'node_modules/@unicef-polymer/etools-unicef/src/etools-icons/icons/**',
