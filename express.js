@@ -1,9 +1,10 @@
 const express = require('express'); // eslint-disable-line
+const compression = require('compression');
 const browserCapabilities = require('browser-capabilities'); // eslint-disable-line
 const UAParser = require('ua-parser-js').UAParser; // eslint-disable-line
 
 const app = express();
-const basedir = __dirname + '/build/'; // eslint-disable-line
+const basedir = __dirname + '/src/'; // eslint-disable-line
 
 function getSourcesPath(request, filePath = '') {
   const userAgent = request.headers['user-agent'];
@@ -13,6 +14,8 @@ function getSourcesPath(request, filePath = '') {
   const needToUpgrade = !clientCapabilities.has('modules') && browserName !== 'Edge';
   return needToUpgrade ? `${basedir}upgrade-browser.html` : `${basedir}${filePath}`;
 }
+
+app.use(compression())
 
 app.use('/epd/', (req, res, next) => {
   express.static(getSourcesPath(req))(req, res, next);
