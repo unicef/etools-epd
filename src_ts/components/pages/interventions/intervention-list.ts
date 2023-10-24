@@ -90,6 +90,7 @@ export class InterventionList extends connect(store)(LitElement) {
               .exportLinks="${this.exportLinks}"
               .params="${this.exportParams}"
               raised
+              hidden
             ></export-intervention-data>
           </div>
         </div>
