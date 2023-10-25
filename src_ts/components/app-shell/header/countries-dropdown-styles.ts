@@ -9,6 +9,7 @@ export const countriesDropdownStyles = html`
 
     :host {
       display: block;
+      --sl-spacing-small: 0;
     }
 
     :host(:hover) {
@@ -19,14 +20,6 @@ export const countriesDropdownStyles = html`
       --auto-size-available-height: 600px;
     }
 
-    organizations-dropdown {
-      width: 165px;
-    }
-
-    countries-dropdown {
-      width: 160px;
-    }
-
     #languageSelector {
       width: 120px;
     }
@@ -36,27 +29,29 @@ export const countriesDropdownStyles = html`
     }
 
     organizations-dropdown {
-      width: 165px;
+      width: 180px;
     }
 
     countries-dropdown {
       width: 160px;
-    }
-
-    #languageSelector {
-      width: 120px;
-    }
-
-    .w100 {
-      width: 100%;
     }
 
     etools-dropdown::part(display-input) {
-      text-align: right;
+      text-align: end;
     }
 
     etools-dropdown.warning::part(combobox) {
       outline: 1.5px solid red !important;
+      padding: 4px;
+    }
+    etools-dropdown::part(display-input)::placeholder {
+      color: var(--sl-input-color);
+      opacity: 1;
+    }
+
+    etools-dropdown::part(display-input)::-ms-input-placeholder {
+      /* Edge 12-18 */
+      color: var(--sl-input-color);
     }
 
     @media (max-width: 768px) {

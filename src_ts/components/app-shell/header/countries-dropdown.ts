@@ -26,7 +26,7 @@ export class CountriesDropdown extends connect(store)(LitElement) {
     // language=HTML
     return html`
       ${countriesDropdownStyles}
-      <!-- shown options limit set to 250 as there are currently 195 countries in the UN council and about 230 total -->
+      <!-- shown options limit set to 280 as there are currently 195 countries in the UN council and about 230 total -->
       <etools-dropdown
         id="countrySelector"
         transparent
@@ -40,7 +40,7 @@ export class CountriesDropdown extends connect(store)(LitElement) {
         option-value="id"
         trigger-value-change-event
         @etools-selected-item-changed="${this.countrySelected}"
-        .shownOptionsLimit="${250}"
+        .shownOptionsLimit="${280}"
         hide-search
         .autoWidth="${true}"
       ></etools-dropdown>
