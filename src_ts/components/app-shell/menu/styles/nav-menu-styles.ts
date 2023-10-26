@@ -19,9 +19,6 @@ export const navMenuStyles = css`
   }
 
   @media (max-height: 600px) {
-    sl-tooltip {
-      display: none;
-    }
     :host([small-menu]) {
       overflow-x: hidden;
     }
