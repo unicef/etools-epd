@@ -60,8 +60,8 @@ const copyConfig = {
     { src: 'node_modules/dayjs/plugin/isSameOrBefore.js', dest: 'src/node_modules/dayjs/plugin' },
     { src: 'node_modules/dayjs/plugin/isSameOrAfter.js', dest: 'src/node_modules/dayjs/plugin' },
     {
-      src: 'src_ts/components/pages/interventions/pages/intervention-tab-pages/assets/i18n',
-      dest: 'src/src/components/pages/interventions/pages/intervention-tab-pages/assets'
+      src: 'src_ts/components/pages/interventions/intervention-tab-pages/assets/i18n',
+      dest: 'src/src/components/pages/interventions/intervention-tab-pages/assets'
     },
     {
       src: 'node_modules/@unicef-polymer/etools-unicef/src/etools-icons/icons/**',
