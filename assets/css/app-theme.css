@@ -14,10 +14,6 @@
   --secondary-text-color: rgba(0, 0, 0, 0.54);
   --default-btn-bg-color: rgba(0, 0, 0, 0.45);
 
-  --sl-color-primary-600: var(--primary-color);
-  --sl-color-success-600: var(--ternary-color);
-  --sl-color-neutral-600: var(--default-btn-bg-color);
-
   --header-color: #ffffff;
   --header-bg-color: #233944;
   --header-icon-color: rgba(250, 250, 250, 0.7);
@@ -59,6 +55,15 @@
   --error-box-bg-color: #f2dede;
   --error-box-border-color: #ebccd1;
   --error-box-text-color: var(--error-color);
+  --primary-color-hover: #027ac9;
+  --default-btn-bg-hover-color: rgba(0, 0, 0, 0.55);
+
+  --sl-color-primary-600: var(--primary-color);
+  --sl-color-primary-500: var(--primary-color-hover);
+  --sl-color-success-600: var(--ternary-color);
+  --sl-color-neutral-600: var(--default-btn-bg-color);
+  --sl-color-neutral-500: var(--default-btn-bg-hover-color);
+  --sl-color-danger-600: var(--error-color);
 
   --gray-06: rgba(0, 0, 0, 0.06);
   --gray-20: rgba(0, 0, 0, 0.2);
