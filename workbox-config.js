@@ -7,7 +7,6 @@ export const workboxConfig = {
     'assets/**/*',
     'images/**/*'
   ],
-  exclude: ['version.json'],
   swDest: "src/service-worker.js",
   runtimeCaching: [
     {
