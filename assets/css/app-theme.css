@@ -57,6 +57,7 @@
   --error-box-text-color: var(--error-color);
   --primary-color-hover: #027ac9;
   --default-btn-bg-hover-color: rgba(0, 0, 0, 0.55);
+  --error-hover-color: #d1391e;
 
   --sl-color-primary-600: var(--primary-color);
   --sl-color-primary-500: var(--primary-color-hover);
@@ -64,6 +65,7 @@
   --sl-color-neutral-600: var(--default-btn-bg-color);
   --sl-color-neutral-500: var(--default-btn-bg-hover-color);
   --sl-color-danger-600: var(--error-color);
+  --sl-color-danger-500: var(--error-hover-color);
 
   --gray-06: rgba(0, 0, 0, 0.06);
   --gray-20: rgba(0, 0, 0, 0.2);
