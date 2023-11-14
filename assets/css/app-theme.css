@@ -124,4 +124,7 @@
   }
 
   --epd-profile-dialog-border-b: solid 1px var(--dark-divider-color);
+
+  /* sl-tooltip styles */
+  --sl-tooltip-background-color: rgba(97, 97, 97, 0.9);
 }
