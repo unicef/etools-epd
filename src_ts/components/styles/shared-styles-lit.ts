@@ -61,7 +61,7 @@ export const SharedStylesLit = html`
 
     etools-dropdown-multi[required]::part(esmm-label),
     etools-dropdown[required]::part(esmm-label) {
-      background: url('./images/required.svg') no-repeat 99% 20%/8px;
+      background: url('./assets/images/required.svg') no-repeat 99% 20%/8px;
       width: auto !important;
       max-width: 100%;
       inset-inline-end: auto;
@@ -69,23 +69,23 @@ export const SharedStylesLit = html`
     }
 
     label[required] {
-      background: url('./images/required.svg') no-repeat 99% 20%/8px;
+      background: url('./assets/images/required.svg') no-repeat 99% 20%/8px;
       width: auto !important;
       max-width: 100%;
       inset-inline-end: auto;
       padding-inline-end: 15px;
-      background: url('./images/required.svg') no-repeat 87% 40%/6px;
+      background: url('./assets/images/required.svg') no-repeat 87% 40%/6px;
     }
 
     html[dir='rtl'] etools-dropdown-multi[required]::part(esmm-label),
     html[dir='rtl'] etools-dropdown[required]::part(esmm-label) {
-      background: url('./images/required.svg') no-repeat 0 20%/8px;
+      background: url('./assets/images/required.svg') no-repeat 0 20%/8px;
       inset-inline-end: auto;
       padding-inline-end: 15px;
     }
 
     html[dir='rtl'] label[required] {
-      background: url('./images/required.svg') no-repeat 0 20%/8px;
+      background: url('./assets/images/required.svg') no-repeat 0 20%/8px;
       inset-inline-end: auto;
       padding-inline-end: 15px;
     }

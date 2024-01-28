@@ -70,17 +70,7 @@ import {commingFromPDDetailsToList} from './components/utils/utils';
 import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {setBasePath} from '@shoelace-style/shoelace/dist/utilities/base-path.js';
-import {EtoolsIconSet, initializeIcons} from '@unicef-polymer/etools-unicef/src/etools-icons/etools-icons';
-import {pmpIcons} from './components/pages/interventions/intervention-tab-pages/intervention-progress/styles/pmp-icons';
-
-declare const dayjs: any;
-declare const dayjs_plugin_utc: any;
-declare const dayjs_plugin_isSameOrBefore: any;
-declare const dayjs_plugin_isBetween: any;
-
-dayjs.extend(dayjs_plugin_utc);
-dayjs.extend(dayjs_plugin_isSameOrBefore);
-dayjs.extend(dayjs_plugin_isBetween);
+import {initializeIcons} from '@unicef-polymer/etools-unicef/src/etools-icons/etools-icons';
 
 function fetchLangFiles(lang: string) {
   return Promise.allSettled([
@@ -107,17 +97,7 @@ store.addReducers({
 });
 
 setBasePath('/epd/');
-initializeIcons(
-  [
-    EtoolsIconSet.communication,
-    EtoolsIconSet.device,
-    EtoolsIconSet.social,
-    EtoolsIconSet.av,
-    EtoolsIconSet.image,
-    EtoolsIconSet.maps
-  ],
-  pmpIcons
-);
+initializeIcons();
 
 /**
  * @customElement
@@ -173,28 +153,20 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
 
           <!-- Main content -->
           <main role="main" class="main-content">
-            <intervention-list
-              class="page"
-              ?active="${this.isActivePage(this.mainPage, 'interventions', this.subPage, 'list')}"
-              ?hidden="${!this.isActivePage(this.mainPage, 'interventions', this.subPage, 'list')}"
-            ></intervention-list>
-            <intervention-tabs
-              class="page"
-              ?active="${this.isActivePage(
-                this.mainPage,
-                'interventions',
-                this.subPage,
-                'overview|metadata|strategy|workplan|workplan-editor|timing|review|attachments|info'
-              )}"
-              ?hidden="${!this.isActivePage(
-                this.mainPage,
-                'interventions',
-                this.subPage,
-                'overview|metadata|strategy|workplan|workplan-editor|timing|review|attachments|info'
-              )}"
-            >
-            </intervention-tabs>
-            <not-found class="page" ?active="${this.isActivePage(this.mainPage, 'not-found')}"></not-found>
+            ${this.isActivePage(this.mainPage, 'interventions', this.subPage, 'list')
+              ? html`<intervention-list class="page" active></intervention-list>`
+              : html``}
+            ${this.isActivePage(
+              this.mainPage,
+              'interventions',
+              this.subPage,
+              'overview|metadata|strategy|workplan|workplan-editor|timing|review|attachments|info'
+            )
+              ? html`<intervention-tabs class="page" active> </intervention-tabs>`
+              : html``}
+            ${this.isActivePage(this.mainPage, 'not-found')
+              ? html`<not-found class="page" active></not-found>`
+              : html``}
           </main>
 
           <page-footer></page-footer>
