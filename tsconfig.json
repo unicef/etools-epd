@@ -16,7 +16,6 @@
     "noEmitHelpers": true,
     "importHelpers": true,
     "outDir": "src",
-    "typeRoots": ["./src_ts/types"],
     "skipLibCheck": true,
     "resolveJsonModule": true
   },
