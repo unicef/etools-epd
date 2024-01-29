@@ -23,6 +23,7 @@
     "format:prettier": "prettier \"**/*.ts\" --write --ignore-path .gitignore",
     "lint": "npm run lint:eslint",
     "format": "npm run format:eslint",
+    "generate:icons": "npm --prefix node_modules/@unicef-polymer/etools-unicef run generate-icons -- --output=$(pwd)/assets/icons/ --icons=$(pwd)/assets/icons/icons.js",
     "rd:init": "relative-deps init",
     "rd:add": "relative-deps add",
     "rd:reload": "relative-deps",
@@ -33,15 +34,12 @@
     "@shoelace-style/shoelace": "^2.10.0",
     "@types/leaflet": "^1.9.3",
     "@types/lodash-es": "^4.17.7",
-    "@unicef-polymer/etools-modules-common": "^5.0.0-rc.33",
+    "@unicef-polymer/etools-modules-common": "^5.0.0-rc.40",
     "@unicef-polymer/etools-piwik-analytics": "^4.0.1-rc.3",
-    "@unicef-polymer/etools-types": "1.11.16",
-    "@unicef-polymer/etools-unicef": "^1.0.0-rc.49",
-    "@unicef-polymer/etools-utils": "^2.0.0-rc.4",
-    "@webcomponents/webcomponentsjs": "^2.8.0",
-    "browser-capabilities": "^1.1.4",
-    "compression": "^1.7.4",
-    "dayjs": "^1.11.7",
+    "@unicef-polymer/etools-types": "^1.11.17",
+    "@unicef-polymer/etools-unicef": "^1.0.0-rc.56",
+    "@unicef-polymer/etools-utils": "^2.0.0-rc.6",
+    "dayjs": "^1.11.10",
     "esri-leaflet": "^3.0.8",
     "express": "^4.18.2",
     "focus-visible": "^5.2.0",
@@ -54,10 +52,10 @@
     "pwa-helpers": "^0.9.1",
     "redux": "^4.2.1",
     "redux-thunk": "^2.4.2",
-    "reselect": "^4.1.7",
-    "web-animations-js": "^2.3.2"
+    "reselect": "^4.1.7"
   },
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-node-resolve": "^13.0.6",
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^11.1.5",
@@ -92,8 +90,8 @@
     "relative-deps": "^1.0.7",
     "rollup": "^2.79.1",
     "rollup-plugin-copy": "^3.4.0",
-    "rollup-plugin-esbuild": "^6.1.0",
     "rollup-plugin-delete": "^2.0.0",
+    "rollup-plugin-esbuild": "^6.1.0",
     "rollup-plugin-filesize": "^9.1.2",
     "rollup-plugin-license": "^3.2.0",
     "rollup-plugin-livereload": "^2.0.5",
@@ -109,7 +107,8 @@
     "ua-parser-js": ">=1.0.33",
     "urijs": ">=1.19.11",
     "wd": ">=1.14.0",
-    "y18n": ">=3.2.2"
+    "y18n": ">=3.2.2",
+    "svg-sprite": "^2.0.2"
   },
   "relativeDependencies": {}
 }

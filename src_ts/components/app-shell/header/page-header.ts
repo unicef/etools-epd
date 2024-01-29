@@ -31,6 +31,7 @@ import 'dayjs/locale/ar.js';
 import 'dayjs/locale/ro.js';
 import 'dayjs/locale/es.js';
 import {appLanguages} from '../../../config/app-constants';
+import dayjs from 'dayjs';
 
 store.addReducers({
   activeLanguage
@@ -99,12 +100,13 @@ export class PageHeader extends connect(store)(LitElement) {
       <app-toolbar sticky class="content-align">
         <etools-icon-button
           id="menuButton"
+          label="menu"
           name="menu"
           class="nav-menu-button"
           @click="${() => this.menuBtnClicked()}"
         ></etools-icon-button>
         <div class="titlebar content-align">
-          <img id="app-logo" class="logo" src="images/etools-logo-color-white.svg" alt="eTools" />
+          <img id="app-logo" class="logo" src="./assets/images/etools-logo-color-white.svg" alt="eTools" />
           ${this.isStaging
             ? html`<div class="envWarning">
            <span class='envLong'> - </span>${this.environment} <span class='envLong'>  TESTING ENVIRONMENT</div>`
@@ -280,7 +282,7 @@ export class PageHeader extends connect(store)(LitElement) {
     }
     const newLanguage = selectedItem.value;
     if (newLanguage) {
-      window.dayjs.locale(newLanguage);
+      dayjs.locale(newLanguage);
       // Event caught by self translating npm packages
       fireEvent(this, 'language-changed', {language: newLanguage});
     }

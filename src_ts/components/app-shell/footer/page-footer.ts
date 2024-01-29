@@ -38,7 +38,7 @@ export class PageFooter extends LitElement {
 
         #unicef-logo img {
           height: 28px;
-          width: 118px;
+          width: 115px;
         }
 
         .footer-link {
@@ -60,7 +60,7 @@ export class PageFooter extends LitElement {
       <footer>
         <div id="footer-content">
           <span id="unicef-logo">
-            <img src="images/UNICEF_logo.png" alt="UNICEF logo" />
+            <img src="./assets/images/UNICEF_logo.webp" alt="UNICEF logo" />
           </span>
           <!-- TODO: modify span to a with proper href values after footer pages are ready -->
           <!--   <span class="footer-link">Contact</span>
