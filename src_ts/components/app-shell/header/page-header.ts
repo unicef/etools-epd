@@ -15,6 +15,7 @@ import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import isEmpty from 'lodash-es/isEmpty';
 import {updateCurrentUser} from '../../user/user-actions';
 import {pageHeaderStyles} from './page-header-styles';
+import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
 import {translate, use, get as getTranslation} from 'lit-translate';
 import {setActiveLanguage} from '../../../redux/actions/active-language';
 import {activeLanguage} from '../../../redux/reducers/active-language';
@@ -44,7 +45,7 @@ store.addReducers({
 @customElement('page-header')
 export class PageHeader extends connect(store)(LitElement) {
   static get styles() {
-    return [pageHeaderStyles];
+    return [pageHeaderStyles, layoutStyles];
   }
 
   public render() {
@@ -112,8 +113,8 @@ export class PageHeader extends connect(store)(LitElement) {
            <span class='envLong'> - </span>${this.environment} <span class='envLong'>  TESTING ENVIRONMENT</div>`
             : ''}
         </div>
-        <div class="header__item header__right-group">
-          <div class="dropdowns">
+        <div class="layout-horizontal align-items-center layout-wrap">
+          <div class="layout-horizontal align-items-center">
             <etools-dropdown
               id="languageSelector"
               transparent
@@ -128,22 +129,22 @@ export class PageHeader extends connect(store)(LitElement) {
               no-label-float
               .autoWidth="${true}"
             ></etools-dropdown>
-
             <countries-dropdown dir="${this.dir}"></countries-dropdown>
+          </div>  
+          <div class="layout-horizontal align-items-center">
             <organizations-dropdown></organizations-dropdown>
+            <etools-profile-dropdown
+              title=${translate('GENERAL.PROFILEANDSIGNOUT')}
+              .sections="${this.profileDrSections}"
+              .offices="${this.profileDrOffices}"
+              .users="${this.profileDrUsers}"
+              .profile="${this.profile ? {...this.profile} : {}}"
+              language="${this.selectedLanguage}"
+              @save-profile="${this.handleSaveProfile}"
+              @sign-out="${this._signOut}"
+            >
+            </etools-profile-dropdown>
           </div>
-
-          <etools-profile-dropdown
-            title=${translate('GENERAL.PROFILEANDSIGNOUT')}
-            .sections="${this.profileDrSections}"
-            .offices="${this.profileDrOffices}"
-            .users="${this.profileDrUsers}"
-            .profile="${this.profile ? {...this.profile} : {}}"
-            language="${this.selectedLanguage}"
-            @save-profile="${this.handleSaveProfile}"
-            @sign-out="${this._signOut}"
-          >
-          </etools-profile-dropdown>
         </div>
       </app-toolbar>
     `;
