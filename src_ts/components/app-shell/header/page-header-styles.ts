@@ -90,5 +90,11 @@ export const pageHeaderStyles = css`
     app-toolbar {
       padding-inline-end: 0px;
     }
+    #languageSelector {
+      width: 180px;
+    }
+    etools-profile-dropdown {
+      margin-left: 56px;
+    }
   }
 `;
