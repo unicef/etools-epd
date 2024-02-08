@@ -5,7 +5,7 @@ export const SharedStylesLit = html`
     :host {
       display: block;
       box-sizing: border-box;
-      font-size: 16px;
+      font-size: var(--etools-font-size-16, 16px);
     }
 
     *[hidden] {
@@ -21,11 +21,11 @@ export const SharedStylesLit = html`
 
     h1 {
       text-transform: capitalize;
-      font-size: 24px;
+      font-size: var(--etools-font-size-24, 24px);
     }
 
     h2 {
-      font-size: 20px;
+      font-size: var(--etools-font-size-20, 20px);
     }
 
     a {
@@ -39,7 +39,7 @@ export const SharedStylesLit = html`
 
     .error {
       color: var(--error-color);
-      font-size: 12px;
+      font-size: var(--etools-font-size-12, 12px);
       align-self: center;
     }
 
