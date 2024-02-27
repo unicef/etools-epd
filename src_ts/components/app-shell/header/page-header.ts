@@ -32,7 +32,6 @@ import 'dayjs/locale/ro.js';
 import 'dayjs/locale/es.js';
 import {appLanguages} from '../../../config/app-constants';
 import dayjs from 'dayjs';
-import '@unicef-polymer/etools-unicef/src/etools-accesibility/etools-accesibility';
 
 store.addReducers({
   activeLanguage
@@ -145,8 +144,6 @@ export class PageHeader extends connect(store)(LitElement) {
             @sign-out="${this._signOut}"
           >
           </etools-profile-dropdown>
-
-          <etools-accesibility></etools-accesibility>
         </div>
       </app-toolbar>
     `;
