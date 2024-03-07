@@ -8,7 +8,7 @@ import {customElement, property} from 'lit/decorators.js';
 import './countries-dropdown';
 import './organizations-dropdown';
 
-import {connect} from 'pwa-helpers/connect-mixin.js';
+import {connect} from '@unicef-polymer/etools-utils/dist/pwa.utils';
 import {RootState, store} from '../../../redux/store';
 import {isProductionServer, ROOT_PATH} from '../../../config/config';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
