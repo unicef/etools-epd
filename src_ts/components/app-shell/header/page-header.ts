@@ -21,7 +21,7 @@ import {setActiveLanguage} from '../../../redux/actions/active-language';
 import {activeLanguage} from '../../../redux/reducers/active-language';
 import {countriesDropdownStyles} from './countries-dropdown-styles';
 import {AnyObject, EtoolsUser} from '@unicef-polymer/etools-types';
-import {sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax';
+import {sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
 import {etoolsEndpoints} from '../../../endpoints/endpoints-list';
 import {updateUserData} from '../../../redux/actions/user';
 import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
@@ -60,10 +60,6 @@ export class PageHeader extends connect(store)(LitElement) {
         support-btn {
           color: var(--header-icon-color);
         }
-        .dropdowns {
-          display: flex;
-          margin-right: 5px;
-        }
         .header {
           flex-wrap: wrap;
           height: 100%;
@@ -76,11 +72,18 @@ export class PageHeader extends connect(store)(LitElement) {
           display: flex;
           align-items: center;
         }
+        .header__left-group {
+        }
         .header__right-group {
           justify-content: space-evenly;
+          margin-inline-start: auto;
+        }
+        .dropdowns {
+          display: flex;
+          padding-block-start: 6px;
         }
         .logo {
-          margin-left: 20px;
+          margin: 0 10px 0 20px;
         }
         @media (max-width: 380px) {
           .header__item {
@@ -93,46 +96,46 @@ export class PageHeader extends connect(store)(LitElement) {
           }
           .envWarning {
             font-size: 10px;
-            margin-left: 2px;
           }
         }
       </style>
 
       <app-toolbar sticky class="content-align">
-        <etools-icon-button
-          id="menuButton"
-          label="menu"
-          name="menu"
-          class="nav-menu-button"
-          @click="${() => this.menuBtnClicked()}"
-        ></etools-icon-button>
-        <div class="titlebar content-align">
+        <div class="header__item header__left-group">
+          <etools-icon-button
+            id="menuButton"
+            label="menu"
+            name="menu"
+            class="nav-menu-button"
+            @click="${() => this.menuBtnClicked()}"
+          ></etools-icon-button>        
           <img id="app-logo" class="logo" src="./assets/images/etools-logo-color-white.svg" alt="eTools" />
           ${this.isStaging
-            ? html`<div class="envWarning">
-           <span class='envLong'> - </span>${this.environment} <span class='envLong'>  TESTING ENVIRONMENT</div>`
+            ? html`<div class="envWarning" title="${this.environment} TESTING ENVIRONMENT">${this.environment}</div>`
             : ''}
         </div>
-        <div class="layout-horizontal align-items-center layout-wrap">
-          <div class="layout-horizontal align-items-center">
-            <etools-dropdown
-              id="languageSelector"
-              transparent
-              .selected="${this.selectedLanguage}"
-              .options="${appLanguages}"
-              option-label="display_name"
-              option-value="value"
-              @etools-selected-item-changed="${({detail}: CustomEvent) => this.languageChanged(detail.selectedItem)}"
-              trigger-value-change-event
-              hide-search
-              allow-outside-scroll
-              no-label-float
-              .autoWidth="${true}"
-            ></etools-dropdown>
-            <countries-dropdown dir="${this.dir}"></countries-dropdown>
-          </div>  
-          <div class="layout-horizontal align-items-center">
+        <div class="header__item header__right-group">
+          <div class="dropdowns">
+            <div id="languageSelector">
+              <etools-dropdown
+                transparent
+                .selected="${this.selectedLanguage}"
+                .options="${appLanguages}"
+                option-label="display_name"
+                option-value="value"
+                @etools-selected-item-changed="${({detail}: CustomEvent) => this.languageChanged(detail.selectedItem)}"
+                trigger-value-change-event
+                hide-search
+                allow-outside-scroll
+                no-label-float
+                min-width="120px"
+                placement="bottom-end"
+                .syncWidth="${false}"
+              ></etools-dropdown>
+            </div>  
+            <countries-dropdown dir="${this.dir}"></countries-dropdown>                    
             <organizations-dropdown></organizations-dropdown>
+          </div>  
             <etools-profile-dropdown
               title=${translate('GENERAL.PROFILEANDSIGNOUT')}
               .sections="${this.profileDrSections}"

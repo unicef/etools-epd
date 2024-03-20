@@ -15,27 +15,22 @@ export const countriesDropdownStyles = html`
     :host(:hover) {
       cursor: pointer;
     }
-
-    etools-dropdown {
-      --auto-size-available-height: 600px;
-    }
-
-    #languageSelector {
-      width: 120px;
-    }
-
     .w100 {
       width: 100%;
     }
-
     organizations-dropdown {
-      width: 180px;
+      max-width: 180px;
+      margin-inline-start: 10px;
     }
 
     countries-dropdown {
-      width: 160px;
+      max-width: 160px;
+      margin-inline-start: 10px;
     }
 
+    #languageSelector {
+      max-width: 120px;
+    }
     etools-dropdown::part(display-input) {
       text-align: end;
     }
@@ -56,8 +51,7 @@ export const countriesDropdownStyles = html`
 
     @media (max-width: 768px) {
       etools-dropdown {
-        min-width: 130px;
-        width: 130px;
+        max-width: 130px;
       }
     }
   </style>
