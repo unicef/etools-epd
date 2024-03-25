@@ -377,7 +377,7 @@ export class InterventionList extends connect(store)(LitElement) {
       this.showLoading = false;
 
       // Request aborted, prevent showing toast errors
-      if(error.status === 0){
+      if (error.status === 0) {
         return;
       }
 
