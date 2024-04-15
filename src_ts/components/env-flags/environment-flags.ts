@@ -1,8 +1,9 @@
-import {sendRequest, EtoolsRequestEndpoint} from '@unicef-polymer/etools-ajax/etools-ajax-request';
-import {connect} from 'pwa-helpers/connect-mixin';
+import {sendRequest, RequestEndpoint} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
+import {connect} from '@unicef-polymer/etools-utils/dist/pwa.utils';
 import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
 import {store} from '../../redux/store';
-import {LitElement, property} from 'lit-element';
+import {LitElement} from 'lit';
+import {property} from 'lit/decorators.js';
 import {etoolsEndpoints} from '../../endpoints/endpoints-list';
 import {updateEnvFlags} from '../../redux/actions/common-data';
 import {EnvFlags} from '@unicef-polymer/etools-types';
@@ -35,7 +36,7 @@ class EnvironmentFlags extends connect(store)(LitElement) {
 
   private _loadEnvFlagsData() {
     sendRequest({
-      endpoint: etoolsEndpoints.environmentFlags as EtoolsRequestEndpoint
+      endpoint: etoolsEndpoints.environmentFlags as RequestEndpoint
     })
       .then((response: any) => {
         if (response) {

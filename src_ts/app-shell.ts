@@ -2,11 +2,7 @@
 @license
 Copyright (c) 2019 The eTools Project Authors. All rights reserved.
 */
-
-import {setPassiveTouchGestures} from '@polymer/polymer/lib/utils/settings.js';
-import {connect} from 'pwa-helpers/connect-mixin.js';
-import {installMediaQueryWatcher} from 'pwa-helpers/media-query.js';
-import {installRouter} from 'pwa-helpers/router.js';
+import {connect, installMediaQueryWatcher, installRouter} from '@unicef-polymer/etools-utils/dist/pwa.utils';
 
 // This element is connected to the Redux store.
 import {store, RootState} from './redux/store';
@@ -18,27 +14,23 @@ import {navigate} from './redux/actions/app';
 import './routing/routes';
 
 // These are the elements needed by this element.
-import '@polymer/app-layout/app-drawer-layout/app-drawer-layout.js';
-import '@polymer/app-layout/app-drawer/app-drawer.js';
-import '@polymer/app-layout/app-header-layout/app-header-layout.js';
-import '@polymer/app-layout/app-header/app-header.js';
-import '@polymer/app-layout/app-toolbar/app-toolbar.js';
+import '@unicef-polymer/etools-unicef/src/etools-app-layout/app-drawer-layout.js';
+import '@unicef-polymer/etools-unicef/src/etools-app-layout/app-drawer.js';
+import '@unicef-polymer/etools-unicef/src/etools-app-layout/app-header-layout.js';
+import '@unicef-polymer/etools-unicef/src/etools-app-layout/app-header.js';
+import '@unicef-polymer/etools-unicef/src/etools-app-layout/app-toolbar.js';
 import '@unicef-polymer/etools-piwik-analytics/etools-piwik-analytics';
-import {createDynamicDialog} from '@unicef-polymer/etools-dialog/dynamic-dialog';
+import {createDynamicDialog} from '@unicef-polymer/etools-unicef/src/etools-dialog/dynamic-dialog';
 
-import {AppDrawerLayoutElement} from '@polymer/app-layout/app-drawer-layout/app-drawer-layout';
-import {AppHeaderLayoutElement} from '@polymer/app-layout/app-header-layout/app-header-layout';
-import {AppDrawerElement} from '@polymer/app-layout/app-drawer/app-drawer';
-import LoadingMixin from '@unicef-polymer/etools-loading/etools-loading-mixin';
-import {customElement, html, LitElement, property, query} from 'lit-element';
-
+import {LoadingMixin} from '@unicef-polymer/etools-unicef/src/etools-loading/etools-loading-mixin';
+import {html, LitElement} from 'lit';
+import {customElement, property, query} from 'lit/decorators.js';
 import {AppShellStyles} from './components/app-shell/app-shell-styles';
 
 import './components/app-shell/menu/app-menu.js';
 import './components/app-shell/header/page-header.js';
 import './components/app-shell/footer/page-footer.js';
 
-import './components/app-shell/app-theme.js';
 import user from './redux/reducers/user';
 import commonData, {CommonDataState} from './redux/reducers/common-data';
 import uploadStatus from './redux/reducers/upload-status.js';
@@ -60,7 +52,7 @@ import {getAgreements, SET_AGREEMENTS} from './redux/actions/agreements';
 import isEmpty from 'lodash-es/isEmpty';
 import get from 'lodash-es/get';
 import './components/env-flags/environment-flags';
-import '@unicef-polymer/etools-toasts';
+import '@unicef-polymer/etools-unicef/src/etools-toasts/etools-toasts';
 import {registerTranslateConfig, use, translate} from 'lit-translate';
 import {EtoolsUser, RouteDetails} from '@unicef-polymer/etools-types';
 import {setStore} from '@unicef-polymer/etools-utils/dist/store.util';
@@ -74,14 +66,8 @@ import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
 import {commingFromPDDetailsToList} from './components/utils/utils';
 import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
-declare const dayjs: any;
-declare const dayjs_plugin_utc: any;
-declare const dayjs_plugin_isSameOrBefore: any;
-declare const dayjs_plugin_isBetween: any;
-
-dayjs.extend(dayjs_plugin_utc);
-dayjs.extend(dayjs_plugin_isSameOrBefore);
-dayjs.extend(dayjs_plugin_isBetween);
+import {setBasePath} from '@shoelace-style/shoelace/dist/utilities/base-path.js';
+import {initializeIcons} from '@unicef-polymer/etools-unicef/src/etools-icons/etools-icons';
 
 function fetchLangFiles(lang: string) {
   return Promise.allSettled([
@@ -106,6 +92,9 @@ store.addReducers({
   commonData,
   uploadStatus
 });
+
+setBasePath('/epd/');
+initializeIcons();
 
 /**
  * @customElement
@@ -150,7 +139,7 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
           ?small-menu="${this.smallMenu}"
         >
           <!-- App main menu(left sidebar) -->
-          <app-menu selected-option="${this.mainPage}" ?small-menu="${this.smallMenu}"></app-menu>
+          <app-menu .selectedOption="${this.mainPage}" ?small-menu="${this.smallMenu}"></app-menu>
         </app-drawer>
 
         <!-- Main content -->
@@ -161,28 +150,20 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
 
           <!-- Main content -->
           <main role="main" class="main-content">
-            <intervention-list
-              class="page"
-              ?active="${this.isActivePage(this.mainPage, 'interventions', this.subPage, 'list')}"
-              ?hidden="${!this.isActivePage(this.mainPage, 'interventions', this.subPage, 'list')}"
-            ></intervention-list>
-            <intervention-tabs
-              class="page"
-              ?active="${this.isActivePage(
-                this.mainPage,
-                'interventions',
-                this.subPage,
-                'overview|metadata|strategy|workplan|workplan-editor|timing|review|attachments|info'
-              )}"
-              ?hidden="${!this.isActivePage(
-                this.mainPage,
-                'interventions',
-                this.subPage,
-                'overview|metadata|strategy|workplan|workplan-editor|timing|review|attachments|info'
-              )}"
-            >
-            </intervention-tabs>
-            <not-found class="page" ?active="${this.isActivePage(this.mainPage, 'not-found')}"></not-found>
+            ${this.isActivePage(this.mainPage, 'interventions', this.subPage, 'list')
+              ? html`<intervention-list class="page" active></intervention-list>`
+              : html``}
+            ${this.isActivePage(
+              this.mainPage,
+              'interventions',
+              this.subPage,
+              'overview|metadata|strategy|workplan|workplan-editor|timing|review|attachments|info'
+            )
+              ? html`<intervention-tabs class="page" active> </intervention-tabs>`
+              : html``}
+            ${this.isActivePage(this.mainPage, 'not-found')
+              ? html`<not-found class="page" active></not-found>`
+              : html``}
           </main>
 
           <page-footer></page-footer>
@@ -221,15 +202,11 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
   @property({type: Boolean})
   private translationFilesAreLoaded = false;
 
-  @query('#layout') private drawerLayout!: AppDrawerLayoutElement;
-  @query('#drawer') private drawer!: AppDrawerElement;
-  @query('#appHeadLayout') private appHeaderLayout!: AppHeaderLayoutElement;
+  @query('#drawer') private drawer!: LitElement;
+  @query('#appHeadLayout') private appHeaderLayout!: LitElement;
 
   constructor() {
     super();
-    // Gesture events like tap and track generated from touch will not be
-    // preventable, allowing for better scrolling performance.
-    setPassiveTouchGestures(true);
 
     const menuTypeStoredVal: string | null = localStorage.getItem(SMALL_MENU_ACTIVE_LOCALSTORAGE_KEY);
     if (!menuTypeStoredVal) {
@@ -253,6 +230,7 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
       }
     });
     this.addEventListener('change-drawer-state', this.changeDrawerState);
+    this.addEventListener('app-drawer-transitioned', this.syncWithDrawerState);
     this.addEventListener('toggle-small-menu', this.toggleMenu as any);
     installMediaQueryWatcher(`(min-width: 460px)`, () => fireEvent(this, 'change-drawer-state'));
 
@@ -287,7 +265,7 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
     this.waitForComponentRender().then(() => {
       window.EtoolsEsmmFitIntoEl = this.appHeaderLayout!.shadowRoot!.querySelector('#contentContainer');
       this.etoolsLoadingContainer = window.EtoolsEsmmFitIntoEl;
-      // Override ajax error parser inside @unicef-polymer/etools-ajax
+      // Override ajax error parser inside @unicef-polymer/etools-utils/dist/etools-ajax
       // for string translation using lit-translate
       window.ajaxErrorParserTranslateFunction = (key: string) => {
         return getTranslatedValue(key);
@@ -297,6 +275,10 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
 
   public changeDrawerState() {
     this.drawerOpened = !this.drawerOpened;
+  }
+
+  public syncWithDrawerState() {
+    this.drawerOpened = Boolean((this.shadowRoot?.querySelector('#drawer') as any).opened);
   }
 
   checkAppVersion() {
@@ -379,6 +361,7 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
   public disconnectedCallback() {
     super.disconnectedCallback();
     this.removeEventListener('change-drawer-state', this.changeDrawerState);
+    this.removeEventListener('app-drawer-transitioned', this.syncWithDrawerState);
     this.removeEventListener('toggle-small-menu', this.toggleMenu as any);
   }
 
@@ -454,25 +437,13 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
   }
 
   public onDrawerToggle() {
-    if (this.drawerOpened !== this.drawer.opened) {
-      this.drawerOpened = Boolean(this.drawer.opened);
+    if (this.drawerOpened !== (this.drawer as any).opened) {
+      this.drawerOpened = Boolean((this.drawer as any).opened);
     }
   }
 
   public toggleMenu(e: CustomEvent) {
     this.smallMenu = e.detail.value;
-    this._updateDrawerStyles();
-    this._notifyLayoutResize();
-  }
-
-  private _updateDrawerStyles(): void {
-    this.drawerLayout.updateStyles();
-    this.drawer.updateStyles();
-  }
-
-  private _notifyLayoutResize(): void {
-    this.drawerLayout.notifyResize();
-    this.appHeaderLayout.notifyResize();
   }
 
   protected isActiveMainPage(currentPageName: string, expectedPageName: string): boolean {

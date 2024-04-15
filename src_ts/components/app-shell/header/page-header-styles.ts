@@ -1,4 +1,4 @@
-import {css} from 'lit-element';
+import {css} from 'lit';
 
 // language=CSS
 export const pageHeaderStyles = css`
@@ -22,7 +22,7 @@ export const pageHeaderStyles = css`
 
   .titlebar {
     flex: 1;
-    font-size: 28px;
+    font-size: var(--etools-font-size-28, 28px);
     font-weight: 300;
   }
 
@@ -45,7 +45,11 @@ export const pageHeaderStyles = css`
   .envWarning {
     color: var(--nonprod-text-warn-color);
     font-weight: 700;
-    font-size: 18px;
+    font-size: var(--etools-font-size-18, 18px);
+  }
+
+  etools-dropdown::part(display-input) {
+    text-align: right;
   }
 
   @media (min-width: 850px) {
@@ -78,7 +82,7 @@ export const pageHeaderStyles = css`
       margin: 0 8px 0 4px;
     }
     .envWarning {
-      font-size: 10px;
+      font-size: var(--etools-font-size-10, 10px);
       line-height: 12px;
       white-space: nowrap;
       margin-left: 2px;

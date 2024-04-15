@@ -1,11 +1,11 @@
-import {html} from 'lit-element';
+import {html} from 'lit';
 
 export const SharedStylesLit = html`
   <style>
     :host {
       display: block;
       box-sizing: border-box;
-      font-size: 16px;
+      font-size: var(--etools-font-size-16, 16px);
     }
 
     *[hidden] {
@@ -21,11 +21,11 @@ export const SharedStylesLit = html`
 
     h1 {
       text-transform: capitalize;
-      font-size: 24px;
+      font-size: var(--etools-font-size-24, 24px);
     }
 
     h2 {
-      font-size: 20px;
+      font-size: var(--etools-font-size-20, 20px);
     }
 
     a {
@@ -39,57 +39,12 @@ export const SharedStylesLit = html`
 
     .error {
       color: var(--error-color);
-      font-size: 12px;
+      font-size: var(--etools-font-size-12, 12px);
       align-self: center;
     }
 
-    paper-input-container {
-      margin: 0 12px;
-      --paper-input-container-focus-color: var(--module-primary);
-      --paper-input-container: {
-        color: var(--gray-50) !important;
-        font-size: 13px;
-        opacity: 1 !important;
-      }
-      --paper-input-container-underline: {
-        display: none !important;
-      }
-      --paper-input-container-underline-focus: {
-        display: none;
-      }
-      --paper-input-container-underline-disabled: {
-        display: block !important;
-        border-bottom: 1px dashed var(--gray-20) !important;
-      }
-    }
-
     etools-dropdown[readonly],
-    etools-dropdown-multi[readonly],
-    datepicker-lite[readonly],
-    paper-input[readonly],
-    paper-textarea[readonly] {
-      --paper-input-container-underline: {
-        display: none;
-      }
-      --paper-input-container-input-focus: {
-        pointer-events: none;
-      }
-      --paper-input-container-label-focus: {
-        pointer-events: none;
-        color: var(--secondary-text-color);
-      }
-      --paper-input-container-underline-focus: {
-        display: none;
-      }
-      --paper-input-container: {
-        pointer-events: none;
-        cusrsor: text;
-      }
-      --paper-input-container-label: {
-        pointer-events: none;
-        color: var(--secondary-text-color, #737373);
-        cusrsor: text;
-      }
+    etools-dropdown-multi[readonly] {
       --esmm-select-cursor: text;
       --esmm-external-wrapper: {
         width: 100%;
@@ -104,52 +59,35 @@ export const SharedStylesLit = html`
       }
     }
 
-    paper-input,
-    paper-textarea,
-    paper-input-container,
-    datepicker-lite,
-    etools-dropdown,
-    etools-dropdown-multi,
-    etools-upload,
-    etools-currency-amount-input {
-      --paper-input-container-label: {
-        color: var(--secondary-text-color, #737373);
-      }
-      --paper-input-container-label-floating: {
-        color: var(--secondary-text-color, #737373);
-      }
-    }
-
-    paper-input[required][label],
-    paper-textarea[required][label],
-    paper-input-container[required],
-    datepicker-lite[required],
-    etools-upload[required],
-    etools-currency-amount-input[required] {
-      --paper-input-container-label: {
-        @apply --required-star-style;
-        color: var(--secondary-text-color, #737373);
-      }
-      --paper-input-container-label-floating: {
-        @apply --required-star-style;
-        color: var(--secondary-text-color, #737373);
-      }
-    }
-
     etools-dropdown-multi[required]::part(esmm-label),
     etools-dropdown[required]::part(esmm-label) {
-      @apply --required-star-style;
-    }
-
-    paper-textarea {
-      --paper-input-container-input: {
-        display: block;
-      }
+      background: url('./assets/images/required.svg') no-repeat 99% 20%/8px;
+      width: auto !important;
+      max-width: 100%;
+      inset-inline-end: auto;
+      padding-inline-end: 15px;
     }
 
     label[required] {
-      @apply --required-star-style;
-      background: url('./images/required.svg') no-repeat 87% 40%/6px;
+      background: url('./assets/images/required.svg') no-repeat 99% 20%/8px;
+      width: auto !important;
+      max-width: 100%;
+      inset-inline-end: auto;
+      padding-inline-end: 15px;
+      background: url('./assets/images/required.svg') no-repeat 87% 40%/6px;
+    }
+
+    html[dir='rtl'] etools-dropdown-multi[required]::part(esmm-label),
+    html[dir='rtl'] etools-dropdown[required]::part(esmm-label) {
+      background: url('./assets/images/required.svg') no-repeat 0 20%/8px;
+      inset-inline-end: auto;
+      padding-inline-end: 15px;
+    }
+
+    html[dir='rtl'] label[required] {
+      background: url('./assets/images/required.svg') no-repeat 0 20%/8px;
+      inset-inline-end: auto;
+      padding-inline-end: 15px;
     }
 
     .readonly {

@@ -1,14 +1,14 @@
-import '@polymer/app-layout/app-toolbar/app-toolbar';
-import '@polymer/paper-icon-button/paper-icon-button';
-import '@unicef-polymer/etools-profile-dropdown/etools-profile-dropdown';
-import '@unicef-polymer/etools-dropdown/etools-dropdown.js';
-import {EtoolsDropdownEl} from '@unicef-polymer/etools-dropdown/etools-dropdown';
-import {customElement, LitElement, html, property, query} from 'lit-element';
+import '@unicef-polymer/etools-unicef/src/etools-app-layout/app-toolbar.js';
+import '@unicef-polymer/etools-unicef/src/etools-profile-dropdown/etools-profile-dropdown';
+import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button.js';
+import {LitElement, html} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
 
 import './countries-dropdown';
 import './organizations-dropdown';
 
-import {connect} from 'pwa-helpers/connect-mixin.js';
+import {connect} from '@unicef-polymer/etools-utils/dist/pwa.utils';
 import {RootState, store} from '../../../redux/store';
 import {isProductionServer, ROOT_PATH} from '../../../config/config';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
@@ -20,10 +20,10 @@ import {setActiveLanguage} from '../../../redux/actions/active-language';
 import {activeLanguage} from '../../../redux/reducers/active-language';
 import {countriesDropdownStyles} from './countries-dropdown-styles';
 import {AnyObject, EtoolsUser} from '@unicef-polymer/etools-types';
-import {sendRequest} from '@unicef-polymer/etools-ajax';
+import {sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax';
 import {etoolsEndpoints} from '../../../endpoints/endpoints-list';
 import {updateUserData} from '../../../redux/actions/user';
-import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-ajax/ajax-error-parser';
+import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
 import 'dayjs/locale/fr.js';
 import 'dayjs/locale/ru.js';
 import 'dayjs/locale/pt.js';
@@ -31,6 +31,7 @@ import 'dayjs/locale/ar.js';
 import 'dayjs/locale/ro.js';
 import 'dayjs/locale/es.js';
 import {appLanguages} from '../../../config/app-constants';
+import dayjs from 'dayjs';
 
 store.addReducers({
   activeLanguage
@@ -90,21 +91,22 @@ export class PageHeader extends connect(store)(LitElement) {
             display: none;
           }
           .envWarning {
-            font-size: 10px;
+            font-size: var(--etools-font-size-10, 10px);
             margin-left: 2px;
           }
         }
       </style>
 
       <app-toolbar sticky class="content-align">
-        <paper-icon-button
+        <etools-icon-button
           id="menuButton"
-          icon="menu"
+          label="menu"
+          name="menu"
           class="nav-menu-button"
-          @tap="${() => this.menuBtnClicked()}"
-        ></paper-icon-button>
+          @click="${() => this.menuBtnClicked()}"
+        ></etools-icon-button>
         <div class="titlebar content-align">
-          <img id="app-logo" class="logo" src="images/etools-logo-color-white.svg" alt="eTools" />
+          <img id="app-logo" class="logo" src="./assets/images/etools-logo-color-white.svg" alt="eTools" />
           ${this.isStaging
             ? html`<div class="envWarning">
            <span class='envLong'> - </span>${this.environment} <span class='envLong'>  TESTING ENVIRONMENT</div>`
@@ -114,6 +116,7 @@ export class PageHeader extends connect(store)(LitElement) {
           <div class="dropdowns">
             <etools-dropdown
               id="languageSelector"
+              transparent
               .selected="${this.selectedLanguage}"
               .options="${appLanguages}"
               option-label="display_name"
@@ -190,17 +193,17 @@ export class PageHeader extends connect(store)(LitElement) {
 
   @property() selectedLanguage!: string;
 
-  @query('#languageSelector') private languageDropdown!: EtoolsDropdownEl;
+  // @query('#languageSelector') private languageDropdown!: EtoolsDropdownEl;
 
   public connectedCallback() {
     super.connectedCallback();
     this.setBgColor();
     this.checkEnvironment();
 
-    setTimeout(() => {
-      const fitInto = document.querySelector('app-shell')!.shadowRoot!.querySelector('#appHeadLayout');
-      this.languageDropdown.fitInto = fitInto;
-    }, 0);
+    // setTimeout(() => {
+    //   const fitInto = document.querySelector('app-shell')!.shadowRoot!.querySelector('#appHeadLayout');
+    //   this.languageDropdown.fitInto = fitInto;
+    // }, 0);
   }
 
   public stateChanged(state: RootState) {
@@ -279,7 +282,7 @@ export class PageHeader extends connect(store)(LitElement) {
     }
     const newLanguage = selectedItem.value;
     if (newLanguage) {
-      window.dayjs.locale(newLanguage);
+      dayjs.locale(newLanguage);
       // Event caught by self translating npm packages
       fireEvent(this, 'language-changed', {language: newLanguage});
     }

@@ -3,7 +3,7 @@ import {setActiveLanguage} from '../../redux/actions/active-language';
 import {getEndpoint} from '../../endpoints/endpoints';
 import {store} from '../../redux/store';
 import {etoolsEndpoints} from '../../endpoints/endpoints-list';
-import {sendRequest} from '@unicef-polymer/etools-ajax/etools-ajax-request';
+import {sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax';
 import {AnyObject, EtoolsUser} from '@unicef-polymer/etools-types';
 import {languageIsAvailableInApp} from '../utils/utils';
 

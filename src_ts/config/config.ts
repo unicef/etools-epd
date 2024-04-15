@@ -4,7 +4,7 @@ declare global {
   interface Window {
     EtoolsEsmmFitIntoEl: any;
     applyFocusVisiblePolyfill: any;
-    ajaxErrorParserTranslateFunction: (key: string) => string;
+    ajaxErrorParserTranslateFunction: any;
     dayjs: any;
     EtoolsLanguage: string;
   }
