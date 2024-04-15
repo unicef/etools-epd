@@ -373,9 +373,15 @@ export class InterventionList extends connect(store)(LitElement) {
       this.paginator = paginator;
       this.showLoading = false;
       store.dispatch(setShouldReGetList(false));
-    } catch (error) {
-      console.error('[EtoolsInterventionsList]: get Interventions req error...', error);
+    } catch (error: any) {
       this.showLoading = false;
+
+      // Request aborted, prevent showing toast errors
+      if (error.status === 0) {
+        return;
+      }
+
+      console.error('[EtoolsInterventionsList]: get Interventions req error...', error);
       fireEvent(this, 'toast', {text: getTranslation('ERROR_LOADING_DATA')});
     }
   }
