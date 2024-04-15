@@ -1,5 +1,5 @@
 import {sendRequest, RequestEndpoint} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
-import {connect} from 'pwa-helpers/connect-mixin';
+import {connect} from '@unicef-polymer/etools-utils/dist/pwa.utils';
 import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
 import {store} from '../../redux/store';
 import {LitElement} from 'lit';
