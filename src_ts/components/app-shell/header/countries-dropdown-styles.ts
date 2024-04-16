@@ -16,24 +16,26 @@ export const countriesDropdownStyles = html`
       cursor: pointer;
     }
 
-    etools-dropdown {
-      --auto-size-available-height: 600px;
-    }
-
-    #languageSelector {
-      width: 120px;
-    }
-
     .w100 {
       width: 100%;
     }
 
+    countries-dropdown[dir='rtl'] {
+      margin-inline: 30px 20px;
+    }
+
     organizations-dropdown {
-      width: 180px;
+      max-width: 180px;
+      margin-inline-start: 10px;
     }
 
     countries-dropdown {
-      width: 160px;
+      max-width: 160px;
+      margin-inline-start: 10px;
+    }
+
+    #languageSelector {
+      max-width: 160px;
     }
 
     etools-dropdown::part(display-input) {
@@ -56,8 +58,7 @@ export const countriesDropdownStyles = html`
 
     @media (max-width: 768px) {
       etools-dropdown {
-        min-width: 130px;
-        width: 130px;
+        max-width: 130px;
       }
     }
   </style>
