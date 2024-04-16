@@ -16,10 +16,6 @@ export const pageHeaderStyles = css`
     color: var(--header-color);
   }
 
-  etools-profile-dropdown {
-    margin-left: 16px;
-  }
-
   .titlebar {
     flex: 1;
     font-size: var(--etools-font-size-28, 28px);
@@ -40,12 +36,6 @@ export const pageHeaderStyles = css`
   #app-logo {
     height: 32px;
     width: auto;
-  }
-
-  .envWarning {
-    color: var(--nonprod-text-warn-color);
-    font-weight: 700;
-    font-size: var(--etools-font-size-18, 18px);
   }
 
   etools-dropdown::part(display-input) {
@@ -69,7 +59,6 @@ export const pageHeaderStyles = css`
       margin: 0 8px 0 12px;
     }
     etools-profile-dropdown {
-      margin-left: 12px;
       width: 40px;
     }
   }

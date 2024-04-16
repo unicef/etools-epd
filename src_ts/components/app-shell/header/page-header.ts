@@ -61,7 +61,8 @@ export class PageHeader extends connect(store)(LitElement) {
         }
         .dropdowns {
           display: flex;
-          margin-right: 5px;
+          margin-inline-end: 6px;
+          margin-block-start: 6px;
         }
         .header {
           flex-wrap: wrap;
@@ -79,7 +80,16 @@ export class PageHeader extends connect(store)(LitElement) {
           justify-content: space-evenly;
         }
         .logo {
-          margin-left: 20px;
+          margin-inline-start: 20px;
+        }
+        .envWarning {
+          color: #000;
+          background-color: var(--header-color);
+          font-weight: 700;
+          padding: 5px 10px;
+          font-size: var(--etools-font-size-14, 14px);
+          line-height: 1;
+          border-radius: 10px;
         }
         @media (max-width: 380px) {
           .header__item {
@@ -108,27 +118,29 @@ export class PageHeader extends connect(store)(LitElement) {
         <div class="titlebar content-align">
           <img id="app-logo" class="logo" src="./assets/images/etools-logo-color-white.svg" alt="eTools" />
           ${this.isStaging
-            ? html`<div class="envWarning">
-           <span class='envLong'> - </span>${this.environment} <span class='envLong'>  TESTING ENVIRONMENT</div>`
+            ? html`<div class="envWarning" title="${this.environment} TESTING ENVIRONMENT">${this.environment}</div>`
             : ''}
         </div>
         <div class="header__item header__right-group">
           <div class="dropdowns">
-            <etools-dropdown
-              id="languageSelector"
-              transparent
-              .selected="${this.selectedLanguage}"
-              .options="${appLanguages}"
-              option-label="display_name"
-              option-value="value"
-              @etools-selected-item-changed="${({detail}: CustomEvent) => this.languageChanged(detail.selectedItem)}"
-              trigger-value-change-event
-              hide-search
-              allow-outside-scroll
-              no-label-float
-              .autoWidth="${true}"
-            ></etools-dropdown>
-
+            <div>
+              <etools-dropdown
+                id="languageSelector"
+                transparent
+                .selected="${this.selectedLanguage}"
+                .options="${appLanguages}"
+                option-label="display_name"
+                option-value="value"
+                @etools-selected-item-changed="${({detail}: CustomEvent) => this.languageChanged(detail.selectedItem)}"
+                trigger-value-change-event
+                hide-search
+                allow-outside-scroll
+                no-label-float
+                min-width="120px"
+                placement="bottom-end"
+                .syncWidth="${false}"
+              ></etools-dropdown>
+            </div>
             <countries-dropdown dir="${this.dir}"></countries-dropdown>
             <organizations-dropdown></organizations-dropdown>
           </div>
