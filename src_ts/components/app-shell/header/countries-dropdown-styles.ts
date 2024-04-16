@@ -15,7 +15,7 @@ export const countriesDropdownStyles = html`
     :host(:hover) {
       cursor: pointer;
     }
-   
+
     .w100 {
       width: 100%;
     }
