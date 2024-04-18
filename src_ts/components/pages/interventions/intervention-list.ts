@@ -463,7 +463,7 @@ export class InterventionList extends connect(store)(LitElement) {
         this.prevQueryStringObj
           ? this.prevQueryStringObj
           : {
-              page_size: '20',
+              page_size: '25',
               status: ['draft', 'review', 'signature', 'signed', 'active']
             }
       );
