@@ -1,6 +1,6 @@
 import {ActionCreator, Action} from 'redux';
 import {MinimalAgreement} from '@unicef-polymer/etools-types';
-import {sendRequest} from '@unicef-polymer/etools-ajax';
+import {sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax';
 import {etoolsEndpoints} from '../../endpoints/endpoints-list';
 
 export const SET_AGREEMENTS = 'SET_AGREEMENTS';
