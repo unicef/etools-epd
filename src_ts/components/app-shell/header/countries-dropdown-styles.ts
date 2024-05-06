@@ -15,9 +15,15 @@ export const countriesDropdownStyles = html`
     :host(:hover) {
       cursor: pointer;
     }
+
     .w100 {
       width: 100%;
     }
+
+    countries-dropdown[dir='rtl'] {
+      margin-inline: 30px 20px;
+    }
+
     organizations-dropdown {
       max-width: 180px;
       margin-inline-start: 10px;
@@ -26,6 +32,10 @@ export const countriesDropdownStyles = html`
     countries-dropdown {
       max-width: 160px;
       margin-inline-start: 10px;
+    }
+
+    #languageSelector {
+      max-width: 160px;
     }
 
     #languageSelector {

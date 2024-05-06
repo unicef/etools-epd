@@ -38,7 +38,7 @@ export const navMenuStyles = css`
     color: white;
     min-height: 60px;
     padding: 0 16px;
-    font-size: 14px;
+    font-size: var(--etools-font-size-14, 14px);
     line-height: 18px;
     text-transform: uppercase;
   }
@@ -74,7 +74,7 @@ export const navMenuStyles = css`
   }
 
   .menu-header etools-icon-button {
-    --etools-icon-font-size: 24px;
+    --etools-icon-font-size: var(--etools-font-size-24, 24px);
     padding: 0;
   }
 
@@ -89,7 +89,7 @@ export const navMenuStyles = css`
   }
 
   #menu-header-top-icon {
-    --etools-icon-font-size: 36px;
+    --etools-icon-font-size: var(--etools-font-size-36, 36px);
   }
 
   .divider {
@@ -110,7 +110,7 @@ export const navMenuStyles = css`
 
   .nav-menu-item {
     width: 100%;
-    font-size: 14px;
+    font-size: var(--etools-font-size-14, 14px);
     font-weight: 500;
     position: relative;
     height: 48px;
@@ -121,7 +121,7 @@ export const navMenuStyles = css`
 
   .nav-menu-item.section-title {
     color: var(--primary-text-color);
-    font-size: 13px;
+    font-size: var(--etools-font-size-13, 13px);
     font-weight: 500;
     text-transform: none;
     border-top: 1px solid var(--light-divider-color);
@@ -147,7 +147,7 @@ export const navMenuStyles = css`
   .nav-menu-item etools-icon {
     margin: 0 16px;
     color: var(--dark-icon-color);
-    --etools-icon-font-size: 24px;
+    --etools-icon-font-size: var(--etools-font-size-24, 24px);
   }
 
   :host([small-menu]) .nav-menu-item etools-icon {

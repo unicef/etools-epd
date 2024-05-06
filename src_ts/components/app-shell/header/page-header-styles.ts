@@ -25,16 +25,6 @@ export const pageHeaderStyles = css`
     width: auto;
   }
 
-  .envWarning {
-    color: #000;
-    background-color: var(--nonprod-text-warn-color);
-    font-weight: 700;
-    padding: 5px 10px;
-    font-size: var(--etools-font-size-14, 14px);
-    line-height: 1;
-    border-radius: 10px;
-  }
-
   etools-dropdown::part(display-input) {
     text-align: right;
   }
@@ -47,18 +37,24 @@ export const pageHeaderStyles = css`
 
   @media (max-width: 768px) {
     .envWarning {
-      font-size: 10px;
+      font-size: var(--etools-font-size-10, 10px);
       line-height: 12px;
       white-space: nowrap;
     }
     .envLong {
       display: none;
     }
+    etools-profile-dropdown {
+      width: 40px;
+    }
   }
 
   @media (max-width: 576px) {
     #app-logo {
       display: none;
+    }
+    .envWarning {
+      margin-left: 2px;
     }
     app-toolbar {
       padding-inline-end: 0px;

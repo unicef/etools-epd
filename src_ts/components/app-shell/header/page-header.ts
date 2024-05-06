@@ -8,7 +8,7 @@ import {customElement, property} from 'lit/decorators.js';
 import './countries-dropdown';
 import './organizations-dropdown';
 
-import {connect} from 'pwa-helpers/connect-mixin.js';
+import {connect} from '@unicef-polymer/etools-utils/dist/pwa.utils';
 import {RootState, store} from '../../../redux/store';
 import {isProductionServer, ROOT_PATH} from '../../../config/config';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
@@ -60,6 +60,11 @@ export class PageHeader extends connect(store)(LitElement) {
         support-btn {
           color: var(--header-icon-color);
         }
+        .dropdowns {
+          display: flex;
+          margin-inline-end: 6px;
+          margin-block-start: 6px;
+        }
         .header {
           flex-wrap: wrap;
           height: 100%;
@@ -83,7 +88,16 @@ export class PageHeader extends connect(store)(LitElement) {
           padding-block-start: 6px;
         }
         .logo {
-          margin: 0 10px 0 20px;
+          margin-inline-start: 20px;
+        }
+        .envWarning {
+          color: #000;
+          background-color: var(--header-color);
+          font-weight: 700;
+          padding: 5px 10px;
+          font-size: var(--etools-font-size-14, 14px);
+          line-height: 1;
+          border-radius: 10px;
         }
         @media (max-width: 380px) {
           .header__item {
@@ -95,7 +109,8 @@ export class PageHeader extends connect(store)(LitElement) {
             display: none;
           }
           .envWarning {
-            font-size: 10px;
+            font-size: var(--etools-font-size-10, 10px);
+            margin-left: 2px;
           }
         }
       </style>
@@ -116,8 +131,9 @@ export class PageHeader extends connect(store)(LitElement) {
         </div>
         <div class="header__item header__right-group">
           <div class="dropdowns">
-            <div id="languageSelector">
+            <div>
               <etools-dropdown
+                id="languageSelector"
                 transparent
                 .selected="${this.selectedLanguage}"
                 .options="${appLanguages}"
@@ -132,8 +148,8 @@ export class PageHeader extends connect(store)(LitElement) {
                 placement="bottom-end"
                 .syncWidth="${false}"
               ></etools-dropdown>
-            </div>  
-            <countries-dropdown dir="${this.dir}"></countries-dropdown>                    
+            </div>
+            <countries-dropdown dir="${this.dir}"></countries-dropdown>
             <organizations-dropdown></organizations-dropdown>
           </div>  
             <etools-profile-dropdown

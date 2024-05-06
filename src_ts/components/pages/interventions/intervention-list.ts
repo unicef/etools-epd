@@ -1,6 +1,6 @@
 import {html, LitElement, TemplateResult} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
-import {connect} from 'pwa-helpers/connect-mixin';
+import {connect} from '@unicef-polymer/etools-utils/dist/pwa.utils';
 import {RootState, store} from '../../../redux/store';
 
 import '@unicef-polymer/etools-modules-common/dist/layout/page-content-header/page-content-header';
@@ -373,9 +373,15 @@ export class InterventionList extends connect(store)(LitElement) {
       this.paginator = paginator;
       this.showLoading = false;
       store.dispatch(setShouldReGetList(false));
-    } catch (error) {
-      console.error('[EtoolsInterventionsList]: get Interventions req error...', error);
+    } catch (error: any) {
       this.showLoading = false;
+
+      // Request aborted, prevent showing toast errors
+      if (error.status === 0) {
+        return;
+      }
+
+      console.error('[EtoolsInterventionsList]: get Interventions req error...', error);
       fireEvent(this, 'toast', {text: getTranslation('ERROR_LOADING_DATA')});
     }
   }
@@ -457,7 +463,7 @@ export class InterventionList extends connect(store)(LitElement) {
         this.prevQueryStringObj
           ? this.prevQueryStringObj
           : {
-              page_size: '20',
+              page_size: '25',
               status: ['draft', 'review', 'signature', 'signed', 'active']
             }
       );
