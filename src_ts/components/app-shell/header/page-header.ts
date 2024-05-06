@@ -125,9 +125,11 @@ export class PageHeader extends connect(store)(LitElement) {
             @click="${() => this.menuBtnClicked()}"
           ></etools-icon-button>        
           <img id="app-logo" class="logo" src="./assets/images/etools-logo-color-white.svg" alt="eTools" />
-          ${this.isStaging
-            ? html`<div class="envWarning" title="${this.environment} TESTING ENVIRONMENT">${this.environment}</div>`
-            : ''}
+          ${
+            this.isStaging
+              ? html`<div class="envWarning" title="${this.environment} TESTING ENVIRONMENT">${this.environment}</div>`
+              : ''
+          }
         </div>
         <div class="header__item header__right-group">
           <div class="dropdowns">
