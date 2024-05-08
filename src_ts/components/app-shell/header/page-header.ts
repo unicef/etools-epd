@@ -62,7 +62,6 @@ export class PageHeader extends connect(store)(LitElement) {
         }
         .dropdowns {
           display: flex;
-          margin-inline-end: 6px;
           margin-block-start: 6px;
         }
         .header {
@@ -83,10 +82,6 @@ export class PageHeader extends connect(store)(LitElement) {
           justify-content: space-evenly;
           margin-inline-start: auto;
         }
-        .dropdowns {
-          display: flex;
-          padding-block-start: 6px;
-        }
         .logo {
           margin-inline-start: 20px;
         }
@@ -95,6 +90,7 @@ export class PageHeader extends connect(store)(LitElement) {
           background-color: var(--header-color);
           font-weight: 700;
           padding: 5px 10px;
+          margin-inline-start: 8px;
           font-size: var(--etools-font-size-14, 14px);
           line-height: 1;
           border-radius: 10px;
@@ -111,6 +107,9 @@ export class PageHeader extends connect(store)(LitElement) {
           .envWarning {
             font-size: var(--etools-font-size-10, 10px);
             margin-left: 2px;
+          }
+          .dropdowns {
+            order: 1;
           }
         }
       </style>
@@ -131,29 +130,30 @@ export class PageHeader extends connect(store)(LitElement) {
               : ''
           }
         </div>
-        <div class="header__item header__right-group">
-          <div class="dropdowns">
-            <div>
-              <etools-dropdown
-                id="languageSelector"
-                transparent
-                .selected="${this.selectedLanguage}"
-                .options="${appLanguages}"
-                option-label="display_name"
-                option-value="value"
-                @etools-selected-item-changed="${({detail}: CustomEvent) => this.languageChanged(detail.selectedItem)}"
-                trigger-value-change-event
-                hide-search
-                allow-outside-scroll
-                no-label-float
-                min-width="120px"
-                placement="bottom-end"
-                .syncWidth="${false}"
-              ></etools-dropdown>
-            </div>
-            <countries-dropdown dir="${this.dir}"></countries-dropdown>
-            <organizations-dropdown></organizations-dropdown>
-          </div>  
+        <div class="header__item header__right-group dropdowns">            
+              <div>
+                <etools-dropdown
+                  id="languageSelector"
+                  transparent
+                  .selected="${this.selectedLanguage}"
+                  .options="${appLanguages}"
+                  option-label="display_name"
+                  option-value="value"
+                  @etools-selected-item-changed="${({detail}: CustomEvent) =>
+                    this.languageChanged(detail.selectedItem)}"
+                  trigger-value-change-event
+                  hide-search
+                  allow-outside-scroll
+                  no-label-float
+                  min-width="120px"
+                  placement="bottom-end"
+                  .syncWidth="${false}"
+                ></etools-dropdown>
+              </div>
+              <countries-dropdown dir="${this.dir}"></countries-dropdown>
+              <organizations-dropdown></organizations-dropdown>
+          </div>
+          <div class="layout-horizontal align-items-center">
             <etools-profile-dropdown
               title=${translate('GENERAL.PROFILEANDSIGNOUT')}
               .sections="${this.profileDrSections}"
@@ -165,9 +165,9 @@ export class PageHeader extends connect(store)(LitElement) {
               @sign-out="${this._signOut}"
             >
             </etools-profile-dropdown>
-          </div>
-        </div>
-      </app-toolbar>
+          </div>        
+      </div>
+    </app-toolbar>
     `;
   }
 

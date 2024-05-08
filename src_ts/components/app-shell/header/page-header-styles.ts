@@ -3,7 +3,7 @@ import {css} from 'lit';
 // language=CSS
 export const pageHeaderStyles = css`
   app-toolbar {
-    padding: 0 16px 0 0;
+    padding-inline-end: 10px;
     height: auto;
   }
 
@@ -45,7 +45,7 @@ export const pageHeaderStyles = css`
       display: none;
     }
     etools-profile-dropdown {
-      width: 40px;
+      width: 50px;
     }
   }
 
@@ -54,10 +54,7 @@ export const pageHeaderStyles = css`
       display: none;
     }
     .envWarning {
-      margin-left: 2px;
-    }
-    app-toolbar {
-      padding-inline-end: 0px;
+      margin-inline-start: 2px;
     }
   }
 `;
