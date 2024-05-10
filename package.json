@@ -78,7 +78,7 @@
     "eslint-plugin-lit-a11y": "^2.2.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-you-dont-need-lodash-underscore": "^6.10.0",
-    "follow-redirects": ">=1.14.9",
+    "follow-redirects": ">=1.15.6",
     "hosted-git-info": ">=2.8.9",
     "json5": ">=2.2.3",
     "minimatch": ">=3.1.2",
