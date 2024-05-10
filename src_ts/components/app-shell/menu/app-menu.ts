@@ -1,13 +1,11 @@
-import '@polymer/iron-icons/iron-icons.js';
-import '@polymer/iron-icons/maps-icons.js';
-import '@polymer/iron-selector/iron-selector.js';
-import '@polymer/paper-tooltip/paper-tooltip.js';
-import '@polymer/paper-ripple/paper-ripple.js';
+import '@unicef-polymer/etools-unicef/src/etools-icons/etools-icon';
+import '@shoelace-style/shoelace/dist/components/tooltip/tooltip.js';
 
 import {navMenuStyles} from './styles/nav-menu-styles';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {ROOT_PATH, SMALL_MENU_ACTIVE_LOCALSTORAGE_KEY} from '../../../config/config';
-import {customElement, html, LitElement, property} from 'lit-element';
+import {LitElement, html} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
 import {translate} from 'lit-translate';
 
 /**
@@ -28,40 +26,37 @@ export class AppMenu extends LitElement {
       <div class="menu-header">
         <span id="app-name"> ePD </span>
 
-        <span class="ripple-wrapper main">
-          <iron-icon
-            id="menu-header-top-icon"
-            icon="assignment-ind"
-            @tap="${() => this._toggleSmallMenu()}"
-          ></iron-icon>
-          <paper-ripple class="circle" center></paper-ripple>
-        </span>
-        <paper-tooltip for="menu-header-top-icon" position="right"> ePD </paper-tooltip>
+        <sl-tooltip for="menu-header-top-icon" placement="right" content="ePD">
+          <span class="ripple-wrapper main">
+            <etools-icon
+              id="menu-header-top-icon"
+              name="assignment-ind"
+              @click="${() => this._toggleSmallMenu()}"
+            ></etools-icon>
+          </span>
+        </sl-tooltip>
 
         <span class="chev-right">
-          <iron-icon id="expand-menu" icon="chevron-right" @tap="${() => this._toggleSmallMenu()}"></iron-icon>
-          <paper-ripple class="circle" center></paper-ripple>
+          <etools-icon id="expand-menu" name="chevron-right" @click="${() => this._toggleSmallMenu()}"></etools-icon>
         </span>
 
         <span class="ripple-wrapper">
-          <iron-icon id="minimize-menu" icon="chevron-left" @tap="${() => this._toggleSmallMenu()}"></iron-icon>
-          <paper-ripple class="circle" center></paper-ripple>
+          <etools-icon id="minimize-menu" name="chevron-left" @click="${() => this._toggleSmallMenu()}"></etools-icon>
         </span>
       </div>
 
       <div class="nav-menu">
-        <iron-selector
-          .selected="${this.selectedOption}"
-          attr-for-selected="menu-name"
-          selectable="a"
-          role="navigation"
-        >
-          <a class="nav-menu-item" menu-name="interventions" href="${this.rootPath + 'interventions'}">
-            <iron-icon id="page1-icon" icon="accessibility"></iron-icon>
-            <paper-tooltip for="page1-icon" position="right">${translate('PDS_SPDS')}</paper-tooltip>
+        <div class="menu-selector" role="navigation">
+          <a
+            class="nav-menu-item ${this.getItemClass(this.selectedOption, 'interventions')}"
+            href="${this.rootPath + 'interventions'}"
+          >
+            <sl-tooltip for="page1-icon" placement="right" content="${translate('PDS_SPDS')}">
+              <etools-icon id="page1-icon" name="accessibility"></etools-icon>
+            </sl-tooltip>
             <div class="name">${translate('PDS_SPDS')}</div>
           </a>
-        </iron-selector>
+        </div>
 
         <div class="nav-menu-item section-title">
           <span>${translate('COMMUNITY_CHANNELS')}</span>
@@ -72,8 +67,9 @@ export class AppMenu extends LitElement {
           href="https://unpartnerportalcso.zendesk.com/hc/en-us/sections/12663538797975-Electronic-Programme-Document-ePD-"
           target="_blank"
         >
-          <iron-icon id="knoledge-icon" icon="maps:local-library"></iron-icon>
-          <paper-tooltip for="knoledge-icon" position="right">${translate('KNOWLEDGE_BASE')}</paper-tooltip>
+          <sl-tooltip for="knoledge-icon" placement="right" content="${translate('KNOWLEDGE_BASE')}">
+            <etools-icon id="knoledge-icon" name="maps:local-library"></etools-icon>
+          </sl-tooltip>
           <div class="name">${translate('KNOWLEDGE_BASE')}</div>
         </a>
       </div>
@@ -94,5 +90,9 @@ export class AppMenu extends LitElement {
     const localStorageVal: number = this.smallMenu ? 1 : 0;
     localStorage.setItem(SMALL_MENU_ACTIVE_LOCALSTORAGE_KEY, String(localStorageVal));
     fireEvent(this, 'toggle-small-menu', {value: this.smallMenu});
+  }
+
+  getItemClass(selectedValue: string, itemValue: string) {
+    return selectedValue === itemValue ? 'selected' : '';
   }
 }

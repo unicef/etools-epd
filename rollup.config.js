@@ -1,57 +1,42 @@
-/**
- * Code changed to use Static paths for dynamic imports => rollup should do the code splitting automatically
- * Time: 14s; Size 2.86 MB
- */
-import resolve from '@rollup/plugin-node-resolve';
-import {terser} from 'rollup-plugin-terser';
-import filesize from 'rollup-plugin-filesize';
-import minifyHTML from 'rollup-plugin-minify-html-literals';
-import copy from 'rollup-plugin-copy';
+import _esbuild from 'rollup-plugin-esbuild';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
+import path from 'path';
+import commonjs from '@rollup/plugin-commonjs';
 
-const copyConfig = {
-  targets: [
-    {src: 'node_modules/@webcomponents/shadycss', dest: 'rollup/node_modules/@webcomponents'},
-    {
-      src: 'node_modules/web-animations-js/web-animations-next-lite.min.js',
-      dest: 'rollup/node_modules/web-animations-js'
-    },
-    {src: 'node_modules/leaflet/dist/leaflet.js', dest: 'rollup/node_modules/leaflet/dist'},
-    {src: 'node_modules/leaflet/dist/leaflet.css', dest: 'rollup/node_modules/leaflet/dist'},
-    {src: 'node_modules/leaflet/dist/images/marker-icon.png', dest: 'rollup/node_modules/leaflet/dist/images'},
-    {
-      src: 'node_modules/leaflet.markercluster/dist/leaflet.markercluster.js',
-      dest: 'rollup/node_modules/leaflet.markercluster/dist'
-    },
-    {
-      src: 'node_modules/focus-visible/dist/focus-visible.min.js',
-      dest: 'rollup/node_modules/focus-visible/dist'
-    },
-    {src: 'node_modules/dayjs/dayjs.min.js', dest: 'rollup/node_modules/dayjs'},
-    {src: 'node_modules/dayjs/plugin/utc.js', dest: 'rollup/node_modules/dayjs'},
-    {src: 'node_modules/dayjs/plugin/isBetween.js', dest: 'rollup/node_modules/dayjs'},
-    {src: 'node_modules/dayjs/plugin/isSameOrBefore.js', dest: 'rollup/node_modules/dayjs'},
-    {
-      src: 'src/components/pages/interventions/intervention-tab-pages/assets/i18n',
-      dest: 'rollup/src/components/pages/interventions/intervention-tab-pages/assets'
-    },
-    {src: 'images', dest: 'rollup'},
-    {src: 'assets', dest: 'rollup'},
-    {src: 'index.html', dest: 'rollup'}
-  ]
+const esbuild = _esbuild.default ?? _esbuild;
+
+const importMetaUrlCurrentModulePlugin = () => {
+  return {
+    name: 'import-meta-url-current-module',
+    resolveImportMeta(property, { moduleId }) {
+      if (property === 'url') {
+        return `new URL('${path.relative(process.cwd(), moduleId)}', document.baseURI).href`;
+      }
+      return null;
+    }
+  };
 };
 
 const config = {
-  input: 'src/app-shell.js',
+  input: 'src_ts/app-shell.ts',
   output: {
-    dir: 'rollup/src',
-    format: 'es'
+    file: 'src/src/app-shell.js',
+    format: 'es',
+    inlineDynamicImports: true,
+    sourcemap: true,
+    compact: true,
   },
-  plugins: [minifyHTML(), copy(copyConfig), resolve()],
+  onwarn(warning, warn) {
+    if (warning.code === 'THIS_IS_UNDEFINED') return;
+    warn(warning);
+  },
+  plugins: [
+    importMetaUrlCurrentModulePlugin(),
+    nodeResolve(),
+    commonjs(),
+    esbuild(),
+  ],
   preserveEntrySignatures: false
 };
-
-if (process.env.NODE_ENV !== 'development') {
-  config.plugins.push(terser());
-}
 
 export default config;

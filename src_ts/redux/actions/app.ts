@@ -8,6 +8,7 @@ import {UPDATE_ROUTE} from '../../components/pages/interventions/intervention-ta
 import {enableCommentMode} from '../../components/pages/interventions/intervention-tab-pages/common/components/comments/comments.actions';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {EtoolsRedirectPath} from '@unicef-polymer/etools-utils/dist/enums/router.enum';
+import {EtoolsRouteDetails} from '@unicef-polymer/etools-utils/dist/interfaces/router.interfaces';
 
 export interface AppActionUpdateDrawerState extends Action<'UPDATE_DRAWER_STATE'> {
   opened: boolean;
@@ -120,7 +121,7 @@ export const navigate: ActionCreator<ThunkResult> = (path: string) => (dispatch)
     return;
   }
 
-  const routeDetails = EtoolsRouter.getRouteDetails(path);
+  const routeDetails: EtoolsRouteDetails | null = EtoolsRouter.getRouteDetails(path);
 
   dispatch(loadPageComponents(routeDetails));
 };
