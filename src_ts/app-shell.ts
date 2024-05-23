@@ -58,7 +58,6 @@ import {EtoolsUser, RouteDetails} from '@unicef-polymer/etools-types';
 import {setStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {SMALL_MENU_ACTIVE_LOCALSTORAGE_KEY} from './config/config';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import {ROOT_PATH} from '@unicef-polymer/etools-modules-common/dist/config/config';
 import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
 import {RESET_CURRENT_ITEM, RESET_UNSAVED_UPLOADS, RESET_UPLOADS_IN_PROGRESS} from './redux/actions/upload-status';
 import UploadsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/uploads-mixin';
@@ -68,6 +67,7 @@ import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/uti
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {setBasePath} from '@shoelace-style/shoelace/dist/utilities/base-path.js';
 import {initializeIcons} from '@unicef-polymer/etools-unicef/src/etools-icons/etools-icons';
+import {Environment} from '@unicef-polymer/etools-utils/dist/singleton/environment';
 
 function fetchLangFiles(lang: string) {
   return Promise.allSettled([
@@ -113,7 +113,7 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
       <environment-flags></environment-flags>
 
       <etools-piwik-analytics
-        .page="${ROOT_PATH + this.mainPage}"
+        .page="${Environment.basePath + this.mainPage}"
         .user="${this.user}"
         .toast="${this.currentToastMessage}"
       >

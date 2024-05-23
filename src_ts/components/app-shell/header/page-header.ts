@@ -4,35 +4,18 @@ import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
 import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button.js';
 import {LitElement, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
-
+import '../header/languages-dropdown';
 import './countries-dropdown';
 import './organizations-dropdown';
 
 import {connect} from '@unicef-polymer/etools-utils/dist/pwa.utils';
 import {RootState, store} from '../../../redux/store';
-import {isProductionServer, ROOT_PATH} from '../../../config/config';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import isEmpty from 'lodash-es/isEmpty';
 import {updateCurrentUser} from '../../user/user-actions';
-import {pageHeaderStyles} from './page-header-styles';
-import {layoutStyles} from '@unicef-polymer/etools-unicef/src/styles/layout-styles';
-import {translate, use, get as getTranslation} from 'lit-translate';
-import {setActiveLanguage} from '../../../redux/actions/active-language';
+import {translate, get as getTranslation} from 'lit-translate';
 import {activeLanguage} from '../../../redux/reducers/active-language';
-import {countriesDropdownStyles} from './countries-dropdown-styles';
 import {AnyObject, EtoolsUser} from '@unicef-polymer/etools-types';
-import {sendRequest} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
-import {etoolsEndpoints} from '../../../endpoints/endpoints-list';
-import {updateUserData} from '../../../redux/actions/user';
-import {parseRequestErrorsAndShowAsToastMsgs} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-error-parser';
-import 'dayjs/locale/fr.js';
-import 'dayjs/locale/ru.js';
-import 'dayjs/locale/pt.js';
-import 'dayjs/locale/ar.js';
-import 'dayjs/locale/ro.js';
-import 'dayjs/locale/es.js';
-import {appLanguages} from '../../../config/app-constants';
-import dayjs from 'dayjs';
 
 store.addReducers({
   activeLanguage
@@ -44,141 +27,31 @@ store.addReducers({
  */
 @customElement('page-header')
 export class PageHeader extends connect(store)(LitElement) {
-  static get styles() {
-    return [pageHeaderStyles, layoutStyles];
-  }
-
   public render() {
     // main template
     // language=HTML
     return html`
-      ${countriesDropdownStyles}
-      <style>
-        app-toolbar {
-          background-color: ${this.headerColor};
-        }
-        support-btn {
-          color: var(--header-icon-color);
-        }
-        .dropdowns {
-          display: flex;
-          margin-block-start: 6px;
-        }
-        .header {
-          flex-wrap: wrap;
-          height: 100%;
-          justify-content: space-between;
-        }
-        .nav-menu-button {
-          min-width: 70px;
-        }
-        .header__item {
-          display: flex;
-          align-items: center;
-        }
-        .header__left-group {
-        }
-        .header__right-group {
-          justify-content: space-evenly;
-          margin-inline-start: auto;
-        }
-        .logo {
-          margin-inline-start: 20px;
-        }
-        .envWarning {
-          color: #000;
-          background-color: var(--header-color);
-          font-weight: 700;
-          padding: 5px 10px;
-          margin-inline-start: 8px;
-          font-size: var(--etools-font-size-14, 14px);
-          line-height: 1;
-          border-radius: 10px;
-        }
-        @media (max-width: 380px) {
-          .header__item {
-            flex-grow: 1;
-          }
-        }
-        @media (max-width: 576px) {
-          #app-logo {
-            display: none;
-          }
-          .envWarning {
-            font-size: var(--etools-font-size-10, 10px);
-            margin-left: 2px;
-          }
-          .dropdowns {
-            order: 1;
-          }
-        }
-      </style>
-
       <app-toolbar sticky class="content-align">
-        <div class="header__item header__left-group">
-          <etools-icon-button
-            id="menuButton"
-            label="menu"
-            name="menu"
-            class="nav-menu-button"
-            @click="${() => this.menuBtnClicked()}"
-          ></etools-icon-button>        
-          <img id="app-logo" class="logo" src="./assets/images/etools-logo-color-white.svg" alt="eTools" />
-          ${
-            this.isStaging
-              ? html`<div class="envWarning" title="${this.environment} TESTING ENVIRONMENT">${this.environment}</div>`
-              : ''
-          }
+        <div slot="dropdowns">
+          <languages-dropdown .profile="${this.profile}"></languages-dropdown>
+          <countries-dropdown></countries-dropdown>
+          <organizations-dropdown></organizations-dropdown>
         </div>
-        <div class="header__item header__right-group dropdowns">            
-              <div>
-                <etools-dropdown
-                  id="languageSelector"
-                  transparent
-                  .selected="${this.selectedLanguage}"
-                  .options="${appLanguages}"
-                  option-label="display_name"
-                  option-value="value"
-                  @etools-selected-item-changed="${({detail}: CustomEvent) =>
-                    this.languageChanged(detail.selectedItem)}"
-                  trigger-value-change-event
-                  hide-search
-                  allow-outside-scroll
-                  no-label-float
-                  min-width="120px"
-                  placement="bottom-end"
-                  .syncWidth="${false}"
-                ></etools-dropdown>
-              </div>
-              <countries-dropdown dir="${this.dir}"></countries-dropdown>
-              <organizations-dropdown></organizations-dropdown>
-          </div>
-          <div class="layout-horizontal align-items-center">
-            <etools-profile-dropdown
-              title=${translate('GENERAL.PROFILEANDSIGNOUT')}
-              .sections="${this.profileDrSections}"
-              .offices="${this.profileDrOffices}"
-              .users="${this.profileDrUsers}"
-              .profile="${this.profile ? {...this.profile} : {}}"
-              language="${this.selectedLanguage}"
-              @save-profile="${this.handleSaveProfile}"
-              @sign-out="${this._signOut}"
-            >
-            </etools-profile-dropdown>
-          </div>        
-      </div>
-    </app-toolbar>
+        <div slot="icons">
+          <etools-profile-dropdown
+            title=${translate('GENERAL.PROFILEANDSIGNOUT')}
+            .sections="${this.profileDrSections}"
+            .offices="${this.profileDrOffices}"
+            .users="${this.profileDrUsers}"
+            .profile="${this.profile ? {...this.profile} : {}}"
+            @save-profile="${this.handleSaveProfile}"
+            @sign-out="${this._signOut}"
+          >
+          </etools-profile-dropdown>
+        </div>
+      </app-toolbar>
     `;
   }
-
-  @property({type: Boolean})
-  public isStaging = false;
-
-  @property({type: String})
-  rootPath: string = ROOT_PATH;
-
-  @property({type: String})
-  public headerColor = 'var(--header-bg-color)';
 
   @property({type: Object})
   profile!: EtoolsUser | null;
@@ -207,51 +80,14 @@ export class PageHeader extends connect(store)(LitElement) {
   @property({type: Array})
   editableFields: string[] = ['office', 'section', 'job_title', 'phone_number', 'oic', 'supervisor'];
 
-  @property({type: String})
-  environment = 'LOCAL';
-
-  @property({type: String})
-  dir = '';
-
-  @property() selectedLanguage!: string;
-
-  // @query('#languageSelector') private languageDropdown!: EtoolsDropdownEl;
-
   public connectedCallback() {
     super.connectedCallback();
-    this.setBgColor();
-    this.checkEnvironment();
-
-    // setTimeout(() => {
-    //   const fitInto = document.querySelector('app-shell')!.shadowRoot!.querySelector('#appHeadLayout');
-    //   this.languageDropdown.fitInto = fitInto;
-    // }, 0);
   }
 
   public stateChanged(state: RootState) {
     if (state.user?.data) {
       this.profile = state.user!.data;
     }
-    if (state.activeLanguage!.activeLanguage && state.activeLanguage!.activeLanguage !== this.selectedLanguage) {
-      this.selectedLanguage = state.activeLanguage!.activeLanguage;
-      window.EtoolsLanguage = this.selectedLanguage;
-      this.setLanguageDirection();
-    }
-  }
-
-  private setLanguageDirection() {
-    setTimeout(() => {
-      const htmlTag = document.querySelector('html');
-      if (this.selectedLanguage === 'ar') {
-        htmlTag!.setAttribute('dir', 'rtl');
-        this.setAttribute('dir', 'rtl');
-        this.dir = 'rtl';
-      } else if (htmlTag!.getAttribute('dir')) {
-        htmlTag!.removeAttribute('dir');
-        this.removeAttribute('dir');
-        this.dir = '';
-      }
-    });
   }
 
   public handleSaveProfile(e: any) {
@@ -298,45 +134,8 @@ export class PageHeader extends connect(store)(LitElement) {
     return modifiedFields;
   }
 
-  languageChanged(selectedItem: any): void {
-    if (!selectedItem || !selectedItem.value) {
-      return;
-    }
-    const newLanguage = selectedItem.value;
-    if (newLanguage) {
-      dayjs.locale(newLanguage);
-      // Event caught by self translating npm packages
-      fireEvent(this, 'language-changed', {language: newLanguage});
-    }
-    if (this.selectedLanguage !== newLanguage) {
-      window.EtoolsLanguage = newLanguage;
-      use(newLanguage).then(() => {
-        if (this.profile && this.profile.preferences?.language != newLanguage) {
-          this.updateUserPreference(newLanguage);
-        }
-      });
-    }
-  }
-
-  private updateUserPreference(language: string) {
-    // @ts-ignore
-    sendRequest({endpoint: etoolsEndpoints.userProfile, method: 'PATCH', body: {preferences: {language: language}}})
-      .then((response) => {
-        store.dispatch(updateUserData(response));
-        store.dispatch(setActiveLanguage(language));
-      })
-      .catch((err: any) => parseRequestErrorsAndShowAsToastMsgs(err, this));
-  }
-
   public menuBtnClicked() {
     fireEvent(this, 'change-drawer-state');
-  }
-
-  private setBgColor() {
-    // If not production environment, changing header color to red
-    if (!isProductionServer()) {
-      this.headerColor = 'var(--nonprod-header-color)';
-    }
   }
 
   protected _signOut() {
@@ -347,10 +146,5 @@ export class PageHeader extends connect(store)(LitElement) {
 
   protected clearLocalStorage() {
     localStorage.clear();
-  }
-
-  protected checkEnvironment() {
-    this.isStaging = !isProductionServer();
-    this.environment = isProductionServer() ? 'DEMO' : 'LOCAL';
   }
 }

@@ -8,13 +8,13 @@ import {customElement, property, query} from 'lit/decorators.js';
 
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {EtoolsUser} from '@unicef-polymer/etools-types';
-import {countriesDropdownStyles} from './countries-dropdown-styles';
+import {toolbarDropdownStyles} from '@unicef-polymer/etools-unicef/src/styles/toolbar-dropdown-styles';
 import {get as getTranslation, translate} from 'lit-translate';
-import {ROOT_PATH} from '../../../config/config';
 import {changeCurrentOrganization} from '../../user/user-actions';
 import {isEmptyObject} from '@unicef-polymer/etools-utils/dist/equality-comparisons.util';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {EtoolsRedirectPath} from '@unicef-polymer/etools-utils/dist/enums/router.enum';
+import {Environment} from '@unicef-polymer/etools-utils/dist/singleton/environment';
 
 /**
  * @LitElement
@@ -24,7 +24,7 @@ import {EtoolsRedirectPath} from '@unicef-polymer/etools-utils/dist/enums/router
 export class organizationsDropdown extends connect(store)(LitElement) {
   public render() {
     return html`
-      ${countriesDropdownStyles}
+      ${toolbarDropdownStyles}
       <etools-dropdown
         transparent
         ?hidden=${isEmptyObject(this.organizations)}
@@ -113,7 +113,7 @@ export class organizationsDropdown extends connect(store)(LitElement) {
         // TODO: clear all cached data related to old country
         EtoolsRouter.updateAppLocation(EtoolsRouter.getRedirectPath(EtoolsRedirectPath.DEFAULT));
         // force page reload to load all data specific to the new country
-        document.location.assign(window.location.origin + ROOT_PATH);
+        document.location.assign(window.location.origin + Environment.basePath);
       })
       .catch((error: any) => {
         this.handleOrganizationChangeError(error);

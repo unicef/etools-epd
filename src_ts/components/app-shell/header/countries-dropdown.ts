@@ -8,12 +8,12 @@ import {customElement, property, query} from 'lit/decorators.js';
 
 // import EndpointsMixin from '../../endpoints/endpoints-mixin.js';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import {countriesDropdownStyles} from './countries-dropdown-styles';
 import {changeCurrentUserCountry} from '../../user/user-actions';
-import {ROOT_PATH} from '../../../config/config';
 import {AnyObject, AvailableUserCountry, EtoolsUser} from '@unicef-polymer/etools-types';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {EtoolsRedirectPath} from '@unicef-polymer/etools-utils/dist/enums/router.enum';
+import {Environment} from '@unicef-polymer/etools-utils/dist/singleton/environment';
+import {toolbarDropdownStyles} from '@unicef-polymer/etools-unicef/src/styles/toolbar-dropdown-styles';
 
 /**
  * @LitElement
@@ -25,7 +25,7 @@ export class CountriesDropdown extends connect(store)(LitElement) {
     // main template
     // language=HTML
     return html`
-      ${countriesDropdownStyles}
+      ${toolbarDropdownStyles}
       <!-- shown options limit set to 280 as there are currently 195 countries in the UN council and about 230 total -->
       <etools-dropdown
         id="countrySelector"
@@ -110,7 +110,7 @@ export class CountriesDropdown extends connect(store)(LitElement) {
         // TODO: clear all cached data related to old country
         EtoolsRouter.updateAppLocation(EtoolsRouter.getRedirectPath(EtoolsRedirectPath.DEFAULT));
         // force page reload to load all data specific to the new country
-        document.location.assign(window.location.origin + ROOT_PATH);
+        document.location.assign(window.location.origin + Environment.basePath);
       })
       .catch((error: any) => {
         this.handleCountryChangeError(error);

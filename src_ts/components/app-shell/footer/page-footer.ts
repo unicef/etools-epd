@@ -1,6 +1,6 @@
+import {Environment} from '@unicef-polymer/etools-utils/dist/singleton/environment';
 import {LitElement, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
-import {ROOT_PATH} from '../../../config/config';
 /**
  * page footer element
  * @LitElement
@@ -72,5 +72,5 @@ export class PageFooter extends LitElement {
   }
 
   @property({type: String})
-  rootPath: string = ROOT_PATH;
+  rootPath: string = Environment.basePath;
 }

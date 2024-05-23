@@ -3,10 +3,11 @@ import '@shoelace-style/shoelace/dist/components/tooltip/tooltip.js';
 
 import {navMenuStyles} from './styles/nav-menu-styles';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import {ROOT_PATH, SMALL_MENU_ACTIVE_LOCALSTORAGE_KEY} from '../../../config/config';
+import {SMALL_MENU_ACTIVE_LOCALSTORAGE_KEY} from '../../../config/config';
 import {LitElement, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 import {translate} from 'lit-translate';
+import {Environment} from '@unicef-polymer/etools-utils/dist/singleton/environment';
 
 /**
  * main menu
@@ -80,7 +81,7 @@ export class AppMenu extends LitElement {
   public selectedOption = '';
 
   @property({type: String})
-  rootPath: string = ROOT_PATH;
+  rootPath: string = Environment.basePath;
 
   @property({type: Boolean, attribute: 'small-menu'})
   public smallMenu = false;
