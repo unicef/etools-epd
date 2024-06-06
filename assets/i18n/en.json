@@ -31,9 +31,9 @@
     "TOTAL": "Total",
     "TOTAL_C": "TOTAL",
     "YES": "Yes",
-    "COUNTRY": "Country",
-    "SELECT_ORGANIZATION": "Select Organization"
+    "COUNTRY": "Country"
   },
+  "SELECT_ORGANIZATION": "Select Organization",
   "INFORMATION": "Information",
   "INTERVENTIONS_LIST": {
     "BUDGET_OWNER": "UNICEF Budget Owner",

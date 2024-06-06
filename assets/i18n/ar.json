@@ -31,9 +31,9 @@
     "TOTAL": "المجموع",
     "TOTAL_C": "المجموع",
     "YES": "نعم",
-    "COUNTRY": "البلد",
-    "SELECT_ORGANIZATION": "اختيار منظمة"
+    "COUNTRY": "البلد"
   },
+  "SELECT_ORGANIZATION": "اختيار منظمة",
   "INFORMATION": "معلومات",
   "INTERVENTIONS_LIST": {
     "BUDGET_OWNER": "مسئول ميزانية اليونيسف",

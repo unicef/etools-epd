@@ -19,6 +19,7 @@ import '@unicef-polymer/etools-unicef/src/etools-app-layout/app-drawer.js';
 import '@unicef-polymer/etools-unicef/src/etools-app-layout/app-header-layout.js';
 import '@unicef-polymer/etools-unicef/src/etools-app-layout/app-header.js';
 import '@unicef-polymer/etools-unicef/src/etools-app-layout/app-toolbar.js';
+import '@unicef-polymer/etools-unicef/src/etools-app-layout/app-footer.js';
 import '@unicef-polymer/etools-piwik-analytics/etools-piwik-analytics';
 import {createDynamicDialog} from '@unicef-polymer/etools-unicef/src/etools-dialog/dynamic-dialog';
 
@@ -29,7 +30,6 @@ import {AppShellStyles} from './components/app-shell/app-shell-styles';
 
 import './components/app-shell/menu/app-menu.js';
 import './components/app-shell/header/page-header.js';
-import './components/app-shell/footer/page-footer.js';
 
 import user from './redux/reducers/user';
 import commonData, {CommonDataState} from './redux/reducers/common-data';
@@ -166,7 +166,7 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
               : html``}
           </main>
 
-          <page-footer></page-footer>
+          <app-footer></app-footer>
         </app-header-layout>
       </app-drawer-layout>
     `;
