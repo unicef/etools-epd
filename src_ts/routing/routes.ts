@@ -1,11 +1,11 @@
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
-import {ROOT_PATH} from '../config/config';
+import {Environment} from '@unicef-polymer/etools-utils/dist/singleton/environment';
 import {RouteCallbackParams, RouteDetails} from '@unicef-polymer/etools-types';
 
 const routeParamRegex = '([^\\/?#=+]+)';
 
 EtoolsRouter.init({
-  baseUrl: ROOT_PATH,
+  baseUrl: Environment.basePath,
   redirectPaths: {
     notFound: '/not-found',
     default: '/interventions/list'

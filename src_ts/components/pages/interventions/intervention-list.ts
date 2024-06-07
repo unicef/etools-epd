@@ -12,7 +12,6 @@ import {
   updateFilterSelectionOptions,
   updateFiltersSelectedValues
 } from '@unicef-polymer/etools-unicef/src/etools-filters/filters';
-import {ROOT_PATH} from '../../../config/config';
 import {EtoolsFilter} from '@unicef-polymer/etools-unicef/src/etools-filters/etools-filters';
 import {pageLayoutStyles} from '../../styles/page-layout-styles';
 import {elevationStyles} from '../../styles/lit-styles/elevation-styles';
@@ -60,6 +59,7 @@ import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {setShouldReGetList} from './intervention-tab-pages/common/actions/interventions';
 import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
+import {Environment} from '@unicef-polymer/etools-utils/dist/singleton/environment';
 
 /**
  * @LitElement
@@ -165,7 +165,7 @@ export class InterventionList extends connect(store)(LitElement) {
     {
       label: translate('INTERVENTIONS_LIST.REFERENCE_NO') as unknown as string,
       name: 'number',
-      link_tmpl: `${ROOT_PATH}interventions/:id/metadata`,
+      link_tmpl: `${Environment.basePath}interventions/:id/metadata`,
       type: EtoolsTableColumnType.Link,
       sort: true
     },
