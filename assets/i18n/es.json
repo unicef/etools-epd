@@ -31,9 +31,9 @@
     "TOTAL": "Total",
     "TOTAL_C": "TOTAL",
     "YES": "Sí",
-    "COUNTRY": "País",
-    "SELECT_ORGANIZATION": "Seleccionar organización"
+    "COUNTRY": "País"
   },
+  "SELECT_ORGANIZATION": "Seleccionar organización",
   "INFORMATION": "Información",
   "INTERVENTIONS_LIST": {
     "BUDGET_OWNER": "Propietario del presupuesto de UNICEF",
