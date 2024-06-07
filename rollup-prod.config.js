@@ -38,7 +38,6 @@ const copyConfig = {
       src: 'node_modules/@mapbox/leaflet-omnivore/leaflet-omnivore.min.js',
       dest: 'src/node_modules/@mapbox/leaflet-omnivore/'
     },
-    { src: 'node_modules/leaflet/dist/images/marker-icon.png', dest: 'src/node_modules/leaflet/dist/images' },
     {
       src: 'node_modules/leaflet.markercluster/dist/leaflet.markercluster.js',
       dest: 'src/node_modules/leaflet.markercluster/dist'

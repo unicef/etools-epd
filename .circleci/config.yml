@@ -91,4 +91,3 @@ workflows:
                 - master
                 - staging
                 - develop
-                - mobile-friendly
