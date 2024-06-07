@@ -68,7 +68,12 @@ export class PageHeader extends connect(store)(LitElement) {
     // main template
     // language=HTML
     return html`
-      <app-toolbar sticky class="content-align">
+      <app-toolbar 
+      @menu-button-clicked="${this.menuBtnClicked}"
+      .profile=${this.profile}
+      responsive-width="850.9px"
+      sticky
+      class="content-align">
         <div slot="dropdowns">
           <languages-dropdown
             .profile="${this.profile}"
