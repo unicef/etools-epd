@@ -8,6 +8,7 @@ import '@unicef-polymer/etools-modules-common/dist/components/dropdowns/organiza
 import {LitElement, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 
+import {DexieRefresh} from '@unicef-polymer/etools-utils/dist/singleton/dexie-refresh';
 import {connect} from '@unicef-polymer/etools-utils/dist/pwa.utils';
 import {RootState, store} from '../../../redux/store';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
@@ -91,6 +92,9 @@ export class PageHeader extends connect(store)(LitElement) {
             .profile="${this.profile}"
             .changeCountryEndpoint="${etoolsEndpoints.changeCountry}"
             @country-changed="${() => {
+              DexieRefresh.refresh();
+              DexieRefresh.clearLocalStorage();
+
               EtoolsRouter.updateAppLocation(EtoolsRouter.getRedirectPath(EtoolsRedirectPath.DEFAULT));
               document.location.assign(window.location.origin + Environment.basePath);
             }}"
