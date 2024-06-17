@@ -61,6 +61,17 @@ import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/uti
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
 import {Environment} from '@unicef-polymer/etools-utils/dist/singleton/environment';
 
+const customStyles = html`
+  <style>
+    .word-break {
+      word-break: break-word;
+    }
+    .col_type {
+      white-space: pre-line !important;
+    }
+  </style>
+`;
+
 /**
  * @LitElement
  * @customElement
@@ -76,14 +87,7 @@ export class InterventionList extends connect(store)(LitElement) {
     // language=HTML
     return html`
       ${sharedStyles}
-      <style>
-        .col_type {
-          white-space: pre-line !important;
-        }
-        .word-break {
-          word-break: break-word;
-        }
-      </style>
+      <style></style>
       <page-content-header>
         <h1 slot="page-title">${translate('INTERVENTIONS_LIST.PD_LIST')}</h1>
 
@@ -116,7 +120,7 @@ export class InterventionList extends connect(store)(LitElement) {
           .items="${this.listData}"
           .paginator="${this.paginator}"
           .getChildRowTemplateMethod="${this.listData.length ? this.getRowDetails.bind(this) : null}"
-          .extraCSS="${InterventionsTableStyles}"
+          .extraCSS="${this.getTableStyle()}"
           singleSort
           @paginator-change="${this.paginatorChange}"
           @sort-change="${this.sortChange}"
@@ -307,6 +311,10 @@ export class InterventionList extends connect(store)(LitElement) {
       this.showLoading = true;
       this.getListData(forceReGet);
     }
+  }
+
+  getTableStyle() {
+    return html` ${InterventionsTableStyles} ${customStyles}`;
   }
 
   getRowDetails(item: InterventionListData): {rowHTML: TemplateResult} {
