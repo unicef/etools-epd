@@ -80,6 +80,9 @@ export class InterventionList extends connect(store)(LitElement) {
         .col_type {
           white-space: pre-line !important;
         }
+        .word-break {
+          word-break: break-word;
+        }
       </style>
       <page-content-header>
         <h1 slot="page-title">${translate('INTERVENTIONS_LIST.PD_LIST')}</h1>
@@ -224,7 +227,8 @@ export class InterventionList extends connect(store)(LitElement) {
       label: translate('INTERVENTIONS_LIST.TITLE') as unknown as string,
       name: 'title',
       type: EtoolsTableColumnType.Text,
-      sort: true
+      sort: true,
+      cssClass: 'word-break'
     },
     {
       label: translate('INTERVENTIONS_LIST.START_DATE') as unknown as string,
