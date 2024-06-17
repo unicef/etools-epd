@@ -91,3 +91,4 @@ workflows:
                 - master
                 - staging
                 - develop
+                - be-pagination

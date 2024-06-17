@@ -33,7 +33,7 @@ export const etoolsEndpoints: EtoolsEndpoints = {
     url: '/api/v2/reports/countryprogramme/'
   },
   interventions: {
-    url: '/api/pmp/v3/interventions/?show_amendments=true'
+    url: '/api/pmp/v3/interventions/?show_amendments=true&page_size=all'
   },
   intervention: {
     template: '/api/pmp/v3/interventions/<%=interventionId%>/'
