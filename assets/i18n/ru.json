@@ -31,9 +31,9 @@
     "TOTAL": "Итого",
     "TOTAL_C": "Итого",
     "YES": "Да",
-    "COUNTRY": "Страна",
-    "SELECT_ORGANIZATION": "Выберите организацию"
+    "COUNTRY": "Страна"
   },
+  "SELECT_ORGANIZATION": "Выберите организацию",
   "INFORMATION": "Информация",
   "INTERVENTIONS_LIST": {
     "BUDGET_OWNER": "Ответственный за бюджет в ЮНИСЕФ",
