@@ -221,7 +221,7 @@ export class InterventionList extends connect(store)(LitElement) {
             ${translate('SENT_TO_UNICEF')}`;
         }
         return translatedStatus;
-      }     
+      }
     },
     {
       label: translate('INTERVENTIONS_LIST.TITLE') as unknown as string,
