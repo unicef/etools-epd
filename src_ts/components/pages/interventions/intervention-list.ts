@@ -66,9 +66,6 @@ const customStyles = html`
     .word-break {
       word-break: break-word;
     }
-    .col_type {
-      white-space: pre-line !important;
-    }
   </style>
 `;
 
@@ -224,8 +221,7 @@ export class InterventionList extends connect(store)(LitElement) {
             ${translate('SENT_TO_UNICEF')}`;
         }
         return translatedStatus;
-      },
-      cssClass: 'col_type'
+      }
     },
     {
       label: translate('INTERVENTIONS_LIST.TITLE') as unknown as string,
