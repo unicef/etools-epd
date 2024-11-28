@@ -1,4 +1,4 @@
-FROM node:14.21-alpine3.16 as builder
+FROM node:20.18.1-alpine3.19 as builder
 RUN apk update
 RUN apk add --update bash
 
@@ -21,7 +21,7 @@ RUN cp -a /tmp/node_modules /code/node_modules
 WORKDIR /code
 RUN npm run build
 
-FROM node:14.21-alpine3.16
+FROM node:20.18.1-alpine3.19
 RUN apk update
 RUN apk add --update bash
 

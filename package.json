@@ -32,14 +32,14 @@
   },
   "dependencies": {
     "@mapbox/leaflet-omnivore": "^0.3.4",
-    "@shoelace-style/shoelace": "2.10.0",
+    "@shoelace-style/shoelace": "2.18.0",
     "@types/leaflet": "^1.9.3",
     "@types/lodash-es": "^4.17.7",
-    "@unicef-polymer/etools-modules-common": "^5.0.0-rc.54",
-    "@unicef-polymer/etools-piwik-analytics": "^4.0.1-rc.3",
-    "@unicef-polymer/etools-types": "^1.11.17",
-    "@unicef-polymer/etools-unicef": "^1.0.0-rc.99",
-    "@unicef-polymer/etools-utils": "^2.0.0-rc.12",
+    "@unicef-polymer/etools-modules-common": "^5.0.1",
+    "@unicef-polymer/etools-piwik-analytics": "^4.0.2",
+    "@unicef-polymer/etools-types": "^1.11.19",
+    "@unicef-polymer/etools-unicef": "^1.0.1",
+    "@unicef-polymer/etools-utils": "^2.0.1",
     "dayjs": "^1.11.10",
     "esri-leaflet": "^3.0.8",
     "express": "^4.18.2",
@@ -98,7 +98,7 @@
     "rollup-plugin-serve": "^2.0.2",
     "rollup-plugin-workbox": "^8.0.1",
     "shelljs": ">=0.8.5",
-    "smob": "^1.4.1",
+    "smob": "1.4.1",
     "socket.io": ">=4.6.1",
     "socket.io-parser": ">=4.2.3",
     "svg-sprite": "^2.0.2",
@@ -110,5 +110,7 @@
     "wd": ">=1.14.0",
     "y18n": ">=3.2.2"
   },
-  "relativeDependencies": {}
+  "relativeDependencies": {
+    "@unicef-polymer/etools-unicef": "../../etools-polymer/etools-unicef/"
+  }
 }
