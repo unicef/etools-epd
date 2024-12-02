@@ -27,6 +27,7 @@ WORKDIR /code
 RUN npm init -y
 RUN npm install express
 RUN npm install compression
+RUN npm install ua-parser-js
 RUN npm install browser-capabilities@1.1.x
 COPY --from=builder /code/express.js /code/express.js
 COPY --from=builder /code/src /code/src
