@@ -1,10 +1,8 @@
-FROM node:20.18.1-alpine3.19 as builder
+FROM node:20.18.1-alpine3.19 AS builder
 RUN apk update
 RUN apk add --update bash
 
 RUN apk add git
-RUN npm config set unsafe-perm true
-# RUN npm install -g --unsafe-perm polymer-cli
 RUN npm install -g typescript@4.x
 
 WORKDIR /tmp

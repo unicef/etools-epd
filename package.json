@@ -38,7 +38,7 @@
     "@unicef-polymer/etools-modules-common": "^5.1.0",
     "@unicef-polymer/etools-piwik-analytics": "^4.1.0",
     "@unicef-polymer/etools-types": "^1.11.19",
-    "@unicef-polymer/etools-unicef": "^1.0.1",
+    "@unicef-polymer/etools-unicef": "^1.1.0",
     "@unicef-polymer/etools-utils": "^2.0.1",
     "dayjs": "^1.11.10",
     "esri-leaflet": "^3.0.8",
@@ -108,7 +108,5 @@
     "wd": ">=1.14.0",
     "y18n": ">=3.2.2"
   },
-  "relativeDependencies": {
-    "@unicef-polymer/etools-unicef": "../../etools-polymer/etools-unicef/"
-  }
+  "relativeDependencies": {}
 }
