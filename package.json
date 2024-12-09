@@ -5,6 +5,7 @@
   "contributors": [
     "eTools Team"
   ],
+  "type": "module",
   "license": "BSD-3-Clause",
   "repository": "https://github.com/unicef/etools-epd",
   "scripts": {
@@ -17,10 +18,8 @@
     "test": "npm run test:unit && npm run test:integration",
     "test:integration": "tsc && mocha test/integration --timeout=10000",
     "test:regenerate_screenshots": "tsc && mocha test/integration/screenshots-baseline/regenerate.js --timeout=15000",
-    "lint:eslint": "eslint --ext .ts . --ignore-path .gitignore",
-    "format:eslint": "eslint --ext .ts . --fix --ignore-path .gitignore",
-    "lint:prettier": "prettier \"**/*.ts\" --check --ignore-path .gitignore",
-    "format:prettier": "prettier \"**/*.ts\" --write --ignore-path .gitignore",
+    "lint:eslint": "eslint src_ts/**",
+    "format:eslint": "eslint src_ts/** --fix",
     "lint": "npm run lint:eslint",
     "format": "npm run format:eslint",
     "generate:icons": "npm --prefix node_modules/@unicef-polymer/etools-unicef run generate-icons -- --output=$(pwd)/assets/icons/ --icons=$(pwd)/assets/icons/icons.js",
@@ -52,26 +51,26 @@
     "reselect": "^4.1.7"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3.2.0",
+    "@eslint/js": "^9.16.0",
     "@rollup/plugin-commonjs": "^28.0.1",
     "@rollup/plugin-node-resolve": "^15.3.0",
     "@rollup/plugin-terser": "^0.4.4",
-    "@typescript-eslint/eslint-plugin": "^5.7.0",
-    "@typescript-eslint/parser": "^5.7.0",
-    "@typescript-eslint/typescript-estree": "^5.7.0",
+    "@typescript-eslint/eslint-plugin": "^8.17.0",
+    "@typescript-eslint/parser": "^8.17.0",
     "chokidar-cli": "^3.0.0",
     "concurrently": "^9.1.0",
-    "esbuild": "^0.19.5",
-    "eslint": "^7.32.0",
-    "eslint-config-google": "^0.14.0",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-html": "^6.2.0",
-    "eslint-plugin-lit": "^1.6.1",
-    "eslint-plugin-lit-a11y": "^2.2.0",
-    "eslint-plugin-prettier": "^4.0.0",
+    "eslint": "^9.16.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-html": "^8.1.2",
+    "eslint-plugin-lit": "^1.15.0",
+    "eslint-plugin-lit-a11y": "^4.1.4",
+    "eslint-plugin-prettier": "^5.2.1",
     "eslint-plugin-you-dont-need-lodash-underscore": "^6.10.0",
-    "prettier": "~2.5.1",
+    "globals": "^15.13.0",
+    "prettier": "~3.4.2",
     "relative-deps": "^1.0.7",
-    "rollup": "^4.28.0",
+    "rollup": "^4.28.1",
     "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-delete": "^2.1.0",
     "rollup-plugin-esbuild": "^6.1.1",
@@ -80,10 +79,10 @@
     "rollup-plugin-serve": "^3.0.0",
     "rollup-plugin-workbox": "^8.1.1",
     "svg-sprite": "^2.0.2",
-    "typescript": "^4.5.4"
+    "typescript": "^4.9.5"
   },
   "relativeDependencies": {},
   "optionalDependencies": {
-    "@rollup/rollup-linux-x64-musl": "^4.28.0"
+    "@rollup/rollup-linux-x64-musl": "^4.28.1"
   }
 }
