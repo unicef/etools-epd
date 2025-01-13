@@ -1,10 +1,8 @@
-FROM node:14.21-alpine3.16 as builder
+FROM node:20.18.1-alpine3.19 AS builder
 RUN apk update
 RUN apk add --update bash
 
 RUN apk add git
-RUN npm config set unsafe-perm true
-# RUN npm install -g --unsafe-perm polymer-cli
 RUN npm install -g typescript@4.x
 
 WORKDIR /tmp
@@ -21,7 +19,7 @@ RUN cp -a /tmp/node_modules /code/node_modules
 WORKDIR /code
 RUN npm run build
 
-FROM node:14.21-alpine3.16
+FROM node:20.18.1-alpine3.19
 RUN apk update
 RUN apk add --update bash
 
@@ -29,6 +27,7 @@ WORKDIR /code
 RUN npm init -y
 RUN npm install express
 RUN npm install compression
+RUN npm install ua-parser-js
 RUN npm install browser-capabilities@1.1.x
 COPY --from=builder /code/express.js /code/express.js
 COPY --from=builder /code/src /code/src

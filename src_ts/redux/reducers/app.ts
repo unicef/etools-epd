@@ -12,7 +12,7 @@ import {Reducer} from 'redux';
 import {RootAction} from '../store';
 import {SHOW_TOAST, CLOSE_TOAST} from '../actionsContants';
 import {RouteDetails} from '@unicef-polymer/etools-types';
-// eslint-disable-next-line max-len
+
 import {UPDATE_ROUTE} from '../../components/pages/interventions/intervention-tab-pages/common/actions/actionsContants';
 
 export interface AppState {
