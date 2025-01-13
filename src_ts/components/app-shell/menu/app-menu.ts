@@ -6,7 +6,7 @@ import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {SMALL_MENU_ACTIVE_LOCALSTORAGE_KEY} from '../../../config/config';
 import {LitElement, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
-import {translate} from 'lit-translate';
+import {translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {Environment} from '@unicef-polymer/etools-utils/dist/singleton/environment';
 
 /**
