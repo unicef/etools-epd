@@ -123,7 +123,7 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
 
       <app-drawer-layout
         id="layout"
-        responsive-width="850px"
+        responsive-width="880px"
         fullbleed
         ?narrow="${this.narrow}"
         ?small-menu="${this.smallMenu}"
