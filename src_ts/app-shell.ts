@@ -53,7 +53,7 @@ import isEmpty from 'lodash-es/isEmpty';
 import get from 'lodash-es/get';
 import './components/env-flags/environment-flags';
 import '@unicef-polymer/etools-unicef/src/etools-toasts/etools-toasts';
-import {registerTranslateConfig, use, translate} from 'lit-translate';
+import {registerTranslateConfig, use, translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {EtoolsUser, RouteDetails} from '@unicef-polymer/etools-types';
 import {setStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {SMALL_MENU_ACTIVE_LOCALSTORAGE_KEY} from './config/config';
@@ -123,7 +123,7 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
 
       <app-drawer-layout
         id="layout"
-        responsive-width="850px"
+        responsive-width="880px"
         fullbleed
         ?narrow="${this.narrow}"
         ?small-menu="${this.smallMenu}"
