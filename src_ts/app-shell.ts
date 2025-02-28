@@ -1,7 +1,3 @@
-/**
-@license
-Copyright (c) 2019 The eTools Project Authors. All rights reserved.
-*/
 import {connect, installMediaQueryWatcher, installRouter} from '@unicef-polymer/etools-utils/dist/pwa.utils';
 
 // This element is connected to the Redux store.
