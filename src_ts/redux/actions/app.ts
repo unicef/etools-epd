@@ -35,7 +35,6 @@ const loadPageComponents: ActionCreator<ThunkResult> = (routeDetails: RouteDetai
   const page = routeDetails.routeName;
   const subpage = routeDetails.subRouteName;
   const tab = routeDetails.params?.tab; // Used only to check if the route is used for tabs, but tab = subpage
-  console.log(page, subpage, tab);
   try {
     if (!subpage) {
       await import(`../../components/pages/${page}/${page}.ts`);
@@ -49,8 +48,7 @@ const loadPageComponents: ActionCreator<ThunkResult> = (routeDetails: RouteDetai
         await import(`../../components/pages/${page}/intervention-${subpage}.ts`);
       }
     }
-  } catch (e) {
-    console.log(e);
+  } catch {
     console.log(`No file imports configuration found: ${page}!`);
     EtoolsRouter.updateAppLocation(EtoolsRouter.getRedirectPath(EtoolsRedirectPath.NOT_FOUND));
   }
