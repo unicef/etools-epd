@@ -25,75 +25,98 @@ const updateRouteDetails = (routeDetails: any) => {
   };
 };
 
-const loadPageComponents: ActionCreator<ThunkResult> = (routeDetails: RouteDetails) => (dispatch, _getState) => {
+const loadPageComponents: ActionCreator<ThunkResult> = (routeDetails: RouteDetails) => async (dispatch, _getState) => {
   if (!routeDetails) {
     // invalid route => redirect to 404 page
     EtoolsRouter.updateAppLocation(EtoolsRouter.getRedirectPath(EtoolsRedirectPath.NOT_FOUND));
     return;
   }
 
-  if (routeDetails.routeName === 'not-found') {
-    import('../../components/pages/not-found.js');
-  } else {
-    switch (routeDetails.subRouteName) {
-      case 'list':
-        import('../../components/pages/interventions/intervention-list.js');
-        break;
-      case 'metadata':
-        import('../../components/pages/interventions/intervention-tab-pages/intervention-tabs.js');
-        import(
-          '../../components/pages/interventions/intervention-tab-pages/intervention-metadata/intervention-metadata.js'
+  const page = routeDetails.routeName;
+  const subpage = routeDetails.subRouteName;
+  const tab = routeDetails.params?.tab; // Used only to check if the route is used for tabs, but tab = subpage
+  console.log(page, subpage, tab);
+  try {
+    if (!subpage) {
+      await import(`../../components/pages/${page}/${page}.ts`);
+    } else {
+      if (tab) {
+        await import(`../../components/pages/${page}/intervention-tab-pages/intervention-tabs.ts`);
+        await import(
+          `../../components/pages/${page}/intervention-tab-pages/intervention-${subpage}/intervention-${subpage}.ts`
         );
-        break;
-      case 'workplan':
-        import('../../components/pages/interventions/intervention-tab-pages/intervention-tabs.js');
-        import(
-          '../../components/pages/interventions/intervention-tab-pages/intervention-workplan/intervention-workplan.js'
-        );
-        break;
-      case 'workplan-editor':
-        import('../../components/pages/interventions/intervention-tab-pages/intervention-tabs.js');
-        import(
-          '../../components/pages/interventions/intervention-tab-pages/intervention-workplan-editor/intervention-workplan-editor.js'
-        );
-        break;
-      case 'timing':
-        import('../../components/pages/interventions/intervention-tab-pages/intervention-tabs.js');
-        import(
-          '../../components/pages/interventions/intervention-tab-pages/intervention-timing/intervention-timing.js'
-        );
-        break;
-      case 'strategy':
-        import('../../components/pages/interventions/intervention-tab-pages/intervention-tabs.js');
-        import(
-          '../../components/pages/interventions/intervention-tab-pages/intervention-strategy/intervention-strategy.js'
-        );
-        break;
-      case 'attachments':
-        import('../../components/pages/interventions/intervention-tab-pages/intervention-tabs.js');
-        import(
-          '../../components/pages/interventions/intervention-tab-pages/intervention-attachments/intervention-attachments.js'
-        );
-        break;
-      case 'review':
-        import('../../components/pages/interventions/intervention-tab-pages/intervention-tabs.js');
-        import(
-          '../../components/pages/interventions/intervention-tab-pages/intervention-review/intervention-review.js'
-        );
-        break;
-      case 'progress':
-        import('../../components/pages/interventions/intervention-tab-pages/intervention-tabs.js');
-        import(
-          '../../components/pages/interventions/intervention-tab-pages/intervention-progress/intervention-progress.js'
-        );
-        break;
-
-      default:
-        console.log('No file imports configuration found (componentsLazyLoadConfig)!');
-        EtoolsRouter.updateAppLocation(EtoolsRouter.getRedirectPath(EtoolsRedirectPath.NOT_FOUND));
-        break;
+      } else {
+        await import(`../../components/pages/${page}/intervention-${subpage}.ts`);
+      }
     }
+  } catch (e) {
+    console.log(e);
+    console.log(`No file imports configuration found: ${page}!`);
+    EtoolsRouter.updateAppLocation(EtoolsRouter.getRedirectPath(EtoolsRedirectPath.NOT_FOUND));
   }
+
+  // if (routeDetails.routeName === 'not-found') {
+  //   import('../../components/pages/not-found.js');
+  // } else {
+  //   switch (routeDetails.subRouteName) {
+  //     case 'list':
+  //       import('../../components/pages/interventions/intervention-list.js');
+  //       break;
+  //     case 'metadata':
+  //       import('../../components/pages/interventions/intervention-tab-pages/intervention-tabs.js');
+  //       import(
+  //         '../../components/pages/interventions/intervention-tab-pages/intervention-metadata/intervention-metadata.js'
+  //       );
+  //       break;
+  //     case 'workplan':
+  //       import('../../components/pages/interventions/intervention-tab-pages/intervention-tabs.js');
+  //       import(
+  //         '../../components/pages/interventions/intervention-tab-pages/intervention-workplan/intervention-workplan.js'
+  //       );
+  //       break;
+  //     case 'workplan-editor':
+  //       import('../../components/pages/interventions/intervention-tab-pages/intervention-tabs.js');
+  //       import(
+  //         '../../components/pages/interventions/intervention-tab-pages/intervention-workplan-editor/intervention-workplan-editor.js'
+  //       );
+  //       break;
+  //     case 'timing':
+  //       import('../../components/pages/interventions/intervention-tab-pages/intervention-tabs.js');
+  //       import(
+  //         '../../components/pages/interventions/intervention-tab-pages/intervention-timing/intervention-timing.js'
+  //       );
+  //       break;
+  //     case 'strategy':
+  //       import('../../components/pages/interventions/intervention-tab-pages/intervention-tabs.js');
+  //       import(
+  //         '../../components/pages/interventions/intervention-tab-pages/intervention-strategy/intervention-strategy.js'
+  //       );
+  //       break;
+  //     case 'attachments':
+  //       import('../../components/pages/interventions/intervention-tab-pages/intervention-tabs.js');
+  //       import(
+  //         '../../components/pages/interventions/intervention-tab-pages/intervention-attachments/intervention-attachments.js'
+  //       );
+  //       break;
+  //     case 'review':
+  //       import('../../components/pages/interventions/intervention-tab-pages/intervention-tabs.js');
+  //       import(
+  //         '../../components/pages/interventions/intervention-tab-pages/intervention-review/intervention-review.js'
+  //       );
+  //       break;
+  //     case 'progress':
+  //       import('../../components/pages/interventions/intervention-tab-pages/intervention-tabs.js');
+  //       import(
+  //         '../../components/pages/interventions/intervention-tab-pages/intervention-progress/intervention-progress.js'
+  //       );
+  //       break;
+
+  //     default:
+  //       console.log('No file imports configuration found (componentsLazyLoadConfig)!');
+  //       EtoolsRouter.updateAppLocation(EtoolsRouter.getRedirectPath(EtoolsRedirectPath.NOT_FOUND));
+  //       break;
+  //   }
+  // }
 
   // const prevRouteDetails = getState().app?.routeDetails;
   // if (commingFromPDDetailsToList(prevRouteDetails!, routeDetails)) {
