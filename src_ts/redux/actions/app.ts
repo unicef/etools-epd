@@ -53,69 +53,6 @@ const loadPageComponents: ActionCreator<ThunkResult> = (routeDetails: RouteDetai
     EtoolsRouter.updateAppLocation(EtoolsRouter.getRedirectPath(EtoolsRedirectPath.NOT_FOUND));
   }
 
-  // if (routeDetails.routeName === 'not-found') {
-  //   import('../../components/pages/not-found.js');
-  // } else {
-  //   switch (routeDetails.subRouteName) {
-  //     case 'list':
-  //       import('../../components/pages/interventions/intervention-list.js');
-  //       break;
-  //     case 'metadata':
-  //       import('../../components/pages/interventions/intervention-tab-pages/intervention-tabs.js');
-  //       import(
-  //         '../../components/pages/interventions/intervention-tab-pages/intervention-metadata/intervention-metadata.js'
-  //       );
-  //       break;
-  //     case 'workplan':
-  //       import('../../components/pages/interventions/intervention-tab-pages/intervention-tabs.js');
-  //       import(
-  //         '../../components/pages/interventions/intervention-tab-pages/intervention-workplan/intervention-workplan.js'
-  //       );
-  //       break;
-  //     case 'workplan-editor':
-  //       import('../../components/pages/interventions/intervention-tab-pages/intervention-tabs.js');
-  //       import(
-  //         '../../components/pages/interventions/intervention-tab-pages/intervention-workplan-editor/intervention-workplan-editor.js'
-  //       );
-  //       break;
-  //     case 'timing':
-  //       import('../../components/pages/interventions/intervention-tab-pages/intervention-tabs.js');
-  //       import(
-  //         '../../components/pages/interventions/intervention-tab-pages/intervention-timing/intervention-timing.js'
-  //       );
-  //       break;
-  //     case 'strategy':
-  //       import('../../components/pages/interventions/intervention-tab-pages/intervention-tabs.js');
-  //       import(
-  //         '../../components/pages/interventions/intervention-tab-pages/intervention-strategy/intervention-strategy.js'
-  //       );
-  //       break;
-  //     case 'attachments':
-  //       import('../../components/pages/interventions/intervention-tab-pages/intervention-tabs.js');
-  //       import(
-  //         '../../components/pages/interventions/intervention-tab-pages/intervention-attachments/intervention-attachments.js'
-  //       );
-  //       break;
-  //     case 'review':
-  //       import('../../components/pages/interventions/intervention-tab-pages/intervention-tabs.js');
-  //       import(
-  //         '../../components/pages/interventions/intervention-tab-pages/intervention-review/intervention-review.js'
-  //       );
-  //       break;
-  //     case 'progress':
-  //       import('../../components/pages/interventions/intervention-tab-pages/intervention-tabs.js');
-  //       import(
-  //         '../../components/pages/interventions/intervention-tab-pages/intervention-progress/intervention-progress.js'
-  //       );
-  //       break;
-
-  //     default:
-  //       console.log('No file imports configuration found (componentsLazyLoadConfig)!');
-  //       EtoolsRouter.updateAppLocation(EtoolsRouter.getRedirectPath(EtoolsRedirectPath.NOT_FOUND));
-  //       break;
-  //   }
-  // }
-
   // const prevRouteDetails = getState().app?.routeDetails;
   // if (commingFromPDDetailsToList(prevRouteDetails!, routeDetails)) {
   // Avoid multiple list requests after updating PD data that is displayed on the list and then going to the list
