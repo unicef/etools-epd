@@ -91,4 +91,4 @@ workflows:
                 - master
                 - staging
                 - develop
-                - dynamic_imports
+                - dynamic_import
