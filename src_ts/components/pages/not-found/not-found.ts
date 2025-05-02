@@ -2,9 +2,9 @@ import {LitElement, html} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
 
 // These are the shared styles needed by this element.
-import {elevationStyles} from '../styles/lit-styles/elevation-styles';
-import {pageLayoutStyles} from '../styles/page-layout-styles';
-import {SharedStylesLit} from '../styles/shared-styles-lit';
+import {elevationStyles} from '../../styles/lit-styles/elevation-styles';
+import {pageLayoutStyles} from '../../styles/page-layout-styles';
+import {SharedStylesLit} from '../../styles/shared-styles-lit';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
 import {Environment} from '@unicef-polymer/etools-utils/dist/singleton/environment';
 
