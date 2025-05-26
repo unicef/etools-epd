@@ -3,6 +3,7 @@
   "COMMUNITY_CHANNELS": "eTools Community Channels",
   "DISCUSSION": "Discussion",
   "EDITABLE_BY": "Editable By",
+  "LEAVE_UPLOAD_IN_PROGRESS": "Are you sure you want to leave this page? All file uploads in progress or unsaved will be lost!",
   "GENERAL": {
     "ADD": "Add",
     "ADD_UPDATE": "Add/Update",

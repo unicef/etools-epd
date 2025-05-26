@@ -18,7 +18,7 @@ export type AppAction = AppActionUpdateDrawerState | any;
 
 type ThunkResult = ThunkAction<void, RootState, undefined, AppAction>;
 
-const updateRouteDetails = (routeDetails: any) => {
+export const updateRouteDetails = (routeDetails: any) => {
   return {
     type: UPDATE_ROUTE,
     routeDetails

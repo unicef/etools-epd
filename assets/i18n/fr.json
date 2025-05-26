@@ -3,6 +3,7 @@
   "COMMUNITY_CHANNELS": "Canaux de la communauté eTools",
   "DISCUSSION": "Discussion",
   "EDITABLE_BY": "Modifiable par",
+  "LEAVE_UPLOAD_IN_PROGRESS": "Voulez-vous vraiment quitter cette page ? Tous les téléchargements de fichiers en cours ou non enregistrés seront perdus !",
   "GENERAL": {
     "ADD": "Ajouter",
     "ADD_UPDATE": "Ajouter/Mettre à jour",
