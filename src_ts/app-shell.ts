@@ -4,7 +4,7 @@ import {connect, installMediaQueryWatcher, installRouter} from '@unicef-polymer/
 import {store, RootState} from './redux/store';
 
 // These are the actions needed by this element.
-import {navigate} from './redux/actions/app';
+import {navigate, updateRouteDetails} from './redux/actions/app';
 
 // Routes
 import './routing/routes';
@@ -29,7 +29,6 @@ import './components/app-shell/header/page-header.js';
 
 import user from './redux/reducers/user';
 import commonData, {CommonDataState} from './redux/reducers/common-data';
-import uploadStatus from './redux/reducers/upload-status.js';
 import {getCurrentUser} from './components/user/user-actions';
 import {
   getPartners,
@@ -49,14 +48,12 @@ import isEmpty from 'lodash-es/isEmpty';
 import get from 'lodash-es/get';
 import './components/env-flags/environment-flags';
 import '@unicef-polymer/etools-unicef/src/etools-toasts/etools-toasts';
-import {registerTranslateConfig, use, translate} from '@unicef-polymer/etools-unicef/src/etools-translate';
+import {registerTranslateConfig, use} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {EtoolsUser, RouteDetails} from '@unicef-polymer/etools-types';
 import {setStore} from '@unicef-polymer/etools-utils/dist/store.util';
 import {SMALL_MENU_ACTIVE_LOCALSTORAGE_KEY} from './config/config';
 import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import {openDialog} from '@unicef-polymer/etools-utils/dist/dialog.util';
-import {RESET_CURRENT_ITEM, RESET_UNSAVED_UPLOADS, RESET_UPLOADS_IN_PROGRESS} from './redux/actions/upload-status';
-import UploadsMixin from '@unicef-polymer/etools-modules-common/dist/mixins/uploads-mixin';
+import {UploadsMixin} from '@unicef-polymer/etools-unicef/src/etools-upload/uploads-mixin.js';
 import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
 import {commingFromPDDetailsToList} from './components/utils/utils';
 import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
@@ -85,8 +82,7 @@ setStore(store as any);
 
 store.addReducers({
   user,
-  commonData,
-  uploadStatus
+  commonData
 });
 
 setBasePath('/epd/');
@@ -228,6 +224,8 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
     this.addEventListener('change-drawer-state', this.changeDrawerState);
     this.addEventListener('app-drawer-transitioned', this.syncWithDrawerState);
     this.addEventListener('toggle-small-menu', this.toggleMenu as any);
+    this.addUploadTrackingEvents();
+
     installMediaQueryWatcher(`(min-width: 460px)`, () => fireEvent(this, 'change-drawer-state'));
 
     getCurrentUser().then((user?: EtoolsUser) => {
@@ -366,14 +364,15 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
   }
 
   public async stateChanged(state: RootState) {
-    this.uploadsStateChanged(state);
-
     if (commingFromPDDetailsToList(this.routeDetails, state.app!.routeDetails!)) {
-      if (this.existsUnsavedUploads()) {
-        await this.confirmLeaveUploadsUnsavedDialog(this.routeDetails!.path, state.app!.routeDetails.path);
+      if (this.existsUploadsUnsavedOrInProgress()) {
+        store.dispatch(updateRouteDetails(this.routeDetails));
+        await this.confirmLeaveUploadInProgress(() => {
+          EtoolsRouter.replaceAppLocation(state.app!.routeDetails.path);
+        });
         return;
       } else if (state.interventions?.current) {
-        store.dispatch(this.resetCurrentItem());
+        fireEvent(this, 'upload-status-reset', {});
       }
     }
 
@@ -465,37 +464,4 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
     }
     return true;
   }
-
-  existsUnsavedUploads() {
-    return Number(this.uploadsInProgress) > 0 || Number(this.unsavedUploads) > 0;
-  }
-
-  async confirmLeaveUploadsUnsavedDialog(prevPath: string, pathToRedirect: string) {
-    // stay in the page where change was made
-    EtoolsRouter.replaceAppLocation(prevPath);
-
-    const confirmed = await openDialog({
-      dialog: 'are-you-sure',
-      dialogData: {
-        content: translate('GENERAL.LEAVE_UPLOADS_UNSAVED'),
-        confirmBtnText: translate('GENERAL.LEAVE'),
-        cancelBtnText: translate('GENERAL.STAY')
-      }
-    }).then(({confirmed}) => {
-      return confirmed;
-    });
-    if (confirmed) {
-      // confirmed to leave page and loose changes, reset uploads and redirect
-      store.dispatch({type: RESET_UNSAVED_UPLOADS});
-      store.dispatch({type: RESET_UPLOADS_IN_PROGRESS});
-      store.dispatch(this.resetCurrentItem());
-      EtoolsRouter.replaceAppLocation(pathToRedirect);
-    }
-  }
-
-  resetCurrentItem = () => {
-    return {
-      type: RESET_CURRENT_ITEM
-    };
-  };
 }
