@@ -333,7 +333,12 @@ export class InterventionList extends connect(store)(LitElement) {
   }
 
   filtersChange(e: CustomEvent) {
-    this.updateCurrentParams({...e.detail, page: 1}, true);
+    if (
+      buildUrlQueryString({...this.routeDetails!.queryParams}) !==
+      buildUrlQueryString({...this.routeDetails!.queryParams, ...e.detail})
+    ) {
+      this.updateCurrentParams({...e.detail, page: 1}, true);
+    }
   }
 
   paginatorChange(e: CustomEvent) {
@@ -349,7 +354,7 @@ export class InterventionList extends connect(store)(LitElement) {
   private updateCurrentParams(paramsToUpdate: GenericObject<any>, reset = false): void {
     let currentParams: RouteQueryParams = this.routeDetails!.queryParams || {};
     if (reset) {
-      currentParams = pick(currentParams, ['sort', 'page_size']);
+      currentParams = pick(currentParams, ['sort', 'page_size', 'page']);
     }
     const newParams: RouteQueryParams = {...currentParams, ...paramsToUpdate};
     if (JSON.stringify(currentParams) === JSON.stringify(newParams)) {
