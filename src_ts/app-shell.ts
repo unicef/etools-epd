@@ -32,8 +32,6 @@ import commonData, {CommonDataState} from './redux/reducers/common-data';
 import {getCurrentUser} from './components/user/user-actions';
 import {
   getPartners,
-  getLocations,
-  getSites,
   getSections,
   getDisaggregations,
   getOffices,
@@ -234,15 +232,13 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
         // @ts-ignore
         Promise.allSettled([
           getPartners(),
-          getLocations(),
           getSections(),
           getDisaggregations(),
           getOffices(),
           getUnicefUsers(),
           getDropdownsData(),
           getAgreements(),
-          getCountryProgrammes(user.is_unicef_user),
-          getSites()
+          getCountryProgrammes(user.is_unicef_user)
         ]).then((response: any[]) => {
           store.dispatch({
             type: SET_ALL_STATIC_DATA,
@@ -315,14 +311,12 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
   private formatResponse(response: any[]) {
     const data: Partial<CommonDataState> = {};
     data.partners = this.getValue(response[0]);
-    data.locations = this.getValue(response[1]);
-    data.sections = this.getValue(response[2]);
-    data.disaggregations = this.getValue(response[3]);
-    data.offices = this.getValue(response[4]);
-    data.unicefUsersData = this.getValue(response[5]);
-    this.setStaticDataFromResponse(data, this.getValue(response[6], {}));
-    data.countryProgrammes = this.getValue(response[8]);
-    data.sites = this.getValue(response[9]);
+    data.sections = this.getValue(response[1]);
+    data.disaggregations = this.getValue(response[2]);
+    data.offices = this.getValue(response[3]);
+    data.unicefUsersData = this.getValue(response[4]);
+    this.setStaticDataFromResponse(data, this.getValue(response[5], {}));
+    data.countryProgrammes = this.getValue(response[7]);
     return data;
   }
 
