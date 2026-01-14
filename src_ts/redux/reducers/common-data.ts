@@ -2,22 +2,11 @@ import {Reducer} from 'redux';
 import {SET_ALL_STATIC_DATA, UPDATE_STATIC_DATA, UPDATE_ENV_FLAGS, UPDATE_PRP_COUNTRIES} from '../actions/common-data';
 import {RootAction} from '../store';
 import {createSelector} from 'reselect';
-import {
-  CountryProgram,
-  Disaggregation,
-  EnvFlags,
-  LabelAndValue,
-  LocationObject,
-  Site,
-  Section,
-  CpOutput
-} from '@unicef-polymer/etools-types';
+import {CountryProgram, Disaggregation, EnvFlags, LabelAndValue, Section, CpOutput} from '@unicef-polymer/etools-types';
 
 export interface CommonDataState {
   unicefUsersData: [];
   partners: [];
-  locations: LocationObject[];
-  sites: Site[];
   sections: Section[];
   disaggregations: Disaggregation[];
   cpOutputs: CpOutput[];
@@ -41,8 +30,6 @@ export interface CommonDataState {
 const INITIAL_COMMON_DATA: CommonDataState = {
   unicefUsersData: [],
   partners: [],
-  locations: [],
-  sites: [],
   sections: [],
   disaggregations: [],
   locationTypes: [],
@@ -69,8 +56,6 @@ const commonData: Reducer<CommonDataState, RootAction> = (state = INITIAL_COMMON
       return {
         ...state,
         partners: action.staticData.partners,
-        locations: action.staticData.locations,
-        sites: action.staticData.sites,
         sections: action.staticData.sections,
         disaggregations: action.staticData.disaggregations,
         locationTypes: action.staticData.locationTypes,
