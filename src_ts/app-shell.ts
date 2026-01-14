@@ -246,7 +246,7 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
           });
           store.dispatch({
             type: SET_AGREEMENTS,
-            list: this.getValue(response[7])
+            list: this.getValue(response[6])
           });
         });
       }
