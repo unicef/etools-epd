@@ -42,18 +42,6 @@ export const getDropdownsData = () => {
   });
 };
 
-export const getLocations = () => {
-  return sendRequest({
-    endpoint: {url: etoolsEndpoints.locations.url!}
-  });
-};
-
-export const getSites = () => {
-  return sendRequest({
-    endpoint: {url: etoolsEndpoints.sites.url!}
-  });
-};
-
 export const getSections = () => {
   return sendRequest({
     endpoint: {url: etoolsEndpoints.sections.url!}
