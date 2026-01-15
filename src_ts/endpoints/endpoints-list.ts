@@ -42,7 +42,7 @@ export const etoolsEndpoints: EtoolsEndpoints = {
     url: '/api/locations-light/'
   },
   sites: {
-    url: '/api/v1/field-monitoring/settings/sites/?page_size=all'
+    url: '/api/v1/field-monitoring/settings/sites/'
   },
   partners: {
     url: '/api/pmp/v3/partners/'
