@@ -47,8 +47,8 @@ const copyConfig = {
       dest: 'src/node_modules/leaflet.markercluster/dist'
     },
     {
-      src: 'src_ts/components/pages/interventions/intervention-tab-pages/assets/i18n',
-      dest: 'src/src/components/pages/interventions/intervention-tab-pages/assets'
+      src: 'frontend/common/interventions/epd/assets/i18n',
+      dest: 'src/common/interventions/epd/assets'
     },
     { src: 'images', dest: 'src' },
     { src: 'assets', dest: 'src' },

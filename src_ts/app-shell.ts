@@ -1,4 +1,4 @@
-import {connect, installMediaQueryWatcher, installRouter} from '@unicef-polymer/etools-utils/dist/pwa.utils';
+import {connect, installMediaQueryWatcher, installRouter} from '@unicef-polymer/etools-utils/src/pwa.utils';
 
 // This element is connected to the Redux store.
 import {store, RootState} from './redux/store';
@@ -16,7 +16,7 @@ import '@unicef-polymer/etools-unicef/src/etools-app-layout/app-header-layout.js
 import '@unicef-polymer/etools-unicef/src/etools-app-layout/app-header.js';
 import '@unicef-polymer/etools-unicef/src/etools-app-layout/app-toolbar.js';
 import '@unicef-polymer/etools-unicef/src/etools-app-layout/app-footer.js';
-import '@unicef-polymer/etools-piwik-analytics/etools-piwik-analytics';
+import '@unicef-polymer/etools-piwik-analytics/src/etools-piwik-analytics';
 import {createDynamicDialog} from '@unicef-polymer/etools-unicef/src/etools-dialog/dynamic-dialog';
 
 import {LoadingMixin} from '@unicef-polymer/etools-unicef/src/etools-loading/etools-loading-mixin';
@@ -48,17 +48,17 @@ import './components/env-flags/environment-flags';
 import '@unicef-polymer/etools-unicef/src/etools-toasts/etools-toasts';
 import {registerTranslateConfig, use} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {EtoolsUser, RouteDetails} from '@unicef-polymer/etools-types';
-import {setStore} from '@unicef-polymer/etools-utils/dist/store.util';
+import {setStore} from '@unicef-polymer/etools-utils/src/store.util';
 import {SMALL_MENU_ACTIVE_LOCALSTORAGE_KEY} from './config/config';
-import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import {UploadsMixin} from '@unicef-polymer/etools-unicef/src/etools-upload/uploads-mixin.js';
-import '@unicef-polymer/etools-modules-common/dist/layout/are-you-sure';
+import {fireEvent} from '@unicef-polymer/etools-utils/src/fire-event.util';
+import {UploadsMixin} from '@unicef-polymer/etools-unicef/src/etools-upload/uploads-mixin';
+import '@unicef-polymer/etools-modules-common/src/layout/are-you-sure';
 import {commingFromPDDetailsToList} from './components/utils/utils';
-import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
-import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
+import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/src/utils/language';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/src/singleton/router';
 import {setBasePath} from '@shoelace-style/shoelace/dist/utilities/base-path.js';
 import {initializeIcons} from '@unicef-polymer/etools-unicef/src/etools-icons/etools-icons';
-import {Environment} from '@unicef-polymer/etools-utils/dist/singleton/environment';
+import {Environment} from '@unicef-polymer/etools-utils/src/singleton/environment';
 
 function fetchLangFiles(lang: string) {
   return Promise.allSettled([
@@ -255,7 +255,7 @@ export class AppShell extends connect(store)(UploadsMixin(LoadingMixin(LitElemen
     this.waitForComponentRender().then(() => {
       window.EtoolsEsmmFitIntoEl = this.appHeaderLayout!.shadowRoot!.querySelector('#contentContainer');
       this.etoolsLoadingContainer = window.EtoolsEsmmFitIntoEl;
-      // Override ajax error parser inside @unicef-polymer/etools-utils/dist/etools-ajax
+      // Override ajax error parser inside @unicef-polymer/etools-utils/src/etools-ajax
       // for string translation using lit-translate
       window.ajaxErrorParserTranslateFunction = (key: string) => {
         return getTranslatedValue(key);

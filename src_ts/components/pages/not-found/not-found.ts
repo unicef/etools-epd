@@ -5,8 +5,8 @@ import {customElement, property} from 'lit/decorators.js';
 import {elevationStyles} from '../../styles/lit-styles/elevation-styles';
 import {pageLayoutStyles} from '../../styles/page-layout-styles';
 import {SharedStylesLit} from '../../styles/shared-styles-lit';
-import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
-import {Environment} from '@unicef-polymer/etools-utils/dist/singleton/environment';
+import {fireEvent} from '@unicef-polymer/etools-utils/src/fire-event.util';
+import {Environment} from '@unicef-polymer/etools-utils/src/singleton/environment';
 
 /**
  * @customElement

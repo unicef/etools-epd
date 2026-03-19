@@ -1,5 +1,5 @@
-import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
-import {Environment} from '@unicef-polymer/etools-utils/dist/singleton/environment';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/src/singleton/router';
+import {Environment} from '@unicef-polymer/etools-utils/src/singleton/environment';
 import {RouteCallbackParams, RouteDetails} from '@unicef-polymer/etools-types';
 
 const routeParamRegex = '([^\\/?#=+]+)';

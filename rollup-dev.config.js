@@ -17,6 +17,10 @@ const copyConfig = {
     {
       src: 'src_ts/**/*.json',
       dest: 'src'
+    },
+    {
+      src: '../../common/interventions/epd/assets/i18n/*.json',
+      dest: 'src/*.json',
     }
   ],
   copyOnce: true,
@@ -34,7 +38,7 @@ const config = {
     chunkFileNames: '[name].js',
   },
   watch: {
-    include: ['src_ts/**', 'node_modules/**']
+    include: ['src_ts/**', '../../libraries/**', '../../common/**']
   },
   plugins: [
     ...defaultConfig.plugins,

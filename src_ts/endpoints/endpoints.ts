@@ -1,4 +1,4 @@
-import {RequestEndpoint} from '@unicef-polymer/etools-utils/dist/etools-ajax';
+import {RequestEndpoint} from '@unicef-polymer/etools-utils/src/etools-ajax';
 import cloneDeep from 'lodash-es/cloneDeep';
 import {AnyObject, EtoolsEndpoint} from '@unicef-polymer/etools-types';
 

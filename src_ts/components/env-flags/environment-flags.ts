@@ -1,6 +1,6 @@
-import {sendRequest, RequestEndpoint} from '@unicef-polymer/etools-utils/dist/etools-ajax/ajax-request';
-import {connect} from '@unicef-polymer/etools-utils/dist/pwa.utils';
-import {EtoolsLogger} from '@unicef-polymer/etools-utils/dist/singleton/logger';
+import {sendRequest, RequestEndpoint} from '@unicef-polymer/etools-utils/src/etools-ajax/ajax-request';
+import {connect} from '@unicef-polymer/etools-utils/src/pwa.utils';
+import {EtoolsLogger} from '@unicef-polymer/etools-utils/src/singleton/logger';
 import {store} from '../../redux/store';
 import {LitElement} from 'lit';
 import {property} from 'lit/decorators.js';

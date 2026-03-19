@@ -1,11 +1,11 @@
 import {html, LitElement, TemplateResult} from 'lit';
 import {customElement, property} from 'lit/decorators.js';
-import {connect} from '@unicef-polymer/etools-utils/dist/pwa.utils';
+import {connect} from '@unicef-polymer/etools-utils/src/pwa.utils';
 import {RootState, store} from '../../../redux/store';
 
-import '@unicef-polymer/etools-modules-common/dist/layout/page-content-header/page-content-header';
+import '@unicef-polymer/etools-modules-common/src/layout/page-content-header/page-content-header';
 // eslint-disable-next-line max-len
-import {pageContentHeaderSlottedStyles} from '@unicef-polymer/etools-modules-common/dist/layout/page-content-header/page-content-header-slotted-styles';
+import {pageContentHeaderSlottedStyles} from '@unicef-polymer/etools-modules-common/src/layout/page-content-header/page-content-header-slotted-styles';
 
 import '@unicef-polymer/etools-unicef/src/etools-filters/etools-filters';
 import {
@@ -29,16 +29,16 @@ import {
   buildUrlQueryString,
   getSortFields,
   getUrlQueryStringSort
-} from '@unicef-polymer/etools-modules-common/dist/layout/etools-table/etools-table-utility';
+} from '@unicef-polymer/etools-modules-common/src/layout/etools-table/etools-table-utility';
 
 import '@unicef-polymer/etools-unicef/src/etools-loading/etools-loading';
 import get from 'lodash-es/get';
 import './intervention-tab-pages/common/layout/export-intervention-data';
-import {ListHelper, ListHelperResponse} from '@unicef-polymer/etools-modules-common/dist/list/list-helper';
+import {ListHelper, ListHelperResponse} from '@unicef-polymer/etools-modules-common/src/list/list-helper';
 import {
   InterventionsListStyles,
   InterventionsTableStyles
-} from '@unicef-polymer/etools-modules-common/dist/list/list-styles';
+} from '@unicef-polymer/etools-modules-common/src/list/list-styles';
 import {addCurrencyAmountDelimiter} from '@unicef-polymer/etools-unicef/src/utils/currency';
 import {notHiddenPartnersSelector} from '../../../redux/reducers/common-data';
 import {translate, get as getTranslation} from '@unicef-polymer/etools-unicef/src/etools-translate';
@@ -53,13 +53,13 @@ import {
 import pick from 'lodash-es/pick';
 import {etoolsEndpoints} from '../../../endpoints/endpoints-list';
 import {getInterventionFilters, InterventionFilterKeys, translateFilters} from './interventions-filters';
-import {sharedStyles} from '@unicef-polymer/etools-modules-common/dist/styles/shared-styles-lit';
-import {debounce} from '@unicef-polymer/etools-utils/dist/debouncer.util';
-import {fireEvent} from '@unicef-polymer/etools-utils/dist/fire-event.util';
+import {sharedStyles} from '@unicef-polymer/etools-modules-common/src/styles/shared-styles-lit';
+import {debounce} from '@unicef-polymer/etools-utils/src/debouncer.util';
+import {fireEvent} from '@unicef-polymer/etools-utils/src/fire-event.util';
 import {setShouldReGetList} from './intervention-tab-pages/common/actions/interventions';
-import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/dist/utils/language';
-import {EtoolsRouter} from '@unicef-polymer/etools-utils/dist/singleton/router';
-import {Environment} from '@unicef-polymer/etools-utils/dist/singleton/environment';
+import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/src/utils/language';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/src/singleton/router';
+import {Environment} from '@unicef-polymer/etools-utils/src/singleton/environment';
 
 const customStyles = html`
   <style>
