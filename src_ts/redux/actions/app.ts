@@ -3,8 +3,8 @@ import {Action, ActionCreator} from 'redux';
 import {ThunkAction} from 'redux-thunk';
 import {RootState} from '../store';
 import {RouteDetails} from '@unicef-polymer/etools-types';
-import {UPDATE_ROUTE} from '../../components/pages/interventions/intervention-tab-pages/common/actions/actionsContants';
-import {enableCommentMode} from '../../components/pages/interventions/intervention-tab-pages/common/components/comments/comments.actions';
+import {UPDATE_ROUTE} from '@common/interventions/epd/common/actions/actionsContants';
+import {enableCommentMode} from '@common/interventions/epd/common/components/comments/comments.actions';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/src/singleton/router';
 import {Environment} from '@unicef-polymer/etools-utils/src/singleton/environment';
 import {EtoolsRedirectPath} from '@unicef-polymer/etools-utils/src/enums/router.enum';
@@ -40,15 +40,16 @@ const loadPageComponents: ActionCreator<ThunkResult> = (routeDetails: RouteDetai
       await import(`../../components/pages/${page}/${page}.ts`);
     } else {
       if (tab) {
-        await import(`../../components/pages/${page}/intervention-tab-pages/intervention-tabs.ts`);
+        await import(`../../../../../common/interventions/epd/intervention-tabs.ts`);
         await import(
-          `../../components/pages/${page}/intervention-tab-pages/intervention-${subpage}/intervention-${subpage}.ts`
+          `../../../../../common/interventions/epd/intervention-${subpage}/intervention-${subpage}.ts`
         );
       } else {
         await import(`../../components/pages/${page}/intervention-${subpage}.ts`);
       }
     }
-  } catch {
+  } catch(e) {
+    console.log(e);
     console.log(`No file imports configuration found: ${page}!`);
     EtoolsRouter.updateAppLocation(EtoolsRouter.getRedirectPath(EtoolsRedirectPath.NOT_FOUND));
   }

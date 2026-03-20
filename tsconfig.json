@@ -3,7 +3,11 @@
     "target": "es2018",
     "module": "esnext",
     "moduleResolution": "node",
-    "lib": ["es2018", "dom", "esnext"],
+    "lib": [
+      "es2018",
+      "dom",
+      "esnext"
+    ],
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
@@ -21,6 +25,10 @@
     "noEmit": true,
     "allowImportingTsExtensions": true
   },
-  "include": ["src_ts/**/*.ts", "src_ts/components/pages/interventions/intervention-tab-pages/assets/i18n/*.json"],
-  "exclude": []
+  "include": [
+    "src_ts/**/*.ts",
+    "../../../common/interventions/epd/assets/i18n/*.json"
+  ],
+  "exclude": [],
+  "extends": "../../../tsconfig.json"
 }

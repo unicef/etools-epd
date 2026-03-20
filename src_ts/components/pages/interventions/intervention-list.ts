@@ -33,7 +33,7 @@ import {
 
 import '@unicef-polymer/etools-unicef/src/etools-loading/etools-loading';
 import get from 'lodash-es/get';
-import './intervention-tab-pages/common/layout/export-intervention-data';
+import '@common/interventions/epd/common/layout/export-intervention-data';
 import {ListHelper, ListHelperResponse} from '@unicef-polymer/etools-modules-common/src/list/list-helper';
 import {
   InterventionsListStyles,
@@ -56,7 +56,7 @@ import {getInterventionFilters, InterventionFilterKeys, translateFilters} from '
 import {sharedStyles} from '@unicef-polymer/etools-modules-common/src/styles/shared-styles-lit';
 import {debounce} from '@unicef-polymer/etools-utils/src/debouncer.util';
 import {fireEvent} from '@unicef-polymer/etools-utils/src/fire-event.util';
-import {setShouldReGetList} from './intervention-tab-pages/common/actions/interventions';
+import {setShouldReGetList} from '@common/interventions/epd/common/actions/interventions';
 import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/src/utils/language';
 import {EtoolsRouter} from '@unicef-polymer/etools-utils/src/singleton/router';
 import {Environment} from '@unicef-polymer/etools-utils/src/singleton/environment';

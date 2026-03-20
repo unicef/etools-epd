@@ -13,7 +13,7 @@ import {RootAction} from '../store';
 import {SHOW_TOAST, CLOSE_TOAST} from '../actionsContants';
 import {RouteDetails} from '@unicef-polymer/etools-types';
 
-import {UPDATE_ROUTE} from '../../components/pages/interventions/intervention-tab-pages/common/actions/actionsContants';
+import {UPDATE_ROUTE} from '@common/interventions/epd/common/actions/actionsContants';
 
 export interface AppState {
   routeDetails: RouteDetails;
