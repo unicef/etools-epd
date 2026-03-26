@@ -1,4 +1,4 @@
-import {connect, installMediaQueryWatcher, installRouter} from '@unicef-polymer/etools-utils/src/pwa.utils';
+import {connect, installMediaQueryWatcher, installRouter} from '@unicef-polymer/etools-utils/src/pwa.utils.js';
 
 // This element is connected to the Redux store.
 import {store, RootState} from './redux/store';
@@ -48,17 +48,17 @@ import './components/env-flags/environment-flags';
 import '@unicef-polymer/etools-unicef/src/etools-toasts/etools-toasts';
 import {registerTranslateConfig, use} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {EtoolsUser, RouteDetails} from '@unicef-polymer/etools-types';
-import {setStore} from '@unicef-polymer/etools-utils/src/store.util';
+import {setStore} from '@unicef-polymer/etools-utils/src/store.util.js';
 import {SMALL_MENU_ACTIVE_LOCALSTORAGE_KEY} from './config/config';
-import {fireEvent} from '@unicef-polymer/etools-utils/src/fire-event.util';
+import {fireEvent} from '@unicef-polymer/etools-utils/src/fire-event.util.js';
 import {UploadsMixin} from '@unicef-polymer/etools-unicef/src/etools-upload/uploads-mixin';
 import '@unicef-polymer/etools-modules-common/src/layout/are-you-sure';
 import {commingFromPDDetailsToList} from './components/utils/utils';
 import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/src/utils/language';
-import {EtoolsRouter} from '@unicef-polymer/etools-utils/src/singleton/router';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/src/singleton/router.js';
 import {setBasePath} from '@shoelace-style/shoelace/dist/utilities/base-path.js';
 import {initializeIcons} from '@unicef-polymer/etools-unicef/src/etools-icons/etools-icons';
-import {Environment} from '@unicef-polymer/etools-utils/src/singleton/environment';
+import {Environment} from '@unicef-polymer/etools-utils/src/singleton/environment.js';
 
 function fetchLangFiles(lang: string) {
   return Promise.allSettled([
