@@ -1,7 +1,7 @@
-import '@unicef-polymer/etools-unicef/src/etools-app-layout/app-toolbar.js';
+import '@unicef-polymer/etools-unicef/src/etools-app-layout/app-toolbar';
 import '@unicef-polymer/etools-unicef/src/etools-profile-dropdown/etools-profile-dropdown';
-import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown.js';
-import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button.js';
+import '@unicef-polymer/etools-unicef/src/etools-dropdown/etools-dropdown';
+import '@unicef-polymer/etools-unicef/src/etools-icon-button/etools-icon-button';
 import '@unicef-polymer/etools-modules-common/src/components/dropdowns/languages-dropdown';
 import '@unicef-polymer/etools-modules-common/src/components/dropdowns/countries-dropdown';
 import '@unicef-polymer/etools-modules-common/src/components/dropdowns/organizations-dropdown';

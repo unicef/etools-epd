@@ -1,4 +1,4 @@
-import {connect, installMediaQueryWatcher, installRouter} from '@unicef-polymer/etools-utils/src/pwa.utils.js';
+import {connect, installMediaQueryWatcher, installRouter} from '@unicef-polymer/etools-utils/src/pwa.utils';
 
 // This element is connected to the Redux store.
 import {store, RootState} from './redux/store';
@@ -10,12 +10,12 @@ import {navigate, updateRouteDetails} from './redux/actions/app';
 import './routing/routes';
 
 // These are the elements needed by this element.
-import '@unicef-polymer/etools-unicef/src/etools-app-layout/app-drawer-layout.js';
-import '@unicef-polymer/etools-unicef/src/etools-app-layout/app-drawer.js';
-import '@unicef-polymer/etools-unicef/src/etools-app-layout/app-header-layout.js';
-import '@unicef-polymer/etools-unicef/src/etools-app-layout/app-header.js';
-import '@unicef-polymer/etools-unicef/src/etools-app-layout/app-toolbar.js';
-import '@unicef-polymer/etools-unicef/src/etools-app-layout/app-footer.js';
+import '@unicef-polymer/etools-unicef/src/etools-app-layout/app-drawer-layout';
+import '@unicef-polymer/etools-unicef/src/etools-app-layout/app-drawer';
+import '@unicef-polymer/etools-unicef/src/etools-app-layout/app-header-layout';
+import '@unicef-polymer/etools-unicef/src/etools-app-layout/app-header';
+import '@unicef-polymer/etools-unicef/src/etools-app-layout/app-toolbar';
+import '@unicef-polymer/etools-unicef/src/etools-app-layout/app-footer';
 import '@unicef-polymer/etools-piwik-analytics/src/etools-piwik-analytics';
 import {createDynamicDialog} from '@unicef-polymer/etools-unicef/src/etools-dialog/dynamic-dialog';
 
@@ -48,17 +48,17 @@ import './components/env-flags/environment-flags';
 import '@unicef-polymer/etools-unicef/src/etools-toasts/etools-toasts';
 import {registerTranslateConfig, use} from '@unicef-polymer/etools-unicef/src/etools-translate';
 import {EtoolsUser, RouteDetails} from '@unicef-polymer/etools-types';
-import {setStore} from '@unicef-polymer/etools-utils/src/store.util.js';
+import {setStore} from '@unicef-polymer/etools-utils/src/store.util';
 import {SMALL_MENU_ACTIVE_LOCALSTORAGE_KEY} from './config/config';
-import {fireEvent} from '@unicef-polymer/etools-utils/src/fire-event.util.js';
+import {fireEvent} from '@unicef-polymer/etools-utils/src/fire-event.util';
 import {UploadsMixin} from '@unicef-polymer/etools-unicef/src/etools-upload/uploads-mixin';
 import '@unicef-polymer/etools-modules-common/src/layout/are-you-sure';
 import {commingFromPDDetailsToList} from './components/utils/utils';
 import {getTranslatedValue} from '@unicef-polymer/etools-modules-common/src/utils/language';
-import {EtoolsRouter} from '@unicef-polymer/etools-utils/src/singleton/router.js';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/src/singleton/router';
 import {setBasePath} from '@shoelace-style/shoelace/dist/utilities/base-path.js';
 import {initializeIcons} from '@unicef-polymer/etools-unicef/src/etools-icons/etools-icons';
-import {Environment} from '@unicef-polymer/etools-utils/src/singleton/environment.js';
+import {Environment} from '@unicef-polymer/etools-utils/src/singleton/environment';
 
 function fetchLangFiles(lang: string) {
   return Promise.allSettled([

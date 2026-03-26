@@ -5,10 +5,10 @@ import {RootState} from '../store';
 import {RouteDetails} from '@unicef-polymer/etools-types';
 import {UPDATE_ROUTE} from '@common/interventions/epd/common/actions/actionsContants';
 import {enableCommentMode} from '@common/interventions/epd/common/components/comments/comments.actions';
-import {EtoolsRouter} from '@unicef-polymer/etools-utils/src/singleton/router.ts';
-import {Environment} from '@unicef-polymer/etools-utils/src/singleton/environment.ts';
-import {EtoolsRedirectPath} from '@unicef-polymer/etools-utils/src/enums/router.enum.ts';
-import {EtoolsRouteDetails} from '@unicef-polymer/etools-utils/src/interfaces/router.interfaces.ts';
+import {EtoolsRouter} from '@unicef-polymer/etools-utils/src/singleton/router';
+import {Environment} from '@unicef-polymer/etools-utils/src/singleton/environment';
+import {EtoolsRedirectPath} from '@unicef-polymer/etools-utils/src/enums/router.enum';
+import {EtoolsRouteDetails} from '@unicef-polymer/etools-utils/src/interfaces/router.interfaces';
 
 export interface AppActionUpdateDrawerState extends Action<'UPDATE_DRAWER_STATE'> {
   opened: boolean;
