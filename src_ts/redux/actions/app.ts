@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import {Action, ActionCreator} from 'redux';
 import {ThunkAction} from 'redux-thunk';
 import {RootState} from '../store';
@@ -41,14 +40,12 @@ const loadPageComponents: ActionCreator<ThunkResult> = (routeDetails: RouteDetai
     } else {
       if (tab) {
         await import(`../../../../../common/interventions/epd/intervention-tabs.ts`);
-        await import(
-          `../../../../../common/interventions/epd/intervention-${subpage}/intervention-${subpage}.ts`
-        );
+        await import(`../../../../../common/interventions/epd/intervention-${subpage}/intervention-${subpage}.ts`);
       } else {
         await import(`../../components/pages/${page}/intervention-${subpage}.ts`);
       }
     }
-  } catch(e) {
+  } catch (e) {
     console.log(e);
     console.log(`No file imports configuration found: ${page}!`);
     EtoolsRouter.updateAppLocation(EtoolsRouter.getRedirectPath(EtoolsRedirectPath.NOT_FOUND));

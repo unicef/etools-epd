@@ -63,9 +63,7 @@ import {Environment} from '@unicef-polymer/etools-utils/src/singleton/environmen
 function fetchLangFiles(lang: string) {
   return Promise.allSettled([
     fetch(`assets/i18n/${lang}.json`).then((res: any) => res.json()),
-    fetch(`src/common/interventions/epd/assets/i18n/${lang}.json`).then((res: any) =>
-      res.json()
-    )
+    fetch(`src/common/interventions/epd/assets/i18n/${lang}.json`).then((res: any) => res.json())
   ]).then((response: any) => {
     return Object.assign(response[0].value, response[1].value);
   });
